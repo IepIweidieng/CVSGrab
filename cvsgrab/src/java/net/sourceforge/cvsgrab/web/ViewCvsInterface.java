@@ -8,7 +8,6 @@ package net.sourceforge.cvsgrab.web;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.CvsWebInterface;
@@ -54,7 +53,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      * @param grabber The cvs grabber
      */
     public void init(CVSGrab grabber) throws Exception {
-        checkRootUrl(grabber.getRootUrl());
         _type = getId();
     }
     
@@ -65,7 +63,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
     public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
-        checkRootUrl(grabber.getRootUrl());
         
         JXPathContext context = JXPathContext.newContext(htmlPage);
         Iterator viewCvsTexts = context.iterate("//A[@href]/text()[starts-with(.,'ViewCVS')]");
@@ -295,34 +292,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         } 
     }
     
-    protected void checkRootUrl(String url) {
-        // Sanity check
-        // Get the last part of the root url
-        int slash = url.indexOf('/', 8);
-        if (slash > 0) {
-            String path = url.substring(slash);
-            String beforeLastPart = "";
-            String lastPart = null;
-            StringTokenizer st = new StringTokenizer(path, "/", false);
-            while (st.hasMoreTokens()) {
-                if (lastPart != null) {
-                    beforeLastPart += "/" + lastPart;
-                }
-                lastPart = st.nextToken();
-            }
-            if (lastPart != null) {
-                lastPart = lastPart.toLowerCase();
-                if (beforeLastPart.length() > 0 && lastPart.indexOf("cvs") < 0 && lastPart.indexOf(".") < 0 
-                        && lastPart.indexOf("source") < 0 && lastPart.indexOf("src") < 0 
-                        && lastPart.indexOf("browse") < 0) {
-                    CVSGrab.getLog().warn("The root url " + url + " doesn't seem valid");
-                    String newRootUrl = url.substring(0, slash) + beforeLastPart;
-                    CVSGrab.getLog().warn("Try " + newRootUrl + " as the root url instead");
-                }
-            }
-        }
-    }
-
     /**
      * Python-style of URIUtil.encodePath
      * 

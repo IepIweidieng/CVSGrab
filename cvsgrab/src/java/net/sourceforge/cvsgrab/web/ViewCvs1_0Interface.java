@@ -45,7 +45,6 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
     public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         String rootUrl = grabber.getRootUrl();
         if (rootUrl.indexOf("savannah.gnu.org") > 0) {
-            checkRootUrl(grabber.getRootUrl());
             setType("ViewCVS 1.0 on Savannah GNU");
         } else {
             super.detect(grabber, htmlPage);

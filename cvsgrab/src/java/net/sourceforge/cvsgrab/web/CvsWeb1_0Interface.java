@@ -39,8 +39,6 @@ public class CvsWeb1_0Interface extends ViewCvsInterface {
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
     public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
-        checkRootUrl(grabber.getRootUrl());
-        
         JXPathContext context = JXPathContext.newContext(htmlPage);
         context.setLenient(true);
         // Check that this is CvsWeb

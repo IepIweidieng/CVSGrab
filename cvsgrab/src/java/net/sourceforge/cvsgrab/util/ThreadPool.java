@@ -10,10 +10,12 @@
  *  info@javainpractice.net
  *
  */
-package net.sourceforge.cvsgrab;
+package net.sourceforge.cvsgrab.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.sourceforge.cvsgrab.CVSGrab;
 
 
 /** 

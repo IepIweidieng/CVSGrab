@@ -9,6 +9,8 @@ package net.sourceforge.cvsgrab;
 
 import java.io.File;
 
+import net.sourceforge.cvsgrab.util.*;
+
 import org.apache.commons.httpclient.methods.GetMethod;
 
 /**

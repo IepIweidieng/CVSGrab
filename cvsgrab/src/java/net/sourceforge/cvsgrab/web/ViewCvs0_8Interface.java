@@ -38,7 +38,6 @@ public class ViewCvs0_8Interface extends ViewCvsInterface {
     public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         String rootUrl = grabber.getRootUrl();
         if (rootUrl.indexOf("sourceforge.net") > 0 || rootUrl.indexOf("sf.net") > 0) {
-            checkRootUrl(grabber.getRootUrl());
             setType("ViewCVS 0.8 on Sourceforge");
         } else {
             super.detect(grabber, htmlPage);

@@ -114,15 +114,20 @@
         <p>Note the -projectRoot option used by ViewCVS 1.0 when
         it's configured to work with multiple repositories (you
         should see a dropdown box with the label 'Project Root' on
-        the web page). It's value is also the same as the root parameter
-        from the url.</p>
+        the web page). It's value is also the same as the root
+        parameter from the url.</p>
       </subsection>
-      
+
       <subsection name="WebWork on dev.java.net (SourceCast 2.0)">
-        <p>URL: <a href="https://webwork.dev.java.net/source/browse/webwork/src/">https://webwork.dev.java.net/nonav/source/browse/webwork/src/</a></p>
+        <p>URL: 
+        <a
+        href="https://webwork.dev.java.net/source/browse/webwork/src/">
+        https://webwork.dev.java.net/nonav/source/browse/webwork/src/</a>
+        </p>
+
         <p>cvsgrab -rootUrl
         https://webwork.dev.java.net/source/browse/webwork/
-        -packagePath src -destDir c:\tmp -packageDir 
+        -packagePath src -destDir c:\tmp -packageDir
         webwork-src</p>
       </subsection>
     </section>
