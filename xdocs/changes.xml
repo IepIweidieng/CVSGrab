@@ -20,8 +20,8 @@
       <action dev="ludovicc" type="add">TODO: add option to check
       out files in DOS mode, UNIX mode</action>
 
-      <action dev="ludovicc" type="add">TODO: add exclusion list
-      for directories you don't want to download</action>
+      <action dev="ludovicc" type="add">TODO: add support
+      for gz-compressed web pages</action>
 
       <action dev="ludovicc" type="add">Contributed by Amaury
       Forgeot d'Arc. TODO: Also, I think that an option that forces
@@ -49,6 +49,9 @@
 
       <action dev="ludovicc" type="fix">TODO: pruneEmptyDirs doesn't remove the
       pruned directories from the CVS entries.</action>
+
+      <action dev="ludovicc" type="update">Add support for gzipped content. Patch
+      provided by Ralf Stoffels.</action>
       
     </release>
 
