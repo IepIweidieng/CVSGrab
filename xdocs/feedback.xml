@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author email="ludovicc@users.sourceforge.net">Ludovic Claude</author>
+    <title>Feedback</title>
+  </properties>
+  <body>
+    <section name="Feedback">
+      <p>
+        Feedback on any aspect of CVSGrab is welcome. My email address is: 
+        <A HREF="mailto:ludovicc at users.sourceforge.net">ludovicc at users.sourceforge.net</A>
+      </p>
+      <p>
+        And report any bugs in the bugtracker
+        <a href="http://sourceforge.net/tracker/?group_id=52481&amp;atid=467004">here</a> 
+      </p> 
+    </section>
+  </body>
+</document>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+
+  <!-- the version of maven's project object model -->
+  <pomVersion>3</pomVersion>
+  
+  <!-- a unique name for this project -->
+  <id>cvsgrab</id>
+  
+  <!-- a short but descriptive name for the project -->
+  <name>CVSGrab</name>
+  
+  <!-- The version of the project under development, e.g.
+       1.1, 1.2, 2.0-SNAPSHOT -->
+  <currentVersion>2.0-alpha</currentVersion>
+  
+  <!-- details about the organization that 'owns' the project -->
+  <organization>
+    <name>Ludovic Claude</name>
+    <url>http://cvsgrab.sourceforge.net/</url>
+    <logo>http://sourceforge.net/sflogo.php?group_id=52481&amp;type=5</logo>
+  </organization>
+  
+  <!-- the year the project started -->
+  <inceptionYear>2002</inceptionYear>
+  <package>net.sourceforge.cvsgrab</package>
+  <logo>http://cvsgrab.sourceforge.net/images/cvsgrab-logo.jpg</logo>
+  <description>
+    Use the web interface to CVS repositories to get files from CVS behind a blocking firewall.   
+  </description>
+  <!-- a short description of what the project does -->
+  <shortDescription>
+    CVS client that works behind firewalls.
+  </shortDescription>
+
+  <!-- the project home page -->
+  <url>http://cvsgrab.sourceforge.net/</url>
+  <issueTrackingUrl>https://sourceforge.net/tracker/?group_id=52481&amp;atid=467004</issueTrackingUrl>
+  <siteAddress>cvsgrab.sourceforge.net</siteAddress>
+  <siteDirectory>/htdocs/</siteDirectory>
+  <distributionSite>cvsgrab.sourceforge.net</distributionSite>
+  <distributionDirectory>/htdocs/builds/</distributionDirectory>
+
+  <!-- the version control repository and http url for online access
+       the connection element has the form:
+       scm:<system>:<system specific connection string> -->
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/cvsgrab</connection>
+    <url>http://cvs.sourceforge.net/viewcvs.py/cvsgrab</url>
+  </repository>
+
+  <!-- any mailing lists for the project -->
+  <mailingLists/>
+  
+  <!-- who the developers are for the project -->
+  <developers>
+    <developer>
+      <name>Ludovic Claude</name>
+      <id>ludovicc</id>
+      <email>ludovicc at users.sourceforge.net</email>
+      <organization>Freelance</organization>
+      <roles>
+        <role>Inventor</role>
+        <role>Administrator</role>
+        <role>Release Manager</role>
+        <role>Developer</role>
+        <role>Architect</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!-- jar files the project is dependent on -->
+  <dependencies>
+    <dependency>
+      <groupId>nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>0.7.7</version>
+      <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
+    </dependency>
+    
+    <dependency>
+      <groupId>nekohtml</groupId>
+      <artifactId>nekohtmlXni</artifactId>
+      <version>0.7.7</version>
+      <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
+    </dependency>
+    
+    <dependency>
+      <groupId>jcvsii</groupId>
+      <artifactId>jcvsii</artifactId>
+      <version>light</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.3</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>2.0-rc1</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-jxpath</groupId>
+      <artifactId>commons-jxpath</artifactId>
+      <version>1.1</version>
+      <url>http://jakarta.apache.org/commons/jxpath/index.html</url>
+    </dependency>
+    
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.4.0</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
+    </dependency>
+    
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xmlParserAPIs</artifactId>
+      <version>2.2.1</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
+    </dependency>
+    
+    <dependency>
+      <groupId>ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.5.3-1</version>
+      <url>http://ant.apache.org/</url>
+    </dependency>
+  </dependencies>
+  
+  <!-- build information for the project -->
+  <build>
+    <nagEmailAddress>ludovicc@users.sourceforge.net</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <resources>
+      <resource>
+        <directory>src/conf</directory>
+        <includes>
+          <include>*.properties</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
+
+</project>
+

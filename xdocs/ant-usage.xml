@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<author email="ludovicc@users.sourceforge.net">Ludovic Claude</author>
+		<title>CVSGrab - Ant usage</title>
+	</properties>
+	<body>
+		<section name="Ant usage for cvsgrab task">
+		  <p>Reads a CVS repository via its ViewCVS web interface, thus avoiding any firewall problems. </p>
+   
+		  <p>Install the cvsgrab task in Ant by using the following: </p>
+ 
+ 		  <p>
+  		    &lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /=""/&gt; <br/>
+		    &lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /&gt; <br/>
+		    &lt;taskdef name="cvsgrab" classname="net.sourceforge.cvsgrab.CVSGrabTask" classpath="${cvsgrab.dir}/lib/cvs-grab.jar;${cvsgrab.dir}/lib/hotsax.jar;${cvsgrab.dir}/lib/jcvsii-light.jar"/&gt;
+	      </p> 
+ 
+		  <section name="Parameters">
+		    <p>
+		       
+		      <table>
+		           <tr>
+		            <th valign="Top"><b>Attribute</b></th>
+		            <th valign="Top"><b>Description</b></th>
+		            <th valign="Top" align="Center"><b>Required</b></th>
+		          </tr>
+		          <tr>
+		            <td valign="Top">destdir</td>
+		            <td valign="Top">The destination directory for the files retrieved from CVS</td>
+		            <td valign="Top" align="Center">Yes</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">rootUrl</td>
+		            <td valign="Top">The root url for the ViewCVS repository. <br/>
+		              Example: http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/</td>
+		            <td valign="Top" align="Center">Yes.</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">package</td>
+		            <td valign="Top">The package/module of the repository to download <br/>
+		              Example: hotsax/HotSAX </td>
+		            <td valign="Top" align="Center">Yes.</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">tag</td>
+		            <td valign="Top">The version tag of the files to download. <br/>
+		               Example: BRANCH_3_0     </td>
+		            <td valign="Top" align="Center">No.</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">cvshost</td>
+		            <td valign="Top">The original cvs host, used to maintain compatibility with a standard CVS client.</td>
+		            <td valign="Top" align="Center">No.</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">cvsroot</td>
+		            <td valign="Top">The original cvs root, used to maintain compatibility with a standard CVS client.</td>
+		            <td valign="Top" align="Center">No.</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">verbose</td>
+		            <td valign="Top">Verbosity. Default is verbose. Values are true or false</td>
+		            <td valign="Top" align="Center">No.</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">pruneEmptyDirs</td>
+		            <td valign="Top">Prune (remove) the empty directories. Default is false</td>
+		            <td valign="Top">No.</td>
+		          </tr>
+		      </table>
+		    </p>
+		  </section>
+		  
+		  <section name="Nested Elements">
+
+			  <subsection name="proxy">
+			    <p>
+		          Optional. To configure how to use a proxy if you are behind a firewall that uses proxies. <br/>
+		          Usually, it solves the 404 and 407 errors you may encounter. 
+		          <table>
+		               <tr>
+		                <th valign="Top"><b>Attribute</b></th>
+		                <th valign="Top"><b>Description</b></th>
+		                <th valign="Top" align="Center"><b>Required</b></th>
+		              </tr>
+		              <tr>
+		                <td valign="Top">host</td>
+		                <td valign="Top">The host name for the proxy</td>
+		                <td valign="Top" align="Center">Yes.</td>
+		              </tr>
+		              <tr>
+		                <td valign="Top">port</td>
+		                <td valign="Top">The port of the proxy.</td>
+		                <td valign="Top" align="Center">Yes.</td>
+		              </tr>
+		              <tr>
+		                <td valign="Top">ntdomain</td>
+		                <td valign="Top">The NT domain for authentification on MS proxy.</td>
+		                <td valign="Top" align="Center">No.</td>
+		              </tr>
+		              <tr>
+		                <td valign="Top">username</td>
+		                <td valign="Top">The username used to login in the proxy</td>
+		                <td valign="Top" align="Center">No.</td>
+		              </tr>
+		              <tr>
+		                <td valign="Top">password</td>
+		                <td valign="Top">The password used to login in the proxy</td>
+		                <td valign="Top" align="Center">No.</td>
+		              </tr>
+		          </table>
+              </p>
+  		    </subsection>
+  		    
+			<subsection name="web">
+			  <p>
+		        Optional. To configure authentification on the web server that hosts the cvs web interface. 
+		        <table>
+		             <tr>
+		              <th valign="Top"><b>Attribute</b></th>
+		              <th valign="Top"><b>Description</b></th>
+		              <th valign="Top" align="Center"><b>Required</b></th>
+		            </tr>
+		            <tr>
+		              <td valign="Top">username</td>
+		              <td valign="Top">The username used to login in the web server</td>
+		              <td valign="Top" align="Center">No.</td>
+		            </tr>
+		            <tr>
+		              <td valign="Top">password</td>
+		              <td valign="Top">The password used to login in the web server</td>
+		              <td valign="Top" align="Center">No.</td>
+		            </tr>
+		        </table>
+              </p>
+  		    </subsection>
+  		  </section>
+		</section>
+	</body>
+</document>

@@ -1,0 +1,19 @@
+
+StoryCustomer: LudovicClaude
+
+When connecting to the first page of a CVS repository, it should be able to run some checks to determine 
+which web interface is used (ViewCVS, cvsweb...) and which version. This information will be later used 
+to determine which template to use when retrieving data from cvs.
+It should be also possible to turn off this automatic feature by specifying exactly on the command line 
+which cvs interface is used.
+
+SuccessCriteria:
+
+- automatic detection of the cvs web interface type and version by reading the first page
+- allow the user to explicitely name the cvs web interface used. 
+
+ExpectedTasks:
+
+- add an optional parameter to the command line
+- enumerate the most commonly used cvs web interfaces
+- write a class that detects the type and version of the web interface used
