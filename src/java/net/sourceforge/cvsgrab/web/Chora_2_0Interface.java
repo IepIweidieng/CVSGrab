@@ -130,6 +130,7 @@ public class Chora_2_0Interface extends CvsWebInterface {
      * {@inheritDoc}
      */
     public void init(CVSGrab grabber) throws Exception {
+        // do nothing
     }
 
     /** 

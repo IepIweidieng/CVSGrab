@@ -48,6 +48,7 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
         
         if (_root == null) {
             JXPathContext context = JXPathContext.newContext(htmlPage);
+            context.setLenient(true);
             String href = (String) context.getValue("//A/@href[contains(., 'root=')]");
             if (href == null) {
                 CVSGrab.getLog().warn("CVS Root not found, there may be issues if ViewCvs is used with multiple repositories");
@@ -142,4 +143,12 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
         return "ViewCVS 1.0";
     }
 
+    protected void adjustFile(RemoteFile file, JXPathContext nodeContext) {
+        super.adjustFile(file, nodeContext);
+        String href = (String) nodeContext.getValue("TD[1]/A/@href");
+        if (href.indexOf("/Attic/" + file.getName()) >= 0) {
+            file.setInAttic(true);
+        }
+    }
+    
 }

@@ -20,22 +20,24 @@
       <action dev="ludovicc" type="add">TODO: add option to check
           out files in DOS mode, UNIX mode</action>
 
+      <action dev="ludovicc" type="fix">TODO: running cvsgrab on a repository seems to change the
+          modification date of the files.</action>
+          
+      <action dev="ludovicc" type="fix">todo: hangs forever - cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune  </action>
+      
+      <action dev="ludovicc" type="fix">Decompress files when the pages are gzipped. (bug #983998)</action>
+          
     </release>
     
-    <release version="2.1" date="planned features">
-      <action dev="ludovicc" type="add">TODO: add diff
+    <release version="2.1" date="2004-05-12">
+      <action dev="ludovicc" type="add">Add diff
           functionality. Feature request from Aslak Helsoy (and me!)</action>
-
-      <action dev="ludovicc" type="add">TODO: running cvsgrab on a repository changes the
-          modification date of the files.</action>
 
       <action dev="ludovicc" type="add">store the cvsgrab options like the
           root url in the CVS admin files. This allow you to execute cvsgrab the second
-          time with no parameters, as it can locate the web repository from those admin files.
-      </action>
+          time with no parameters, as it can locate the web repository from those admin files.</action>
 
-      <action dev="ludovicc" type="add">Add support for Chora 2.0.
-      </action>
+      <action dev="ludovicc" type="add">Add support for Chora 2.0.</action>
 
       <action dev="ludovicc" type="add">Add a clean update option,
           to force downloading the latest version of a locally modified
@@ -53,77 +55,80 @@
       
       <action dev="ludovicc" type="add">Add support for gzipped content. Patch
           provided by Ralf Stoffels.</action>
+       
+      <action dev="ludovicc" type="fix">Another fix of cvsgrab.sh, this time about the evaluation
+          of CVSGRAB_HOME variable, contributed by Daniel Fischer.</action>   
       
     </release>
 
     <release version="2.0.3" date="2004-02-05">
       
       <action dev="ludovicc" type="update">Improved auto-detect
-      functionality: now tests different URLs according to the type
-      of the expected web interface.</action>
+          functionality: now tests different URLs according to the type
+          of the expected web interface.</action>
       
       <action dev="ludovicc" type="update">use Jakarta's CLI
-      library to parse command line arguments</action>
+          library to parse command line arguments</action>
 
       <action dev="ludovicc" type="update">Output looks more like 
-      the standard cvs command.</action>
+          the standard cvs command.</action>
       
       <action dev="ludovicc" type="add">Add support for ViewCVS 0.9.2 with multiple 
-      cvs roots (http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/?cvsroot=ooo4r)
-      and CVSWeb 1.0 (http://dev.w3.org/cvsweb/).</action>
+          cvs roots (http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/?cvsroot=ooo4r)
+          and CVSWeb 1.0 (http://dev.w3.org/cvsweb/).</action>
       
     </release>
 
     <release version="2.0.2" date="2003-12-27">
       <action dev="ludovicc" type="add">Added support for
-      SourceCast 1.1 used by NetBeans.org (contributed partially by
-      Laurent Broudoux).</action>
+          SourceCast 1.1 used by NetBeans.org (contributed partially by
+          Laurent Broudoux).</action>
 
       <action dev="ludovicc" type="fix">Fixed cvsgrab.sh: fixed log
-      arguments that were not working on Lnux (contributed by Eric
-      Le Goff).</action>
+          arguments that were not working on Linux (contributed by Eric
+          Le Goff).</action>
 
       <action dev="ludovicc" type="fix">Simplified XPath
-      expressions to avoid duplicates in file and directory
-      selections.</action>
+          expressions to avoid duplicates in file and directory
+          selections.</action>
     </release>
 
     <release version="2.0.1" date="2003-12-07">
       <action dev="ludovicc" type="add">Added support for CvsWeb
-      2.0.</action>
+          2.0.</action>
 
       <action dev="ludovicc" type="add">Added initial test that
-      connects to the site by using the root url, this should help
-      to detect proxy settings issues.</action>
+          connects to the site by using the root url, this should help
+          to detect proxy settings issues.</action>
 
       <action dev="ludovicc" type="add">Added manual selection of
-      the web interface, this can fix issues with some web sites
-      where the autodetect feature doesn't work.</action>
+          the web interface, this can fix issues with some web sites
+          where the autodetect feature doesn't work.</action>
 
       <action dev="ludovicc" type="fix">Fixed cvsgrab.sh: use
-      unix-style file format, updated script and make it use the
-      $CVSGRAB_HOME environment variable (copied from Ant
-      script).</action>
+          unix-style file format, updated script and make it use the
+          $CVSGRAB_HOME environment variable (copied from Ant
+          script).</action>
 
       <action dev="ludovicc" type="fix">Fixed incorrect urls for
-      directories that contain spaces</action>
+          directories that contain spaces</action>
 
       <action dev="ludovicc" type="fix">ViewCVS 1.0: fixed
-      detection when ViewCvs is not configured with multiple cvs
-      roots.</action>
+          detection when ViewCvs is not configured with multiple cvs
+          roots.</action>
 
       <action dev="ludovicc" type="fix">Contributed by Amaury
-      Forgeot d'Arc. wxWindows apparently uses ViewCVS 0.9.2, but
-      with an additional link after each file name to show the
-      "revision graph". See
-      http://cvs.wxwindows.org/viewcvs.cgi/wxWindows/ So I had to
-      modify the ViewCvsInterface.java file and change
-      _fileVersionXpath = "TD[A/IMG/@alt !=
-      '(graph)'][2]/A/B";</action>
+          Forgeot d'Arc. wxWindows apparently uses ViewCVS 0.9.2, but
+          with an additional link after each file name to show the
+          "revision graph". See
+          http://cvs.wxwindows.org/viewcvs.cgi/wxWindows/ So I had to
+          modify the ViewCvsInterface.java file and change
+          _fileVersionXpath = "TD[A/IMG/@alt !=
+          '(graph)'][2]/A/B";</action>
 
       <action dev="ludovicc" type="fix">Contributed by Amaury
-      Forgeot d'Arc. Removed caching of pages by the server to get
-      the up-to-date version of the directory lists.</action>
+          Forgeot d'Arc. Removed caching of pages by the server to get
+          the up-to-date version of the directory lists.</action>
     </release>
 
     <release version="2.0" date="2003-10-31">

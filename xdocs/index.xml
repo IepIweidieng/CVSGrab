@@ -47,7 +47,7 @@
 
       <p>It starts by reading the top page of the ViewCVS
       repository, then parses the links in this page and browses
-      all the pages bellow while downloading the files in them.</p>
+      all the pages below while downloading the files in them.</p>
 
       <p>In addition, the CVS administration files (the files under
       the Cvs folder present on every directory) are created and
@@ -56,13 +56,36 @@
       the files that have being updated.</p>
     </section>
 
-    <section name="Cool feature">
-      <p>Now you can create a patch file when you modify source code that has 
-          been checked out with CVSGrab.</p>
+    <section name="New and Cool">
+      <section name="Diff functionality (starting version 2.1)"> 
+        <p>Now you can create a patch file when you modify source code that has 
+            been checked out with CVSGrab.</p>
           
-      <p>For that, run <b>cvsgrab -diff</b> from your project root, and a file
-          called patch.txt is created with your modifications!         
-      </p>
+        <p>For that, run <b>cvsgrab -diff</b> from your project root, and a file
+            called patch.txt is created that contains your modifications in the 
+            unified patch format. The file is compatible with the command cvs diff -u
+            that is the standard for submitting patches for most open source projects
+            (see <a href="http://jakarta.apache.org/site/source.html#Patches">Apache's guidelines</a>         
+        </p>
+      </section>
+      <section name="Compatibility with standard cvs clients"> 
+        <p>Let's suppose that you connect your notebook behind a firewall that blocks cvs.
+          Now, you want to download the latest code from project X, which is still under development
+          and with some blocking bugs in their latest release.          
+        </p>
+        <p>To check out files, you use cvsgrab with the -cvsRoot parameter. This parameter is the equivalent
+          of the -d parameter on the cvs command. for example, if you use this command to check out files without a firewall: <br/>
+          cvs -z3 -d:ext:developername@cvs.sourceforge.net:/cvsroot/cvsgrab co cvsgrab <br/>
+          then the cvsgrab command to use should be: <br/>
+          cvsgrab -cvsRoot :ext:developername@cvs.sourceforge.net:/cvsroot/cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/ 
+             -packagePath cvsgrab/cvsgrab -destDir c:/tmp -packageDir cvsgrab 
+        </p>
+        <p>You have fixed the bugs, and changed lots of source files. To submit your changes back to 
+          project X, where you have write access, you connect your notebook to an internet connection with 
+          no blocking firewall, then you use your preferred cvs client (command line, ViewCVS...) and commit
+          your work directly, with no additional setup.
+        </p>
+      </section>
     </section>
 
     <section name="Tested with:">
@@ -124,6 +147,10 @@
         It worked first try for me. The examples are great, everything I need to
         know. <br/>
         James.       
+      </p>
+      <p>
+        They talk about cvsgrab: <br/>
+        <a href="http://www.gnomebangalore.org/?q=node/view/436">Madan's blog on GNOME Bangalore</a>
       </p>
 
       <p>Author: Ludovic Claude ( 

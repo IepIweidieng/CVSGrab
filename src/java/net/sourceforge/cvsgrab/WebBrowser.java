@@ -109,6 +109,7 @@ public class WebBrowser {
         super();
         CookiePolicy.setDefaultPolicy(CookiePolicy.COMPATIBILITY);
         _client = new HttpClient();
+        _client.setConnectionTimeout(5000);
         _parser = new DOMParser();
         try {
             _parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
@@ -194,59 +195,64 @@ public class WebBrowser {
     public HttpMethod executeMethod(HttpMethod method) {
         int statusCode = -1;
         int attempt = 0;
-    
-        method.setRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0b; Windows 98)");
-        method.setRequestHeader("Cache-Control", "no-cache");
-        method.setRequestHeader("Accept-Encoding", "gzip");
-    
-        // We will retry up to 3 times.
-        while ((statusCode == -1) && (attempt < 3)) {
-            try {
-                // execute the method.
-                statusCode = _client.executeMethod(method);
-                CVSGrab.getLog().trace("Executed method " + method.getPath() + " with status code " + statusCode);
-            } catch (HttpRecoverableException e) {
-                CVSGrab.getLog().warn("A recoverable exception occurred, retrying. " + e.getMessage());
-            } catch (IOException e) {
-                CVSGrab.getLog().error("Failed to download file.");
-                e.printStackTrace();
-                throw new RuntimeException("Failed to download file.");
+        
+        try {
+            method.setRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0b; Windows 98)");
+            method.setRequestHeader("Cache-Control", "no-cache");
+            method.setRequestHeader("Accept-Encoding", "gzip");
+            
+            // We will retry up to 3 times.
+            while ((statusCode == -1) && (attempt < 3)) {
+                try {
+                    // execute the method.
+                    statusCode = _client.executeMethod(method);
+                    CVSGrab.getLog().trace("Executed method " + method.getPath() + " with status code " + statusCode);
+                } catch (HttpRecoverableException e) {
+                    CVSGrab.getLog().warn("A recoverable exception occurred, retrying. " + e.getMessage());
+                } catch (IOException e) {
+                    CVSGrab.getLog().error("Failed to download file.");
+                    e.printStackTrace();
+                    throw new RuntimeException("Failed to download file.");
+                }
             }
-        }
-    
-        // Check that we didn't run out of retries.
-        if (statusCode == -1) {
-            CVSGrab.getLog().error("Failed to recover from exception.");
-            throw new RuntimeException("Error when reading " + method.getPath());
-        }
-    
-        if (statusCode >= 400) {
-            CVSGrab.getLog().debug("Page not found (error " + statusCode + ")");
-            throw new RuntimeException("Error when reading " + method.getPath());
-        }
-    
-        // Tests for redirects
-        if ((statusCode >= 300) && (statusCode < 400)) {
-            Header locationHeader = method.getResponseHeader("location");
-    
-            if (locationHeader != null) {
-                String redirectLocation = locationHeader.getValue();
+            
+            // Check that we didn't run out of retries.
+            if (statusCode == -1) {
+                CVSGrab.getLog().error("Failed to recover from exception.");
+                throw new RuntimeException("Error when reading " + method.getPath());
+            }
+            
+            if (statusCode >= 400) {
+                CVSGrab.getLog().debug("Page not found (error " + statusCode + ")");
+                throw new RuntimeException("Error when reading " + method.getPath());
+            }
+            
+            // Tests for redirects
+            if ((statusCode >= 300) && (statusCode < 400)) {
+                Header locationHeader = method.getResponseHeader("location");
                 
-                method.releaseConnection();    
-                CVSGrab.getLog().debug("Redirect to " + redirectLocation);
-    
-                HttpMethod redirectMethod = new GetMethod(redirectLocation);
-    
-                executeMethod(redirectMethod);
-    
-                return redirectMethod;
-            } else {
-                // The response is invalid and did not provide the new location for
-                // the resource.  Report an error or possibly handle the response
-                // like a 404 Not Found error.
-                CVSGrab.getLog().error("Page not found");
-                throw new RuntimeException("Error when reading " + method);
+                if (locationHeader != null) {
+                    String redirectLocation = locationHeader.getValue();
+                    
+                    method.releaseConnection();    
+                    CVSGrab.getLog().debug("Redirect to " + redirectLocation);
+                    
+                    HttpMethod redirectMethod = new GetMethod(redirectLocation);
+                    
+                    executeMethod(redirectMethod);
+                    
+                    return redirectMethod;
+                } else {
+                    // The response is invalid and did not provide the new location for
+                    // the resource.  Report an error or possibly handle the response
+                    // like a 404 Not Found error.
+                    CVSGrab.getLog().error("Page not found");
+                    throw new RuntimeException("Error when reading " + method);
+                }
             }
+        } catch (RuntimeException e) {
+            method.releaseConnection();
+            throw e;
         }
     
         return method;
@@ -316,11 +322,17 @@ public class WebBrowser {
 
     public void loadFile(HttpMethod method, File destFile) throws Exception {
         HttpMethod lastMethod = executeMethod(method);
+        String contentEncoding = null;
+        if (lastMethod.getResponseHeader("Content-Encoding") != null) {
+            contentEncoding = lastMethod.getResponseHeader("Content-Encoding").getValue();
+        }
         try {
-            InputStream in = null;
             FileOutputStream out = null;
+            InputStream in = new BufferedInputStream(lastMethod.getResponseBodyAsStream());
+            if ("gzip".equalsIgnoreCase(contentEncoding)) {
+                in = new GZIPInputStream(lastMethod.getResponseBodyAsStream());
+            }
             try {
-                in = new BufferedInputStream(lastMethod.getResponseBodyAsStream());
                 out = new FileOutputStream(destFile);
                 
                 byte[] buffer = new byte[8 * 1024];
