@@ -124,17 +124,23 @@ public class WebBrowser {
      * @param password Password (if authentification is required), or null
      */
     public void useProxy(String proxyHost, int proxyPort, final String ntDomain, final String userName, final String password) {
+        DefaultLogger.getInstance().info("Using proxy " + proxyHost + ":" + proxyPort);
         _client.getHostConfiguration().setProxy(proxyHost, proxyPort);
-        if (ntDomain == null) {
-            _client.getState().setProxyCredentials(null, proxyHost,
-              new UsernamePasswordCredentials(userName, password));
-        } else {
-            try {
-            String host = InetAddress.getLocalHost().getHostName();
-            _client.getState().setProxyCredentials(ntDomain, proxyHost,
-              new NTCredentials(userName, password, host, ntDomain));
-            } catch (UnknownHostException ex) {
-                ex.printStackTrace();
+        if (userName != null) {
+            if (ntDomain == null) {
+                DefaultLogger.getInstance().info("Login on the proxy with user name " + userName + " and password " + password);
+                _client.getState().setProxyCredentials(null, proxyHost,
+                    new UsernamePasswordCredentials(userName, password));
+            } else {
+                try {
+                    String host = InetAddress.getLocalHost().getHostName();
+                    DefaultLogger.getInstance().info("Login on the NT proxy with user name " + userName + ", password " 
+                            + password + ", host " + host + ", NT domain " + ntDomain);
+                    _client.getState().setProxyCredentials(null, proxyHost,
+                        new NTCredentials(userName, password, host, ntDomain));
+                } catch (UnknownHostException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
@@ -146,6 +152,7 @@ public class WebBrowser {
      * @param password The password to use on the web server
      */
     public void useWebAuthentification(final String userName, final String password) {
+        DefaultLogger.getInstance().info("Login on the web server with user name " + userName + " and password " + password);
         _client.getState().setCredentials(null, null,
           new UsernamePasswordCredentials(userName, password));
     }  

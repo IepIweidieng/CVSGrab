@@ -212,7 +212,7 @@ public class CVSGrab {
      * @param rootUrl The rootUrl to set.
      */
     public void setRootUrl(String rootUrl) {
-        _rootUrl = rootUrl;
+        _rootUrl = WebBrowser.forceFinalSlash(rootUrl);
     }
 
     /**
@@ -324,13 +324,13 @@ public class CVSGrab {
             } catch (IOException ex) {
                 throw new IllegalArgumentException("Could not locate the destination directory " + _destDir + ", error was " + ex.getMessage());
             }
-            _rootUrl = WebBrowser.forceFinalSlash(_rootUrl);
 
             // Auto detection of the type of the remote interface
             CvsWebInterface webInterface = null;
             try {
-                Document doc = WebBrowser.getInstance().getDocument(new GetMethod(WebBrowser.addQueryParam(_rootUrl, _queryParams)));
-                webInterface = CvsWebInterface.findInterface(doc);
+                String url = WebBrowser.addQueryParam(_rootUrl, _queryParams);
+                Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
+                webInterface = CvsWebInterface.findInterface(url, doc);
                 DefaultLogger.getInstance().info("Detected cvs web interface: " + webInterface.getType());
             } catch (Exception ex) {
                 ex.printStackTrace();

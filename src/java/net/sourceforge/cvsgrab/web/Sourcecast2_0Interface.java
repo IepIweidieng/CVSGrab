@@ -30,8 +30,9 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
      * @param htmlPage
      * @throws Exception
      */
-    public void init(Document htmlPage) throws Exception {
-        try {
+    public void init(String url, Document htmlPage) throws Exception {
+        checkRootUrl(url);
+        
         JXPathContext context = JXPathContext.newContext(htmlPage);
         // Check that this is Sourcecast
         String keywords = (String) context.getValue("//META[@name = 'keywords']/@content");
@@ -41,13 +42,9 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
             throw new Exception("Not SourceCast");
         }
         if (!version.startsWith("2.")) {
-            throw new Exception("Invalid version");
+            throw new Exception("Invalid version " + version);
         }
         setType("SourceCast " + version);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
     }
 
 

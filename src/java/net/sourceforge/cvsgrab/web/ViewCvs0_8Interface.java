@@ -6,6 +6,8 @@
  */
 package net.sourceforge.cvsgrab.web;
 
+import org.w3c.dom.Document;
+
 
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
@@ -21,6 +23,20 @@ public class ViewCvs0_8Interface extends ViewCvsInterface {
         super();
     }
 
+    /** 
+     * {@inheritDoc}
+     * @param htmlPage
+     * @throws Exception
+     */
+    public void init(String url, Document htmlPage) throws Exception {
+        if (url.indexOf("sourceforge.net") > 0 || url.indexOf("sf.net") > 0) {
+            checkRootUrl(url);
+            setType("ViewCVS 0.8 on Sourceforge");
+        } else {
+            super.init(url, htmlPage);
+        }
+    }
+    
     protected String getVersionMarker() {
         return "ViewCVS 0.8";
     }

@@ -74,7 +74,9 @@
         <p> If the proxy requires authentification with NTLM, like MS proxy, you can use -proxyNTDomain [NT domain] <br/>
            Example: -proxyUser ntLogin -proxyPassword ntPassword -proxyNTDomain ntDomain <br/>
            Errors of the kind: java.io.IOException Server returned HTTP response code: 407 for URL seem to be caused
-           by the lack of NT domain authentification.
+           by the lack of NT domain authentification. <br/>
+           Note that you need the Java Cryptography extention (<a href="http://java.sun.com/products/jce/">JCE</a>) package 
+           installed or upgrade to Java 1.4 to use this feature.
         </p>
       </answer>
     </faq>
