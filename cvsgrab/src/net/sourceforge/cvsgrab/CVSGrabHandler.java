@@ -171,7 +171,8 @@ public class CVSGrabHandler implements ContentHandler {
         if (token.toUpperCase().equals("A")) {
             String uri = attr.getValue("href");
             // Skip unwanted links
-            if (uri == null || uri.startsWith("http:") || uri.indexOf("Attic") >= 0 || uri.startsWith("CVSROOT")) {
+            if (uri == null || uri.startsWith("http:") || uri.indexOf("Attic") >= 0 || uri.startsWith("CVSROOT") ||
+                    uri.indexOf("/viewcvs.cgi") >= 0) {
                 return;
             }
             // Remove tag information
