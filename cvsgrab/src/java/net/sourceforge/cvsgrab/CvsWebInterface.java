@@ -32,13 +32,14 @@ public abstract class CvsWebInterface {
     /**
      * Find the cvs web interface that could have generated this html page
      * 
-     * @param htmlPage The html paeg read from the remote web interface
+     * @param url The url of the page
+     * @param htmlPage The html page read from the remote web interface
      * @return the cvs web interface that matches best this page
      */
-    public static CvsWebInterface findInterface(Document htmlPage) {
+    public static CvsWebInterface findInterface(String url, Document htmlPage) {
         for (int i = 0; i < _webInterfaces.length; i++) {
             try {
-                _webInterfaces[i].init(htmlPage);
+                _webInterfaces[i].init(url, htmlPage);
                 return _webInterfaces[i];
             } catch (Exception ex) {
                 // ignore
@@ -88,7 +89,7 @@ public abstract class CvsWebInterface {
         _queryParams = params;
     }
     
-    public abstract void init(Document htmlPage) throws Exception; 
+    public abstract void init(String url, Document htmlPage) throws Exception; 
         
     public abstract String getType();
 

@@ -37,8 +37,8 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
      * @param htmlPage
      * @throws Exception
      */
-    public void init(Document htmlPage) throws Exception {
-        super.init(htmlPage);
+    public void init(String url, Document htmlPage) throws Exception {
+        super.init(url, htmlPage);
         JXPathContext context = JXPathContext.newContext(htmlPage);
         String href = (String) context.getValue("//A/@href[contains(., 'root=')]");
         _root = href.substring(href.indexOf("root=")+ 5);

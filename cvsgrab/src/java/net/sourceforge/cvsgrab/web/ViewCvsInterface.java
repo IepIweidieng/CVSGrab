@@ -9,8 +9,10 @@ package net.sourceforge.cvsgrab.web;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import net.sourceforge.cvsgrab.CvsWebInterface;
+import net.sourceforge.cvsgrab.DefaultLogger;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
 
@@ -48,7 +50,9 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      * @param htmlPage
      * @throws Exception
      */
-    public void init(Document htmlPage) throws Exception {
+    public void init(String url, Document htmlPage) throws Exception {
+        checkRootUrl(url);
+        
         JXPathContext context = JXPathContext.newContext(htmlPage);
         Iterator viewCvsTexts = context.iterate("//A[@href]/text()[starts-with(.,'ViewCVS')]");
         _type = null;
@@ -251,4 +255,32 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         } 
     }
     
+    protected void checkRootUrl(String url) {
+        // Sanity check
+        // Get the last part of the root url
+        int slash = url.indexOf('/', 8);
+        if (slash > 0) {
+            String path = url.substring(slash);
+            String beforeLastPart = "";
+            String lastPart = null;
+            StringTokenizer st = new StringTokenizer(path, "/", false);
+            while (st.hasMoreTokens()) {
+                if (lastPart != null) {
+                    beforeLastPart += "/" + lastPart;
+                }
+                lastPart = st.nextToken();
+            }
+            if (lastPart != null) {
+                lastPart = lastPart.toLowerCase();
+                if (beforeLastPart.length() > 0 && lastPart.indexOf("cvs") < 0 && lastPart.indexOf(".") < 0 
+                        && lastPart.indexOf("source") < 0 && lastPart.indexOf("src") < 0 
+                        && lastPart.indexOf("browse") < 0) {
+                    DefaultLogger.getInstance().warn("The root url " + url + " doesn't seem valid");
+                    String newRootUrl = url.substring(0, slash) + beforeLastPart;
+                    DefaultLogger.getInstance().warn("Try " + newRootUrl + " as the root url instead");
+                }
+            }
+        }
+    }
+
 }

@@ -26,35 +26,35 @@ public class CvsWebInterfaceTest extends AbstractTestCase {
     public void testDetectViewCvs0_7() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_7.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface(doc);
+        CvsWebInterface webInterface = CvsWebInterface.findInterface("http://dev.eclipse.org/viewcvs/index.cgi/", doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs0_7Interface);
     }
 
     public void testDetectViewCvs0_8() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_8.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface(doc);
+        CvsWebInterface webInterface = CvsWebInterface.findInterface("http://cvs.sourceforge.net/viewcvs.py/", doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs0_8Interface);
     }
 
     public void testDetectViewCvs0_9() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface(doc);
+        CvsWebInterface webInterface = CvsWebInterface.findInterface("http://cvs.apache.org/viewcvs/", doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs0_9Interface);
     }
 
     public void testDetectViewCvs1_0() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface(doc);
+        CvsWebInterface webInterface = CvsWebInterface.findInterface("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/", doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs1_0Interface);
     }
 
     public void testDetectSourceCast2_0() throws Exception {
         Document doc = getDocument("src/test/html_docs/sourcecast_2_0.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface(doc);
+        CvsWebInterface webInterface = CvsWebInterface.findInterface("https://forms.dev.java.net/source/browse/", doc);
         assertTrue("Was " + webInterface,  webInterface instanceof Sourcecast2_0Interface);
     }
 }
