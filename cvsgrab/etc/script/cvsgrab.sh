@@ -113,5 +113,7 @@ if $cygwin; then
   CYGHOME=`cygpath --path --windows "$HOME"`
 fi
 
-LOG_ARGS="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showShortLogname=false"
-"$JAVACMD" -classpath "$LOCALCLASSPATH" "$LOG_ARGS" net.sourceforge.cvsgrab.CVSGrab "$@"
+LOG_ARGS1="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog" 
+LOG_ARGS2="-Dorg.apache.commons.logging.simplelog.showShortLogName=false"
+
+"$JAVACMD" -classpath "$LOCALCLASSPATH" "$LOG_ARGS1" "$LOG_ARGS2" net.sourceforge.cvsgrab.CVSGrab "$@"

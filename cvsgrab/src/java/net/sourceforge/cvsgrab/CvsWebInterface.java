@@ -7,6 +7,7 @@
 package net.sourceforge.cvsgrab;
 
 import net.sourceforge.cvsgrab.web.CvsWeb2_0Interface;
+import net.sourceforge.cvsgrab.web.Sourcecast1_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast2_0Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_7Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_8Interface;
@@ -31,6 +32,7 @@ public abstract class CvsWebInterface {
         new ViewCvs0_8Interface(),  
         new ViewCvs0_9Interface(),  
         new ViewCvs1_0Interface(),  
+        new Sourcecast1_0Interface(),
         new Sourcecast2_0Interface(),
         new CvsWeb2_0Interface()
     };

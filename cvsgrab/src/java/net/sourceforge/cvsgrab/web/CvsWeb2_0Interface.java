@@ -25,8 +25,8 @@ public class CvsWeb2_0Interface extends ViewCvsInterface {
      */
     public CvsWeb2_0Interface() {
         super();
-        setFilesXpath("//TABLE//TR[TD/A/IMG/@alt = '[TXT]']");
-        setDirectoriesXpath("//TABLE//TR[TD/A/IMG/@alt = '[DIR]'][TD/A/@name != 'Attic']");
+        setFilesXpath("//TR[TD/A/IMG/@alt = '[TXT]']");
+        setDirectoriesXpath("//TR[TD/A/IMG/@alt = '[DIR]'][TD/A/@name != 'Attic']");
         setCheckoutPath("~checkout~/");
     }
 

@@ -4,10 +4,8 @@ It relies on the ViewCVS web interface to the repository to work, and supports o
 Use this tool when all other solutions (SSH...) fail. Only read-only access to the CVS repository is possible with this tool.
 
 This release includes the following changes and improvements:
-o Added support for CvsWeb 2.0 web interfaces
-o Added the parameter -webInterface that forces CVSGrab to use a specific web interface, and disable the auto-detect feature that 
-  doesn't work well with some sites.
-o Small bugfixes, usability improvements
+o Added support for Sourcecast 1.0 web interfaces (Netbeans.org)
+o Small bugfixes, in particular to run CVSGrab on Linux
 
 Enjoy,
 

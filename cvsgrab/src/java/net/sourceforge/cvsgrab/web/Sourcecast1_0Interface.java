@@ -2,8 +2,8 @@
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
  * Distributable under BSD license.
- * See terms of license at gnu.org.
  */
+
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.CVSGrab;
@@ -13,20 +13,23 @@ import org.w3c.dom.Document;
 
 /**
  * Support for SourceCast 2.0 interfaces to a cvs repository. <p>
- *  
- * Sourcecast 2.0 uses internally ViewCVS 0.9
+ * 
+ * SourceCast 1.x is based apparently on CvsWeb 2.0
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 12 oct. 2003
+ * @created on 27 déc. 2003
  */
-public class Sourcecast2_0Interface extends ViewCvsInterface {
+public class Sourcecast1_0Interface extends CvsWeb2_0Interface {
 
     /**
-     * Constructor for Sourcecast2_0Interface
+     * Constructor for Sourcecast1_0Interface
+     * 
      */
-    public Sourcecast2_0Interface() {
+    public Sourcecast1_0Interface() {
         super();
+        setFilesXpath("//TR[TD/A/A/IMG/@alt = '[TXT]']");
+        setDirectoriesXpath("//TR[TD/A/A/IMG/@alt = '[DIR]'][TD/A/@name != 'Attic']");
     }
 
     /** 
@@ -39,24 +42,11 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
         
         JXPathContext context = JXPathContext.newContext(htmlPage);
         // Check that this is Sourcecast
-        String keywords = (String) context.getValue("//META[@name = 'keywords']/@content");
-        String version = (String) context.getValue("//META[@name = 'version']/@content");
-        
-        if (keywords.indexOf("SourceCast") < 0) {
-            throw new Exception("Not SourceCast");
-        }
-        if (!version.startsWith("2.")) {
+        String version = (String) context.getValue("//META[@name = 'SOURCECAST-VERSION']/@content");
+        if (!version.startsWith("1.")) {
             throw new Exception("Invalid version " + version);
         }
         setType("SourceCast " + version);
     }
-
-    /** 
-     * {@inheritDoc}
-     * @return
-     */
-    protected String getVersionMarker() {
-        return null;
-    }
-
+    
 }

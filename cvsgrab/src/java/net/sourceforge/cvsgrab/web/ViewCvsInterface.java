@@ -31,10 +31,10 @@ import org.w3c.dom.Document;
 public abstract class ViewCvsInterface extends CvsWebInterface {
 
     private String _type;
-    private String _filesXpath = "//TABLE//TR[TD/A/IMG/@alt = '(file)']";
+    private String _filesXpath = "//TR[TD/A/IMG/@alt = '(file)']";
     private String _fileNameXpath = "TD[1]/A/@name";
     private String _fileVersionXpath = "TD[A/IMG/@alt != '(graph)'][2]/A/B";
-    private String _directoriesXpath = "//TABLE//TR[TD/A/IMG/@alt = '(dir)'][TD/A/@name != 'Attic']";
+    private String _directoriesXpath = "//TR[TD/A/IMG/@alt = '(dir)'][TD/A/@name != 'Attic']";
     private String _directoryXpath = "TD[1]/A/@name";
     private String _checkoutPath = "*checkout*/";
 

@@ -1,5 +1,6 @@
 package net.sourceforge.cvsgrab;
 
+import net.sourceforge.cvsgrab.web.Sourcecast1_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast2_0Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_7Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_8Interface;
@@ -81,6 +82,14 @@ public class CvsWebInterfaceTest extends AbstractTestCase {
         grabber.setRootUrl("http://cvs.uclibc.org/cgi-bin/cvsweb/");
         CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs1_0Interface);
+    }
+
+    public void testDetectSourceCast1_0() throws Exception {
+        Document doc = getDocument("src/test/html_docs/sourcecast_1_0.html");
+        
+        grabber.setRootUrl("http://javacvs.netbeans.org/source/browse/");
+        CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
+        assertTrue("Was " + webInterface,  webInterface instanceof Sourcecast1_0Interface);
     }
     
     public void testDetectSourceCast2_0() throws Exception {

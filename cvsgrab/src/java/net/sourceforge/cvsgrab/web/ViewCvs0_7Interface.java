@@ -27,9 +27,9 @@ public class ViewCvs0_7Interface extends ViewCvsInterface {
      */
     public ViewCvs0_7Interface() {
         super();
-        setFilesXpath("//TABLE//TR[TD//A/IMG/@alt = '[FILE_ICON]']");
+        setFilesXpath("//TR[TD//A/IMG/@alt = '[FILE_ICON]']");
         setFileNameXpath("TD[1]/A/@name");
-        setDirectoriesXpath("//TABLE//TR[TD//A/IMG/@alt = '[DIR_ICON]'][TD/A/@name != 'Attic']");
+        setDirectoriesXpath("//TR[TD//A/IMG/@alt = '[DIR_ICON]'][TD/A/@name != 'Attic']");
         setDirectoryXpath("TD[1]/A/@name");
         setCheckoutPath("~checkout~/");
     }
