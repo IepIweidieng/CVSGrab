@@ -298,7 +298,7 @@ public class CVSGrab {
                 if (handler.isPageFullyLoaded()) {
                     localRepository.cleanRemovedFiles(rDir);
                 } else {
-                    log.warn("Could not load the full html content at " + rDir.getUrl());
+                    log.warn("Could not load the full html content at " + rDir.getUrl() + ", open this page in a browser and if you don't find an obvious solution, report the problem to http://sourceforge.net/forum/forum.php?forum_id=174128");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
