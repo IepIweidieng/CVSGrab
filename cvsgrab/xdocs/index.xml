@@ -19,13 +19,13 @@
       workaround, use ssh, works only for registered users, not
       anonymous users. Some firewall support also http tunelling,
       where access to the pserver is possible with a standard CVS
-      client, but unfortunately it is not used in all organisations
-      (or even for personal firewalls).</p>
+      client, but unfortunately it is not used or allowed in all organisations
+      (or even with personal firewalls).</p>
 
       <p>CVSGrab is another kind of CVS client. When other CVS
       clients use the cvs protocol or ssh to read the repository,
-      this utility reads the repository via its ViewCVS web
-      interface.</p>
+      this utility reads the repository via its web
+      interface, such as ViewCVS or CvsWeb.</p>
 
       <p>The advantage is that if you are behind a firewall that
       prevents you from updating files from a remote CVS server,
@@ -56,23 +56,32 @@
       the files that have being updated.</p>
     </section>
 
+    <section name="Cool feature">
+      <p>Now you can create a patch file when you modify source code that has 
+          been checked out with CVSGrab.</p>
+          
+      <p>For that, run <b>cvsgrab -diff</b> from your project root, and a file
+          called patch.txt is created with your modifications!         
+      </p>
+    </section>
+
     <section name="Tested with:">
       <p>
         <ul>
-          <li>ViewCVS 0.7 on 
+          <li><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 0.7 on 
           <a href="http://www.eclipse.org">www.eclipse.org</a>
           </li>
 
-          <li>ViewCVS 0.8 on 
+          <li><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 0.8 on 
           <a href="http://www.sourceforge.net">Sourceforge.net</a>
           </li>
 
-          <li>ViewCVS 0.9.2 on 
+          <li><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 0.9.2 on 
           <a href="http://jakarta.apache.org">jakarta.apache.org
           (some time ago...)</a>
           </li>
 
-          <li>ViewCVS 1.0-dev on 
+          <li><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 1.0-dev on 
           <a href="http://www.picocontainer.org">
           www.picocontainer.org</a>
 
@@ -84,22 +93,37 @@
           <a href="http://savannah.gnu.org">savannah.gnu.org</a>
           </li>
 
-          <li>SourceCast 1.0 on 
+          <li><a href="http://www.collab.net/products/sd/version.html">SourceCast</a> 1.0 on 
           <a href="http://www.netbeans.org">www.netbeans.org</a>
           </li>
 
-          <li>SourceCast 2.0 on 
+          <li><a href="http://www.collab.net/products/sd/version.html">SourceCast</a> 2.0 on 
           <a href="http://dev.java.net">dev.java.net</a>
           </li>
 
-          <li>CvsWeb 1.0 on 
+          <li><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> 1.0 on 
           <a href="http://dev.w3.org/cvsweb/">dev.w3.org</a>
           </li>
           
-          <li>CvsWeb 2.0 on 
+          <li><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> 2.0 on 
           <a href="http://www.kde.org/">www.kde.org</a>
           </li>
+          
+          <li><a href="http://www.horde.org/chora/">Chora</a> 2.0-dev on 
+              <a href="http://cvs.php.net/">cvs.php.net</a>
+          </li>
         </ul>
+      </p>
+    </section> 
+
+    <section name="Quotes">
+      <p>
+        I was searching for a way to download CVS modules from behind a really
+        strict firewall (and a very unhelpful IT staff). Thanks for making
+        CVSGrab. It's really useful and needed. <br/>
+        It worked first try for me. The examples are great, everything I need to
+        know. <br/>
+        James.       
       </p>
 
       <p>Author: Ludovic Claude ( 

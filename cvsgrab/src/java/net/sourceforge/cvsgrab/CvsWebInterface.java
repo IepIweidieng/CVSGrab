@@ -2,15 +2,19 @@
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
  * Distributable under BSD license.
- * See terms of license at gnu.org.
  */
 package net.sourceforge.cvsgrab;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
+import net.sourceforge.cvsgrab.web.Chora_2_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb1_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb2_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast1_0Interface;
@@ -41,7 +45,8 @@ public abstract class CvsWebInterface {
         new Sourcecast1_0Interface(),
         new Sourcecast2_0Interface(),
         new CvsWeb1_0Interface(),
-        new CvsWeb2_0Interface()
+        new CvsWeb2_0Interface(),
+        new Chora_2_0Interface()
     };
     
     private static Map documents = new HashMap();
@@ -74,6 +79,42 @@ public abstract class CvsWebInterface {
         return ids;
     }
     
+    public static final String[] getBaseUrls(CVSGrab grabber) {
+        Set urls = new HashSet();
+        for (int i = 0; i < _webInterfaces.length; i++) {
+            CvsWebInterface webInterface = _webInterfaces[i];
+            urls.add(webInterface.getBaseUrl(grabber));
+            urls.add(webInterface.getAltBaseUrl(grabber));
+        }
+        urls.remove(null);
+        return (String[]) urls.toArray(new String[urls.size()]);
+    }
+    
+    /**
+     * Find the cvs web interface that could have generated this html page
+     * 
+     * @param interfaceId The id of the interface 
+     * @return the cvs web interface that matches best this page
+     */
+    public static CvsWebInterface findInterface(CVSGrab grabber, String interfaceId) throws Exception {
+        checkRootUrl(grabber.getRootUrl());
+        List errors = new ArrayList();
+        CvsWebInterface webInterface = getInterface(grabber, interfaceId);
+        if (webInterface.validate(grabber, errors)) {
+            return webInterface;
+        }
+        CVSGrab.getLog().info("Tried to connect to the following urls: ");
+        for (Iterator i = documents.keySet().iterator(); i.hasNext(); ) {
+            CVSGrab.getLog().info(i.next());
+        }
+        CVSGrab.getLog().info("Problems found during automatic detection: ");
+        for (Iterator i = errors.iterator(); i.hasNext();) {
+            String msg = (String) i.next();
+            CVSGrab.getLog().info(msg);
+        }
+        return null;
+    }
+    
     /**
      * Find the cvs web interface that could have generated this html page
      * 
@@ -81,29 +122,29 @@ public abstract class CvsWebInterface {
      */
     public static CvsWebInterface findInterface(CVSGrab grabber) throws Exception {
         checkRootUrl(grabber.getRootUrl());
+        List errors = new ArrayList();
         for (int i = 0; i < _webInterfaces.length; i++) {
-            try {
-            	Document doc = _webInterfaces[i].getDocumentForDetect(grabber);
-            	if (doc == null) {
-            	    continue;
-            	}
-            	
-                _webInterfaces[i].detect(grabber, doc);
-                return _webInterfaces[i];
-                
-            } catch (DetectException ex) {
-                // ignore
-                CVSGrab.getLog().debug(_webInterfaces[i].getId() + " doesn't match, cause is " + ex.toString());
+            CvsWebInterface webInterface = _webInterfaces[i];
+            if (webInterface.validate(grabber, errors)) {
+                return webInterface;
             }
         }
         CVSGrab.getLog().info("Tried to connect to the following urls: ");
         for (Iterator i = documents.keySet().iterator(); i.hasNext(); ) {
             CVSGrab.getLog().info(i.next());
         }
+        CVSGrab.getLog().info("Problems found during automatic detection: ");
+        for (Iterator i = errors.iterator(); i.hasNext();) {
+            String msg = (String) i.next();
+            CVSGrab.getLog().info(msg);
+        }
         return null;
     }
     
     private static Document loadDocument(String url) {
+        if (url == null) {
+            throw new IllegalArgumentException("Null url");
+        }
         Document doc = (Document) documents.get(url);
         if (doc == null) {
             documents.put(url, null);
@@ -112,6 +153,7 @@ public abstract class CvsWebInterface {
                 documents.put(url, doc);
             } catch (Exception ex) {
                 // ignore
+                CVSGrab.getLog().debug("Error when loading page " + url, ex);
             }
         }
         return doc;
@@ -154,6 +196,43 @@ public abstract class CvsWebInterface {
      */
     public CvsWebInterface() {
         super();
+    }
+    
+    /**
+     * Validate that this web interface can be used on the remote repository
+     * @param grabber The cvs grabber
+     * @param errors A list of errors to fill if any error is found
+     * @return true if this interface can work on the remote repository
+     */
+    public boolean validate(CVSGrab grabber, List errors) {
+        Document doc = null;
+        String[] urls = new String[] {getBaseUrl(grabber), getAltBaseUrl(grabber)};
+        for (int j = 0; j < urls.length; j++) {
+            String url = urls[j];
+            if (url == null) {
+                continue;
+            }
+            try {
+                doc = loadDocument(url);
+                if (doc == null) {
+                    errors.add(getId() + " tried to match page " + url + " but page doesn't exist");
+                    continue;
+                }
+                
+                detect(grabber, doc);
+                return true;
+                
+            } catch (DetectException ex) {
+                // ignore
+                CVSGrab.getLog().debug(getId() + " doesn't match, cause is " + ex.toString());
+                errors.add(getId() + " tried to match page " + url + " but found error " + ex.getMessage());
+            } catch (RuntimeException ex) {
+                // ignore
+                CVSGrab.getLog().debug(getId() + " doesn't match, cause is " + ex.toString());
+                errors.add(getId() + " tried to match page " + url + " but found error " + ex.getMessage());
+            }
+        }
+        return false;
     }
     
     /**
@@ -205,22 +284,6 @@ public abstract class CvsWebInterface {
      */
     public abstract void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException; 
         
-    /**
-     * Returns the document to use when attempting to detect the type of the web interface.
-     *    
-     * @param grabber The cvs grabber
-     * @return a web page parsed in DOMformat, or null if the web page tested doesn't exist.
-     */
-    public Document getDocumentForDetect(CVSGrab grabber) {
-        String url = getBaseUrl(grabber);
-        Document doc = loadDocument(url);
-        if (doc == null) {
-            url = getAltBaseUrl(grabber);
-            doc = loadDocument(url);
-        }
-        return doc;
-    }
-    
     /**
      * @return the id identifying the web interface, and used for initialisation
      */

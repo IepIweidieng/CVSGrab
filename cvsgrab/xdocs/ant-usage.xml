@@ -110,9 +110,9 @@
               <td valign="Top">destDir</td>
 
               <td valign="Top">The destination directory for the
-              files retrieved from CVS</td>
+              files retrieved from CVS. Default is the current directory</td>
 
-              <td valign="Top" align="Center">Yes</td>
+              <td valign="Top" align="Center">No.</td>
             </tr>
 
             <tr>
@@ -150,19 +150,19 @@
             </tr>
 
             <tr>
+              <td valign="Top">cleanUpdate</td>
+
+              <td valign="Top">Performs a clean update. Locally modified files are 
+              backed-up, and the latest version of the file is downloaded. Default is false</td>
+
+              <td valign="Top">No.</td>
+            </tr>
+
+            <tr>
               <td valign="Top">verbose</td>
 
               <td valign="Top">Verbosity. Default is not verbose.
               Values are true or false</td>
-
-              <td valign="Top" align="Center">No.</td>
-            </tr>
-
-            <tr>
-              <td valign="Top">quiet</td>
-
-              <td valign="Top">Be extra quiet. Default is not
-              quiet. Values are true or false</td>
 
               <td valign="Top" align="Center">No.</td>
             </tr>

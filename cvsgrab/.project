@@ -3,7 +3,6 @@
 	<name>cvsgrab</name>
 	<comment>Use the web interface to CVS repositories to get files from CVS behind a blocking firewall.</comment>
 	<projects>
-		<project>commons-cli</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

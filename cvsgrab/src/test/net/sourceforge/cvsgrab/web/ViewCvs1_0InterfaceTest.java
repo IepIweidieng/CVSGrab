@@ -1,9 +1,3 @@
-/*
- * Created on 12 oct. 2003
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
@@ -40,7 +34,7 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
         CVSGrab grabber = new CVSGrab();
-        grabber.setRootUrl("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/");
+        grabber.getWebOptions().setRootUrl("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/");
         _interface.detect(grabber, doc);
         
         assertEquals("ViewCVS 1.0-dev", _interface.getType());
@@ -55,7 +49,7 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
     public void testDetectBusyBox() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0_busybox.net.html");
         CVSGrab grabber = new CVSGrab();
-        grabber.setRootUrl("http://cvs.uclibc.org/cgi-bin/cvsweb/");
+        grabber.getWebOptions().setRootUrl("http://cvs.uclibc.org/cgi-bin/cvsweb/");
         _interface.detect(grabber, doc);
         
         assertEquals("ViewCVS 1.0-dev", _interface.getType());

@@ -1,9 +1,3 @@
-/*
- * Created on 12 oct. 2003
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
@@ -34,7 +28,7 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2.html");
         CVSGrab grabber = new CVSGrab();
-        grabber.setRootUrl("http://cvs.apache.org/viewcvs/");
+        grabber.getWebOptions().setRootUrl("http://cvs.apache.org/viewcvs/");
         _interface.detect(grabber, doc);
         
         assertEquals("ViewCVS 0.9.2", _interface.getType());
@@ -43,7 +37,7 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
     public void testDetectWithGraph() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2_graph.html");
         CVSGrab grabber = new CVSGrab();
-        grabber.setRootUrl("http://cvs.apache.org/viewcvs/");
+        grabber.getWebOptions().setRootUrl("http://cvs.apache.org/viewcvs/");
         _interface.detect(grabber, doc);
         
         assertEquals("ViewCVS 0.9.2", _interface.getType());
@@ -52,7 +46,7 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
     public void testDetectWithMultipleRoots() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2_multi_roots.html");
         CVSGrab grabber = new CVSGrab();
-        grabber.setRootUrl("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/");
+        grabber.getWebOptions().setRootUrl("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/");
         _interface.detect(grabber, doc);
         
         assertEquals("ViewCVS 0.9.2", _interface.getType());

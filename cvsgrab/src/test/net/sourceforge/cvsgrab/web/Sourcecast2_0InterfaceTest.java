@@ -1,9 +1,3 @@
-/*
- * Created on 12 oct. 2003
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
@@ -34,7 +28,7 @@ public class Sourcecast2_0InterfaceTest extends AbstractTestCase {
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/sourcecast_2_0.html");
         CVSGrab grabber = new CVSGrab();
-        grabber.setRootUrl("https://forms.dev.java.net/source/browse/");
+        grabber.getWebOptions().setRootUrl("https://forms.dev.java.net/source/browse/");
         _interface.detect(grabber, doc);
         
         assertEquals("SourceCast 2.0.3.000", _interface.getType());

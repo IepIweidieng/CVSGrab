@@ -2,33 +2,75 @@
  *  CVSGrab
  *  Author: Ludovic Claude (ludovicc@users.sourceforge.net)
  *  Distributable under BSD license.
- *  See terms of license at gnu.org.
  */
  
 package net.sourceforge.cvsgrab;
 
-import java.io.File;
-
-import net.sourceforge.cvsgrab.util.*;
+import net.sourceforge.cvsgrab.util.ThreadPool;
 
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.jrcs.diff.Revision;
+import org.apache.commons.jrcs.diff.myers.MyersDiff;
+import org.apache.commons.jrcs.diff.print.UnifiedPrint;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 /**
- * Represent a file stored in the remote repository
+ * Represents a file stored in the remote repository
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 12 oct. 2003
  */
 public class RemoteFile {
+    /**
+     * File is a text file
+     */
+    public static final String TEXT_TYPE = "text";
+    /**
+     * File is a binary file
+     */
+    public static final String BINARY_TYPE = "binary";
     
+    private static List textMatches = new ArrayList();
+    private static List binaryMatches = new ArrayList();
     private RemoteDirectory _directory;
     private String _name;
     private String _version; 
     private boolean _inAttic = false;
+    
+    /**
+     * Sets the file types recognized by CVSGrab. Valid file types are text and binary.
+     * The key is the pattern for the file type, and takes the form FileName or *.ext,
+     * the value is the type of the file, text or binary.
+     * @param fileTypes The new file types
+     */
+    public static void setFileTypes(Properties fileTypes) {
+        for (Iterator i = fileTypes.keySet().iterator(); i.hasNext();) {
+            String pattern = (String) i.next();
+            String fileType = (String) fileTypes.get(pattern);
+            if (TEXT_TYPE.equalsIgnoreCase(fileType)) {
+                textMatches.add(new FileMatcher(pattern));
+            } else if (BINARY_TYPE.equals(fileType)) {
+                binaryMatches.add(new FileMatcher(pattern));
+            } else {
+                CVSGrab.getLog().error("Invalid file type for pattern " + pattern +
+                        ". Was expecting text or binary instead of " + fileType);
+            }        
+        }
+    }
 
     /**
-     * Constructor for VersionedFile
+     * Constructor for RemoteFile
      */
     public RemoteFile(String name, String version) {
         super();
@@ -109,12 +151,92 @@ public class RemoteFile {
                 doUpload();
                 break;
             case LocalRepository.UPDATE_MERGE_NEEDED:
-                CVSGrab.getLog().info("C " + this);
-                CVSGrab.getLog().warn("cvs update: warning: cannot merge this modified file with the new remote version, feature not yet supported");
+                if (repository.isCleanUpdate()) {
+                    repository.backupFile(this);
+                    CVSGrab.getLog().info("U " + this);
+                    doUpload();
+                } else {
+                    CVSGrab.getLog().info("C " + this);
+                    CVSGrab.getLog().warn("cvs update: warning: cannot merge this modified file with the new remote version, feature not yet supported");
+                }
                 break;
             default:
                 throw new RuntimeException("Invalid status " + updateStatus);
         }
+    }
+    
+    /**
+     * @param repository
+     * @param diffFile
+     */
+    public void diff(LocalRepository repository, PrintWriter writer) {
+        RemoteRepository remoteRepository = _directory.getRemoteRepository();
+        LocalRepository localRepository = remoteRepository.getLocalRepository();
+        // Force the version of the remote file to be the same as the local file
+        String localVersion = localRepository.getLocalVersion(this);
+        if (localVersion != null) {
+            _version = localVersion;
+        }
+        int updateStatus = localRepository.checkUpdateStatus(this);
+        switch (updateStatus) {
+            case LocalRepository.UPDATE_NO_CHANGES:
+                return;
+            case LocalRepository.UPDATE_IMPOSSIBLE:
+                return;
+            case LocalRepository.UPDATE_NEEDED:
+                return;
+            case LocalRepository.UPDATE_LOCAL_CHANGE:
+            case LocalRepository.UPDATE_MERGE_NEEDED:
+                try {
+                    String url = remoteRepository.getDownloadUrl(this);
+                    File origFile = File.createTempFile(_name, null);
+                    File revFile = localRepository.getLocalFile(this);
+                    
+                    // Download the remote file
+                    WebBrowser.getInstance().loadFile(new GetMethod(url), origFile);
+                    String[] orig = loadFile(origFile.getAbsolutePath());
+                    
+                    String[] rev = loadFile(revFile.getAbsolutePath());
+                    MyersDiff diff = new MyersDiff();
+                    Revision revision = diff.diff(orig, rev);
+                    StringBuffer sb = new StringBuffer();
+                    UnifiedPrint print = new UnifiedPrint(sb, orig, rev);
+                    print.setFileName("src/java/net/sourceforge/cvsgrab/CVSGrabTask.java");
+                    print.setRCSFileName("/cvsroot/cvsgrab/cvsgrab/src/java/net/sourceforge/cvsgrab/CVSGrabTask.java,v");
+                    print.setOriginalVersion("1.6");
+                    print.setRevisedModifDate(new Date(revFile.lastModified()));
+                    revision.accept(print);
+                    print.close();
+                    writer.print(sb.toString());
+                } catch (Exception ex) {
+                    CVSGrab.getLog().error("IO Error: " + ex);
+                    ex.printStackTrace();
+                }
+
+                break;
+            default:
+                throw new RuntimeException("Invalid status " + updateStatus);
+        }
+    }
+
+    /**
+     * @return true if the file is binary, false if it's a text file
+     */
+    public boolean isBinary() {
+        for (Iterator i = textMatches.iterator(); i.hasNext();) {
+            FileMatcher matcher = (FileMatcher) i.next();
+            if (matcher.match(getName())) {
+                return false;
+            }
+        }
+        for (Iterator i = binaryMatches.iterator(); i.hasNext();) {
+            FileMatcher matcher = (FileMatcher) i.next();
+            if (matcher.match(getName())) {
+                return true;
+            }
+        }
+        CVSGrab.getLog().warn("Unknown file type for " + getName() + ", assuming it's binary");
+        return true;
     }
 
     private void doUpload() {
@@ -157,6 +279,37 @@ public class RemoteFile {
             _directory.unregisterRemoteFile(this);
             CVSGrab.getLog().error("IO Error: " + ex);
             ex.printStackTrace();
+        }
+    }
+
+    private static final String[] loadFile(String name) throws IOException {
+        BufferedReader data = new BufferedReader(new FileReader(name));
+        List lines = new ArrayList();
+        String s;
+        while ((s = data.readLine()) != null) {
+            lines.add(s);
+        }
+        return (String[])lines.toArray(new String[lines.size()]);
+    }
+    
+    private static class FileMatcher {
+        private String pattern;
+        
+        /**
+         * Constructor for FileMatcher
+         * @param pattern the file pattern
+         */
+        public FileMatcher(String pattern) {
+            super();
+            this.pattern = pattern;
+        }
+        
+        public boolean match(String fileName) {
+            if (pattern.startsWith("*")) {
+                return fileName.endsWith(pattern.substring(1));
+            } else {
+                return pattern.equalsIgnoreCase(fileName);
+            }
         }
     }
 

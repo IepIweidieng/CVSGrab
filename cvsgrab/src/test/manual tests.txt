@@ -4,3 +4,6 @@ cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -d
 cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/ -packagePath cvsgrab/cvsgrab -destDir c:/tmp -packageDir cvsgrab -prune true -connections 3
 cvsgrab -rootUrl http://cvs.apache.org/viewcvs.cgi/ -packagePath ant/src/etc/testcases/core/include -destDir c:\tmp
 cvsgrab -rootUrl http://webcvs.kde.org/cgi-bin/cvsweb.cgi/ -packagePath quanta/quanta/data/toolbars -destDir c:\tmp
+cvsgrab -rootUrl http://cvs.hispalinux.es/cgi-bin/cvsweb/ -packagePath mono -destDir c:/tmp -projectRoot mono -packageDir mono
+cvsgrab -rootUrl http://savannah.nongnu.org/cgi-bin/viewcvs/ -packagePath sdx/sdx_v2/ -destDir c:\tmp -packageDir sdx_v2
+cvsgrab -rootUrl http://cvs.php.net/cvs.php/ -packagePath smarty -destDir c:/tmp
