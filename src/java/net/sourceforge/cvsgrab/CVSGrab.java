@@ -14,7 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Application class for CVS Grab. <br>
+ * Application class for CVSGrab. <br>
  * CVSGrab loads and updates the files from the ViewCVS web interface of a CVS
  * repository
  *
@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 public class CVSGrab {
     static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
-    private static final String VERSION = "2.0.1";
+    private static final String VERSION = "2.0.2";
     private static Log LOG;
 
     private boolean _verbose = true;

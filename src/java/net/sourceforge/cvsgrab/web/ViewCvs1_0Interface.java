@@ -50,7 +50,7 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
         JXPathContext context = JXPathContext.newContext(htmlPage);
         String href = (String) context.getValue("//A/@href[contains(., 'root=')]");
         if (href == null) {
-            CVSGrab.getLog().info("CVS Root not found, there may be issues if ViewCvs is used with multiple repositories");
+            CVSGrab.getLog().debug("CVS Root not found, there may be issues if ViewCvs is used with multiple repositories");
         } else {
             _root = href.substring(href.indexOf("root=")+ 5);
             if (_root.indexOf('#') > 0) {
