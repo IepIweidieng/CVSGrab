@@ -22,9 +22,64 @@
 				TODO: add exclusion list for directories you don't want to download
 		    </action>
 
+            <action dev="ludovicc" type="update">
+				TODO: use Jakarta's CLI library to parse command line arguments
+		    </action>
+
         </release>
 
         <release version="2.0" date="not released">
+
+        </release>
+
+        <release version="2.0-beta3" date="2003-10-24">
+
+            <action dev="ludovicc" type="fix">
+                Fixed cookie support to avoid tons of warnings when grabbing files from dev.java.net.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Fixed null pointer exception when optional packageDir parameter was not set.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Hide password.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                When password is not present but user name is present, display a masked prompt that asks securely for the password.
+            </action>
+
+        </release>
+
+        <release version="2.0-beta2" date="2003-10-23">
+
+            <action dev="ludovicc" type="add">
+                Added detection for invalid rootUrl
+            </action>
+
+            <action dev="ludovicc" type="update">
+                Split parameter package into packagePath and packageDir, to be able to give the package path on the
+                web site, and use a different name for storing the package on the disk. <br/>
+                WARNING: this affects the command line arguments and the ant task, read the documentation for more details.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Fixes for NT domain authentification on MS proxies.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Fix prune empty dirs: empty directories are now removed from CVS entries.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Fixed autodetection for Sourceforge viewcvs interface: force the version to ViewCVS 0.8 when the root url contains
+                sourceforge.net or sf.net .
+            </action>
+
+        </release>
+
+        <release version="2.0-beta" date="2003-10-15">
 
             <action dev="ludovicc" type="update">
                 Changed license from LGPL to BSD

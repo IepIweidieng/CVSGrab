@@ -107,7 +107,7 @@ public class ViewCvs0_7InterfaceTest extends AbstractTestCase {
     
     public void testGetDownloadUrl() throws Exception {
         RemoteRepository repository = new RemoteRepository("http://dev.eclipse.org/viewcvs/index.cgi/", null);
-        RemoteDirectory dir = new RemoteDirectory(repository, "org.eclipse.ant.core/");
+        RemoteDirectory dir = new RemoteDirectory(repository, "org.eclipse.ant.core/", "ant-core");
         RemoteFile file = new RemoteFile("about.html", "1.16");
         file.setDirectory(dir);
         

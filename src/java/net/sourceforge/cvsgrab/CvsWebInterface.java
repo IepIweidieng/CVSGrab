@@ -15,6 +15,9 @@ import net.sourceforge.cvsgrab.web.ViewCvs1_0Interface;
 import org.w3c.dom.Document;
 
 /**
+ * Abstracts the web interface available for a CVS repository. This allows us to
+ * support different web interfaces such as viewcvs, cvsweb, sourcecast and others.
+ *   
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 6 oct. 2003

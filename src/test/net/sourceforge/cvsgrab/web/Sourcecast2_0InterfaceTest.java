@@ -85,7 +85,7 @@ public class Sourcecast2_0InterfaceTest extends AbstractTestCase {
     
     public void testGetDownloadUrl() throws Exception {
         RemoteRepository repository = new RemoteRepository("https://forms.dev.java.net/source/browse/", null);
-        RemoteDirectory dir = new RemoteDirectory(repository, "forms");
+        RemoteDirectory dir = new RemoteDirectory(repository, "forms", "forms");
         RemoteFile file = new RemoteFile("LICENSE.txt", "1.3");
         file.setDirectory(dir);
         

@@ -110,7 +110,7 @@
    
     <faq id="root-url">
       <question>
-        What should i use as the root url, what should i use as the package name?
+        What should i use as the root url, what should i use as the package path?
       </question>
       <answer>
         <p> On ViewCVS, the root url is the url you get when you click on the element under [brackets]
@@ -120,12 +120,24 @@
           Current directory:  [Eclipse_Project] / org.eclipse.ant.core <br/>
           Click on [Eclipse_Project], this gives you the root url to use: 
           http://dev.eclipse.org/viewcvs/index.cgi/ <br/>
-          And the package name is org.eclipse.ant.core/
+          And the package path is org.eclipse.ant.core/
         </p>
         
         <p>
-          As a general rule, the root url should end with .cgi/ or .py/ or viewcvs/ or source/, the package name is the rest of the url. <br/>
-          Do not include any query strings like #dirlist or ?cvsroot=repo in the root url or the package name.
+          As a general rule, the root url should end with .cgi/ or .py/ or viewcvs/ or source/, the package path is the rest of the url. <br/>
+          Do not include any query strings like #dirlist or ?cvsroot=repo in the root url or the package path.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="package-rename">
+      <question>
+        How can i give another name to the folder that's being checked out?
+      </question>
+      <answer>
+        <p> Let's suppose you have -destDir c:/tmp and -packagePath myProject/myPackage-v-2.0 <br/>
+          If you run cvsgrab, it will checkout the files to the forder c:/tmp/myProject/myPackage-v-2.0 <br/>
+          To checkout files to c:/tmp/myPackage for example, you need to add the parameter -packageDir myPackage
         </p>
       </answer>
     </faq>

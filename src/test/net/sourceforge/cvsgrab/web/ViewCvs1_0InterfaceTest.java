@@ -97,13 +97,13 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
     
     public void testGetDownloadUrl() throws Exception {
         RemoteRepository repository = new RemoteRepository("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/", null);
-        RemoteDirectory dir = new RemoteDirectory(repository, "pico/src/java/org/picocontainer");
+        RemoteDirectory dir = new RemoteDirectory(repository, "pico/src/java/org/picocontainer", "picocontainer");
         RemoteFile file = new RemoteFile("PicoContainer.java", "1.10");
         file.setDirectory(dir);
         file.setInAttic(false);
         assertEquals("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/*checkout*/pico/src/java/org/picocontainer/PicoContainer.java?rev=1.10&root=picocontainer", _interface.getDownloadUrl(file));
         
-        dir = new RemoteDirectory(repository, "pico/src/java/picocontainer");
+        dir = new RemoteDirectory(repository, "pico/src/java/picocontainer", "picocontainer");
         file = new RemoteFile("ClassRegistrationPicoContainer.java", "1.4");
         file.setDirectory(dir);
         file.setInAttic(true);

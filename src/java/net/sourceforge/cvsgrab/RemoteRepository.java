@@ -58,13 +58,13 @@ public class RemoteRepository {
     /**
      * Gets the remote directory attribute
      *
-     * @param dirUri Description of the Parameter
+     * @param dirPath The directory path, relative to the root url
      * @return The remoteDirectory value
      */
-    public RemoteDirectory getRemoteDirectory(String dirUri) {
+    public RemoteDirectory getRemoteDirectory(String dirPath) {
         for (Iterator i = _remoteDirectories.iterator(); i.hasNext(); ) {
             RemoteDirectory remoteDir = (RemoteDirectory) i.next();
-            if (remoteDir.getDirectoryName().equals(dirUri)) {
+            if (remoteDir.getDirectoryPath().equals(dirPath)) {
                 return remoteDir;
             }
         }
@@ -88,34 +88,28 @@ public class RemoteRepository {
     }
 
     /**
-     * Description of the Method
+     * Registers a directory to process
      *
-     * @param dirUri Description of the Parameter
+     * @param remoteDir The remote directory to register
      */
-    public void registerDirectoryToProcess(String dirUri) {
-        String uri = WebBrowser.forceFinalSlash(dirUri);
-        if (getRemoteDirectory(uri) != null) {
+    public void registerDirectoryToProcess(RemoteDirectory remoteDir) {
+        if (getRemoteDirectory(remoteDir.getDirectoryPath()) != null) {
             return;
         }
-        RemoteDirectory remoteDir = new RemoteDirectory(this, uri);
         _remoteDirectories.add(remoteDir);
         _directoriesToProcess.add(remoteDir);
         _localRepository.add(remoteDir);
     }
 
     /**
-     * Description of the Method
-     *
-     * @return Description of the Return Value
+     * @return true if there are remote directories that need to be processed 
      */
     public boolean hasDirectoryToProcess() {
         return (_directoriesToProcess.size() > 0);
     }
 
     /**
-     * Description of the Method
-     *
-     * @return Description of the Return Value
+     * @return the next directory to process, and remove it from the list of directories to process
      */
     public RemoteDirectory nextDirectoryToProcess() {
         if (!_directoriesToProcess.isEmpty()) {

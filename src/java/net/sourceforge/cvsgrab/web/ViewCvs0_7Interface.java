@@ -42,7 +42,7 @@ public class ViewCvs0_7Interface extends ViewCvsInterface {
         try {
             // http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/org.eclipse.ant.core/about.html?rev=1.20
             String url = WebBrowser.forceFinalSlash(rootUrl);
-            String dir = file.getDirectory().getDirectoryName();
+            String dir = file.getDirectory().getDirectoryPath();
             url += getCheckoutPath();
             url += WebBrowser.forceFinalSlash(URIUtil.encodePath(dir));
             url += URIUtil.encodePath(file.getName());

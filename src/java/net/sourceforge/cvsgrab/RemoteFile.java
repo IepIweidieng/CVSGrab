@@ -9,9 +9,13 @@ package net.sourceforge.cvsgrab;
 
 import java.io.File;
 
+import net.sourceforge.cvsgrab.util.*;
+
 import org.apache.commons.httpclient.methods.GetMethod;
 
 /**
+ * Represent a file stored in the remote repository
+ * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 12 oct. 2003
