@@ -1,0 +1,14 @@
+
+StoryCustomer: LudovicClaude
+
+Users are using quite different web interfaces to CVS, and those web interfaces are also evolving. So we need to 
+support different variants of viewcvs. 
+
+SuccessCriteria:
+
+- be able to support different versions of viewcvs, some of its variants and even different cvs web interfaces
+
+ExpectedTasks:
+
+- abstract the process of retrieving data from a cvs web interface
+- implement support for different cvs web interfaces

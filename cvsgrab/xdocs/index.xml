@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<author email="ludovicc@users.sourceforge.net">Ludovic Claude</author>
+		<title>CVSGrab - Read sources stored in CVS behind a firewall</title>
+	</properties>
+
+    <meta name="KeyWords" content="WinCvs, cvs, MacCvs, gCvs, jCVS, firewall, proxy, retrieve cvs tree, grab, behind, checkout" />
+    
+	<body>
+		<section name="What it is:">
+		  <p>
+            People often complain that they cannot checkout files from a public CVS repository because 
+            they are behind a corporate firewall that blocks access to the pserver. The standard workaround,
+            use ssh, works only for registered users, not anonymous users. Some firewall support also http tunelling,
+            where access to the pserver is possible with a standard CVS client, but unfortunately it is not used
+            in all organisations (or even for personal firewalls).
+		  </p>
+		  <p>
+            CVSGrab is another kind of CVS client. When other CVS clients use the cvs  protocol or ssh
+            to read the repository, this utility reads the repository via its ViewCVS web interface.
+		  </p>
+		  <p>
+            The advantage is that if you are behind a firewall that prevents you from updating files
+            from a remote CVS server, this program will be able to bypass the firewall
+            and download the latest files from the repository. 
+		  </p>
+		  <p>
+            Disadvantages are that you have only read access
+            to the repository, the repository needs to be public and have ViewCVS set up.
+		  </p>
+		</section>
+		<section name="How it works:">
+		  <p>
+		    CVSGrab can be started either from the command line or from an Ant task. 
+		  </p>
+		  <p>
+		    It starts by reading the top page of the ViewCVS repository, then parses
+		    the links in this page and browses all the pages bellow while downloading the files in them.
+		  </p>
+		  <p>
+		    In addition, the CVS administration files (the files under the Cvs folder present on every directory)
+		    are created and store the version number for each files. The next time you run CVSGrab, those version
+		    numbers are used to download only the files that have being updated.
+		  </p>
+		</section>
+		<section name="Tested with:">
+		  <p>
+		    <ul>
+		      <li>ViewCVS 0.7 on <a href="http://www.eclipse.org">www.eclipse.org</a></li>
+		      <li>ViewCVS 0.8 on <a href="http://www.sourceforge.net">Sourceforge.net</a></li>
+		      <li>ViewCVS 0.9.2 on <a href="http://jakarta.apache.org">jakarta.apache.org</a></li>
+		      <li>ViewCVS 1.0-dev on <a href="http://www.picocontainer.org">www.picocontainer.org</a></li>
+		      <li>SourceCast 2.0 on dev.java.net</li>
+		    </ul>
+		  </p>
+		  <p>
+			Author: Ludovic Claude (<a href="mailto:ludovicc at users.sourceforge.net">email</a>), freelance developer
+		  </p>
+		</section>
+	</body>
+</document>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="CVSGrab" href="http://cvsgrab.sourceforge.net">
+
+  <title>CVSGrab</title>
+  
+  <body>
+    <links>
+      <item name="Sourceforge.net Project page" href="http://sourceforge.net/projects/cvsgrab/"/>
+      <item name="Hosted by SourceForge"        href="http://sourceforge.net/"/>
+    </links>
+    <menu name="Overview">
+        <item name="Introduction"               href="/index.html"/>
+        <item name="Download"                   href="http://www.sourceforge.net/project/showfiles.php?group_id=52481"/>
+        <item name="Installation"               href="/install.html"/>
+        <item name="Usage">
+            <item name="Run from the command line"		href="/cmd-usage.html"/>
+            <item name="Run from Ant"					href="/ant-usage.html"/>
+        </item>
+        <item name="License"                    href="/LICENSE.html"/>
+        <item name="Feedback"                   href="/feedback.html"/>
+    </menu>
+    <menu name="Related projects">
+        <item name="SFCVS: Another grabber"     href="http://www.angelfire.com/rnb/sfcvs/"/>
+        <item name="ViewCVS"                    href="http://viewcvs.sourceforge.net/"/>
+        <item name="jCVS"             			href="http://www.jcvs.org/"/>
+        <item name="Ant"                        href="http://jakarta.apache.org/ant/"/>
+    </menu>
+
+    <!-- Google Search -->
+    <search/>
+  </body>
+</project>

@@ -1,5 +1,25 @@
 #! /bin/sh
 
+# OS specific support
+cygwin=false;
+darwin=false;
+case "`uname`" in
+  CYGWIN*) cygwin=true ;;
+  Darwin*) darwin=true
+           if [ -z "$JAVA_HOME" ] ; then
+             JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home"
+           fi
+           ;;
+esac
+
+# For Cygwin, ensure paths are in UNIX format
+if $cygwin ; then
+  [ -n "$ANT_HOME" ] &&
+    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+  [ -n "$CLASSPATH" ] &&
+    CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+fi
+    
 if [ -z "$JAVACMD" ] ; then 
   if [ -n "$JAVA_HOME"  ] ; then
     if [ -x "$JAVA_HOME/jre/sh/java" ] ; then 
@@ -9,7 +29,10 @@ if [ -z "$JAVACMD" ] ; then
       JAVACMD="$JAVA_HOME/bin/java"
     fi
   else
-    JAVACMD=java
+    JAVACMD=`which java 2> /dev/null `
+    if [ -z "$JAVACMD" ] ; then
+      JAVACMD="java"
+    fi
   fi
 fi
  
@@ -37,5 +60,12 @@ do
     fi
   fi
 done
+
+# For Cygwin, switch paths to Windows format
+if $Cygwin; then
+  JAVA_HOME=`cygpath --windows "$JAVA_HOME"`
+  CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+  LOCALCLASSPATH=`cygpath --path --windows "$LOCALCLASSPATH"`
+fi
 
 "$JAVACMD" -classpath "$LOCALCLASSPATH" net.sourceforge.cvsgrab.CVSGrab "$@"

@@ -1,0 +1,18 @@
+<project default="maven:jar"
+  xmlns:j="jelly:core"
+  xmlns:m="maven"
+  xmlns:reactor="reactor"
+  xmlns:maven="jelly:org.apache.maven.jelly.tags.project.MavenTagLibrary">
+
+  <postGoal name="dist:prepare-bin-filesystem">
+    <copy todir="${maven.dist.bin.assembly.dir}">
+        <fileset dir="${basedir}/etc/script" />
+    </copy>
+    <copy todir="${maven.dist.bin.assembly.dir}">
+        <fileset dir="${basedir}/etc" >
+            <include name="samples/*" />
+        </fileset>
+    </copy>
+  </postGoal>
+
+</project>

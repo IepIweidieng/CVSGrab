@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+		<author email="ludovicc@users.sourceforge.net">Ludovic Claude</author>
+		<title>CVSGrab - Read sources stored in CVS behind a firewall</title>
+    </properties>
+
+    <!-- action types are add/update/fix/remove -->
+    <body>
+
+        <release version="2.1" date="planned features">
+        
+            <action dev="ludovicc" type="add">
+                TODO: open multiple connections to donwload files faster.
+            </action>
+        
+            <action dev="ludovicc" type="add">
+                TODO: add module support by parsing the CVSROOT/modules file.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                TODO: add support for local modified files: they should not be updated even if there is a more recent 
+                version on the remote repository.
+            </action>
+        
+        </release>
+
+        <release version="2.0" date="not released">
+
+            <action dev="ludovicc" type="update">
+                TODO: change license from LGPL to BSD
+            </action>
+
+            <action dev="ludovicc" type="update">
+                Replaced HotSax by NekoHtml for parsing html pages, uses xpath to extract data from the html pages.
+            </action>
+
+            <action dev="ludovicc" type="update">
+                TODO: replace jcvsii by NetBeans' cvsclient, license is more friendly and this is better designed and supported
+            </action>
+
+            <action dev="ludovicc" type="update">
+                Now uses Jakarta commons-httpclient to make http connections, it supports more options in particular
+                for authentification on the web site or on the proxy.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Add support for authentification with NT credentials used on MS proxies.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Add support for authentification on the web server.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Fixed issue with files recovered from the Attic/ folder when using version tags.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Add support for different cvs web interfaces. Currently ViewCVS version 0.7, 0.8, 0.9, 1.0-dev and
+                SourceCast 2.0 are supported.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Adding unit tests for better quality.
+            </action>
+
+        </release>
+
+        <release version="1.2" date="2002-10">
+
+            <action dev="ludovicc" type="add">
+                Added the date in the cvs entries.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Made update more robust when there is an upload that failed (failed uploads don't get their version updated)
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Defined CVSGRAB_HOME, used to run cvsgrab.bat from any location.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Bugfixes, in particular on the pruneEmptyDirs functionality
+            </action>
+
+        </release>
+
+        <release version="1.1" date="2002-08">
+
+            <action dev="ludovicc" type="update">
+                Refactoring: renamed package from cvsgrab to net.sourceforge.cvsgrab
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Added support for proxies and http authentication.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Added prune empty directories functionality.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Removed first / in the name stored in the Repository admin file for more compatibility with WinCVS.
+            </action>
+
+        </release>
+
+        <release version="1.0" date="2002-06">
+
+            <action dev="ludovicc" type="update">
+                Used clean Java code instead of BSF scripts.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Created a cvsgrab Ant task
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Packaging, documentation.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Now able to delete the files removed from the repository
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Support for version tags/branches.
+            </action>
+
+        </release>
+
+        <release version="0.1" date="2002-04">
+
+            <action dev="ludovicc" type="add">
+                First release. Uses scripts based on BSF (Bean scripting framework) and Hotsax,
+                initially available under the Hotsax project (http://sourceforge.net/hotsax)    
+            </action>
+
+        </release>
+
+    </body>
+</document>
