@@ -86,9 +86,9 @@
     </dependency>
     
     <dependency>
-      <groupId>jcvsii</groupId>
-      <artifactId>jcvsii</artifactId>
-      <version>light</version>
+      <groupId>cvslib</groupId>
+      <artifactId>cvslib</artifactId>
+      <version>3.5</version>
     </dependency>
     
     <dependency>

@@ -100,6 +100,7 @@ public class RemoteRepository {
         RemoteDirectory remoteDir = new RemoteDirectory(this, uri);
         _remoteDirectories.add(remoteDir);
         _directoriesToProcess.add(remoteDir);
+        _localRepository.add(remoteDir);
     }
 
     /**

@@ -1,0 +1,2 @@
+-rootUrl http://cvs.picocontainer.codehaus.org/viewcvs.cgi/ -package pico -destDir c:/tmp 
+-rootUrl http://dev.eclipse.org/viewcvs/index.cgi/ -package org.eclipse.ant.core -destDir c:/tmp 

@@ -20,9 +20,7 @@ public class CVSGrabTask extends Task {
 
     private String rootUrl;
     private String destDir;
-    private String cvsHost = "dummyHost";
-    private String cvsRoot = "dummyRoot";
-    private String cvsUser = "anonymous";
+    private String cvsRoot = CVSGrab.DUMMY_ROOT;
     private String packageName;
     private String tag = null;
     private boolean verbose = true;
@@ -45,15 +43,6 @@ public class CVSGrabTask extends Task {
     }
 
     /**
-     * Sets the cvs user attribute
-     *
-     * @param value The new cvsUser value
-     */
-    public void setCvsUser(String value) {
-        cvsUser = value;
-    }
-
-    /**
      * Sets the root url attribute
      *
      * @param value The new rootUrl value
@@ -69,15 +58,6 @@ public class CVSGrabTask extends Task {
      */
     public void setDestDir(String value) {
         destDir = value;
-    }
-
-    /**
-     * Sets the cvs host attribute
-     *
-     * @param value The new cvsHost value
-     */
-    public void setCvsHost(String value) {
-        cvsHost = value;
     }
 
     /**
@@ -163,7 +143,7 @@ public class CVSGrabTask extends Task {
         if (web != null) {
             web.setup(grabber);
         }
-        grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsUser, cvsHost, cvsRoot);
+        grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsRoot);
     }
 
     /**
