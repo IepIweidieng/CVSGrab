@@ -160,7 +160,7 @@ public class RemoteRepository {
         String fileName = uri.substring(0, uri.indexOf("?"));
         String cvsName = remoteDirectory.getUri() + fileName;
         remoteDirectory.registerRemoteFile(fileName);
-        boolean needUpdate = localRepository.updateFile(cvsName, version);
+        boolean needUpdate = localRepository.needUpdate(cvsName, version);
         if (!needUpdate) {
             return;
         }
@@ -190,6 +190,8 @@ public class RemoteRepository {
                     in.close();
                 }
             }
+
+            localRepository.updateFileVersion(cvsName, version, destFile);
 
         } catch (IOException ex) {
             localRepository.unregisterFile(cvsName);
