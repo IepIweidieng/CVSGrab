@@ -168,7 +168,8 @@ public class LocalRepository {
      *
      * @param remoteFile The remote file
      */
-    public void updateFileVersion(RemoteFile remoteFile) {
+    // synchronized as it can be access from the multiple download threads
+    public synchronized void updateFileVersion(RemoteFile remoteFile) {
         File dir = getLocalDir(remoteFile.getDirectory());
         File file = getLocalFile(remoteFile);
         Entry entry = null;

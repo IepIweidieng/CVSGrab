@@ -18,13 +18,8 @@ import org.apache.tools.ant.*;
 
 public class CVSGrabTask extends Task {
 
-    private String _rootUrl;
-    private String _destDir;
-    private String _cvsRoot = CVSGrab.DUMMY_ROOT;
-    private String _packageName;
-    private String _tag = null;
+    private CVSGrab _grabber = new CVSGrab();
     private boolean _verbose = true;
-    private boolean _pruneEmptyDirs = false;
     private int _connections = 0;
     private HttpProxy _proxy = null;
     private WebAuthentification _web = null;
@@ -40,7 +35,7 @@ public class CVSGrabTask extends Task {
      * @param value The new package value
      */
     public void setPackage(String value) {
-        _packageName = value;
+        _grabber.setPackageName(value);
     }
 
     /**
@@ -49,7 +44,7 @@ public class CVSGrabTask extends Task {
      * @param value The new rootUrl value
      */
     public void setRootUrl(String value) {
-        _rootUrl = value;
+        _grabber.setRootUrl(value);
     }
 
     /**
@@ -58,7 +53,7 @@ public class CVSGrabTask extends Task {
      * @param value The new destDir value
      */
     public void setDestDir(String value) {
-        _destDir = value;
+        _grabber.setDestDir(value);
     }
 
     /**
@@ -67,7 +62,7 @@ public class CVSGrabTask extends Task {
      * @param value The new cvsRoot value
      */
     public void setCvsRoot(String value) {
-        _cvsRoot = value;
+        _grabber.setCvsRoot(value);
     }
 
     /**
@@ -76,7 +71,7 @@ public class CVSGrabTask extends Task {
      * @param value The new tag value
      */
     public void setTag(String value) {
-        _tag = value;
+        _grabber.setVersionTag(value);
     }
 
     /**
@@ -94,7 +89,7 @@ public class CVSGrabTask extends Task {
      * @param value The new pruneEmptyDirs value
      */
     public void setPruneEmptyDirs(boolean value) {
-        _pruneEmptyDirs = value;
+        _grabber.setPruneEmptyDirs(value);
     }
 
     /**
@@ -131,28 +126,26 @@ public class CVSGrabTask extends Task {
      * @exception BuildException when an error occured in the build
      */
     public void execute() throws BuildException {
-        if (_rootUrl == null) {
+        if (_grabber.getRootUrl() == null) {
             throw new BuildException("rootUrl argument is not specified");
         }
-        if (_destDir == null) {
+        if (_grabber.getDestDir() == null) {
             throw new BuildException("destDir argument is not specified");
         }
-        if (_packageName == null) {
+        if (_grabber.getPackageName() == null) {
             throw new BuildException("package argument is not specified");
         }
 
         Logger log = new AntLogger(project);
         log.setVerbose(_verbose);
         DefaultLogger.setInstance(log);
-        CVSGrab grabber = new CVSGrab();
-        grabber.setPruneEmptyDirs(_pruneEmptyDirs);
         if (_proxy != null) {
-            _proxy.setup(grabber);
+            _proxy.setup(_grabber);
         }
         if (_web != null) {
-            _web.setup(grabber);
+            _web.setup(_grabber);
         }
-        grabber.grabCVSRepository(_rootUrl, _destDir, _packageName, _tag, _cvsRoot);
+        _grabber.grabCVSRepository();
     }
 
     /**

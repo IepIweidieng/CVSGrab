@@ -37,9 +37,9 @@
   <url>http://cvsgrab.sourceforge.net/</url>
   <issueTrackingUrl>https://sourceforge.net/tracker/?group_id=52481&amp;atid=467004</issueTrackingUrl>
   <siteAddress>cvsgrab.sourceforge.net</siteAddress>
-  <siteDirectory>/htdocs/</siteDirectory>
-  <distributionSite>cvsgrab.sourceforge.net</distributionSite>
-  <distributionDirectory>/htdocs/builds/</distributionDirectory>
+  <siteDirectory>/home/groups/c/cv/cvsgrab/htdocs/</siteDirectory>
+  <distributionSite>upload.sourceforge.net</distributionSite>
+  <distributionDirectory>/incoming/</distributionDirectory>
 
   <!-- the version control repository and http url for online access
        the connection element has the form:

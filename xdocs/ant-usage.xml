@@ -11,7 +11,6 @@
 		  <p>Install the cvsgrab task in Ant by using the following: </p>
  
  		  <p>
-  		    &lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /=""/&gt; <br/>
 		    &lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /&gt; <br/>
 		    &lt;taskdef name="cvsgrab" classname="net.sourceforge.cvsgrab.CVSGrabTask" classpath="${cvsgrab.dir}/lib/cvsgrab.jar"/&gt;
 	      </p> 

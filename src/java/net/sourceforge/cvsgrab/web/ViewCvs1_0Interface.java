@@ -7,6 +7,7 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.RemoteFile;
+import net.sourceforge.cvsgrab.WebBrowser;
 
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
@@ -55,13 +56,15 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
      * @return the url to use to access the contents of the repository
      */
     public String getDirectoryUrl(String rootUrl, String directoryName) {
-        String url = super.getDirectoryUrl(rootUrl, directoryName);
-        if (url.indexOf('?') > 0) {
-            url += "&root=" + _root;
-        } else {
-            url += "?root=" + _root;
-        }
+        try {
+            String url = super.getDirectoryUrl(rootUrl, directoryName);
+            url = WebBrowser.addQueryParam(url, "root", URIUtil.encodePath(_root));
+            url = WebBrowser.addQueryParam(url, getQueryParams());
         return url;
+        } catch (URIException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("Cannot create URI");
+        }
     }
     
     /**
@@ -72,7 +75,8 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
         try {
             // http://cvs.apache.org/viewcvs.cgi/*checkout*/jakarta-regexp/KEYS?rev=1.1
             String url = super.getDownloadUrl(file);
-            url += "&root=" + URIUtil.encodePath(_root);
+            url = WebBrowser.addQueryParam(url, "root", URIUtil.encodePath(_root));
+            url = WebBrowser.addQueryParam(url, getQueryParams());
             return url;
         } catch (URIException ex) {
             ex.printStackTrace();
