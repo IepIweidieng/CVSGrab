@@ -24,6 +24,7 @@
 	<target name="init">
 		<mkdir dir="${build.dir}"></mkdir>
 		<mkdir dir="${api.dir}"></mkdir>
+		<delete dir="." includes="**/*.$$$" />
 	</target>
 
 	<target depends="init" description="build javadoc api" name="apidoc">
