@@ -37,7 +37,7 @@ public class LocalRepository {
      * @param cvsUser Description of the Parameter
      * @param packageName Description of the Parameter
      */
-    public LocalRepository(String cvsUser, String cvsHost, String cvsRoot, String destDir, String packageName) {
+    public LocalRepository(String cvsUser, String cvsHost, String cvsRoot, String destDir, String packageName) throws IOException {
         //CVSProject.debugEntryIO = true;
         //CVSTracer.turnOn();
         cvsProject = new CVSProject();
@@ -45,16 +45,11 @@ public class LocalRepository {
         if (localRootDir.endsWith("/")) {
             localRootDir = localRootDir.substring(0, localRootDir.length() - 1);
         }
-        cvsProject.setLocalRootDirectory(localRootDir);
-        cvsProject.setRepository("");
-        cvsProject.setRootDirectory(cvsRoot);
-        cvsProject.setConnectionMethod(CVSRequest.METHOD_INETD);
-        cvsProject.setPServer(true);
-        cvsProject.setUserName(cvsUser);
-        CVSClient cvsClient = new CVSClient();
-        cvsClient.setHostName(cvsHost);
-        cvsProject.setClient(cvsClient);
-        if (cvsProject.getRootEntry() == null) {
+
+        try {
+            initCVSProject(cvsUser, cvsHost, cvsRoot);
+            cvsProject.openProject(new File(localRootDir));
+        } catch (IOException ignore) {
             // Build the entry files for the root directory
             cvsProject.establishRootEntry("");
             CVSEntry entry = new CVSEntry();
@@ -96,11 +91,17 @@ public class LocalRepository {
 
             cvsProject.writeAdminEntriesFile(entriesFile, entries);
             String rootDirStr = "";
-            cvsProject.writeAdminRootFile(rootFile, rootDirStr);
+            writeAdminRootFile(rootFile, rootDirStr);
             cvsProject.writeAdminRepositoryFile(reposFile, dirEntry.getRepository());
+
+            // Use a fresh cvsProject, due to some initialisation issues that break in particular the pruneEmpryDirs functionality
+            cvsProject = new CVSProject();
+            initCVSProject(cvsUser, cvsHost, cvsRoot);
+
+            // Read the previous entries for the files and their versions
+            cvsProject.openProject(new File(localRootDir));
         }
-        // Read the previous entries for the files and their versions
-        cvsProject.readEntries();
+
     }
 
     /**
@@ -250,6 +251,7 @@ public class LocalRepository {
      *
      * @param cvsName CVS name of the file
      * @param version Version of the file
+     * @param file Description of the Parameter
      */
     public void updateFileVersion(String cvsName, String version, File file) {
         cvsName = "./" + cvsName;
@@ -368,65 +370,29 @@ public class LocalRepository {
      * Remove the empty directories from the local repository
      */
     public void pruneEmptyDirs() {
-        pruneEmptyDirs(cvsProject.getDirEntryForLocalDir("./"));
+        cvsProject.pruneEmptySubDirs(true);
     }
 
-    private void pruneEmptyDirs(CVSEntry dirEntry) {
-        if (dirEntry == null) {
-            return;
-        }
-        Vector toRemove = new Vector();
-        for (Iterator i = dirEntry.getEntryList().iterator(); i.hasNext(); ) {
-            CVSEntry entry = (CVSEntry) i.next();
-            if (entry.isDirectory() && !entry.getName().equals("")) {
-                pruneEmptyDirs(entry);
-                if (entry.isToBeRemoved()) {
-                    toRemove.add(entry);
-                }
-            }
-        }
-        for (Iterator i = toRemove.iterator(); i.hasNext(); ) {
-            CVSEntry entry = (CVSEntry) i.next();
-            dirEntry.removeEntry(entry);
-            File dir = new File(cvsProject.getLocalRootDirectory(), entry.getLocalPathName());
-            try {
-                removeDir(dir);
-            } catch (IOException ex) {
-                System.err.println("Error while pruning directories: " + ex.getMessage());
-            }
-        }
-        if (dirEntry.getEntryList() == null || dirEntry.getEntryList().size() == 0) {
-            dirEntry.markForRemoval(true);
-        }
-        if (dirEntry.getEntryList().size() == 1) {
-            CVSEntry uniqueEntry = (CVSEntry) dirEntry.getEntryList().get(0);
-            if (uniqueEntry.getName().equals("")) {
-                uniqueEntry.markForRemoval(true);
-            }
-        }
-        cvsProject.writeAdminFiles();
+    private void initCVSProject(String cvsUser, String cvsHost, String cvsRoot) {
+        CVSClient cvsClient = new CVSClient();
+        cvsProject.setClient(cvsClient);
+        cvsProject.setLocalRootDirectory(localRootDir);
+        cvsProject.setRepository("");
+        cvsProject.setRootDirectory(cvsRoot);
+        cvsProject.setConnectionMethod(CVSRequest.METHOD_INETD);
+        cvsProject.setPServer(true);
+        cvsProject.setUserName(cvsUser);
+        cvsClient.setHostName(cvsHost);
     }
 
-    private void removeDir(File dir) throws IOException {
-
-        String[] list = dir.list();
-        if (list != null) {
-            for (int i = 0; i < list.length; i++) {
-                String s = list[i];
-                File f = new File(dir, s);
-                if (f.isDirectory()) {
-                    removeDir(f);
-                } else {
-                    if (!f.delete()) {
-                        throw new IOException("Unable to delete file "
-                                + f.getAbsolutePath());
-                    }
-                }
-            }
-        }
-        if (!dir.delete()) {
-            throw new IOException("Unable to delete directory "
-                    + dir.getAbsolutePath());
+    private void writeAdminRootFile(File rootFile, String rootDirectoryStr) {
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(rootFile));
+            out.write(":pserver:" + cvsProject.getUserName() + "@" + cvsProject.getClient().getHostName() + ":" + cvsProject.getRootDirectory());
+            out.newLine();
+            out.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
