@@ -1,7 +1,7 @@
 /*
  *  CVSGrab
  *  Author: Ludovic Claude (ludovicc@users.sourceforge.net)
- *  Distributable under LGPL license.
+ *  Distributable under BSD license.
  *  See terms of license at gnu.org.
  */
 
@@ -20,8 +20,10 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpRecoverableException;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NTCredentials;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.xerces.xni.parser.XMLInputSource;
 import org.cyberneko.html.parsers.DOMParser;
@@ -36,16 +38,16 @@ import org.xml.sax.SAXNotSupportedException;
  */
 public class WebBrowser {
     
-    private static WebBrowser instance = new WebBrowser();
+    private static WebBrowser _instance = new WebBrowser();
     
-    private HttpClient client;
-    private DOMParser parser;
+    private HttpClient _client;
+    private DOMParser _parser;
 
     /**
      * @return the singleton instance
      */
     public static WebBrowser getInstance() {
-        return instance;    
+        return _instance;    
     }
     
     public static String forceFinalSlash(String s) {
@@ -67,10 +69,11 @@ public class WebBrowser {
      */
     public WebBrowser() {
         super();
-        client = new HttpClient();
-        parser = new DOMParser();
+        _client = new HttpClient(new MultiThreadedHttpConnectionManager());
+        _parser = new DOMParser();
+        CookiePolicy.setDefaultPolicy(CookiePolicy.COMPATIBILITY);
         try {
-            parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
+            _parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
         } catch (SAXNotRecognizedException e) {
             e.printStackTrace();
         } catch (SAXNotSupportedException e) {
@@ -88,14 +91,14 @@ public class WebBrowser {
      * @param password Password (if authentification is required), or null
      */
     public void useProxy(String proxyHost, int proxyPort, final String ntDomain, final String userName, final String password) {
-        client.getHostConfiguration().setProxy(proxyHost, proxyPort);
+        _client.getHostConfiguration().setProxy(proxyHost, proxyPort);
         if (ntDomain == null) {
-            client.getState().setProxyCredentials(null, proxyHost,
+            _client.getState().setProxyCredentials(null, proxyHost,
               new UsernamePasswordCredentials(userName, password));
         } else {
             try {
             String host = InetAddress.getLocalHost().getHostName();
-            client.getState().setProxyCredentials(ntDomain, proxyHost,
+            _client.getState().setProxyCredentials(ntDomain, proxyHost,
               new NTCredentials(userName, password, host, ntDomain));
             } catch (UnknownHostException ex) {
                 ex.printStackTrace();
@@ -110,7 +113,7 @@ public class WebBrowser {
      * @param password The password to use on the web server
      */
     public void useWebAuthentification(final String userName, final String password) {
-        client.getState().setCredentials(null, null,
+        _client.getState().setCredentials(null, null,
           new UsernamePasswordCredentials(userName, password));
     }  
     
@@ -130,7 +133,7 @@ public class WebBrowser {
         while ((statusCode == -1) && (attempt < 3)) {
             try {
                 // execute the method.
-                statusCode = client.executeMethod(method);
+                statusCode = _client.executeMethod(method);
                 DefaultLogger.getInstance().debug("Executed method " + method.getPath() + " with status code " + statusCode);
             } catch (HttpRecoverableException e) {
                 DefaultLogger.getInstance().warn("A recoverable exception occurred, retrying.  " + e.getMessage());
@@ -202,9 +205,9 @@ public class WebBrowser {
         
         XMLInputSource source = new XMLInputSource(null, null, null, new StringReader(response), null);
     
-        parser.parse(source);
+        _parser.parse(source);
     
-        Document doc = parser.getDocument();
+        Document doc = _parser.getDocument();
         return doc;        
     }
 

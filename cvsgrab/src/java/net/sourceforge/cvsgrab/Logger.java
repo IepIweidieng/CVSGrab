@@ -1,7 +1,7 @@
 /*
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
- * Distributable under LGPL license.
+ * Distributable under BSD license.
  * See terms of license at gnu.org.
  */
 package net.sourceforge.cvsgrab;

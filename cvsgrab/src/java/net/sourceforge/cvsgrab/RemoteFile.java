@@ -1,7 +1,7 @@
 /*
  *  CVSGrab
  *  Author: Ludovic Claude (ludovicc@users.sourceforge.net)
- *  Distributable under LGPL license.
+ *  Distributable under BSD license.
  *  See terms of license at gnu.org.
  */
  
@@ -94,13 +94,29 @@ public class RemoteFile {
         if (!needUpdate) {
             return;
         }
-        // Make the destination dirs
+        if (ThreadPool.getInstance() != null) {
+            ThreadPool.getInstance().doTask(new Runnable() {
+                public void run() {
+                    upload();
+                }
+            });
+        } else {
+            upload();
+        }
+    }
+
+    private void upload() {
+        RemoteRepository remoteRepository = _directory.getRemoteRepository();
+        LocalRepository localRepository = remoteRepository.getLocalRepository();
         try {
+            // Make the destination dirs
             File localDir = localRepository.getLocalDir(_directory);
             localDir.mkdirs();
             File destFile = new File(localDir, _name);
             DefaultLogger.getInstance().verbose("Updating " + destFile);
             String url = remoteRepository.getDownloadUrl(this);
+            
+            // Download the file
             WebBrowser.getInstance().loadFile(new GetMethod(url), destFile);
 
             localRepository.updateFileVersion(this);

@@ -1,7 +1,7 @@
 /*
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
- * Distributable under LGPL license.
+ * Distributable under BSD license.
  * See terms of license at gnu.org.
  */
 package net.sourceforge.cvsgrab;
@@ -18,15 +18,16 @@ import org.apache.tools.ant.*;
 
 public class CVSGrabTask extends Task {
 
-    private String rootUrl;
-    private String destDir;
-    private String cvsRoot = CVSGrab.DUMMY_ROOT;
-    private String packageName;
-    private String tag = null;
-    private boolean verbose = true;
-    private boolean pruneEmptyDirs = false;
-    private HttpProxy proxy = null;
-    private WebAuthentification web = null;
+    private String _rootUrl;
+    private String _destDir;
+    private String _cvsRoot = CVSGrab.DUMMY_ROOT;
+    private String _packageName;
+    private String _tag = null;
+    private boolean _verbose = true;
+    private boolean _pruneEmptyDirs = false;
+    private int _connections = 0;
+    private HttpProxy _proxy = null;
+    private WebAuthentification _web = null;
 
     /**
      * Constructor for the CVSGrabTask object
@@ -39,7 +40,7 @@ public class CVSGrabTask extends Task {
      * @param value The new package value
      */
     public void setPackage(String value) {
-        packageName = value;
+        _packageName = value;
     }
 
     /**
@@ -48,7 +49,7 @@ public class CVSGrabTask extends Task {
      * @param value The new rootUrl value
      */
     public void setRootUrl(String value) {
-        rootUrl = value;
+        _rootUrl = value;
     }
 
     /**
@@ -57,7 +58,7 @@ public class CVSGrabTask extends Task {
      * @param value The new destDir value
      */
     public void setDestDir(String value) {
-        destDir = value;
+        _destDir = value;
     }
 
     /**
@@ -66,7 +67,7 @@ public class CVSGrabTask extends Task {
      * @param value The new cvsRoot value
      */
     public void setCvsRoot(String value) {
-        cvsRoot = value;
+        _cvsRoot = value;
     }
 
     /**
@@ -75,7 +76,7 @@ public class CVSGrabTask extends Task {
      * @param value The new tag value
      */
     public void setTag(String value) {
-        tag = value;
+        _tag = value;
     }
 
     /**
@@ -84,7 +85,7 @@ public class CVSGrabTask extends Task {
      * @param value The new verbose value
      */
     public void setVerbose(boolean value) {
-        verbose = value;
+        _verbose = value;
     }
 
     /**
@@ -93,7 +94,15 @@ public class CVSGrabTask extends Task {
      * @param value The new pruneEmptyDirs value
      */
     public void setPruneEmptyDirs(boolean value) {
-        pruneEmptyDirs = value;
+        _pruneEmptyDirs = value;
+    }
+
+    /**
+     * Sets the number of simultaneous connections to open
+     * @param connections The connections to set.
+     */
+    public void setConnections(int connections) {
+        _connections = connections;
     }
 
     /**
@@ -102,8 +111,8 @@ public class CVSGrabTask extends Task {
      * @return the nested element for the proxy
      */
     public HttpProxy createProxy() {
-        proxy = new HttpProxy();
-        return proxy;
+        _proxy = new HttpProxy();
+        return _proxy;
     }
 
     /**
@@ -112,8 +121,8 @@ public class CVSGrabTask extends Task {
      * @return the nested element for the web
      */
     public WebAuthentification createWeb() {
-        web = new WebAuthentification();
-        return web;
+        _web = new WebAuthentification();
+        return _web;
     }
 
     /**
@@ -122,28 +131,28 @@ public class CVSGrabTask extends Task {
      * @exception BuildException when an error occured in the build
      */
     public void execute() throws BuildException {
-        if (rootUrl == null) {
+        if (_rootUrl == null) {
             throw new BuildException("rootUrl argument is not specified");
         }
-        if (destDir == null) {
+        if (_destDir == null) {
             throw new BuildException("destDir argument is not specified");
         }
-        if (packageName == null) {
+        if (_packageName == null) {
             throw new BuildException("package argument is not specified");
         }
 
         Logger log = new AntLogger(project);
-        log.setVerbose(verbose);
+        log.setVerbose(_verbose);
         DefaultLogger.setInstance(log);
         CVSGrab grabber = new CVSGrab();
-        grabber.setPruneEmptyDirs(pruneEmptyDirs);
-        if (proxy != null) {
-            proxy.setup(grabber);
+        grabber.setPruneEmptyDirs(_pruneEmptyDirs);
+        if (_proxy != null) {
+            _proxy.setup(grabber);
         }
-        if (web != null) {
-            web.setup(grabber);
+        if (_web != null) {
+            _web.setup(grabber);
         }
-        grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsRoot);
+        grabber.grabCVSRepository(_rootUrl, _destDir, _packageName, _tag, _cvsRoot);
     }
 
     /**
@@ -153,11 +162,11 @@ public class CVSGrabTask extends Task {
      * @created May 14, 2002
      */
     public class HttpProxy {
-        private String host = null;
-        private int port = 0;
-        private String ntDomain = null;
-        private String user = null;
-        private String password = null;
+        private String _host = null;
+        private int _port = 0;
+        private String _ntDomain = null;
+        private String _user = null;
+        private String _password = null;
 
         /**
          * Setup the proxy
@@ -166,10 +175,10 @@ public class CVSGrabTask extends Task {
          * @throws BuildException Description of the Exception
          */
         public void setup(CVSGrab grabber) throws BuildException {
-            if (host != null && port == 0) {
+            if (_host != null && _port == 0) {
                 throw new BuildException("port argument is not specified in the proxy");
             }
-            WebBrowser.getInstance().useProxy(host, port, ntDomain, user, password);
+            WebBrowser.getInstance().useProxy(_host, _port, _ntDomain, _user, _password);
         }
 
         /**
@@ -178,7 +187,7 @@ public class CVSGrabTask extends Task {
          * @param value The new host value
          */
         public void setHost(String value) {
-            host = value;
+            _host = value;
         }
 
         /**
@@ -187,7 +196,7 @@ public class CVSGrabTask extends Task {
          * @param value The new port value
          */
         public void setPort(int value) {
-            port = value;
+            _port = value;
         }
 
         /**
@@ -196,7 +205,7 @@ public class CVSGrabTask extends Task {
          * @param ntDomain The new net domain 
          */
         public void setNtdomain(String ntDomain) {
-            this.ntDomain = ntDomain;
+            this._ntDomain = ntDomain;
         }
 
         /**
@@ -205,7 +214,7 @@ public class CVSGrabTask extends Task {
          * @param value The new username value
          */
         public void setUsername(String value) {
-            user = value;
+            _user = value;
         }
 
         /**
@@ -214,7 +223,7 @@ public class CVSGrabTask extends Task {
          * @param value The new password value
          */
         public void setPassword(String value) {
-            password = value;
+            _password = value;
         }
 
     }
@@ -226,8 +235,8 @@ public class CVSGrabTask extends Task {
      * @created May 14, 2002
      */
     public class WebAuthentification {
-        private String user = null;
-        private String password = null;
+        private String _user = null;
+        private String _password = null;
 
         /**
          * Setup the web authentification
@@ -236,7 +245,7 @@ public class CVSGrabTask extends Task {
          * @throws BuildException Description of the Exception
          */
         public void setup(CVSGrab grabber) throws BuildException {
-            WebBrowser.getInstance().useWebAuthentification(user, password);
+            WebBrowser.getInstance().useWebAuthentification(_user, _password);
         }
 
         /**
@@ -245,7 +254,7 @@ public class CVSGrabTask extends Task {
          * @param value The new username value
          */
         public void setUsername(String value) {
-            user = value;
+            _user = value;
         }
 
         /**
@@ -254,7 +263,7 @@ public class CVSGrabTask extends Task {
          * @param value The new password value
          */
         public void setPassword(String value) {
-            password = value;
+            _password = value;
         }
 
     }
