@@ -43,7 +43,7 @@ goto setupArgs
 
 :doneStart
 set LOG_ARGS=-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showShortLogname=false
-java -classpath %CVSGRAB_HOME%\lib\cvsgrab.jar %LOG_ARGS% net.sourceforge.cvsgrab.CVSGrab %ANT_CMD_LINE_ARGS%
+java -classpath "%CVSGRAB_HOME%\lib\cvsgrab.jar" %LOG_ARGS% net.sourceforge.cvsgrab.CVSGrab %ANT_CMD_LINE_ARGS%
 
 if not "%OS%"=="Windows_NT" goto end
 @endlocal
