@@ -20,8 +20,8 @@ public class CVSGrabTask extends Task {
 
     private String rootUrl;
     private String destDir;
-    private String cvsHost = "";
-    private String cvsRoot = "";
+    private String cvsHost = "dummyHost";
+    private String cvsRoot = "dummyRoot";
     private String cvsUser = "anonymous";
     private String packageName;
     private String tag = null;
