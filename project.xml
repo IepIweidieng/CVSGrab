@@ -12,7 +12,7 @@
   
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-  <currentVersion>2.0-alpha</currentVersion>
+  <currentVersion>2.0-beta</currentVersion>
   
   <!-- details about the organization that 'owns' the project -->
   <organization>
@@ -68,6 +68,17 @@
       </roles>
     </developer>
   </developers>
+
+  <contributors>
+    <contributor>
+      <name>Joe</name>
+      <email>Joe at users.sourceforge.net</email>
+      <organization></organization>
+      <roles>
+        <role>Contribute the thread pool used for simultaneous downloads.</role>
+      </roles>
+    </contributor>
+  </contributors>
 
   <!-- jar files the project is dependent on -->
   <dependencies>
@@ -154,6 +165,14 @@
     </resources>
   </build>
 
+  <reports>
+    <report>maven-changes-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-junit-report-plugin</report>
+    <report>maven-tasklist-plugin</report>
+    <report>maven-faq-plugin</report>
+    <report>maven-linkcheck-plugin</report>
+  </reports>
 
 </project>
 

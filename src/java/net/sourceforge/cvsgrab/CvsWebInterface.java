@@ -1,7 +1,7 @@
 /*
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
- * Distributable under LGPL license.
+ * Distributable under BSD license.
  * See terms of license at gnu.org.
  */
 package net.sourceforge.cvsgrab;
@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
  */
 public abstract class CvsWebInterface {
     
-    private static CvsWebInterface[] webInterfaces = new CvsWebInterface[] {
+    private static CvsWebInterface[] _webInterfaces = new CvsWebInterface[] {
         new ViewCvs0_7Interface(),  
         new ViewCvs0_8Interface(),  
         new ViewCvs0_9Interface(),  
@@ -36,10 +36,10 @@ public abstract class CvsWebInterface {
      * @return the cvs web interface that matches best this page
      */
     public static CvsWebInterface findInterface(Document htmlPage) {
-        for (int i = 0; i < webInterfaces.length; i++) {
+        for (int i = 0; i < _webInterfaces.length; i++) {
             try {
-                webInterfaces[i].init(htmlPage);
-                return webInterfaces[i];
+                _webInterfaces[i].init(htmlPage);
+                return _webInterfaces[i];
             } catch (Exception ex) {
                 // ignore
             }
@@ -47,7 +47,7 @@ public abstract class CvsWebInterface {
         return null;
     } 
 
-    private String versionTag;
+    private String _versionTag;
     
     /**
      * Constructor for CvsWebInterface
@@ -61,7 +61,7 @@ public abstract class CvsWebInterface {
      * @return the version tag
      */
     public String getVersionTag() {
-        return versionTag;
+        return _versionTag;
     }
 
     /**
@@ -69,7 +69,7 @@ public abstract class CvsWebInterface {
      * @param versionTag
      */
     public void setVersionTag(String versionTag) {
-        this.versionTag = versionTag;
+        this._versionTag = versionTag;
     }
 
     public abstract void init(Document htmlPage) throws Exception; 

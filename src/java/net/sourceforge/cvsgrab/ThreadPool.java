@@ -20,10 +20,27 @@ import java.util.List;
  * Simple fized sized Thread Pool
  */
 public class ThreadPool {
-    private final boolean debugging = false;
-    private List allThreads = new ArrayList();
-    private List pool = new ArrayList();
-    private boolean stopped = false;
+    private static ThreadPool _instance;
+    private final boolean _debugging = false;
+    private List _allThreads = new ArrayList();
+    private List _pool = new ArrayList();
+    private boolean _stopped = false;
+    
+    /**
+     * Initialise the thread pool
+     * @param maxThreads The max number of threads
+     */
+    public static void init(int maxThreads) {
+        DefaultLogger.getInstance().info("Using up to " + maxThreads + " simultaneous connections to load files");
+        _instance = new ThreadPool(maxThreads);
+    }
+    
+    /**
+     * @return the singleton instance of the thread pool
+     */
+    public static ThreadPool getInstance() {
+        return _instance;
+    }
 
     /** 
      * Create a thread pool with max number of threads
@@ -32,8 +49,8 @@ public class ThreadPool {
         for (int i = 0; i < max; i++) {
             WorkerThread worker = new WorkerThread(i);
 
-            pool.add(worker);
-            allThreads.add(worker);
+            _pool.add(worker);
+            _allThreads.add(worker);
             worker.start();
         }
     }
@@ -44,12 +61,12 @@ public class ThreadPool {
      * The ThreadPool should not be used after invoking this method
      */
     public void destroy() {
-        stopped = true;
+        _stopped = true;
 
-        for (int i = 0; i < allThreads.size(); i++) {
-            WorkerThread wt = (WorkerThread) allThreads.get(i);
+        for (int i = 0; i < _allThreads.size(); i++) {
+            WorkerThread wt = (WorkerThread) _allThreads.get(i);
 
-            if (debugging) {
+            if (_debugging) {
                 System.err.println(Thread.currentThread().getName() + ".destroy: Killing " + wt.getName());
             }
 
@@ -63,14 +80,14 @@ public class ThreadPool {
     public void doTask(Runnable task) {
         WorkerThread worker = null;
 
-        synchronized (pool) {
-            while (pool.isEmpty()) {
-                if (stopped) {
+        synchronized (_pool) {
+            while (_pool.isEmpty()) {
+                if (_stopped) {
                     return;
                 }
 
                 try {
-                    pool.wait();
+                    _pool.wait();
                 } catch (InterruptedException ex) {
                     System.err.println(ex.getMessage());
 
@@ -78,7 +95,7 @@ public class ThreadPool {
                 }
             }
 
-            worker = (WorkerThread) pool.remove(0);
+            worker = (WorkerThread) _pool.remove(0);
         }
 
         worker.runTask(task);
@@ -109,17 +126,17 @@ public class ThreadPool {
         }
 
         public void run() {
-            if (debugging) {
+            if (_debugging) {
                 System.err.println(getName() + ".run: ->");
             }
 
             while (!stop) {
-                if (debugging) {
+                if (_debugging) {
                     System.err.println(getName() + ".run: Loop, task = " + task);
                 }
 
                 if (task == null) {
-                    if (debugging) {
+                    if (_debugging) {
                         System.err.println(getName() + ".run: Waiting for task ...");
                     }
 
@@ -130,18 +147,18 @@ public class ThreadPool {
                     } catch (InterruptedException ex) {
                     }
 
-                    if (debugging) {
+                    if (_debugging) {
                         System.err.println(getName() + ".run: Done waiting");
                     }
                 } else {
-                    if (debugging) {
+                    if (_debugging) {
                         System.err.println(getName() + ".run: Task = " + task);
                     }
 
                     try {
                         task.run();
 
-                        if (debugging) {
+                        if (_debugging) {
                             System.err.println(getName() + ".run: Done " + task);
                         }
                     } catch (Throwable t) {
@@ -150,22 +167,22 @@ public class ThreadPool {
 
                     task = null;
 
-                    if (stopped) {
-                        if (debugging) {
+                    if (_stopped) {
+                        if (_debugging) {
                             System.err.println(getName() + ".run: <- (Stopped)");
                         }
 
                         return;
                     }
 
-                    synchronized (pool) {
-                        pool.add(this);
-                        pool.notifyAll();
+                    synchronized (_pool) {
+                        _pool.add(this);
+                        _pool.notifyAll();
                     }
                 }
             }
 
-            if (debugging) {
+            if (_debugging) {
                 System.err.println(getName() + ".run: <-");
             }
         }

@@ -13,7 +13,7 @@
  		  <p>
   		    &lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /=""/&gt; <br/>
 		    &lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /&gt; <br/>
-		    &lt;taskdef name="cvsgrab" classname="net.sourceforge.cvsgrab.CVSGrabTask" classpath="${cvsgrab.dir}/lib/cvs-grab.jar;${cvsgrab.dir}/lib/hotsax.jar;${cvsgrab.dir}/lib/jcvsii-light.jar"/&gt;
+		    &lt;taskdef name="cvsgrab" classname="net.sourceforge.cvsgrab.CVSGrabTask" classpath="${cvsgrab.dir}/lib/cvsgrab.jar"/&gt;
 	      </p> 
  
 		  <section name="Parameters">
@@ -62,6 +62,11 @@
 		          <tr>
 		            <td valign="Top">pruneEmptyDirs</td>
 		            <td valign="Top">Prune (remove) the empty directories. Default is false</td>
+		            <td valign="Top">No.</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">connections</td>
+		            <td valign="Top">The number of simultaneous connections to open for downloads. Default is 1</td>
 		            <td valign="Top">No.</td>
 		          </tr>
 		      </table>

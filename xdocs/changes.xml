@@ -11,24 +11,15 @@
         <release version="2.1" date="planned features">
         
             <action dev="ludovicc" type="add">
-                TODO: open multiple connections to donwload files faster.
-            </action>
-        
-            <action dev="ludovicc" type="add">
                 TODO: add module support by parsing the CVSROOT/modules file.
             </action>
 
-            <action dev="ludovicc" type="add">
-                TODO: add support for local modified files: they should not be updated even if there is a more recent 
-                version on the remote repository.
-            </action>
-        
         </release>
 
         <release version="2.0" date="not released">
 
             <action dev="ludovicc" type="update">
-                TODO: change license from LGPL to BSD
+                change license from LGPL to BSD
             </action>
 
             <action dev="ludovicc" type="update">
@@ -36,7 +27,7 @@
             </action>
 
             <action dev="ludovicc" type="update">
-                TODO: replace jcvsii by NetBeans' cvsclient, license is more friendly and this is better designed and supported
+                replace jcvsii by NetBeans' cvsclient, license is more friendly and this is better designed and supported
             </action>
 
             <action dev="ludovicc" type="update">
@@ -45,11 +36,20 @@
             </action>
 
             <action dev="ludovicc" type="add">
+                open multiple connections to download files faster.
+            </action>
+        
+            <action dev="ludovicc" type="add">
                 Add support for authentification with NT credentials used on MS proxies.
             </action>
 
             <action dev="ludovicc" type="add">
                 Add support for authentification on the web server.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                add support for localy modified files: they should not be updated even if there is a more recent 
+                version on the remote repository.
             </action>
 
             <action dev="ludovicc" type="fix">

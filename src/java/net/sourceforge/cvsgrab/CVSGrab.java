@@ -1,7 +1,7 @@
 /*
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
- * Distributable under LGPL license.
+ * Distributable under BSD license.
  */
 package net.sourceforge.cvsgrab;
 
@@ -24,11 +24,13 @@ import org.w3c.dom.Document;
 
 public class CVSGrab {
     static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
-    private static final String VERSION = "2.0-alpha";
+    private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
+    private static final String VERSION = "2.0-beta";
 
-    private String dir = null;
-    private boolean verbose = true;
-    private boolean pruneEmptyDirs = false;
+    private String _dir = null;
+    private boolean _verbose = true;
+    private boolean _pruneEmptyDirs = false;
+    private boolean _error = false;
 
     /**
      * Constructor for the CVSGrab object
@@ -55,7 +57,7 @@ public class CVSGrab {
         String proxyPassword = null;
         String webUser = null;
         String webPassword = null;
-        int threads = 0;
+        int connections = 0;
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].toLowerCase().equals("-help")) {
@@ -132,9 +134,9 @@ public class CVSGrab {
                     webPassword = args[i + 1];
                     i++;
                 }
-            } else if (args[i].toLowerCase().equals("-threads")) {
+            } else if (args[i].toLowerCase().equals("-connections")) {
                 if (!args[i + 1].startsWith("-")) {
-                    threads = Integer.parseInt(args[i + 1]);
+                    connections = Integer.parseInt(args[i + 1]);
                     i++;
                 }
             }
@@ -161,6 +163,9 @@ public class CVSGrab {
         if (webUser != null) {
             WebBrowser.getInstance().useWebAuthentification(webUser, webPassword);
         }
+        if (connections > 0) {
+            ThreadPool.init(connections);
+        }
         grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsRoot);
     }
 
@@ -178,7 +183,7 @@ public class CVSGrab {
         System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain compatibility with a standard CVS client");
         System.out.println("\t-verbose true|false [optional] Verbosity. Default is verbose");
         System.out.println("\t-prune true|false [optional] Prune (remove) the empty directories. Default is false");
-        // TODO: System.out.println("\t-threads <nb of threads> [optional] The number of threads to use for simultaneous downloads");
+        System.out.println("\t-connections <nb of connections> [optional] The number of simultaneous connections to use for downloads, default 1");
         System.out.println("\t-proxyHost [optional] Proxy host");
         System.out.println("\t-proxyPort [optional] Proxy port");
         System.out.println("\t-proxyNTDomain [optional] NT Domain for the authentification on a MS proxy");
@@ -195,7 +200,7 @@ public class CVSGrab {
      * @return The pruneEmptyDirs value
      */
     public boolean getPruneEmptyDirs() {
-        return pruneEmptyDirs;
+        return _pruneEmptyDirs;
     }
 
     /**
@@ -204,7 +209,7 @@ public class CVSGrab {
      * @param value The new pruneEmptyDirs value
      */
     public void setPruneEmptyDirs(boolean value) {
-        pruneEmptyDirs = value;
+        _pruneEmptyDirs = value;
     }
 
     /**
@@ -237,22 +242,22 @@ public class CVSGrab {
     public void grabCVSRepository(String rootUrl, String destDir, String packageName, String tag, String cvsRoot) {
         DefaultLogger.getInstance().info("CVSGrab version " + VERSION + " stating...");
 
-        // check the parameters
-        File dd = new File(destDir);
-        if (!dd.exists()) {
-            throw new RuntimeException("Destination directory " + destDir + " doesn't exist");
-        }
-        if (!dd.isDirectory()) {
-            throw new RuntimeException("Destination " + destDir + " is not a directory");
-        }
         try {
-            destDir = dd.getCanonicalPath().replace(File.separatorChar, '/');
-        } catch (IOException ex) {
-            throw new IllegalArgumentException("Could not locate the destination directory " + destDir + ", error was " + ex.getMessage());
-        }
-        rootUrl = WebBrowser.forceFinalSlash(rootUrl);
+            // check the parameters
+            File dd = new File(destDir);
+            if (!dd.exists()) {
+                throw new RuntimeException("Destination directory " + destDir + " doesn't exist");
+            }
+            if (!dd.isDirectory()) {
+                throw new RuntimeException("Destination " + destDir + " is not a directory");
+            }
+            try {
+                destDir = dd.getCanonicalPath().replace(File.separatorChar, '/');
+            } catch (IOException ex) {
+                throw new IllegalArgumentException("Could not locate the destination directory " + destDir + ", error was " + ex.getMessage());
+            }
+            rootUrl = WebBrowser.forceFinalSlash(rootUrl);
 
-        try {
             // Auto detection of the type of the remote interface
             CvsWebInterface webInterface = null;
             try {
@@ -281,19 +286,15 @@ public class CVSGrab {
                 try {
                     remoteDir = remoteRepository.nextDirectoryToProcess();
                     remoteDir.loadContents();
-                    // TODO
-                    //if (handler.isPageFullyLoaded()) {
                     localRepository.cleanRemovedFiles(remoteDir);
-                    //} else {
-                    //    DefaultLogger.getInstance().warn("Could not load the full html content at " + remoteDir.getUrl() + ", open this page in a browser and if you don't find an obvious solution, report the problem to http://sourceforge.net/forum/forum.php?forum_id=174128");
-                    //}
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     DefaultLogger.getInstance().error("Error while getting files from " + remoteDir.getUrl());
+                    _error = true;
                 }
             }
-            if (pruneEmptyDirs) {
-                localRepository.pruneEmptyDirs();
+            if (_pruneEmptyDirs) {
+                localRepository.pruneEmptyDirectories();
             }
 
             // Print a summary
@@ -313,9 +314,15 @@ public class CVSGrab {
             if (failedUpdateCount > 0) {
                 DefaultLogger.getInstance().error(failedUpdateCount + " files");
             }
-        } catch (IOException ex) {
-            DefaultLogger.getInstance().error("Could not initialise cvsgrab because the CVS admin files are corrupted");
+        } catch (Exception ex) {
             ex.printStackTrace();
+            DefaultLogger.getInstance().error(ex.getMessage());
+            _error = true;
+        }
+        
+        if (_error) {
+            DefaultLogger.getInstance().error("There were some errors.");
+            DefaultLogger.getInstance().error("If you cannot find an obvious answer, report the problem to " + FORUM_URL);
         }
     }
 

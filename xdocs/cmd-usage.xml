@@ -7,6 +7,16 @@
 	<body>
 		<section name="Command line usage">
 		  <p>
+			From the command line, use cvsgrab.bat or cvsgrab.sh to run it. <br/>
+			Type cvsgrab -help to get help
+		  </p>
+		  <p>
+		    Sample use: <br/>
+		    cvsgrab -rootUrl http://cvs.picocontainer.codehaus.org/viewcvs.cgi/ -package pico -destDir c:/tmp 
+		  </p>
+		  <p>	
+			You may need to define the CVSGRAB_HOME environment property if you want to call cvsgrab.bat from any location. <br/>
+			It works like the ANT_HOME or JAVA_HOME property: put in CVSGRAB_HOME the location of your CVSGrab installation.
 		  </p>
 		</section>
 	</body>

@@ -34,7 +34,7 @@ shift
 goto setupArgs
 
 :doneStart
-java -classpath %CVSGRAB_HOME%\lib\hotsax.jar;%CVSGRAB_HOME%\lib\jcvsii-light.jar;%CVSGRAB_HOME%\lib\cvs-grab.jar net.sourceforge.cvsgrab.CVSGrab %ANT_CMD_LINE_ARGS%
+java -classpath %CVSGRAB_HOME%\lib\cvsgrab.jar net.sourceforge.cvsgrab.CVSGrab %ANT_CMD_LINE_ARGS%
 
 if not "%OS%"=="Windows_NT" goto end
 @endlocal

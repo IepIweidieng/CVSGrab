@@ -1,7 +1,7 @@
 /*
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
- * Distributable under LGPL license.
+ * Distributable under BSD license.
  * See terms of license at gnu.org.
  */
 package net.sourceforge.cvsgrab;
@@ -15,8 +15,8 @@ package net.sourceforge.cvsgrab;
 public class DefaultLogger implements Logger {
     
     private static Logger _instance = new DefaultLogger();
-    private boolean verbose;
-    private boolean debug;
+    private boolean _verbose;
+    private boolean _debug;
     
     /**
      * @return the singleton instance
@@ -42,7 +42,7 @@ public class DefaultLogger implements Logger {
      * @param value The new debug value
      */
     public void setDebug(boolean value) {
-        debug = value;
+        _debug = value;
     }
 
     /**
@@ -51,7 +51,7 @@ public class DefaultLogger implements Logger {
      * @param value The new verbose value
      */
     public void setVerbose(boolean value) {
-        this.verbose = value;
+        this._verbose = value;
     }
 
     /**
@@ -60,7 +60,7 @@ public class DefaultLogger implements Logger {
      * @param msg Description of the Parameter
      */
     public void debug(String msg) {
-        if (debug) {
+        if (_debug) {
             System.out.println("[debug]" + msg);
         }
     }
@@ -71,7 +71,7 @@ public class DefaultLogger implements Logger {
      * @param msg The message
      */
     public void verbose(String msg) {
-        if (verbose) {
+        if (_verbose) {
             System.out.println(msg);
         }
     }
