@@ -1,7 +1,8 @@
-1.2
+1.2	Maintenance release
 - added the date in the cvs entries
 - made update more robust when there is an upload that failed (failed uploads don't get their version updated)
 - defined CVSGRAB_HOME, used to run cvsgrab.bat from any location
+- bugfixes, in particular on the pruneEmptyDirs functionality
 
 1.1     Maintenance release
 - package rename: from cvsgrab to net.sourceforge.cvsgrab
