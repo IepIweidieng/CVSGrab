@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+
+<project name="Update" default="daily" basedir="..">
+
+  <target name="init">
+    <property name="destDir" value="d:/dev" />
+    <!--property name="xdoclet.tag" value="MODULE_REFACTORING_BRANCH" /-->
+    <property name="xdoclet.tag" value="" />
+    <taskdef name="cvsgrab" classname="net.sourceforge.cvsgrab.CVSGrabTask" classpath="lib/cvs-grab.jar;lib/hotsax.jar;lib/jcvsii-light.jar"/>
+  </target>
+
+  <target name="hotsax.update" depends="init">
+      <cvsgrab destdir="${destDir}"
+               rootUrl="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/hotsax/"
+	       package="HotSAX"
+               cvsHost="cvs.hotsax.sourceforge.net"
+               cvsRoot="/cvsroot/hotsax"
+               verbose="true" />
+  </target>
+
+  <target name="hotsax.build" depends="init">
+      <exec dir="${destDir}/HotSAX" executable="build.bat" output="hotsax-build.log" vmlauncher="false" />
+  </target>
+
+  <target name="hotsax" depends="hotsax.update,hotsax.build" />
+
+  <target name="xjavadoc.update" depends="init">
+      <cvsgrab destdir="${destDir}/XDoclet"
+               rootUrl="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/xdoclet/"
+               cvsHost="cvs.xdoclet.sourceforge.net"
+               cvsRoot="/cvsroot"
+               package="xjavadoc" 
+               verbose="true" />
+  </target>
+
+  <target name="xjavadoc.build" depends="init">
+      <exec dir="${destDir}/XDoclet/xjavadoc" executable="build.bat" output="xjavadoc-build.log" vmlauncher="false" />
+  </target>
+
+  <target name="xjavadoc" depends="xjavadoc.update,xjavadoc.build" />
+
+  <target name="xdoclet.update" depends="init">
+      <cvsgrab destdir="${destDir}/XDoclet"
+               rootUrl="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/xdoclet/"
+               cvsHost="cvs.xdoclet.sourceforge.net"
+               cvsRoot="/cvsroot"
+               package="xdoclet"
+               tag="${xdoclet.tag}"
+               verbose="true" />
+  </target>
+
+  <target name="xdoclet.build" depends="init">
+      <exec dir="${destDir}/XDoclet/xdoclet/core/script" executable="build.bat" output="xdoclet-build.log" vmlauncher="false" />
+  </target>
+
+  <target name="xdoclet" depends="xdoclet.update,xdoclet.build" />
+
+  <target name="xdocletgui.update" depends="init">
+      <cvsgrab destdir="${destDir}/XDoclet"
+               rootUrl="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/xdoclet/"
+               cvsHost="cvs.xdoclet.sourceforge.net"
+               cvsRoot="/cvsroot"
+               package="xdocletgui"
+               verbose="true" />
+  </target>
+
+  <target name="xdocletgui.build" depends="init">
+      <exec dir="${destDir}/XDoclet/xdocletgui" executable="build.bat" output="xdocletgui-build.log" vmlauncher="false">
+         <arg value="jar" />
+      </exec>
+  </target>
+
+  <target name="xdocletgui" depends="xdocletgui.update,xdocletgui.build" />
+
+  <target name="middlegen.update" depends="init">
+      <cvsgrab destdir="${destDir}"
+               rootUrl="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/middlegen/"
+               cvsHost="cvs.xdoclet.sourceforge.net"
+               cvsRoot="/cvsroot"
+               package="middlegen"
+               verbose="true" />
+  </target>
+
+  <target name="middlegen.build" depends="init">
+      <exec dir="${destDir}/Middlegen" executable="build.bat" output="middlegen-build.log" vmlauncher="false" />
+  </target>
+
+  <target name="middlegen" depends="middlegen.update,middlegen.build" />
+
+  <target name="ant.update" depends="init">
+      <cvsgrab destdir="${destDir}"
+               rootUrl="http://cvs.apache.org/viewcvs/"
+               cvsHost="cvs.apache.org"
+               cvsRoot="/cvsroot"
+               package="jakarta-ant"
+               verbose="true" />
+               <!-- localpackage="ant" --> 
+  </target>
+
+  <target name="ant.build" depends="init">
+      <exec dir="${destDir}/jakarta-ant" executable="build.bat" output="ant-build.log" vmlauncher="false" />
+  </target>
+
+  <target name="ant" depends="ant.update,ant.build" />
+
+  <target name="antidote.update" depends="init">
+      <cvsgrab destdir="${destDir}"
+               rootUrl="http://cvs.apache.org/viewcvs/"
+               cvsHost="cvs.apache.org"
+               cvsRoot="/cvsroot"
+               package="jakarta-ant-antidote" 
+               verbose="true" />
+               <!-- localpackage="antidote" --> 
+  </target>
+
+  <target name="antidote" depends="antidote.update" />
+
+  <target name="xdoclet-all" depends="xjavadoc,xdoclet,xdocletgui" />
+  <target name="all" depends="hotsax,xdoclet-all,middlegen,ant,antidote" />
+  <target name="daily" depends="xdoclet-all,middlegen" />
+
+</project>

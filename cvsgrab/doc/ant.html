@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+  <body>
+<h1>cvsgrab task</h1>
+ 
+<p>Reads a CVS repository via its ViewCVS web interface, thus avoiding any
+firewall problems. </p>
+ 
+<p>Install the cvsgrab task in Ant by using the following: </p>
+<pre><property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /=""></property>&lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /&gt;<br>&lt;taskdef name="cvsgrab" classname="cvsgrab.CVSGrabTask" classpath="{cvsgrab.dir}/lib/cvs-grab.jar;{cvsgrab.dir}/lib/hotsax.jar;{cvsgrab.dir}/lib/jcvsii-light.jar"/&gt;<br>
+</pre>
+<table>
+  <tbody>
+    <tr>
+      <td valign="Top"><b>Attribute</b></td>
+     <td valign="Top"><b>Description</b></td>
+     <td valign="Top" align="Center"><b>Required</b></td>
+   </tr>
+   <tr>
+     <td valign="Top">destdir</td>
+     <td valign="Top">The destination directory for the files retrieved from
+CVS</td>
+     <td valign="Top" align="Center">Yes</td>
+   </tr>
+   <tr>
+     <td valign="Top">rootUrl</td>
+     <td valign="Top">The root url for the ViewCVS repository. <br>
+       Example: http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/hotsax/</td>
+     <td valign="Top" align="Center">Yes.</td>
+   </tr>
+   <tr>
+     <td valign="Top">package</td>
+     <td valign="Top">The package/module of the repository to download</td>
+     <td valign="Top" align="Center">Yes.</td>
+   </tr>
+   <tr>
+     <td valign="Top">tag</td>
+     <td valign="Top">The version tag of the files to download. <br>
+        Example: BRANCH_3_0     </td>
+     <td valign="Top" align="Center">No.</td>
+   </tr>
+   <tr>
+     <td valign="Top">cvshost</td>
+     <td valign="Top">The original cvs host, used to maintain compatibility
+with a standard CVS client.</td>
+     <td valign="Top" align="Center">No.</td>
+   </tr>
+   <tr>
+     <td valign="Top">cvsroot</td>
+     <td valign="Top">The original cvs root, used to maintain compatibility
+with a standard CVS client.</td>
+     <td valign="Top" align="Center">No.</td>
+   </tr>
+   <tr>
+     <td valign="Top">verbose</td>
+     <td valign="Top">Verbosity. Default is verbose. Values are true or false</td>
+     <td valign="Top" align="Center">No.</td>
+   </tr>
+ 
+  </tbody>
+</table>
+ 
+</body>
+</html>

@@ -1,0 +1,2 @@
+Main-Class: cvsgrab.CVSGrab
+Class-Path: hotsax.jar jcvsii-light.jar

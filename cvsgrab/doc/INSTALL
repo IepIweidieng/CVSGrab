@@ -1,0 +1,11 @@
+
+Step 1: Install Java version 1.2 or better on your computer (from http://java.sun.com/j2se/1.4/download.html, select the JRE dowload for your computer)
+
+Step 2: Set the JAVA_HOME environment variable to your java installation directory
+
+Step 3: Unzip cvsgrab_v1.0.zip or cvsgrab_v1.0.tar
+
+To run cvsgrab, from the command line do:
+cd <cvsgrab install dir>
+cvsgrab <options>
+
