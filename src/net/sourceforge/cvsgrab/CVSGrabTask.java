@@ -26,6 +26,7 @@ public class CVSGrabTask extends Task {
     private String packageName;
     private String tag = null;
     private boolean verbose = true;
+    private HttpProxy proxy = null;
 
     /**
      * Constructor for the CVSGrabTask object
@@ -105,6 +106,16 @@ public class CVSGrabTask extends Task {
     }
 
     /**
+     * Description of the Method
+     *
+     * @return Description of the Return Value
+     */
+    public HttpProxy createProxy() {
+        proxy = new HttpProxy();
+        return proxy;
+    }
+
+    /**
      * Execute the task
      *
      * @exception BuildException when an error occured in the build
@@ -124,7 +135,73 @@ public class CVSGrabTask extends Task {
         log.setVerbose(verbose);
         CVSGrab grabber = new CVSGrab();
         grabber.setLog(log);
+        if (proxy != null) {
+            proxy.setup(grabber);
+        }
         grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsUser, cvsHost, cvsRoot);
+    }
+
+    /**
+     * Proxy for http connections
+     *
+     * @author lclaude
+     * @created May 14, 2002
+     */
+    public class HttpProxy {
+        private String host = null;
+        private int port = 0;
+        private String user = null;
+        private String password = null;
+
+        /**
+         * Setup the proxy
+         *
+         * @param grabber Description of the Parameter
+         * @throws BuildException Description of the Exception
+         */
+        public void setup(CVSGrab grabber) throws BuildException {
+            if (host != null && port == 0) {
+                throw new BuildException("port argument is not specified in the proxy");
+            }
+            grabber.useProxy(host, port, user, password);
+        }
+
+        /**
+         * Sets the host
+         *
+         * @param value The new host value
+         */
+        public void setHost(String value) {
+            host = value;
+        }
+
+        /**
+         * Sets the port
+         *
+         * @param value The new port value
+         */
+        public void setPort(int value) {
+            port = value;
+        }
+
+        /**
+         * Sets the username
+         *
+         * @param value The new username value
+         */
+        public void setUsername(String value) {
+            user = value;
+        }
+
+        /**
+         * Sets the password
+         *
+         * @param value The new password value
+         */
+        public void setPassword(String value) {
+            password = value;
+        }
+
     }
 
     /**

@@ -11,6 +11,7 @@ firewall problems. </p>
 <p>Install the cvsgrab task in Ant by using the following: </p>
 <pre><property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /=""></property>&lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /&gt;<br>&lt;taskdef name="cvsgrab" classname="cvsgrab.CVSGrabTask" classpath="{cvsgrab.dir}/lib/cvs-grab.jar;{cvsgrab.dir}/lib/hotsax.jar;{cvsgrab.dir}/lib/jcvsii-light.jar"/&gt;<br>
 </pre>
+<h2>Parameters</h2>
 <table>
   <tbody>
     <tr>
@@ -61,6 +62,41 @@ with a standard CVS client.</td>
  
   </tbody>
 </table>
+
+<h2>Nexted Elements</h2>
+<h3>proxy</h3>
+Optional. To configure how to use a proxy if you are behind a firewall that uses proxies. <br>
+Usually, it solves the 404 and 407 errors you may encounter.
+<table>
+  <tbody>
+    <tr>
+      <td valign="Top"><b>Attribute</b></td>
+     <td valign="Top"><b>Description</b></td>
+     <td valign="Top" align="Center"><b>Required</b></td>
+   </tr>
+   <tr>
+     <td valign="Top">host</td>
+     <td valign="Top">The host name for the proxy</td>
+     <td valign="Top" align="Center">Yes.</td>
+   </tr>
+   <tr>
+     <td valign="Top">port</td>
+     <td valign="Top">The port of the proxy.</td>
+     <td valign="Top" align="Center">Yes.</td>
+   </tr>
+   <tr>
+     <td valign="Top">username</td>
+     <td valign="Top">The username to login in the proxy</td>
+     <td valign="Top" align="Center">No.</td>
+   </tr>
+   <tr>
+     <td valign="Top">password</td>
+     <td valign="Top">The password used to login in the proxy</td>
+     <td valign="Top" align="Center">No.</td>
+   </tr>
  
+  </tbody>
+</table>
+
 </body>
 </html>

@@ -6,6 +6,8 @@
 package net.sourceforge.cvsgrab;
 
 import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import com.ice.cvsc.*;
 import hotsax.html.sax.*;
 
@@ -47,6 +49,10 @@ public class CVSGrab {
         String cvsRoot = "";
         String cvsUser = "anonymous";
         String verbose = "true";
+        String proxyHost = null;
+        int proxyPort = 0;
+        String proxyUser = null;
+        String proxyPassword = null;
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].toLowerCase().equals("-help")) {
@@ -93,20 +99,46 @@ public class CVSGrab {
                     verbose = args[i + 1];
                     i++;
                 }
+            } else if (args[i].toLowerCase().equals("-proxyhost")) {
+                if (!args[i + 1].startsWith("-")) {
+                    proxyHost = args[i + 1];
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-proxyport")) {
+                if (!args[i + 1].startsWith("-")) {
+                    proxyPort = Integer.parseInt(args[i + 1]);
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-proxyuser")) {
+                if (!args[i + 1].startsWith("-")) {
+                    proxyUser = args[i + 1];
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-proxypassword")) {
+                if (!args[i + 1].startsWith("-")) {
+                    proxyPassword = args[i + 1];
+                    i++;
+                }
             }
         }
         if (rootUrl == null || destDir == null || packageName == null) {
-            if (rootUrl == null)
+            if (rootUrl == null) {
                 System.out.println("Error: rootUrl parameter is mandatory");
-            if (destDir == null)
+            }
+            if (destDir == null) {
                 System.out.println("Error: destDir parameter is mandatory");
-            if (packageName == null)
+            }
+            if (packageName == null) {
                 System.out.println("Error: package parameter is mandatory");
+            }
             printHelp();
             return;
         }
         CVSGrab grabber = new CVSGrab();
         grabber.getLog().setVerbose(verbose.toLowerCase().equals("true"));
+        if (proxyHost != null) {
+            grabber.useProxy(proxyHost, proxyPort, proxyUser, proxyPassword);
+        }
         grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsUser, cvsHost, cvsRoot);
     }
 
@@ -124,6 +156,10 @@ public class CVSGrab {
         System.out.println("\t-cvsHost <cvs host> [optional] The original cvs host, used to maintain compatibility with a standard CVS client");
         System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain compatibility with a standard CVS client");
         System.out.println("\t-verbose true|false [optional] Verbosity. Default is verbose");
+        System.out.println("\t-proxyHost [optional] Proxy host");
+        System.out.println("\t-proxyPort [optional] Proxy port");
+        System.out.println("\t-proxyUser [optional] Username for the proxy");
+        System.out.println("\t-proxyPassword [optional] Password for the proxy");
         System.out.println("Copyright (c) 2002 - Ludovic Claude.");
     }
 
@@ -143,6 +179,27 @@ public class CVSGrab {
      */
     public void setLog(Logger value) {
         log = value;
+    }
+
+    /**
+     * Use a proxy to bypass the firewall
+     *
+     * @param proxyHost Host of the proxy
+     * @param proxyPort Port of the proxy
+     * @param userName Username (if authentification is required), or null
+     * @param password Password (if authentification is required), or null
+     */
+    public void useProxy(String proxyHost, int proxyPort, final String userName, final String password) {
+        System.setProperty("http.proxyHost", proxyHost);
+        System.setProperty("http.proxyPort", String.valueOf(proxyPort));
+        if (userName != null) {
+            Authenticator.setDefault(
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(userName, password == null ? new char[0] : password.toCharArray());
+                    }
+                });
+        }
     }
 
     /**
@@ -167,7 +224,8 @@ public class CVSGrab {
      * @param destDir Destination directory for the files to be retrieved from
      *      the repository
      * @param packageName Name of the package/module to update from CVS
-     * @param tag The name of the tagged version of the files to retrieve, or null
+     * @param tag The name of the tagged version of the files to retrieve, or
+     *      null
      * @param cvsHost The cvs host. This is used by CVSGrab only to rebuild the
      *      CVS admin files that may be used later by a standard CVS client.
      * @param cvsRoot The cvs root. This is used by CVSGrab only to rebuild the
@@ -203,8 +261,9 @@ public class CVSGrab {
             try {
                 rDir = remoteRepository.nextDirectoryToProcess();
                 String rDirUrl = rDir.getUrl();
-                if (tag != null && !tag.equals(""))
+                if (tag != null && !tag.equals("")) {
                     rDirUrl += "?only_with_tag=" + tag;
+                }
                 log.debug("Parsing page: " + rDirUrl);
                 handler.setCurrentRemoteDirectory(rDir);
                 parser.parse(rDirUrl);

@@ -123,6 +123,9 @@ public class LocalRepository {
         if (repo.endsWith("/")) {
             repo = repo.substring(0, repo.length() - 1);
         }
+        if (repo.startsWith("/")) {
+            repo = repo.substring(1);
+        }
         return repo;
     }
 
