@@ -4,6 +4,12 @@ if not "%OS%"=="Windows_NT" goto win9xStart
 :winNTStart
 @setlocal
 
+rem %~dp0 is name of current script under NT
+set DEFAULT_CVSGRAB_HOME=%~dp0
+
+if "%CVSGRAB_HOME%"=="" set CVSGRAB_HOME=%DEFAULT_CVSGRAB_HOME%
+set DEFAULT_CVSGRAB_HOME=
+
 rem Need to check if we are using the 4NT shell...
 if "%@eval[2+2]" == "4" goto setup4NT
 
@@ -28,8 +34,7 @@ shift
 goto setupArgs
 
 :doneStart
-
-java -classpath lib\hotsax.jar;lib\jcvsii-light.jar;lib\cvs-grab.jar net.sourceforge.cvsgrab.CVSGrab %ANT_CMD_LINE_ARGS%
+java -classpath %CVSGRAB_HOME%\lib\hotsax.jar;%CVSGRAB_HOME%\lib\jcvsii-light.jar;%CVSGRAB_HOME%\lib\cvs-grab.jar net.sourceforge.cvsgrab.CVSGrab %ANT_CMD_LINE_ARGS%
 
 if not "%OS%"=="Windows_NT" goto end
 @endlocal
