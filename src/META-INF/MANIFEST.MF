@@ -1,2 +1,2 @@
-Main-Class: cvsgrab.CVSGrab
+Main-Class: net.sourceforge.cvsgrab.CVSGrab
 Class-Path: hotsax.jar jcvsii-light.jar
