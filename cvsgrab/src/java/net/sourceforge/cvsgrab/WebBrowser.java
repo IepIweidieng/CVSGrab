@@ -16,6 +16,8 @@ import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import net.sourceforge.cvsgrab.util.*;
+
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
@@ -34,6 +36,8 @@ import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
 /**
+ * Emulates a web browser
+ *  
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 11 oct. 2003
@@ -102,9 +106,9 @@ public class WebBrowser {
      */
     public WebBrowser() {
         super();
+        CookiePolicy.setDefaultPolicy(CookiePolicy.COMPATIBILITY);
         _client = new HttpClient(new MultiThreadedHttpConnectionManager());
         _parser = new DOMParser();
-        CookiePolicy.setDefaultPolicy(CookiePolicy.COMPATIBILITY);
         try {
             _parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
         } catch (SAXNotRecognizedException e) {
@@ -123,19 +127,27 @@ public class WebBrowser {
      * @param userName Username (if authentification is required), or null
      * @param password Password (if authentification is required), or null
      */
-    public void useProxy(String proxyHost, int proxyPort, final String ntDomain, final String userName, final String password) {
+    public void useProxy(String proxyHost, int proxyPort, final String ntDomain, final String userName, String password) {
         DefaultLogger.getInstance().info("Using proxy " + proxyHost + ":" + proxyPort);
         _client.getHostConfiguration().setProxy(proxyHost, proxyPort);
         if (userName != null) {
+            if (password == null ) {
+                PasswordField pwdField = new PasswordField();
+                try {
+                    password = pwdField.getPassword("Enter the password for the proxy: ");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
             if (ntDomain == null) {
-                DefaultLogger.getInstance().info("Login on the proxy with user name " + userName + " and password " + password);
+                DefaultLogger.getInstance().info("Login on the proxy with user name " + userName);
                 _client.getState().setProxyCredentials(null, proxyHost,
                     new UsernamePasswordCredentials(userName, password));
             } else {
                 try {
                     String host = InetAddress.getLocalHost().getHostName();
-                    DefaultLogger.getInstance().info("Login on the NT proxy with user name " + userName + ", password " 
-                            + password + ", host " + host + ", NT domain " + ntDomain);
+                    DefaultLogger.getInstance().info("Login on the NT proxy with user name " + userName
+                            + ", host " + host + ", NT domain " + ntDomain);
                     _client.getState().setProxyCredentials(null, proxyHost,
                         new NTCredentials(userName, password, host, ntDomain));
                 } catch (UnknownHostException ex) {
@@ -151,8 +163,16 @@ public class WebBrowser {
      * @param userName The username to use on the web server
      * @param password The password to use on the web server
      */
-    public void useWebAuthentification(final String userName, final String password) {
+    public void useWebAuthentification(final String userName, String password) {
         DefaultLogger.getInstance().info("Login on the web server with user name " + userName + " and password " + password);
+        if (password == null ) {
+            PasswordField pwdField = new PasswordField();
+            try {
+                password = pwdField.getPassword("Enter the password for the web server: ");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
         _client.getState().setCredentials(null, null,
           new UsernamePasswordCredentials(userName, password));
     }  

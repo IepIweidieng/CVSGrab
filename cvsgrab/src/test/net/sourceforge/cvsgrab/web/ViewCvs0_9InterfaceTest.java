@@ -86,7 +86,7 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
     
     public void testGetDownloadUrl() throws Exception {
         RemoteRepository repository = new RemoteRepository("http://cvs.apache.org/viewcvs/", null);
-        RemoteDirectory dir = new RemoteDirectory(repository, "jakarta-log4j");
+        RemoteDirectory dir = new RemoteDirectory(repository, "jakarta-log4j", "log4j");
         RemoteFile file = new RemoteFile("INSTALL", "1.14");
         file.setDirectory(dir);
         file.setInAttic(false);

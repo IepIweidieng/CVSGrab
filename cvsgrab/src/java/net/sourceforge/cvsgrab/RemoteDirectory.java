@@ -9,6 +9,8 @@ package net.sourceforge.cvsgrab;
 
 import java.util.Vector;
 
+import net.sourceforge.cvsgrab.util.*;
+
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.w3c.dom.Document;
 
@@ -21,19 +23,33 @@ import org.w3c.dom.Document;
  */
 
 public class RemoteDirectory {
-    private String _dirName;
     private Vector _remoteFiles = new Vector();
     private RemoteRepository _remoteRepository;
+    private String _dirPath;
+    private String _localDir;
 
     /**
      * Constructor for the RemoteDirectory object
      *
-     * @param dirName The name of the directory
      * @param repository The repository
+     * @param dirPath The name of the directory
+     * @param localDir The local name of the directory
      */
-    public RemoteDirectory(RemoteRepository repository, String dirName) {
+    public RemoteDirectory(RemoteRepository repository, String dirPath, String localDir) {
         _remoteRepository = repository;
-        _dirName = dirName;
+        _dirPath = WebBrowser.forceFinalSlash(dirPath);
+        _localDir = WebBrowser.forceFinalSlash(localDir);
+    }
+
+    /**
+     * Constructor for RemoteDirectory
+     * @param parentDirectory The parent directory
+     * @param name The name of the directory
+     */
+    public RemoteDirectory(RemoteDirectory parentDirectory, String name) {
+        _remoteRepository = parentDirectory.getRemoteRepository();
+        _dirPath = WebBrowser.forceFinalSlash(parentDirectory.getDirectoryPath() + name);
+        _localDir = WebBrowser.forceFinalSlash(parentDirectory.getLocalDir() + name);
     }
 
     /**
@@ -42,16 +58,23 @@ public class RemoteDirectory {
      * @return The url value
      */
     public String getUrl() {
-        return _remoteRepository.getDirectoryUrl(_dirName);
+        return _remoteRepository.getDirectoryUrl(_dirPath);
     }
 
     /**
-     * Gets the directory name
+     * Gets the directory path
      *
-     * @return The directory name
+     * @return The directory path
      */
-    public String getDirectoryName() {
-        return _dirName;
+    public String getDirectoryPath() {
+        return _dirPath;
+    }
+
+    /**
+     * @return the local name of the directory.
+     */
+    public String getLocalDir() {
+        return _localDir;
     }
 
     /**
@@ -64,25 +87,25 @@ public class RemoteDirectory {
     }
 
     /**
-     * @return
+     * @return the remote repository
      */
     public RemoteRepository getRemoteRepository() {
         return _remoteRepository;
     }
 
     /**
-     * Description of the Method
+     * Registers the remote file in this directory
      *
-     * @param file Description of the Parameter
+     * @param file The remote file to register
      */
     public void registerRemoteFile(RemoteFile file) {
         _remoteFiles.add(file);
     }
 
     /**
-     * Description of the Method
+     * Unregisters the remote file
      *
-     * @param file Description of the Parameter
+     * @param file The remote file to unrgister 
      */
     public void unregisterRemoteFile(RemoteFile file) {
         _remoteFiles.remove(file);
@@ -103,8 +126,7 @@ public class RemoteDirectory {
         }
         String[] directories = _remoteRepository.getWebInterface().getDirectories(doc);
         for (int i = 0; i < directories.length; i++) {
-            String subDir = WebBrowser.forceFinalSlash(_dirName) + directories[i];
-            _remoteRepository.registerDirectoryToProcess(subDir);
+            _remoteRepository.registerDirectoryToProcess(new RemoteDirectory(this, directories[i]));
         }
     }
     

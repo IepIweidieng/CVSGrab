@@ -12,7 +12,7 @@
 		  </p>
 		  <p>
 		    Sample use: <br/>
-		    cvsgrab -rootUrl http://cvs.picocontainer.codehaus.org/viewcvs.cgi/ -package pico -destDir c:/tmp 
+		    cvsgrab -rootUrl http://cvs.picocontainer.codehaus.org/viewcvs.cgi/ -packagePath pico -destDir c:/tmp 
 		  </p>
 		  <p>	
 			You may need to define the CVSGRAB_HOME environment property if you want to call cvsgrab.bat from any location. <br/>

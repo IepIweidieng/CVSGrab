@@ -8,6 +8,9 @@ package net.sourceforge.cvsgrab;
 
 import java.io.*;
 import java.util.*;
+
+import net.sourceforge.cvsgrab.util.*;
+
 import org.netbeans.lib.cvsclient.admin.*;
 import org.netbeans.lib.cvsclient.command.GlobalOptions;
 
@@ -72,7 +75,7 @@ public class LocalRepository {
      * @return The local directory
      */
     public File getLocalDir(RemoteDirectory remoteDir) {
-        return new File(getLocalRootDir(), remoteDir.getDirectoryName());
+        return new File(getLocalRootDir(), remoteDir.getLocalDir());
     }
     
     /**
@@ -152,6 +155,7 @@ public class LocalRepository {
                         if (fileLastModified.after(entry.getLastModified())) {
                             DefaultLogger.getInstance().info("File " + file + " was modified since last update, cannot upload the new version of this file");
                             needUpdate = false;
+                            _failedUpdates++;
                         }
                     }
                 }
@@ -188,10 +192,11 @@ public class LocalRepository {
         }
         
         String localDirectory = WebBrowser.removeFinalSlash(dir.getAbsolutePath());
-        String repositoryPath = remoteFile.getDirectory().getDirectoryName();
+        String repositoryPath = remoteFile.getDirectory().getDirectoryPath();
         try {
             _handler.updateAdminData(localDirectory, repositoryPath, entry, _globalOptions);
         } catch (IOException ex) {
+            _failedUpdates++;
             ex.printStackTrace();
             DefaultLogger.getInstance().error("Cannot update CVS entry for file " + file);
             throw new RuntimeException("Cannot update CVS entry for file " + file);
@@ -248,10 +253,11 @@ public class LocalRepository {
                 String fileName = (String) i.next();
                 File file = new File(getLocalDir(remoteDirectory), fileName);
                 DefaultLogger.getInstance().verbose("Removing " + file);
-                file.delete();
                 _handler.removeEntry(file);
+                file.delete();
             }
         } catch (IOException ex) {
+            _failedUpdates++;
             ex.printStackTrace();
             DefaultLogger.getInstance().error("Error while removing files marked for deletion");
         }
@@ -309,8 +315,18 @@ public class LocalRepository {
                     for (int i = 0; i < adminFiles.length; i++) {
                         adminFiles[i].delete();
                     }
+                    DefaultLogger.getInstance().verbose("Removing empty directory " + directory);
                     adminDir.delete();
+                    try {
+                        // Remove the directory from the entries
+                        _handler.removeEntry(directory);
+                    } catch (IOException ex) {
+                        _failedUpdates++;
+                        ex.printStackTrace();
+                        DefaultLogger.getInstance().error("Error while removing empty directory");
+                    }
                     directory.delete();
+                    _removedFiles++;
                 }
             }
         }
@@ -336,7 +352,7 @@ public class LocalRepository {
         }
         
         String localDirectory = WebBrowser.removeFinalSlash(dir.getParent());
-        String repositoryPath = WebBrowser.removeFinalSlash(remoteDir.getDirectoryName());
+        String repositoryPath = WebBrowser.removeFinalSlash(remoteDir.getDirectoryPath());
         int lastSlash = repositoryPath.lastIndexOf('/');
         if (lastSlash > 0) {
             repositoryPath = repositoryPath.substring(0, lastSlash);
@@ -344,6 +360,7 @@ public class LocalRepository {
         try {
             _handler.updateAdminData(localDirectory, repositoryPath, entry, _globalOptions);
         } catch (IOException ex) {
+            _failedUpdates++;
             ex.printStackTrace();
             DefaultLogger.getInstance().error("Cannot update CVS entry for directory " + dir);
             throw new RuntimeException("Cannot update CVS entry for directory " + dir);

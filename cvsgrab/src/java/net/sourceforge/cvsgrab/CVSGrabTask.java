@@ -6,7 +6,12 @@
  */
 package net.sourceforge.cvsgrab;
 
-import org.apache.tools.ant.*;
+import net.sourceforge.cvsgrab.util.DefaultLogger;
+import net.sourceforge.cvsgrab.util.Logger;
+
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Task;
 
 /**
  * Ant task for CVSGrab.
@@ -30,15 +35,6 @@ public class CVSGrabTask extends Task {
     public CVSGrabTask() { }
 
     /**
-     * Sets the package attribute
-     *
-     * @param value The new package value
-     */
-    public void setPackage(String value) {
-        _grabber.setPackageName(value);
-    }
-
-    /**
      * Sets the root url attribute
      *
      * @param value The new rootUrl value
@@ -48,12 +44,30 @@ public class CVSGrabTask extends Task {
     }
 
     /**
+     * Sets the package path attribute
+     *
+     * @param value The new package value
+     */
+    public void setPackagePath(String value) {
+        _grabber.setPackagePath(value);
+    }
+
+    /**
      * Sets the dest dir attribute
      *
      * @param value The new destDir value
      */
     public void setDestDir(String value) {
         _grabber.setDestDir(value);
+    }
+
+    /**
+     * Sets the package dir attribute
+     *
+     * @param value The new package value
+     */
+    public void setPackageDir(String value) {
+        _grabber.setPackageDir(value);
     }
 
     /**
@@ -132,8 +146,8 @@ public class CVSGrabTask extends Task {
         if (_grabber.getDestDir() == null) {
             throw new BuildException("destDir argument is not specified");
         }
-        if (_grabber.getPackageName() == null) {
-            throw new BuildException("package argument is not specified");
+        if (_grabber.getPackagePath() == null) {
+            throw new BuildException("packagePath argument is not specified");
         }
 
         Logger log = new AntLogger(project);

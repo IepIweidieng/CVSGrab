@@ -8,6 +8,8 @@ package net.sourceforge.cvsgrab;
 import java.io.File;
 import java.io.IOException;
 
+import net.sourceforge.cvsgrab.util.*;
+
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.w3c.dom.Document;
 
@@ -25,13 +27,14 @@ import org.w3c.dom.Document;
 public class CVSGrab {
     static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
-    private static final String VERSION = "2.0-beta";
+    private static final String VERSION = "2.0-beta3";
 
     private boolean _verbose = true;
     private boolean _pruneEmptyDirs = false;
     private boolean _error = false;
     private String _rootUrl;
-    private String _packageName;
+    private String _packagePath;
+    private String _packageDir;
     private String _destDir;
     private String _versionTag;
     private String _queryParams;
@@ -67,14 +70,19 @@ public class CVSGrab {
                     grabber.setRootUrl(args[i + 1]);
                     i++;
                 }
-            } else if (args[i].toLowerCase().equals("-package")) {
+            } else if (args[i].toLowerCase().equals("-packagepath")) {
                 if (!args[i + 1].startsWith("-")) {
-                    grabber.setPackageName(args[i + 1]);
+                    grabber.setPackagePath(args[i + 1]);
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-destdir")) {
                 if (!args[i + 1].startsWith("-")) {
                     grabber.setDestDir(args[i + 1]);
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-packagedir")) {
+                if (!args[i + 1].startsWith("-")) {
+                    grabber.setPackageDir(args[i + 1]);
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-tag")) {
@@ -90,6 +98,27 @@ public class CVSGrab {
             } else if (args[i].toLowerCase().equals("-cvsroot")) {
                 if (!args[i + 1].startsWith("-")) {
                     grabber.setCvsRoot(args[i + 1]);
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-debug")) {
+                if (!args[i + 1].startsWith("-")) {
+                    boolean debug = args[i + 1].toLowerCase().equals("true");
+                    if (debug) {
+                        DefaultLogger.getInstance().setDebug(debug);
+                        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+                        System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
+                        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.commons.httpclient", "debug");                        
+                    }
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-debug:wire")) {
+                if (!args[i + 1].startsWith("-")) {
+                    boolean debug = args[i + 1].toLowerCase().equals("true");
+                    if (debug) {
+                        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+                        System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
+                        System.setProperty("org.apache.commons.logging.simplelog.log.httpclient.wire", "debug");
+                    }
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-verbose")) {
@@ -164,8 +193,9 @@ public class CVSGrab {
         System.out.println("Command line options:");
         System.out.println("\t-help This help message");
         System.out.println("\t-rootUrl <url> The root url used to access the CVS repository from a web browser");
+        System.out.println("\t-packagePath <path> The path relative to rootUrl of the package or module to download");
         System.out.println("\t-destDir <dir> The destination directory");
-        System.out.println("\t-package <package> The package or module to download");
+        System.out.println("\t-packageDir <path> [optional] The name of the package to use locally, relative to destDir, overrides packagePath");
         System.out.println("\t-tag <tag> [optional] The version tag of the files to download");
         System.out.println("\t-queryParams <query params> [optional] Additional query parameters");
         System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain compatibility with a standard CVS client");
@@ -176,10 +206,11 @@ public class CVSGrab {
         System.out.println("\t-proxyPort [optional] Proxy port");
         System.out.println("\t-proxyNTDomain [optional] NT Domain for the authentification on a MS proxy");
         System.out.println("\t-proxyUser [optional] Username for the proxy");
-        System.out.println("\t-proxyPassword [optional] Password for the proxy");
+        System.out.println("\t-proxyPassword [optional] Password for the proxy. If this option is omitted, then cvsgrab will prompt securely for the password.");
         System.out.println("\t-webUser [optional] Username for the web server");
-        System.out.println("\t-webPassword [optional] Password for the web server");
+        System.out.println("\t-webPassword [optional] Password for the web server. If this option is omitted, then cvsgrab will prompt securely for the password.");
         System.out.println("Copyright (c) 2002-2003 - Ludovic Claude.");
+        // Undocumented options: debug, debug:wire
     }
 
     /**
@@ -216,18 +247,18 @@ public class CVSGrab {
     }
 
     /**
-     * @return Returns the packageName.
+     * @return Returns the packagePath.
      */
-    public String getPackageName() {
-        return _packageName;
+    public String getPackagePath() {
+        return _packagePath;
     }
 
     /**
-     * Sets the name of the package/module to update from CVS
-     * @param packageName The packageName to set.
+     * Sets the path of the package/module to update from CVS
+     * @param packagePath The packagePath to set.
      */
-    public void setPackageName(String packageName) {
-        _packageName = packageName;
+    public void setPackagePath(String packagePath) {
+        _packagePath = packagePath;
     }
 
     /**
@@ -245,6 +276,23 @@ public class CVSGrab {
         _destDir = destDir;
     }
 
+    /**
+     * @return Returns the packageDir.
+     */
+    public String getPackageDir() {
+        if (_packageDir == null) {
+            return getPackagePath();
+        }
+        return _packageDir;
+    }
+
+    /**
+     * @param packageDir The packageDir to set.
+     */
+    public void setPackageDir(String packageDir) {
+        _packageDir = packageDir;
+    }
+    
     /**
      * @return Returns the cvsRoot.
      */
@@ -294,17 +342,17 @@ public class CVSGrab {
      * Main method for getting and updating files.
      */
     public void grabCVSRepository() {
-        DefaultLogger.getInstance().info("CVSGrab version " + VERSION + " stating...");
+        DefaultLogger.getInstance().info("CVSGrab version " + VERSION + " starting...");
 
-        if (_rootUrl == null || _destDir == null || _packageName == null) {
+        if (_rootUrl == null || _destDir == null || _packagePath == null) {
             if (_rootUrl == null) {
                 System.out.println("Error: rootUrl parameter is mandatory");
             }
             if (_destDir == null) {
                 System.out.println("Error: destDir parameter is mandatory");
             }
-            if (_packageName == null) {
-                System.out.println("Error: package parameter is mandatory");
+            if (_packagePath == null) {
+                System.out.println("Error: packagePath parameter is mandatory");
             }
             printHelp();
             return;
@@ -345,13 +393,13 @@ public class CVSGrab {
                 webInterface.setVersionTag(_versionTag);
             }
             
-            LocalRepository localRepository = new LocalRepository(_cvsRoot, _destDir, _packageName);
+            LocalRepository localRepository = new LocalRepository(_cvsRoot, _destDir, _packagePath);
             RemoteRepository remoteRepository = new RemoteRepository(_rootUrl, localRepository);
             remoteRepository.setWebInterface(webInterface);
 
-            remoteRepository.registerDirectoryToProcess(_packageName);
+            RemoteDirectory remoteDir = new RemoteDirectory(remoteRepository, _packagePath, getPackageDir());
+            remoteRepository.registerDirectoryToProcess(remoteDir);
             while (remoteRepository.hasDirectoryToProcess()) {
-                RemoteDirectory remoteDir = null;
                 try {
                     remoteDir = remoteRepository.nextDirectoryToProcess();
                     remoteDir.loadContents();

@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import net.sourceforge.cvsgrab.CvsWebInterface;
-import net.sourceforge.cvsgrab.DefaultLogger;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
+import net.sourceforge.cvsgrab.util.DefaultLogger;
 
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
@@ -137,7 +137,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         try {
             // http://cvs.apache.org/viewcvs.cgi/*checkout*/jakarta-regexp/KEYS?rev=1.1
             String url = WebBrowser.forceFinalSlash(file.getDirectory().getRemoteRepository().getRootUrl());
-            String dir = file.getDirectory().getDirectoryName();
+            String dir = file.getDirectory().getDirectoryPath();
             url += getCheckoutPath();
             url += WebBrowser.forceFinalSlash(URIUtil.encodePath(dir));
             if (file.isInAttic()) {

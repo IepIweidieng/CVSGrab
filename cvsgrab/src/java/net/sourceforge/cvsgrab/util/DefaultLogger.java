@@ -4,7 +4,7 @@
  * Distributable under BSD license.
  * See terms of license at gnu.org.
  */
-package net.sourceforge.cvsgrab;
+package net.sourceforge.cvsgrab.util;
 
 /**
  * Simple logger interface

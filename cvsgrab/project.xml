@@ -12,7 +12,7 @@
   
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-  <currentVersion>2.0-beta</currentVersion>
+  <currentVersion>2.0-beta3</currentVersion>
   
   <!-- details about the organization that 'owns' the project -->
   <organization>
@@ -24,7 +24,7 @@
   <!-- the year the project started -->
   <inceptionYear>2002</inceptionYear>
   <package>net.sourceforge.cvsgrab</package>
-  <logo>http://cvsgrab.sourceforge.net/images/cvsgrab-logo.jpg</logo>
+  <logo>http://cvsgrab.sourceforge.net/cvsgrab.png</logo>
   <description>
     Use the web interface to CVS repositories to get files from CVS behind a blocking firewall.   
   </description>
@@ -45,12 +45,20 @@
        the connection element has the form:
        scm:<system>:<system specific connection string> -->
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/cvsgrab</connection>
+    <!--TODO: connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/cvsgrab</connection-->
     <url>http://cvs.sourceforge.net/viewcvs.py/cvsgrab</url>
   </repository>
 
   <!-- any mailing lists for the project -->
   <mailingLists/>
+  
+  <licenses>
+    <license>
+      <name>BSD License</name>
+      <url>http://cvs.sourceforge.net/viewcvs.py/cvsgrab/cvsgrab/License.txt?view=markup</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
   
   <!-- who the developers are for the project -->
   <developers>
@@ -111,7 +119,7 @@
     <dependency>
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
-      <version>2.0-rc1</version>
+      <version>2.0-rc2</version>
     </dependency>
     
     <dependency>
@@ -172,6 +180,7 @@
     <report>maven-tasklist-plugin</report>
     <report>maven-faq-plugin</report>
     <report>maven-linkcheck-plugin</report>
+    <report>maven-license-plugin</report>
   </reports>
 
 </project>

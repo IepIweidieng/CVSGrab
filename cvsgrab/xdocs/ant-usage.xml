@@ -25,21 +25,27 @@
 		            <th valign="Top" align="Center"><b>Required</b></th>
 		          </tr>
 		          <tr>
-		            <td valign="Top">destdir</td>
-		            <td valign="Top">The destination directory for the files retrieved from CVS</td>
-		            <td valign="Top" align="Center">Yes</td>
-		          </tr>
-		          <tr>
 		            <td valign="Top">rootUrl</td>
 		            <td valign="Top">The root url for the ViewCVS repository. <br/>
 		              Example: http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/</td>
 		            <td valign="Top" align="Center">Yes.</td>
 		          </tr>
 		          <tr>
-		            <td valign="Top">package</td>
-		            <td valign="Top">The package/module of the repository to download <br/>
+		            <td valign="Top">packagePath</td>
+		            <td valign="Top">The path relative to rootUrl of the package or module to download <br/>
 		              Example: hotsax/HotSAX </td>
 		            <td valign="Top" align="Center">Yes.</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">destDir</td>
+		            <td valign="Top">The destination directory for the files retrieved from CVS</td>
+		            <td valign="Top" align="Center">Yes</td>
+		          </tr>
+		          <tr>
+		            <td valign="Top">packageDir</td>
+		            <td valign="Top">The name of the package to use locally, relative to destDir, overrides packagePath <br/>
+		              Example: HotSAX </td>
+		            <td valign="Top" align="Center">No.</td>
 		          </tr>
 		          <tr>
 		            <td valign="Top">tag</td>
@@ -101,12 +107,13 @@
 		              </tr>
 		              <tr>
 		                <td valign="Top">username</td>
-		                <td valign="Top">The username used to login in the proxy</td>
+		                <td valign="Top">The username used to login in the proxy.</td>
 		                <td valign="Top" align="Center">No.</td>
 		              </tr>
 		              <tr>
 		                <td valign="Top">password</td>
-		                <td valign="Top">The password used to login in the proxy</td>
+		                <td valign="Top">The password used to login in the proxy. <br/>
+		                  If this option is omitted, then cvsgrab will prompt securely for the password.</td>
 		                <td valign="Top" align="Center">No.</td>
 		              </tr>
 		          </table>
@@ -124,12 +131,13 @@
 		            </tr>
 		            <tr>
 		              <td valign="Top">username</td>
-		              <td valign="Top">The username used to login in the web server</td>
+		              <td valign="Top">The username used to login in the web server.</td>
 		              <td valign="Top" align="Center">No.</td>
 		            </tr>
 		            <tr>
 		              <td valign="Top">password</td>
-		              <td valign="Top">The password used to login in the web server</td>
+		              <td valign="Top">The password used to login in the web server. <br/>
+		                If this option is omitted, then cvsgrab will prompt securely for the password.</td>
 		              <td valign="Top" align="Center">No.</td>
 		            </tr>
 		        </table>
