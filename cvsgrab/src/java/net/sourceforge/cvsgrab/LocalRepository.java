@@ -6,12 +6,17 @@
  */
 package net.sourceforge.cvsgrab;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Vector;
 
-import net.sourceforge.cvsgrab.util.*;
-
-import org.netbeans.lib.cvsclient.admin.*;
+import org.netbeans.lib.cvsclient.admin.AdminHandler;
+import org.netbeans.lib.cvsclient.admin.Entry;
+import org.netbeans.lib.cvsclient.admin.StandardAdminHandler;
 import org.netbeans.lib.cvsclient.command.GlobalOptions;
 
 /**
@@ -126,7 +131,7 @@ public class LocalRepository {
     }
 
     /**
-     * Description of the Method
+     * Resets the counters in this class 
      */
     public void resetFileCounts() {
         _newFiles = 0;
@@ -152,8 +157,11 @@ public class LocalRepository {
                     needUpdate = !remoteFile.getVersion().equals(entry.getRevision());
                     if (needUpdate) {
                         Date fileLastModified = new Date(file.lastModified());
-                        if (fileLastModified.after(entry.getLastModified())) {
-                            DefaultLogger.getInstance().info("File " + file + " was modified since last update, cannot upload the new version of this file");
+                        // Allow a tolerance of 1 minute because on Windows seconds are omitted
+                        if (fileLastModified.getTime() > entry.getLastModified().getTime() + 60*1000) {
+                            CVSGrab.getLog().info("File " + file + " was modified since last update, cannot upload the new version of this file");
+                            CVSGrab.getLog().info("Last modified date on disk: " + fileLastModified);
+                            CVSGrab.getLog().info("Last modified date on cvs: " + entry.getLastModified());
                             needUpdate = false;
                             _failedUpdates++;
                         }
@@ -198,7 +206,7 @@ public class LocalRepository {
         } catch (IOException ex) {
             _failedUpdates++;
             ex.printStackTrace();
-            DefaultLogger.getInstance().error("Cannot update CVS entry for file " + file);
+            CVSGrab.getLog().error("Cannot update CVS entry for file " + file);
             throw new RuntimeException("Cannot update CVS entry for file " + file);
         }
     }
@@ -252,14 +260,14 @@ public class LocalRepository {
             for (Iterator i = dirFiles.iterator(); i.hasNext(); ) {
                 String fileName = (String) i.next();
                 File file = new File(getLocalDir(remoteDirectory), fileName);
-                DefaultLogger.getInstance().verbose("Removing " + file);
+                CVSGrab.getLog().info("Removing " + file);
                 _handler.removeEntry(file);
                 file.delete();
             }
         } catch (IOException ex) {
             _failedUpdates++;
             ex.printStackTrace();
-            DefaultLogger.getInstance().error("Error while removing files marked for deletion");
+            CVSGrab.getLog().error("Error while removing files marked for deletion");
         }
     }
 
@@ -315,7 +323,7 @@ public class LocalRepository {
                     for (int i = 0; i < adminFiles.length; i++) {
                         adminFiles[i].delete();
                     }
-                    DefaultLogger.getInstance().verbose("Removing empty directory " + directory);
+                    CVSGrab.getLog().info("Removing empty directory " + directory);
                     adminDir.delete();
                     try {
                         // Remove the directory from the entries
@@ -323,7 +331,7 @@ public class LocalRepository {
                     } catch (IOException ex) {
                         _failedUpdates++;
                         ex.printStackTrace();
-                        DefaultLogger.getInstance().error("Error while removing empty directory");
+                        CVSGrab.getLog().error("Error while removing empty directory");
                     }
                     directory.delete();
                     _removedFiles++;
@@ -335,9 +343,12 @@ public class LocalRepository {
     }
 
     /**
-     * @param remoteDir
+     * Adds a remote directory in the local filesystem, and updaet the CVS admin entries for that directory.
+     * 
+     * @param remoteDir The remote directory
      */
-    public void add(RemoteDirectory remoteDir) {
+    // synchronized as it can be access from the multiple download threads
+    public synchronized void add(RemoteDirectory remoteDir) {
         File dir = getLocalDir(remoteDir);
         Entry entry = null;
         String dirName = WebBrowser.removeFinalSlash(dir.getName());
@@ -362,7 +373,7 @@ public class LocalRepository {
         } catch (IOException ex) {
             _failedUpdates++;
             ex.printStackTrace();
-            DefaultLogger.getInstance().error("Cannot update CVS entry for directory " + dir);
+            CVSGrab.getLog().error("Cannot update CVS entry for directory " + dir);
             throw new RuntimeException("Cannot update CVS entry for directory " + dir);
         }
     }

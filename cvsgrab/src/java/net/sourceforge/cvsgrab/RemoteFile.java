@@ -9,8 +9,6 @@ package net.sourceforge.cvsgrab;
 
 import java.io.File;
 
-import net.sourceforge.cvsgrab.util.*;
-
 import org.apache.commons.httpclient.methods.GetMethod;
 
 /**
@@ -117,7 +115,7 @@ public class RemoteFile {
             File localDir = localRepository.getLocalDir(_directory);
             localDir.mkdirs();
             File destFile = new File(localDir, _name);
-            DefaultLogger.getInstance().verbose("Updating " + destFile);
+            CVSGrab.getLog().info("Updating " + destFile);
             String url = remoteRepository.getDownloadUrl(this);
             
             // Download the file
@@ -128,7 +126,7 @@ public class RemoteFile {
         } catch (Exception ex) {
             localRepository.unregisterFile(this);
             _directory.unregisterRemoteFile(this);
-            DefaultLogger.getInstance().error("IO Error: " + ex);
+            CVSGrab.getLog().error("IO Error: " + ex);
             ex.printStackTrace();
         }
     }

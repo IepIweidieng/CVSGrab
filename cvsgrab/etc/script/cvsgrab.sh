@@ -68,4 +68,5 @@ if $Cygwin; then
   LOCALCLASSPATH=`cygpath --path --windows "$LOCALCLASSPATH"`
 fi
 
-"$JAVACMD" -classpath "$LOCALCLASSPATH" net.sourceforge.cvsgrab.CVSGrab "$@"
+LOG_ARGS="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showShortLogname=false"
+"$JAVACMD" -classpath "$LOCALCLASSPATH" "$LOG_ARGS" net.sourceforge.cvsgrab.CVSGrab "$@"

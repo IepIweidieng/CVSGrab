@@ -12,6 +12,7 @@ import net.sourceforge.cvsgrab.web.ViewCvs0_8Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_9Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs1_0Interface;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.w3c.dom.Document;
 
 /**
@@ -35,22 +36,37 @@ public abstract class CvsWebInterface {
     /**
      * Find the cvs web interface that could have generated this html page
      * 
-     * @param url The url of the page
-     * @param htmlPage The html page read from the remote web interface
      * @return the cvs web interface that matches best this page
      */
-    public static CvsWebInterface findInterface(String url, Document htmlPage) {
+    public static CvsWebInterface findInterface(CVSGrab grabber) throws Exception {
+        String url = WebBrowser.forceFinalSlash(grabber.getRootUrl());
+        url += grabber.getPackagePath();
+        url = WebBrowser.addQueryParam(url, grabber.getQueryParams());
+        Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
+        return findInterface(grabber, doc);
+    } 
+
+    /**
+     * Find the cvs web interface that could have generated this html page. <br>
+     * Makes testign easier
+     * 
+     * @param grabber
+     * @param doc
+     * @return
+     * @throws Exception
+     */
+    public static CvsWebInterface findInterface(CVSGrab grabber, Document doc) throws Exception {
         for (int i = 0; i < _webInterfaces.length; i++) {
             try {
-                _webInterfaces[i].init(url, htmlPage);
+                _webInterfaces[i].init(grabber, doc);
                 return _webInterfaces[i];
             } catch (Exception ex) {
                 // ignore
             }
         }
         return null;
-    } 
-
+    }
+    
     private String _versionTag;
     private String _queryParams;
     
@@ -92,7 +108,7 @@ public abstract class CvsWebInterface {
         _queryParams = params;
     }
     
-    public abstract void init(String url, Document htmlPage) throws Exception; 
+    public abstract void init(CVSGrab grabber, Document htmlPage) throws Exception; 
         
     public abstract String getType();
 

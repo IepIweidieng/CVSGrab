@@ -28,7 +28,34 @@
 
         </release>
 
-        <release version="2.0" date="not released">
+        <release version="2.0" date="2003-10-31">
+
+            <action dev="ludovicc" type="update">
+                Use commons-logging to handle logging. This makes logging compatible with the Java 1.4 logging API.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Fixed logging level for http client library to avoid repetitive warnings like 'Response content length is not known'.  
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Use rootUrl + packagePath to detect the type of the web interface instead of rootUrl alone. This should fix 
+                redirection issues with Sourceforge where http://cvs.sourceforge.net/viewcvs.py is redirected to http://sourceforge.net/.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Put back Main-Class attribute in cvsgrab.jar to be able to run cvsgrab with java -jar cvsgrab.jar
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Fixed an issue on Windows systems where files where not updated because the timestamp stored by Windows does not include 
+                seconds.  
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Added more synchronisation to fix the issue java.io.FileNotFoundException: xxx\CVS\Root (Specific file path not found)
+                when using simultaneous connections.  
+            </action>
 
         </release>
 
