@@ -7,7 +7,9 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
+import net.sourceforge.cvsgrab.RemoteDirectory;
 import net.sourceforge.cvsgrab.RemoteFile;
+import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
@@ -61,6 +63,18 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         assertEquals("lib", directories[i++]);
         assertEquals("src", directories[i++]);
         assertEquals("web", directories[i++]);
+    }
+    
+    /**
+     * Fix for bug #853915
+     */
+    public void testStrangeUrls() {
+        RemoteRepository repository = new RemoteRepository("http://cvs.sourceforge.net/viewcvs.py/", null);
+        RemoteDirectory dir = new RemoteDirectory(repository, "avantgarde/AvantGarde/src/st/fr/cageauxtrolls/avantgarde/gestion/partie/", "partie");
+        RemoteFile file = new RemoteFile("RestrictionsArmée.java", "1.1");
+        file.setDirectory(dir);
+        String fileUrl = _interface.getDownloadUrl(file);
+        assertEquals("http://cvs.sourceforge.net/viewcvs.py/*checkout*/avantgarde/AvantGarde/src/st/fr/cageauxtrolls/avantgarde/gestion/partie/RestrictionsArm%E9e.java?rev=1.1", fileUrl);
     }
     
 }

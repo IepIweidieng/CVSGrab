@@ -54,6 +54,14 @@ public class CvsWebInterfaceTest extends AbstractTestCase {
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs0_9Interface);
     }
 
+    public void testDetectViewCvs0_9_withGrapth() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2_graph.html");
+        
+        grabber.setRootUrl("http://cvs.apache.org/viewcvs/");
+        CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
+        assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs0_9Interface);
+    }
+
     public void testDetectViewCvs1_0() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
         
@@ -62,6 +70,19 @@ public class CvsWebInterfaceTest extends AbstractTestCase {
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs1_0Interface);
     }
 
+    /**
+     * Test for bug #2308061, no root defined in the web page,
+     * xpath //A/@href[contains(., 'root=')] returns null
+     * @throws Exception if the test fails
+     */
+    public void testDetectViewCvs1_0_busyBox() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_1_0_busybox.net.html");
+        
+        grabber.setRootUrl("http://cvs.uclibc.org/cgi-bin/cvsweb/");
+        CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
+        assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs1_0Interface);
+    }
+    
     public void testDetectSourceCast2_0() throws Exception {
         Document doc = getDocument("src/test/html_docs/sourcecast_2_0.html");
         

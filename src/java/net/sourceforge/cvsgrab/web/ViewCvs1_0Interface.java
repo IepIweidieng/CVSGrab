@@ -11,12 +11,13 @@ import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
 
 import org.apache.commons.httpclient.URIException;
-import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.jxpath.JXPathContext;
 import org.w3c.dom.Document;
 
 
 /**
+ * Support for ViewCvs 0.1 interfaces to a cvs repository
+ * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 11 oct. 2003
@@ -38,16 +39,26 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
      * @param htmlPage
      * @throws Exception
      */
-    public void init(CVSGrab grabber, Document htmlPage) throws Exception {
-        super.init(grabber, htmlPage);
+    public void detect(CVSGrab grabber, Document htmlPage) throws Exception {
+        String rootUrl = grabber.getRootUrl();
+        if (rootUrl.indexOf("savannah.gnu.org") > 0) {
+            checkRootUrl(grabber.getRootUrl());
+            setType("ViewCVS 1.0 on Savannah GNU");
+        } else {
+            super.detect(grabber, htmlPage);
+        }
         JXPathContext context = JXPathContext.newContext(htmlPage);
         String href = (String) context.getValue("//A/@href[contains(., 'root=')]");
-        _root = href.substring(href.indexOf("root=")+ 5);
-        if (_root.indexOf('#') > 0) {
-            _root = _root.substring(0, _root.indexOf('#'));
-        }
-        if (_root.indexOf('&') > 0) {
-            _root = _root.substring(0, _root.indexOf('&'));
+        if (href == null) {
+            CVSGrab.getLog().info("CVS Root not found, there may be issues if ViewCvs is used with multiple repositories");
+        } else {
+            _root = href.substring(href.indexOf("root=")+ 5);
+            if (_root.indexOf('#') > 0) {
+                _root = _root.substring(0, _root.indexOf('#'));
+            }
+            if (_root.indexOf('&') > 0) {
+                _root = _root.substring(0, _root.indexOf('&'));
+            }
         }
     }
 
@@ -59,9 +70,11 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
     public String getDirectoryUrl(String rootUrl, String directoryName) {
         try {
             String url = super.getDirectoryUrl(rootUrl, directoryName);
-            url = WebBrowser.addQueryParam(url, "root", URIUtil.encodePath(_root));
+            if (_root != null) {
+                url = WebBrowser.addQueryParam(url, "root", quote(_root));
+            }
             url = WebBrowser.addQueryParam(url, getQueryParams());
-        return url;
+            return url;
         } catch (URIException ex) {
             ex.printStackTrace();
             throw new RuntimeException("Cannot create URI");
@@ -76,7 +89,9 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
         try {
             // http://cvs.apache.org/viewcvs.cgi/*checkout*/jakarta-regexp/KEYS?rev=1.1
             String url = super.getDownloadUrl(file);
-            url = WebBrowser.addQueryParam(url, "root", URIUtil.encodePath(_root));
+            if (_root != null) {
+                url = WebBrowser.addQueryParam(url, "root", quote(_root));
+            }
             url = WebBrowser.addQueryParam(url, getQueryParams());
             return url;
         } catch (URIException ex) {

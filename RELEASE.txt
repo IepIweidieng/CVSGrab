@@ -1,0 +1,15 @@
+
+CVSGrab is a simple CVS client that bypass any firewall blocking port 2401 used by cvs. 
+It relies on the ViewCVS web interface to the repository to work, and supports other types of web interfaces (CvsWeb, SourceCast...) 
+Use this tool when all other solutions (SSH...) fail. Only read-only access to the CVS repository is possible with this tool.
+
+This release includes the following changes and improvements:
+o Added support for CvsWeb 2.0 web interfaces
+o Added the parameter -webInterface that forces CVSGrab to use a specific web interface, and disable the auto-detect feature that 
+  doesn't work well with some sites.
+o Small bugfixes, usability improvements
+
+Enjoy,
+
+Ludovic Claude
+ 

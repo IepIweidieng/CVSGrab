@@ -54,6 +54,13 @@
 		            <td valign="Top" align="Center">No.</td>
 		          </tr>
 		          <tr>
+		            <td valign="Top">webInterface</td>
+		            <td valign="Top">The id for the web interface for the CVS repository to use. If this option is not set, autodetect the web interface. <br/>
+		               Example: ViewCvs0_9 <br/> 
+		               Call cvsgrab -help-webinterfaces to get a list of valid values for this option. </td>
+		            <td valign="Top" align="Center">No.</td>
+		          </tr>
+		          <tr>
 		            <td valign="Top">cvsroot</td>
 		            <td valign="Top">The original cvs root, used to maintain compatibility with a standard CVS client. <br/>
 		               Example: :pserser:anonymous@cvs.apache.org:/cvsroot/public </td>

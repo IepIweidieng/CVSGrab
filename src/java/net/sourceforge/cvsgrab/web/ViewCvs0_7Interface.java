@@ -10,11 +10,12 @@ import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
 
 import org.apache.commons.httpclient.URIException;
-import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.jxpath.JXPathContext;
 
 
 /**
+ * Support for ViewCvs 0.7 interfaces to a cvs repository
+ * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 11 oct. 2003
@@ -44,9 +45,9 @@ public class ViewCvs0_7Interface extends ViewCvsInterface {
             String url = WebBrowser.forceFinalSlash(rootUrl);
             String dir = file.getDirectory().getDirectoryPath();
             url += getCheckoutPath();
-            url += WebBrowser.forceFinalSlash(URIUtil.encodePath(dir));
-            url += URIUtil.encodePath(file.getName());
-            url = WebBrowser.addQueryParam(url, "rev", URIUtil.encodePath(file.getVersion()));
+            url += WebBrowser.forceFinalSlash(quote(dir));
+            url += quote(file.getName());
+            url = WebBrowser.addQueryParam(url, "rev", quote(file.getVersion()));
             url = WebBrowser.addQueryParam(url, getQueryParams());
             return url;
         } catch (URIException ex) {
