@@ -6,6 +6,7 @@
 package net.sourceforge.cvsgrab;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import com.ice.cvsc.*;
@@ -46,8 +47,8 @@ public class CVSGrab {
         String destDir = null;
         String packageName = null;
         String tag = null;
-        String cvsHost = "";
-        String cvsRoot = "";
+        String cvsHost = "dummyHost";
+        String cvsRoot = "dummyRoot";
         String cvsUser = "anonymous";
         String verbose = "true";
         String prune = "false";
@@ -262,6 +263,7 @@ public class CVSGrab {
      */
     public void grabCVSRepository(String rootUrl, String destDir, String packageName, String tag, String cvsUser, String cvsHost, String cvsRoot) {
 
+        // check the parameters
         File dd = new File(destDir);
         if (!dd.exists()) {
             throw new RuntimeException("Destination directory " + destDir + " doesn't exist");
@@ -269,63 +271,72 @@ public class CVSGrab {
         if (!dd.isDirectory()) {
             throw new RuntimeException("Destination " + destDir + " is not a directory");
         }
-        destDir = dd.getAbsolutePath().replace(File.separatorChar, '/');
+        try {
+            destDir = dd.getCanonicalPath().replace(File.separatorChar, '/');
+        } catch (IOException ex) {
+            throw new IllegalArgumentException("Could not locate the destination directory " + destDir + ", error was " + ex.getMessage());
+        }
         if (!rootUrl.endsWith("/")) {
             rootUrl += "/";
         }
 
-        SaxParser parser = new SaxParser();
-        LocalRepository localRepository = new LocalRepository(cvsUser, cvsHost, cvsRoot, destDir + "/", packageName);
-        RemoteRepository remoteRepository = new RemoteRepository(rootUrl, localRepository);
-        CVSGrabHandler handler = new CVSGrabHandler(remoteRepository);
-        localRepository.setLog(log);
-        remoteRepository.setLog(log);
-        parser.setContentHandler(handler);
+        try {
+            SaxParser parser = new SaxParser();
+            LocalRepository localRepository = new LocalRepository(cvsUser, cvsHost, cvsRoot, destDir + "/", packageName);
+            RemoteRepository remoteRepository = new RemoteRepository(rootUrl, localRepository);
+            CVSGrabHandler handler = new CVSGrabHandler(remoteRepository);
+            localRepository.setLog(log);
+            remoteRepository.setLog(log);
+            parser.setContentHandler(handler);
 
-        remoteRepository.registerDirectoryToProcess(packageName + "/");
-        while (remoteRepository.hasDirectoryToProcess()) {
-            RemoteDirectory rDir = null;
-            try {
-                rDir = remoteRepository.nextDirectoryToProcess();
-                String rDirUrl = rDir.getUrl();
-                if (tag != null && !tag.equals("")) {
-                    rDirUrl += "?only_with_tag=" + tag;
+            remoteRepository.registerDirectoryToProcess(packageName + "/");
+            while (remoteRepository.hasDirectoryToProcess()) {
+                RemoteDirectory rDir = null;
+                try {
+                    rDir = remoteRepository.nextDirectoryToProcess();
+                    String rDirUrl = rDir.getUrl();
+                    if (tag != null && !tag.equals("")) {
+                        rDirUrl += "?only_with_tag=" + tag;
+                    }
+                    log.debug("Parsing page: " + rDirUrl);
+                    handler.setCurrentRemoteDirectory(rDir);
+                    parser.parse(rDirUrl);
+                    localRepository.update();
+                    if (handler.isPageFullyLoaded()) {
+                        localRepository.cleanRemovedFiles(rDir);
+                    } else {
+                        log.warn("Could not load the full html content at " + rDir.getUrl() + ", open this page in a browser and if you don't find an obvious solution, report the problem to http://sourceforge.net/forum/forum.php?forum_id=174128");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    log.error("Error while getting files from " + rDir.getUrl());
                 }
-                log.debug("Parsing page: " + rDirUrl);
-                handler.setCurrentRemoteDirectory(rDir);
-                parser.parse(rDirUrl);
-                localRepository.update();
-                if (handler.isPageFullyLoaded()) {
-                    localRepository.cleanRemovedFiles(rDir);
-                } else {
-                    log.warn("Could not load the full html content at " + rDir.getUrl() + ", open this page in a browser and if you don't find an obvious solution, report the problem to http://sourceforge.net/forum/forum.php?forum_id=174128");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                log.error("Error while getting files from " + rDir.getUrl());
             }
-        }
-        if (pruneEmptyDirs) {
-            localRepository.pruneEmptyDirs();
-        }
-        localRepository.removeRootEntries();
+            if (pruneEmptyDirs) {
+                localRepository.pruneEmptyDirs();
+            }
+            localRepository.removeRootEntries();
 
-        // Print a summary
-        int newFileCount = localRepository.getNewFileCount();
-        int updatedFileCount = localRepository.getUpdatedFileCount();
-        int removedFileCount = localRepository.getRemovedFileCount();
-        int failedUpdateCount = localRepository.getFailedUpdateCount();
-        if (newFileCount > 0) {
-            log.info(newFileCount + " new files");
-        }
-        if (updatedFileCount > 0) {
-            log.info(updatedFileCount + " updated files");
-        }
-        if (removedFileCount > 0) {
-            log.info(removedFileCount + " removed files");
-        }
-        if (failedUpdateCount > 0) {
-            log.error(failedUpdateCount + " files");
+            // Print a summary
+            int newFileCount = localRepository.getNewFileCount();
+            int updatedFileCount = localRepository.getUpdatedFileCount();
+            int removedFileCount = localRepository.getRemovedFileCount();
+            int failedUpdateCount = localRepository.getFailedUpdateCount();
+            if (newFileCount > 0) {
+                log.info(newFileCount + " new files");
+            }
+            if (updatedFileCount > 0) {
+                log.info(updatedFileCount + " updated files");
+            }
+            if (removedFileCount > 0) {
+                log.info(removedFileCount + " removed files");
+            }
+            if (failedUpdateCount > 0) {
+                log.error(failedUpdateCount + " files");
+            }
+        } catch (IOException ex) {
+            System.out.println("Could not initialise cvsgrab because the CVS admin files are corrupted");
+            ex.printStackTrace();
         }
     }
 
