@@ -1,6 +1,7 @@
 1.1     Maintenance release
 - package rename: from cvsgrab to net.sourceforge.cvsgrab
 - added support for proxies and http authentication
+- added prune empty directories functionality
 - bugfix: removed first / in the name stored in the Repository admin file for more compatibility with WinCVS
 
 1.0	First public release.
