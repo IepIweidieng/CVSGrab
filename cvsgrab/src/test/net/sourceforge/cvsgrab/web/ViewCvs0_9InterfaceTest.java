@@ -7,6 +7,7 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
+import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.RemoteDirectory;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.RemoteRepository;
@@ -28,6 +29,34 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
      */
     public ViewCvs0_9InterfaceTest(String testName) {
         super(testName);
+    }
+
+    public void testDetect() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.setRootUrl("http://cvs.apache.org/viewcvs/");
+        _interface.detect(grabber, doc);
+        
+        assertEquals("ViewCVS 0.9.2", _interface.getType());
+    }
+    
+    public void testDetectWithGraph() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2_graph.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.setRootUrl("http://cvs.apache.org/viewcvs/");
+        _interface.detect(grabber, doc);
+        
+        assertEquals("ViewCVS 0.9.2", _interface.getType());
+    }
+
+    public void testDetectWithMultipleRoots() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2_multi_roots.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.setRootUrl("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/");
+        _interface.detect(grabber, doc);
+        
+        assertEquals("ViewCVS 0.9.2", _interface.getType());
+        assertEquals("ooo4r", _interface.getRoot());
     }
 
     public void testGetFiles() throws Exception {
@@ -160,5 +189,23 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
         assertEquals("utils", directories[i++]);
         assertEquals("wxPython", directories[i++]);
     }
+    
+    public void testGetDirectoryUrlWithMultipleRoots() throws Exception {
+        _interface.setRoot("ooo4r");
+        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/ooo4r/?cvsroot=ooo4r", _interface.getDirectoryUrl("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", "ooo4r"));
+        _interface.setVersionTag("jamesgb");
+        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/ooo4r/?only_with_tag=jamesgb&cvsroot=ooo4r", _interface.getDirectoryUrl("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", "ooo4r"));
+    }
+    
+    public void testGetDownloadUrlWithMultipleRoots() throws Exception {
+        _interface.setRoot("ooo4r");
+        RemoteRepository repository = new RemoteRepository("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", null);
+        RemoteDirectory dir = new RemoteDirectory(repository, "ooo4r", "ooo4r");
+        RemoteFile file = new RemoteFile("README.txt", "1.1");
+        file.setDirectory(dir);
+        file.setInAttic(false);
+        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/*checkout*/ooo4r/README.txt?rev=1.1&cvsroot=ooo4r", _interface.getDownloadUrl(file));
+    }
+    
     
 }

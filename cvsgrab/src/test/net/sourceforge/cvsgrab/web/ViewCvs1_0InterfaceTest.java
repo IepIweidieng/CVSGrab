@@ -7,6 +7,7 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
+import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.RemoteDirectory;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.RemoteRepository;
@@ -36,6 +37,31 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
         _interface.setRoot("picocontainer");
     }
 
+    public void testDetect() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.setRootUrl("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/");
+        _interface.detect(grabber, doc);
+        
+        assertEquals("ViewCVS 1.0-dev", _interface.getType());
+        assertEquals("picocontainer", _interface.getRoot());
+    }
+
+    /**
+     * Test for bug #2308061, no root defined in the web page,
+     * xpath //A/@href[contains(., 'root=')] returns null
+     * @throws Exception if the test fails
+     */
+    public void testDetectBusyBox() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_1_0_busybox.net.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.setRootUrl("http://cvs.uclibc.org/cgi-bin/cvsweb/");
+        _interface.detect(grabber, doc);
+        
+        assertEquals("ViewCVS 1.0-dev", _interface.getType());
+        assertNull(_interface.getRoot());
+    }
+    
     public void testGetFiles() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
         

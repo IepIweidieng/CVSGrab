@@ -1,23 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
-	<properties>
-		<author email="ludovicc@users.sourceforge.net">Ludovic Claude</author>
-		<title>CVSGrab - Command line usage</title>
-	</properties>
-	<body>
-		<section name="Command line usage">
-		  <p>
-			From the command line, use cvsgrab.bat or cvsgrab.sh to run it. <br/>
-			Type cvsgrab -help to get help
-		  </p>
-		  <p>
-		    Sample use: <br/>
-		    cvsgrab -rootUrl http://cvs.picocontainer.codehaus.org/viewcvs.cgi/ -packagePath pico -destDir c:/tmp 
-		  </p>
-		  <p>	
-			You may need to define the CVSGRAB_HOME environment property if you want to call cvsgrab.bat from any location. <br/>
-			It works like the ANT_HOME or JAVA_HOME property: put in CVSGRAB_HOME the location of your CVSGrab installation.
-		  </p>
-		</section>
-	</body>
+  <properties>
+    <author email="ludovicc@users.sourceforge.net">Ludovic
+    Claude</author>
+
+    <title>CVSGrab - Command line usage</title>
+  </properties>
+
+  <body>
+    <section name="Command line usage">
+      <p>From the command line, use cvsgrab.bat or cvsgrab.sh to
+      run it. 
+      <br />
+
+      Type cvsgrab -help to get help</p>
+
+      <p>You may need to define the CVSGRAB_HOME environment
+      property if you want to call cvsgrab.bat from any location. 
+      <br />
+
+      It works like the ANT_HOME or JAVA_HOME property: put in
+      CVSGRAB_HOME the location of your CVSGrab installation.</p>
+    </section>
+
+    <section name="Examples">
+      <subsection
+      name="CVSGrab itself on SourceForge (ViewCVS 0.8)">
+        <p>URL: 
+        <a
+        href="http://cvs.sourceforge.net/viewcvs.py/cvsgrab/cvsgrab/">
+        http://cvs.sourceforge.net/viewcvs.py/cvsgrab/cvsgrab/</a>
+        </p>
+
+        <p>cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/
+        -packagePath cvsgrab/cvsgrab/ -destDir c:/tmp -packageDir
+        CVSGrab</p>
+
+        <p>Note the -packageDir option that is used to avoid
+        getting a folder called cvsgrab containing another forlder
+        called cvsgrab also on the disk.</p>
+      </subsection>
+
+      <subsection
+      name="Eclipse (ViewCVS 0.7) with explicit proxy settings">
+        <p>URL: 
+        <a
+        href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/">
+        http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/</a>
+        </p>
+
+        <p>cvsgrab -rootUrl
+        http://dev.eclipse.org/viewcvs/index.cgi/ -packagePath
+        org.eclipse.ant.core -destDir c:/tmp -proxyHost
+        cache.myorg.com -proxyPort 8080</p>
+      </subsection>
+
+      <subsection
+      name="Maven on Apache Jakarta with tag MAVEN_1_0_RC1 (ViewCVS 1.0-dev)">
+
+        <p>URL: 
+        <a
+        href="http://cvs.apache.org/viewcvs.cgi/maven/?only_with_tag=MAVEN_1_0_RC1">
+        http://cvs.apache.org/viewcvs.cgi/maven/?only_with_tag=MAVEN_1_0_RC1</a>
+        </p>
+
+        <p>cvsgrab -rootUrl http://cvs.apache.org/viewcvs.cgi/
+        -packagePath maven -destDir c:\tmp -tag MAVEN_1_0_RC1
+        -cvsRoot
+        :pserver:anoncvs@cvs.apache.org:/home/cvspublic</p>
+
+        <p>Note the -cvsRoot option. This option is useful as it
+        helps CVSGrab to build the CVS admin files in the same
+        format as other CVS tools, like CVSGui / WinCVS, so if you
+        manage to get a direct connection to the internet without a
+        firewall, you can use with no changes the repository
+        checked out by CVSGrab with WinCVS for example.</p>
+      </subsection>
+
+      <subsection
+      name="JavaCVS module on NetBeans.org (SourceCast 1.0)">
+        <p>URL: 
+        <a
+        href="http://javacvs.netbeans.org/source/browse/javacvs/">
+        http://javacvs.netbeans.org/source/browse/javacvs/</a>
+        </p>
+
+        <p>cvsgrab -rootUrl
+        http://javacvs.netbeans.org/source/browse/ -packagePath
+        javacvs -destDir c:\tmp -connections 3</p>
+
+        <p>Note the -connections option that allows up to 3
+        simultaneous downloads, to get faster downloads. 
+        <br />
+
+        Great when uploading sources from a cvs repository for the
+        first time.</p>
+      </subsection>
+
+      <subsection
+      name="PicoContainer on CodeHaus.org (ViewCVS 1.0-dev with multiple roots)">
+
+        <p>URL: 
+        <a
+        href="http://cvs.picocontainer.codehaus.org/viewcvs.cgi/pico/?root=picocontainer">
+        http://cvs.picocontainer.codehaus.org/viewcvs.cgi/pico/?root=picocontainer</a>
+        </p>
+
+        <p>cvsgrab -rootUrl
+        http://cvs.picocontainer.codehaus.org/viewcvs.cgi/
+        -packagePath pico -destDir c:\tmp -projectRoot
+        picocontainer</p>
+
+        <p>Note the -projectRoot option used by ViewCVS 1.0 when
+        it's configured to work with multiple repositories (you
+        should see a dropdown box with the label 'Project Root' on
+        the web page). It's value is also the same as the root parameter
+        from the url.</p>
+      </subsection>
+      
+      <subsection name="WebWork on dev.java.net (SourceCast 2.0)">
+        <p>URL: <a href="https://webwork.dev.java.net/source/browse/webwork/src/">https://webwork.dev.java.net/nonav/source/browse/webwork/src/</a></p>
+        <p>cvsgrab -rootUrl
+        https://webwork.dev.java.net/source/browse/webwork/
+        -packagePath src -destDir c:\tmp -packageDir 
+        webwork-src</p>
+      </subsection>
+    </section>
+  </body>
 </document>
+

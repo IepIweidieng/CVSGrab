@@ -1,229 +1,313 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faqs title="Frequently Asked Questions">
-
   <part id="install">
     <title>Installation</title>
-   
+
     <faq id="how-install">
-      <question>
-        How do I install CVSGrab?
-      </question>
+      <question>How do I install CVSGrab?</question>
+
       <answer>
-        <p> First you need a Java virtual machine, version 1.2 or better. Go to http://java.com/ if you
-          don't have a recent version of Java on your computer. </p>
-         
-        <p> Add java.exe, located under the bin folder of your Java installation, to the PATH environment variable. <br/>
-        </p>  
-          
-        <p> On Windows, unzip cvsgrab-2.0-bin.zip, and set the environment variable CVSGRAB_HOME to the installation 
-        directory of cvsgrab, or modify cvsgrab.bat and uncomment the line set CVSGRAB_HOME= . </p>
-        
-        <p> On Unix, untar cvsgrab-2.0-bin.tar.gz, and set the environment variable CVSGRAB_HOME to the installation 
-        directory of cvsgrab. </p>
-        
-        <p> Note: On Windows, environment variables can be defined from the Dos command line with: <br/>
-          set ENVIRONMENT_VARIABLE = value <br/>
-          Or for Windows XP, from Control Panel / System / Advanced tab / Environment variables button
+        <p>First you need a Java virtual machine, version 1.2 or
+        better. Go to http://java.com/ if you don't have a recent
+        version of Java on your computer.</p>
+
+        <p>Add java.exe, located under the bin folder of your Java
+        installation, to the PATH environment variable. 
+        <br />
         </p>
+
+        <p>On Windows, unzip cvsgrab-2.0-bin.zip, and set the
+        environment variable CVSGRAB_HOME to the installation
+        directory of cvsgrab, or modify cvsgrab.bat and uncomment
+        the line set CVSGRAB_HOME= .</p>
+
+        <p>On Unix, untar cvsgrab-2.0-bin.tar.gz, and set the
+        environment variable CVSGRAB_HOME to the installation
+        directory of cvsgrab.</p>
+
+        <p>Note: On Windows, environment variables can be defined
+        from the Dos command line with: 
+        <br />
+
+        set ENVIRONMENT_VARIABLE = value 
+        <br />
+
+        Or for Windows XP, from Control Panel / System / Advanced
+        tab / Environment variables button</p>
       </answer>
     </faq>
-    
+
     <faq id="java-version">
-      <question>
-        Which version of Java is supported? 
-      </question>
+      <question>Which version of Java is supported?</question>
+
       <answer>
-        <p> Java 1.0 and 1.1 won't work at all, Java 1.2 onwards should work well, and Java 1.4 is the version i'm using for 
-        the tests and it's also the version to use if you have issues with SSL or stuff like that. </p>
+        <p>Java 1.0 and 1.1 won't work at all, Java 1.2 onwards
+        should work well, and Java 1.4 is the version i'm using for
+        the tests and it's also the version to use if you have
+        issues with SSL or stuff like that.</p>
       </answer>
     </faq>
 
     <faq id="running-ant">
-      <question>
-        How can i run cvsgrab as an Ant task? 
-      </question>
+      <question>How can i run cvsgrab as an Ant task?</question>
+
       <answer>
-		<p> Install the cvsgrab task in Ant by using the following: </p>
- 
- 		<p>
-		  &lt;property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" /&gt; <br/>
-		  &lt;taskdef name="cvsgrab" classname="net.sourceforge.cvsgrab.CVSGrabTask" classpath="${cvsgrab.dir}/lib/cvsgrab.jar"/&gt;
-	    </p> 
-	    
-	    <p> Then the &lt;cvsgrab&gt; task is available in your Ant build script. </p>
+        <p>Install the cvsgrab task in Ant by using the
+        following:</p>
+
+        <p>&lt;property name="cvsgrab.dir" value="[Your CVSgrab
+        installation directory]" /&gt; 
+        <br />
+
+        &lt;taskdef name="cvsgrab"
+        classname="net.sourceforge.cvsgrab.CVSGrabTask"
+        classpath="${cvsgrab.dir}/lib/cvsgrab.jar"/&gt;</p>
+
+        <p>Then the &lt;cvsgrab&gt; task is available in your Ant
+        build script.</p>
       </answer>
     </faq>
-    
-  </part>  
+  </part>
 
   <part id="connection-issues">
     <title>Connection issues</title>
-   
+
     <faq id="proxy">
-      <question>
-        How can i use a proxy? 
-      </question>
+      <question>How can i use a proxy?</question>
+
       <answer>
-        <p> Use the following arguments: -proxyHost [address of the proxy] -proxyPort [port of the proxy] <br/>
-           Example: -proxyHost fireawll.mycompany.com -proxyPort 8080 </p>
-        
-        <p> If the proxy requires authentification, you can use -proxyUser [user name for the proxy] -proxyPassword [password for the proxy] <br/>
-           Example: -proxyUser myLogin -proxyPassword myPassword
-        </p>
-        
-        <p> If the proxy requires authentification with NTLM, like MS proxy, you can use -proxyNTDomain [NT domain] <br/>
-           Example: -proxyUser ntLogin -proxyPassword ntPassword -proxyNTDomain ntDomain <br/>
-           Errors of the kind: java.io.IOException Server returned HTTP response code: 407 for URL seem to be caused
-           by the lack of NT domain authentification. <br/>
-           Note that you need the Java Cryptography extention (<a href="http://java.sun.com/products/jce/">JCE</a>) package 
-           installed or upgrade to Java 1.4 to use this feature.
-        </p>
+        <p>Use the following arguments: -proxyHost [address of the
+        proxy] -proxyPort [port of the proxy] 
+        <br />
+
+        Example: -proxyHost fireawll.mycompany.com -proxyPort
+        8080</p>
+
+        <p>If the proxy requires authentification, you can use
+        -proxyUser [user name for the proxy] -proxyPassword
+        [password for the proxy] 
+        <br />
+
+        Example: -proxyUser myLogin -proxyPassword myPassword</p>
+
+        <p>If the proxy requires authentification with NTLM, like
+        MS proxy, you can use -proxyNTDomain [NT domain] 
+        <br />
+
+        Example: -proxyUser ntLogin -proxyPassword ntPassword
+        -proxyNTDomain ntDomain 
+        <br />
+
+        Errors of the kind: java.io.IOException Server returned
+        HTTP response code: 407 for URL seem to be caused by the
+        lack of NT domain authentification. 
+        <br />
+
+        Note that you need the Java Cryptography extention (
+        <a href="http://java.sun.com/products/jce/">JCE</a>
+
+        ) package installed or upgrade to Java 1.4 to use this
+        feature.</p>
       </answer>
     </faq>
 
     <faq id="web-authentification">
-      <question>
-        The site hosting the web interface is password-protected. How can i authenticate on it?
-      </question>
+      <question>The site hosting the web interface is
+      password-protected. How can i authenticate on it?</question>
+
       <answer>
-        <p> If the web site uses standard http authentification (a message box pops up on your browser and asks for your user name and password),
-          then you can use the following arguments: -webUser [user name] -webPassword [password] <br/>
-          Example: -webUser joe121 -webPassword xyz123 </p>
+        <p>If the web site uses standard http authentification (a
+        message box pops up on your browser and asks for your user
+        name and password), then you can use the following
+        arguments: -webUser [user name] -webPassword [password] 
+        <br />
+
+        Example: -webUser joe121 -webPassword xyz123</p>
       </answer>
     </faq>
-    
+
     <faq id="fast-downloads">
-      <question>
-        How can i speed up downloads?
-      </question>
+      <question>How can i speed up downloads?</question>
+
       <answer>
-        <p> Enable simultaneous downloads, it should give you a good performance boost when downloading a repository for the first time. <br/>
-          Use the following arguments: -connections [number of connection] <br/>
-          Example: -connections 3 will open 3 simultaneous downloads, recommanded value for DSL connections. 
-        </p>
+        <p>Enable simultaneous downloads, it should give you a good
+        performance boost when downloading a repository for the
+        first time. 
+        <br />
+
+        Use the following arguments: -connections [number of
+        connection] 
+        <br />
+
+        Example: -connections 3 will open 3 simultaneous downloads,
+        recommanded value for DSL connections.</p>
       </answer>
     </faq>
   </part>
-  
+
   <part id="repository-issues">
     <title>Repository issues</title>
-   
+
     <faq id="root-url">
-      <question>
-        What should i use as the root url, what should i use as the package path?
-      </question>
+      <question>What should i use as the root url, what should i
+      use as the package path?</question>
+
       <answer>
-        <p> On ViewCVS, the root url is the url you get when you click on the element under [brackets]
-          on the Current directory line. <br/>
-          For example, on the following site, <a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/" target="new_window">http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/</a>,
-          you have this line: <br/>
-          Current directory:  [Eclipse_Project] / org.eclipse.ant.core <br/>
-          Click on [Eclipse_Project], this gives you the root url to use: 
-          http://dev.eclipse.org/viewcvs/index.cgi/ <br/>
-          And the package path is org.eclipse.ant.core/
-        </p>
+        <p>On ViewCVS, the root url is the url you get when you
+        click on the element under [brackets] on the Current
+        directory line. 
+        <br />
+
+        For example, on the following site, 
+        <a
+        href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/"
+         target="new_window">
+        http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/</a>
+
+        , you have this line: 
+        <br />
+
+        Current directory: [Eclipse_Project] / org.eclipse.ant.core
         
-        <p>
-          As a general rule, the root url should end with .cgi/ or .py/ or viewcvs/ or source/, the package path is the rest of the url. <br/>
-          Do not include any query strings like #dirlist or ?cvsroot=repo in the root url or the package path.
-        </p>
+        <br />
+
+        Click on [Eclipse_Project], this gives you the root url to
+        use: http://dev.eclipse.org/viewcvs/index.cgi/ 
+        <br />
+
+        And the package path is org.eclipse.ant.core/</p>
+
+        <p>As a general rule, the root url should end with .cgi/ or
+        .py/ or viewcvs/ or source/, the package path is the rest
+        of the url. 
+        <br />
+
+        Do not include any query strings like #dirlist or
+        ?cvsroot=repo in the root url or the package path.</p>
       </answer>
     </faq>
 
     <faq id="package-rename">
-      <question>
-        How can i give another name to the folder that's being checked out?
-      </question>
+      <question>How can i give another name to the folder that's
+      being checked out?</question>
+
       <answer>
-        <p> Let's suppose you have -destDir c:/tmp and -packagePath myProject/myPackage-v-2.0 <br/>
-          If you run cvsgrab, it will checkout the files to the forder c:/tmp/myProject/myPackage-v-2.0 <br/>
-          To checkout files to c:/tmp/myPackage for example, you need to add the parameter -packageDir myPackage
-        </p>
+        <p>Let's suppose you have -destDir c:/tmp and -packagePath
+        myProject/myPackage-v-2.0 
+        <br />
+
+        If you run cvsgrab, it will checkout the files to the
+        forder c:/tmp/myProject/myPackage-v-2.0 
+        <br />
+
+        To checkout files to c:/tmp/myPackage for example, you need
+        to add the parameter -packageDir myPackage</p>
       </answer>
     </faq>
-    
+
     <faq id="cvsweb">
-      <question>
-        Can CVSGrab work with cvsweb or other exotic cvs web interface?
-      </question>
+      <question>Can CVSGrab work with cvsweb or other exotic cvs
+      web interface?</question>
+
       <answer>
-        <p> No, but if you give me the url to your site, i should be able to provide support to it. Add this as a 
-          <a href="https://sourceforge.net/tracker/?group_id=52481&amp;atid=467007">feature request</a> in SourceForge. 
-        </p>
+        <p>Yes for cvsweb 2.0, and no for the other types of web interfaces, 
+        but if you give me the url to your site, i should be
+        able to provide support to it. Add this as a 
+        <a
+        href="https://sourceforge.net/tracker/?group_id=52481&amp;atid=467007">
+        feature request</a>
+
+        in SourceForge.</p>
       </answer>
     </faq>
-    
+
     <faq id="auto-detect">
-      <question>
-        CVSGrab fails to autodetect the type of the cvs web interface used, what can i do?
-      </question>
+      <question>CVSGrab fails to autodetect the type of the cvs web
+      interface used, what can i do?</question>
+
       <answer>
-        <p> File a bugreport on <a href="https://sourceforge.net/tracker/?group_id=52481&amp;atid=467004">Bug tracker</a> 
-          and give the url of the size you were trying to access. 
-        </p>
+        <p>File a bugreport on 
+        <a
+        href="https://sourceforge.net/tracker/?group_id=52481&amp;atid=467004">
+        Bug tracker</a>
+
+        and give the url of the size you were trying to access.</p>
       </answer>
     </faq>
-    
+
     <faq id="no-downloads">
-      <question>
-        CVSGrab browses the directories but fails to download any file, what can i do?
-      </question>
+      <question>CVSGrab browses the directories but fails to
+      download any file, what can i do?</question>
+
       <answer>
-        <p> File a bugreport on <a href="https://sourceforge.net/tracker/?group_id=52481&amp;atid=467004">Bug tracker</a> 
-          and give the url of the size you were trying to access. 
-        </p>
+        <p>File a bugreport on 
+        <a
+        href="https://sourceforge.net/tracker/?group_id=52481&amp;atid=467004">
+        Bug tracker</a>
+
+        and give the url of the size you were trying to access.</p>
       </answer>
     </faq>
-    
+
     <faq id="multiple-roots">
-      <question>
-        How can i use CVSGrab on a repository with multiple root?
-      </question>
+      <question>How can i use CVSGrab on a repository with multiple
+      root?</question>
+
       <answer>
-        <p> If you have a repository that you access with urls of the type http://cvs.cocoondev.org/cgi-bin/viewcvs.cgi/fins/?cvsroot=jfchart
-          (with ViewCVS 0.9.2 with multiple repositories installed), then try the following command to grab your files: <br/>
-          cvsgrab -rootUrl http://cvs.cocoondev.org/cgi-bin/viewcvs.cgi/ -package fins -queryParams cvsroot=jfchart -destDir c:/checkout <br/>
-          This is not necessary with ViewCVS 1.0 as cvsgrab can autodetect the name of the repository with this version. 
-        </p>
+        <p>If you have a repository that you access with urls of
+        the type
+        http://cvs.cocoondev.org/cgi-bin/viewcvs.cgi/fins/?cvsroot=jfchart
+        (with ViewCVS 0.9.2 with multiple repositories installed),
+        then try the following command to grab your files: 
+        <br />
+
+        cvsgrab -rootUrl
+        http://cvs.cocoondev.org/cgi-bin/viewcvs.cgi/ -package fins
+        -queryParams cvsroot=jfchart -destDir c:/checkout 
+        <br />
+
+        This is not necessary with ViewCVS 1.0 as cvsgrab can
+        autodetect the name of the repository with this
+        version.</p>
       </answer>
     </faq>
-  </part>  
-  
+  </part>
+
   <part id="functionality">
     <title>Functionality</title>
-   
+
     <faq id="java">
-      <question>
-        Why is cvsgrab written in Java?
-      </question>
+      <question>Why is CVSGrab written in Java?</question>
+
       <answer>
-        <p> Because i know Java best, and it works on most operating systems. And there are great libraries available that
-          help me to do the job better and faster. 
-        </p>
+        <p>Because i know Java best, and it works on most operating
+        systems. And there are great libraries available that help
+        me to do the job better and faster.</p>
       </answer>
     </faq>
-   
+
     <faq id="checkin">
-      <question>
-        Can i checkin modified or new files to the repository? Can i send patches? 
-      </question>
+      <question>Can i checkin modified or new files to the
+      repository? Can i send patches?</question>
+
       <answer>
-        <p> No! Cvsgrab provides only the functionality available from the web interface, and right now it's not possible
-          to get write access to the cvs repository from any web interface. Or give me proof if i'm wrong. 
-        </p>
+        <p>No! CVSGrab provides only the functionality available
+        from the web interface, and right now it's not possible to
+        get write access to the cvs repository from any web
+        interface. Or give me proof if i'm wrong.</p>
       </answer>
     </faq>
-    
+
     <faq id="modules">
-      <question>
-        Can i checkout modules?
-      </question>
+      <question>Can i checkout modules?</question>
+
       <answer>
-        <p> Modules are a convenient functionality of cvs that groups different packages under the same name. 
-          Unfortunately it's not yet supported by cvsgrab, but maybe in the 2.1 release... 
-        </p>
+        <p>Modules are a convenient functionality of cvs that
+        groups different packages under the same name.
+        Unfortunately it's not yet supported by cvsgrab, but maybe
+        in the 2.1 release...</p>
       </answer>
     </faq>
-  </part>  
-  
+  </part>
 </faqs>
+

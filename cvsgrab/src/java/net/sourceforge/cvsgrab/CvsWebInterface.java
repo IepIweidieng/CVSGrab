@@ -6,6 +6,11 @@
  */
 package net.sourceforge.cvsgrab;
 
+import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.sourceforge.cvsgrab.web.CvsWeb1_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb2_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast1_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast2_0Interface;
@@ -34,8 +39,11 @@ public abstract class CvsWebInterface {
         new ViewCvs1_0Interface(),  
         new Sourcecast1_0Interface(),
         new Sourcecast2_0Interface(),
+        new CvsWeb1_0Interface(),
         new CvsWeb2_0Interface()
     };
+    
+    private static Map documents = new HashMap();
     
     /**
      * Explicitely select a web interface capable of handle the web pages.
@@ -71,34 +79,42 @@ public abstract class CvsWebInterface {
      * @return the cvs web interface that matches best this page
      */
     public static CvsWebInterface findInterface(CVSGrab grabber) throws Exception {
-        String url = WebBrowser.forceFinalSlash(grabber.getRootUrl());
-        url += grabber.getPackagePath();
-        url = WebBrowser.addQueryParam(url, grabber.getQueryParams());
-        Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
-        return findInterface(grabber, doc);
-    } 
-
-    /**
-     * Find the cvs web interface that could have generated this html page. <br>
-     * Makes testing easier
-     * 
-     * @param grabber
-     * @param doc
-     * @return
-     * @throws Exception
-     */
-    static CvsWebInterface findInterface(CVSGrab grabber, Document doc) throws Exception {
         for (int i = 0; i < _webInterfaces.length; i++) {
             try {
+            	Document doc = _webInterfaces[i].getDocumentForDetect(grabber);
+            	if (doc == null) {
+            	    continue;
+            	}
+            	
                 _webInterfaces[i].detect(grabber, doc);
                 return _webInterfaces[i];
-            } catch (Exception ex) {
+                
+            } catch (DetectException ex) {
                 // ignore
+                CVSGrab.getLog().debug(_webInterfaces[i].getId() + " doesn't match, cause is " + ex.toString());
             }
+        }
+        CVSGrab.getLog().info("Tried to connect to the following urls: ");
+        for (Iterator i = documents.keySet().iterator(); i.hasNext(); ) {
+            CVSGrab.getLog().info(i.next());
         }
         return null;
     }
     
+    private static Document loadDocument(String url) {
+        Document doc = (Document) documents.get(url);
+        if (doc == null) {
+            documents.put(url, null);
+            try {
+                doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
+                documents.put(url, doc);
+            } catch (Exception ex) {
+                // ignore
+            }
+        }
+        return doc;
+    }
+
     private String _versionTag;
     private String _queryParams;
     
@@ -153,20 +169,50 @@ public abstract class CvsWebInterface {
      *  
      * @param grabber The cvs grabber
      * @param htmlPage The web page
-     * @throws Exception if the web page is not compatible with this type of web interface
+     * @throws MarkerNotFoundException if the version marker for the web interface was not found.
+     * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
+     * @throws IncompatibleInterfaceException if the web page is not compatible with this type of web interface
      */
-    public abstract void detect(CVSGrab grabber, Document htmlPage) throws Exception; 
+    public abstract void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException; 
         
+    /**
+     * Returns the document to use when attempting to detect the type of the web interface.
+     *    
+     * @param grabber The cvs grabber
+     * @return a web page parsed in DOMformat, or null if the web page tested doesn't exist.
+     */
+    public Document getDocumentForDetect(CVSGrab grabber) {
+        String url = getBaseUrl(grabber);
+        Document doc = loadDocument(url);
+        if (doc == null) {
+            url = getAltBaseUrl(grabber);
+            doc = loadDocument(url);
+        }
+        return doc;
+    }
+    
     /**
      * @return the id identifying the web interface, and used for initialisation
      */
     public abstract String getId();
     
     /**
-     * @return thr\e type of the web interface as detected from the actual website 
+     * @return the type of the web interface as detected from the actual website 
      */
     public abstract String getType();
 
+    /**
+     * @return the base url to use when trying to auto-detect this type of web interface
+     */
+    public abstract String getBaseUrl(CVSGrab grabber);
+
+    /**
+     * @return an alternate base url to use when trying to auto-detect this type of web interface
+     */
+    public String getAltBaseUrl(CVSGrab grabber) {
+        return null;   
+    }
+    
     /**
      * @param rootUrl
      * @param directoryName

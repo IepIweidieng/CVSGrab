@@ -1,327 +1,297 @@
 <?xml version="1.0"?>
 <document>
-    <properties>
-		<author email="ludovicc@users.sourceforge.net">Ludovic Claude</author>
-		<title>CVSGrab - Read sources stored in CVS behind a firewall</title>
-    </properties>
-
-    <!-- action types are add/update/fix/remove -->
-    <body>
-
-        <release version="2.1" date="planned features">
-
-            <action dev="ludovicc" type="add">
-                TODO: add diff functionality.
-            </action>
-        
-            <action dev="ludovicc" type="add">
-                TODO: add module support by parsing the CVSROOT/modules file.
-            </action>
-            
-            <action dev="ludovicc" type="add">
-				TODO: add option to check out files in DOS mode, UNIX mode
-		    </action>
-
-            <action dev="ludovicc" type="add">
-				TODO: add exclusion list for directories you don't want to download
-		    </action>
-
-            <action dev="ludovicc" type="update">
-				use Jakarta's CLI library to parse command line arguments
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Contributed by Amaury Forgeot d'Arc.
-				TODO: Also, I think that an option that forces the update of older files would be useful, 
-				especially when one changes the version tag.
-				Maybe this check should be removed completely, and replaced by setting the read-only attribute of the files?
-				Then a read-only file would be replaced anyway, whereas read/write files would trigger the error 
-				"cannot clobber writeable file xxx". (an "error", not an "info" log message).
-            </action>
-
-            <action dev="ludovicc" type="add">
-				TODO: I'm curious as to ways to emulate -kb (binary file
-				checkout/update) functionality in CVSGrab. One of the
-				repositories I use mixes binary files with source, and
-				it's important for updating binary files later with
-				conventional CVS that the -kb flag be set in
-				CVS/Entries. I'd be much appreciative if this feature
-				could be added to a future version of CVSGrab, or if
-				someone could point out how to enable it now (I can't
-				seem to find anything on it in the CVSGrab documents,
-				so I'm not sure if it exists already or not). If
-				someone more familiar with CVSGrab could even point out
-				where such a modification needs to go, that would be
-				most useful, as I could possibly add the feature myself.
-            </action>
-            
-        </release>
-
-        <release version="2.0.2" date="2003-12-27">
-
-            <action dev="ludovicc" type="add">
-	                Added support for SourceCast 1.1 used by NetBeans.org (contributed partially by Laurent Broudoux).
-            </action>
-        
-            <action dev="ludovicc" type="fix">
-	                Fixed cvsgrab.sh: fixed log arguments that were not working on Lnux (contributed by Eric Le Goff).
-            </action>
-
-            <action dev="ludovicc" type="fix">
-	                Simplified XPath expressions to avoid duplicates in file and directory selections.
-            </action>
-        
-        </release>
-
-        <release version="2.0.1" date="2003-12-07">
-
-            <action dev="ludovicc" type="add">
-                Added support for CvsWeb 2.0.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Added initial test that connects to the site by using the root url, this should help to detect
-                proxy settings issues.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Added manual selection of the web interface, this can fix issues with some web sites where the autodetect feature 
-                doesn't work.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Fixed cvsgrab.sh: use unix-style file format, updated script and make it use the $CVSGRAB_HOME environment variable 
-                (copied from Ant script).
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Fixed incorrect urls for directories that contain spaces
-            </action>
-        
-            <action dev="ludovicc" type="fix">
-                ViewCVS 1.0: fixed detection when ViewCvs is not configured with multiple cvs roots.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Contributed by Amaury Forgeot d'Arc.
-                wxWindows apparently uses ViewCVS 0.9.2, but with an additional link after each 
-                file name to show the "revision graph". See http://cvs.wxwindows.org/viewcvs.cgi/wxWindows/
-                So I had to modify the ViewCvsInterface.java file and change
-                _fileVersionXpath = "TD[A/IMG/@alt != '(graph)'][2]/A/B";
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Contributed by Amaury Forgeot d'Arc.
-                Removed caching of pages by the server to get the up-to-date version of the directory lists.
-            </action>
-
-        </release>
-
-        <release version="2.0" date="2003-10-31">
-
-            <action dev="ludovicc" type="update">
-                Use commons-logging to handle logging. This makes logging compatible with the Java 1.4 logging API.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Fixed logging level for http client library to avoid repetitive warnings like 'Response content length is not known'.  
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Use rootUrl + packagePath to detect the type of the web interface instead of rootUrl alone. This should fix 
-                redirection issues with Sourceforge where http://cvs.sourceforge.net/viewcvs.py is redirected to http://sourceforge.net/.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Put back Main-Class attribute in cvsgrab.jar to be able to run cvsgrab with java -jar cvsgrab.jar
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Fixed an issue on Windows systems where files where not updated because the timestamp stored by Windows does not include 
-                seconds.  
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Added more synchronisation to fix the issue java.io.FileNotFoundException: xxx\CVS\Root (Specific file path not found)
-                when using simultaneous connections.  
-            </action>
-
-        </release>
-
-        <release version="2.0-beta3" date="2003-10-24">
-
-            <action dev="ludovicc" type="fix">
-                Fixed cookie support to avoid tons of warnings when grabbing files from dev.java.net.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Fixed null pointer exception when optional packageDir parameter was not set.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Hide password.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                When password is not present but user name is present, display a masked prompt that asks securely for the password.
-            </action>
-
-        </release>
-
-        <release version="2.0-beta2" date="2003-10-23">
-
-            <action dev="ludovicc" type="add">
-                Added detection for invalid rootUrl
-            </action>
-
-            <action dev="ludovicc" type="update">
-                Split parameter package into packagePath and packageDir, to be able to give the package path on the
-                web site, and use a different name for storing the package on the disk. <br/>
-                WARNING: this affects the command line arguments and the ant task, read the documentation for more details.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Fixes for NT domain authentification on MS proxies.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Fix prune empty dirs: empty directories are now removed from CVS entries.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Fixed autodetection for Sourceforge viewcvs interface: force the version to ViewCVS 0.8 when the root url contains
-                sourceforge.net or sf.net .
-            </action>
-
-        </release>
-
-        <release version="2.0-beta" date="2003-10-15">
-
-            <action dev="ludovicc" type="update">
-                Changed license from LGPL to BSD
-            </action>
-
-            <action dev="ludovicc" type="update">
-                Replaced HotSax by NekoHtml for parsing html pages, uses xpath to extract data from the html pages.
-            </action>
-
-            <action dev="ludovicc" type="update">
-                Replace jcvsii by NetBeans' cvsclient, license is more friendly and this is better designed and supported
-            </action>
-
-            <action dev="ludovicc" type="update">
-                Now uses Jakarta commons-httpclient to make http connections, it supports more options in particular
-                for authentification on the web site or on the proxy.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                open multiple connections to download files faster.
-            </action>
-        
-            <action dev="ludovicc" type="add">
-                Added support for authentification with NT credentials used on MS proxies.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Added support for authentification on the web server.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Added support for localy modified files: they should not be updated even if there is a more recent 
-                version on the remote repository.
-            </action>
-
-            <action dev="ludovicc" type="add">
-				Added support for multiple cvsroots (argument cvsroot=[root] to the query on viewcvs 0.9.2)
-		    </action>
-		    
-            <action dev="ludovicc" type="fix">
-                Fixed issue with files recovered from the Attic/ folder when using version tags.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Added support for different cvs web interfaces. Currently ViewCVS version 0.7, 0.8, 0.9, 1.0-dev and
-                SourceCast 2.0 are supported.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Added unit tests for better quality.
-            </action>
-
-        </release>
-
-        <release version="1.2" date="2002-10">
-
-            <action dev="ludovicc" type="add">
-                Added the date in the cvs entries.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Made update more robust when there is an upload that failed (failed uploads don't get their version updated)
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Defined CVSGRAB_HOME, used to run cvsgrab.bat from any location.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Bugfixes, in particular on the pruneEmptyDirs functionality
-            </action>
-
-        </release>
-
-        <release version="1.1" date="2002-08">
-
-            <action dev="ludovicc" type="update">
-                Refactoring: renamed package from cvsgrab to net.sourceforge.cvsgrab
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Added support for proxies and http authentication.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Added prune empty directories functionality.
-            </action>
-
-            <action dev="ludovicc" type="fix">
-                Removed first / in the name stored in the Repository admin file for more compatibility with WinCVS.
-            </action>
-
-        </release>
-
-        <release version="1.0" date="2002-06">
-
-            <action dev="ludovicc" type="update">
-                Used clean Java code instead of BSF scripts.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Created a cvsgrab Ant task
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Packaging, documentation.
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Now able to delete the files removed from the repository
-            </action>
-
-            <action dev="ludovicc" type="add">
-                Support for version tags/branches.
-            </action>
-
-        </release>
-
-        <release version="0.1" date="2002-04">
-
-            <action dev="ludovicc" type="add">
-                First release. Uses scripts based on BSF (Bean scripting framework) and Hotsax,
-                initially available under the Hotsax project (http://sourceforge.net/hotsax)    
-            </action>
-
-        </release>
-
-    </body>
+  <properties>
+    <author email="ludovicc@users.sourceforge.net">Ludovic
+    Claude</author>
+
+    <title>CVSGrab - Read sources stored in CVS behind a
+    firewall</title>
+  </properties>
+
+<!-- action types are add/update/fix/remove -->
+  <body>
+    <release version="2.1" date="planned features">
+      <action dev="ludovicc" type="add">TODO: add diff
+      functionality.</action>
+
+      <action dev="ludovicc" type="add">TODO: add module support by
+      parsing the CVSROOT/modules file.</action>
+
+      <action dev="ludovicc" type="add">TODO: add option to check
+      out files in DOS mode, UNIX mode</action>
+
+      <action dev="ludovicc" type="add">TODO: add exclusion list
+      for directories you don't want to download</action>
+
+      <action dev="ludovicc" type="add">Contributed by Amaury
+      Forgeot d'Arc. TODO: Also, I think that an option that forces
+      the update of older files would be useful, especially when
+      one changes the version tag. Maybe this check should be
+      removed completely, and replaced by setting the read-only
+      attribute of the files? Then a read-only file would be
+      replaced anyway, whereas read/write files would trigger the
+      error "cannot clobber writeable file xxx". (an "error", not
+      an "info" log message).</action>
+
+      <action dev="ludovicc" type="add">TODO: I'm curious as to
+      ways to emulate -kb (binary file checkout/update)
+      functionality in CVSGrab. One of the repositories I use mixes
+      binary files with source, and it's important for updating
+      binary files later with conventional CVS that the -kb flag be
+      set in CVS/Entries. I'd be much appreciative if this feature
+      could be added to a future version of CVSGrab, or if someone
+      could point out how to enable it now (I can't seem to find
+      anything on it in the CVSGrab documents, so I'm not sure if
+      it exists already or not). If someone more familiar with
+      CVSGrab could even point out where such a modification needs
+      to go, that would be most useful, as I could possibly add the
+      feature myself.</action>
+
+      <action dev="ludovicc" type="fix">TODO: pruneEmptyDirs doesn't remove the
+      pruned directories from the CVS entries.</action>
+      
+    </release>
+
+    <release version="2.0.3" date="NOT RELEASED">
+      
+      <action dev="ludovicc" type="update">Improved auto-detect
+      functionality: now tests different URLs according to the type
+      of the expected web interface.</action>
+      
+      <action dev="ludovicc" type="update">use Jakarta's CLI
+      library to parse command line arguments</action>
+
+      <action dev="ludovicc" type="update">Output looks more like 
+      the standard cvs command.</action>
+      
+      <action dev="ludovicc" type="add">Add support for ViewCVS 0.9.2 with multiple 
+      cvs roots (http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/?cvsroot=ooo4r)
+      and CVSWeb 1.0 (http://dev.w3.org/cvsweb/).</action>
+      
+    </release>
+
+    <release version="2.0.2" date="2003-12-27">
+      <action dev="ludovicc" type="add">Added support for
+      SourceCast 1.1 used by NetBeans.org (contributed partially by
+      Laurent Broudoux).</action>
+
+      <action dev="ludovicc" type="fix">Fixed cvsgrab.sh: fixed log
+      arguments that were not working on Lnux (contributed by Eric
+      Le Goff).</action>
+
+      <action dev="ludovicc" type="fix">Simplified XPath
+      expressions to avoid duplicates in file and directory
+      selections.</action>
+    </release>
+
+    <release version="2.0.1" date="2003-12-07">
+      <action dev="ludovicc" type="add">Added support for CvsWeb
+      2.0.</action>
+
+      <action dev="ludovicc" type="add">Added initial test that
+      connects to the site by using the root url, this should help
+      to detect proxy settings issues.</action>
+
+      <action dev="ludovicc" type="add">Added manual selection of
+      the web interface, this can fix issues with some web sites
+      where the autodetect feature doesn't work.</action>
+
+      <action dev="ludovicc" type="fix">Fixed cvsgrab.sh: use
+      unix-style file format, updated script and make it use the
+      $CVSGRAB_HOME environment variable (copied from Ant
+      script).</action>
+
+      <action dev="ludovicc" type="fix">Fixed incorrect urls for
+      directories that contain spaces</action>
+
+      <action dev="ludovicc" type="fix">ViewCVS 1.0: fixed
+      detection when ViewCvs is not configured with multiple cvs
+      roots.</action>
+
+      <action dev="ludovicc" type="fix">Contributed by Amaury
+      Forgeot d'Arc. wxWindows apparently uses ViewCVS 0.9.2, but
+      with an additional link after each file name to show the
+      "revision graph". See
+      http://cvs.wxwindows.org/viewcvs.cgi/wxWindows/ So I had to
+      modify the ViewCvsInterface.java file and change
+      _fileVersionXpath = "TD[A/IMG/@alt !=
+      '(graph)'][2]/A/B";</action>
+
+      <action dev="ludovicc" type="fix">Contributed by Amaury
+      Forgeot d'Arc. Removed caching of pages by the server to get
+      the up-to-date version of the directory lists.</action>
+    </release>
+
+    <release version="2.0" date="2003-10-31">
+      <action dev="ludovicc" type="update">Use commons-logging to
+      handle logging. This makes logging compatible with the Java
+      1.4 logging API.</action>
+
+      <action dev="ludovicc" type="fix">Fixed logging level for
+      http client library to avoid repetitive warnings like
+      'Response content length is not known'.</action>
+
+      <action dev="ludovicc" type="fix">Use rootUrl + packagePath
+      to detect the type of the web interface instead of rootUrl
+      alone. This should fix redirection issues with Sourceforge
+      where http://cvs.sourceforge.net/viewcvs.py is redirected to
+      http://sourceforge.net/.</action>
+
+      <action dev="ludovicc" type="fix">Put back Main-Class
+      attribute in cvsgrab.jar to be able to run cvsgrab with java
+      -jar cvsgrab.jar</action>
+
+      <action dev="ludovicc" type="fix">Fixed an issue on Windows
+      systems where files where not updated because the timestamp
+      stored by Windows does not include seconds.</action>
+
+      <action dev="ludovicc" type="fix">Added more synchronisation
+      to fix the issue java.io.FileNotFoundException: xxx\CVS\Root
+      (Specific file path not found) when using simultaneous
+      connections.</action>
+    </release>
+
+    <release version="2.0-beta3" date="2003-10-24">
+      <action dev="ludovicc" type="fix">Fixed cookie support to
+      avoid tons of warnings when grabbing files from
+      dev.java.net.</action>
+
+      <action dev="ludovicc" type="fix">Fixed null pointer
+      exception when optional packageDir parameter was not
+      set.</action>
+
+      <action dev="ludovicc" type="fix">Hide password.</action>
+
+      <action dev="ludovicc" type="add">When password is not
+      present but user name is present, display a masked prompt
+      that asks securely for the password.</action>
+    </release>
+
+    <release version="2.0-beta2" date="2003-10-23">
+      <action dev="ludovicc" type="add">Added detection for invalid
+      rootUrl</action>
+
+      <action dev="ludovicc" type="update">Split parameter package
+      into packagePath and packageDir, to be able to give the
+      package path on the web site, and use a different name for
+      storing the package on the disk. 
+      <br />
+
+      WARNING: this affects the command line arguments and the ant
+      task, read the documentation for more details.</action>
+
+      <action dev="ludovicc" type="fix">Fixes for NT domain
+      authentification on MS proxies.</action>
+
+      <action dev="ludovicc" type="fix">Fix prune empty dirs: empty
+      directories are now removed from CVS entries.</action>
+
+      <action dev="ludovicc" type="fix">Fixed autodetection for
+      Sourceforge viewcvs interface: force the version to ViewCVS
+      0.8 when the root url contains sourceforge.net or sf.net
+      .</action>
+    </release>
+
+    <release version="2.0-beta" date="2003-10-15">
+      <action dev="ludovicc" type="update">Changed license from
+      LGPL to BSD</action>
+
+      <action dev="ludovicc" type="update">Replaced HotSax by
+      NekoHtml for parsing html pages, uses xpath to extract data
+      from the html pages.</action>
+
+      <action dev="ludovicc" type="update">Replace jcvsii by
+      NetBeans' cvsclient, license is more friendly and this is
+      better designed and supported</action>
+
+      <action dev="ludovicc" type="update">Now uses Jakarta
+      commons-httpclient to make http connections, it supports more
+      options in particular for authentification on the web site or
+      on the proxy.</action>
+
+      <action dev="ludovicc" type="add">open multiple connections
+      to download files faster.</action>
+
+      <action dev="ludovicc" type="add">Added support for
+      authentification with NT credentials used on MS
+      proxies.</action>
+
+      <action dev="ludovicc" type="add">Added support for
+      authentification on the web server.</action>
+
+      <action dev="ludovicc" type="add">Added support for localy
+      modified files: they should not be updated even if there is a
+      more recent version on the remote repository.</action>
+
+      <action dev="ludovicc" type="add">Added support for multiple
+      cvsroots (argument cvsroot=[root] to the query on viewcvs
+      0.9.2)</action>
+
+      <action dev="ludovicc" type="fix">Fixed issue with files
+      recovered from the Attic/ folder when using version
+      tags.</action>
+
+      <action dev="ludovicc" type="add">Added support for different
+      cvs web interfaces. Currently ViewCVS version 0.7, 0.8, 0.9,
+      1.0-dev and SourceCast 2.0 are supported.</action>
+
+      <action dev="ludovicc" type="add">Added unit tests for better
+      quality.</action>
+    </release>
+
+    <release version="1.2" date="2002-10">
+      <action dev="ludovicc" type="add">Added the date in the cvs
+      entries.</action>
+
+      <action dev="ludovicc" type="fix">Made update more robust
+      when there is an upload that failed (failed uploads don't get
+      their version updated)</action>
+
+      <action dev="ludovicc" type="add">Defined CVSGRAB_HOME, used
+      to run cvsgrab.bat from any location.</action>
+
+      <action dev="ludovicc" type="fix">Bugfixes, in particular on
+      the pruneEmptyDirs functionality</action>
+    </release>
+
+    <release version="1.1" date="2002-08">
+      <action dev="ludovicc" type="update">Refactoring: renamed
+      package from cvsgrab to net.sourceforge.cvsgrab</action>
+
+      <action dev="ludovicc" type="add">Added support for proxies
+      and http authentication.</action>
+
+      <action dev="ludovicc" type="add">Added prune empty
+      directories functionality.</action>
+
+      <action dev="ludovicc" type="fix">Removed first / in the name
+      stored in the Repository admin file for more compatibility
+      with WinCVS.</action>
+    </release>
+
+    <release version="1.0" date="2002-06">
+      <action dev="ludovicc" type="update">Used clean Java code
+      instead of BSF scripts.</action>
+
+      <action dev="ludovicc" type="add">Created a cvsgrab Ant
+      task</action>
+
+      <action dev="ludovicc" type="add">Packaging,
+      documentation.</action>
+
+      <action dev="ludovicc" type="add">Now able to delete the
+      files removed from the repository</action>
+
+      <action dev="ludovicc" type="add">Support for version
+      tags/branches.</action>
+    </release>
+
+    <release version="0.1" date="2002-04">
+      <action dev="ludovicc" type="add">First release. Uses scripts
+      based on BSF (Bean scripting framework) and Hotsax, initially
+      available under the Hotsax project
+      (http://sourceforge.net/hotsax)</action>
+    </release>
+  </body>
 </document>
+

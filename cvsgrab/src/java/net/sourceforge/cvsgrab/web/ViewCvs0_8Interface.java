@@ -7,6 +7,8 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.CVSGrab;
+import net.sourceforge.cvsgrab.InvalidVersionException;
+import net.sourceforge.cvsgrab.MarkerNotFoundException;
 
 import org.w3c.dom.Document;
 
@@ -29,10 +31,11 @@ public class ViewCvs0_8Interface extends ViewCvsInterface {
 
     /** 
      * {@inheritDoc}
-     * @param htmlPage
-     * @throws Exception
+     * @param htmlPage The web page
+     * @throws MarkerNotFoundException if the version marker for the web interface was not found
+     * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws Exception {
+    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         String rootUrl = grabber.getRootUrl();
         if (rootUrl.indexOf("sourceforge.net") > 0 || rootUrl.indexOf("sf.net") > 0) {
             checkRootUrl(grabber.getRootUrl());
