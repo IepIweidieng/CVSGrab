@@ -6,7 +6,7 @@
                
   <meta name="author" content="Ludovic Claude">
                
-  <meta name="KeyWords" content="WinCvs, cvs, MacCvs, gCvs, jCVS, firewall, proxy, retrieve cvs tree, grab">
+  <meta name="KeyWords" content="WinCvs, cvs, MacCvs, gCvs, jCVS, firewall, proxy, retrieve cvs tree, grab, behind, checkout">
   <title>CVSGrab</title>
 </head>
   <body>
@@ -34,6 +34,8 @@
          <br>
          <a href="http://www.jcvs.org/">jCVS</a>
          <br>
+         <a href="http://jakarta.apache.org/ant/">ANT</a>
+         <br>
         <br>
         <br>
         <br>
@@ -46,31 +48,37 @@
          </td>
          <td valign="Top"><br>
     WHAT IS IT:<br>
+    <br>
+    People often complain that they cannot checkout files from a public CVS repository because 
+    they are behind a corporate firewall that blocks access to the pserver. The standard workaround,
+    use ssh, works only for registered users, not anonymous users. Some firewall support also http tunelling,
+    where access to the pserver is possible with a standard CVS client, but unfortunately it is not used
+    in all organisations (or even for personal firewalls).
+         <br>
          <br>
     CVSGrab is another kind of CVS client. When other CVS clients use the 
-cvs  protocol or ssh<br>
-    to read the repository, CVSGrab reads the repository via its ViewCVS
+cvs  protocol or ssh
+    to read the repository, this utility reads the repository via its ViewCVS
 web   interface.<br>
     The advantage is that if you are behind a firewall that prevents you
-from   updating files<br>
+from   updating files
     from a remote CVS server, this program will be able to bypass the firewall
-  and download<br>
-    the latest files from the repository. Disadvantages are that you have 
-read-only  access<br>
-    to the repository, and the repository needs to be public (password-protected
-  sites are not <br>
-    yet supported, they will be if people ask for it...)<br>
+  and download
+    the latest files from the repository. <br>
+    Disadvantages are that you have only read access
+    to the repository, the repository needs to be public and have ViewCVS set up.<br>
          <br>
     HOW IT WORKS:<br>
          <br>
+    CVSGrab can be started either from the command line or from an Ant task. <P>
     It starts by reading the top page of the ViewCVS repository, then parses
-  the links in this<br>
+  the links in this
     page and browses all the pages bellow while downloading the files in
 them.<br>
     In addition, the CVS administration files (the files under the Cvs folder
-  present on every directory) <br>
+  present on every directory)
     are created and store the version number for each files. The next time
- you  run CVSGrab, those version<br>
+ you  run CVSGrab, those version
     numbers are used to download only the files that have being updated.<br>
          <br>
  TESTED WITH:<br>
@@ -79,8 +87,7 @@ them.<br>
  - ViewCVS 0.9.2 on jakata.apache.org<br>
       <br>
 Author:<br>
-Ludovic Claude (<a href="mailto:ludovicc@users.sourceforge.net">email</a>
-), freelance developer<br>
+Ludovic Claude (<a href="mailto:ludovicc@users.sourceforge.net">email</a>), freelance developer<br>
          </td>
        </tr>
            

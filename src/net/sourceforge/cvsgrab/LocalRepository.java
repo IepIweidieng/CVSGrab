@@ -208,14 +208,50 @@ public class LocalRepository {
     }
 
     /**
-     * Update a file in the local CVS entries
+     * Return true if the file needs to be updated
      *
      * @param cvsName CVS name of the file
      * @param version Version of the file
      * @return true if the file needs to be loaded from the server
      */
-    public boolean updateFile(String cvsName, String version) {
-        boolean needUpdate = false;
+    public boolean needUpdate(String cvsName, String version) {
+        boolean needUpdate = true;
+        cvsName = "./" + cvsName;
+        String ldir;
+        String name;
+        if (cvsName.indexOf("/", 2) > 0) {
+            int slash = cvsName.lastIndexOf("/");
+            if (slash == -1) {
+                slash = 0;
+            }
+            name = cvsName.substring(slash + 1);
+            ldir = cvsName.substring(0, slash + 1);
+        } else {
+            name = cvsName.substring(2);
+            ldir = "./";
+        }
+        File dir = new File(cvsProject.getLocalRootDirectory(), ldir);
+        if (!dir.exists()) {
+            return true;
+        }
+        CVSEntry dirEntry = cvsProject.getDirEntryForLocalDir(ldir);
+        CVSEntry entry = null;
+        if (dirEntry != null && dirEntry.getEntryList() != null) {
+            entry = dirEntry.getEntryList().locateEntry(name);
+        }
+        if (entry != null) {
+            needUpdate = !version.equals(entry.getVersion());
+        }
+        return needUpdate;
+    }
+
+    /**
+     * Update a file version in the local CVS entries
+     *
+     * @param cvsName CVS name of the file
+     * @param version Version of the file
+     */
+    public void updateFileVersion(String cvsName, String version, File file) {
         cvsName = "./" + cvsName;
         String ldir;
         String name;
@@ -243,18 +279,17 @@ public class LocalRepository {
             entry.setName(name);
             entry.setRepository("/" + getRepo(ldir));
             entry.setVersion(version);
+            entry.setTimestamp(file);
             cvsProject.addNewEntry(entry);
             newFiles++;
-            needUpdate = true;
         } else {
             if (!version.equals(entry.getVersion())) {
                 entry.setVersion(version);
+                entry.setTimestamp(file);
                 cvsProject.updateEntriesItem(entry);
                 updatedFiles++;
-                needUpdate = true;
             }
         }
-        return needUpdate;
     }
 
     /**

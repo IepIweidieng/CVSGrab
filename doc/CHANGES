@@ -1,3 +1,7 @@
+1.2
+- added the date in the cvs entries
+- made update more robust when there is an upload that failed (failed uploads don't get their version updated)
+
 1.1     Maintenance release
 - package rename: from cvsgrab to net.sourceforge.cvsgrab
 - added support for proxies and http authentication
