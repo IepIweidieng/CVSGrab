@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project basedir="." default="dist" name="CVSGrab">
-	<property name="version" value="1.1"></property>
+	<property name="version" value="1.2"></property>
 	<property name="src.dir" value="src"></property>
 	<property name="doc.dir" value="doc"></property>
 	<property name="api.dir" value="doc/api"></property>
@@ -24,7 +24,9 @@
 	<target name="init">
 		<mkdir dir="${build.dir}"></mkdir>
 		<mkdir dir="${api.dir}"></mkdir>
-		<delete dir="." includes="**/*.$$$" />
+		<delete>
+			<fileset dir="." includes="**/*.$$$" />
+                </delete>
 	</target>
 
 	<target depends="init" description="build javadoc api" name="apidoc">
@@ -59,7 +61,8 @@
 			<fileset dir="${etc.dir}/script"></fileset>
 			<fileset dir="${etc.dir}" includes="samples/**"></fileset>
 		</copy>
-		<copy todir="${build.dist.dir}/doc">
+		<filter token="version" value="${version}" />                
+		<copy todir="${build.dist.dir}/doc" filtering="true">
 			<fileset dir="${doc.dir}" includes="*"></fileset>
 		</copy>
 		<fixcrlf eof="remove" eol="lf" includes="**/*.sh" srcdir="${build.dist.dir}" />
@@ -73,6 +76,7 @@
 		<zip zipfile="${dist.src.zip}">
                     <zipfileset dir="." prefix="cvsgrab_v${version}-src">
                         <exclude name="bak/**"/>
+                        <exclude name="classes/**"/>
                         <exclude name="build/**"/>
                         <exclude name="**/*.local"/>
                         <exclude name="**/*~"/>
