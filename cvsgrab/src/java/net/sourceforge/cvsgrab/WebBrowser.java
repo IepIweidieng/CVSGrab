@@ -8,6 +8,7 @@
 package net.sourceforge.cvsgrab;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,13 +16,14 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.zip.GZIPInputStream;
 
-import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.util.PasswordField;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.HttpRecoverableException;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NTCredentials;
@@ -190,6 +192,7 @@ public class WebBrowser {
     
         method.setRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0b; Windows 98)");
         method.setRequestHeader("Cache-Control", "no-cache");
+        method.setRequestHeader("Accept-Encoding", "gzip");
     
         // We will retry up to 3 times.
         while ((statusCode == -1) && (attempt < 3)) {
@@ -198,7 +201,7 @@ public class WebBrowser {
                 statusCode = _client.executeMethod(method);
                 CVSGrab.getLog().trace("Executed method " + method.getPath() + " with status code " + statusCode);
             } catch (HttpRecoverableException e) {
-                CVSGrab.getLog().warn("A recoverable exception occurred, retrying.  " + e.getMessage());
+                CVSGrab.getLog().warn("A recoverable exception occurred, retrying. " + e.getMessage());
             } catch (IOException e) {
                 CVSGrab.getLog().error("Failed to download file.");
                 e.printStackTrace();
@@ -252,9 +255,34 @@ public class WebBrowser {
      */
     public String getResponse(HttpMethod method) {
         HttpMethod lastMethod = executeMethod(method);
-        String response = new String(lastMethod.getResponseBody());
+        String response = null;
+        // Gzip support by Ralf Stoffels (rstoffels)
+        if (lastMethod.getResponseHeader("Content-Encoding").getValue().equals("gzip")) {
+            try {
+                InputStream instream = lastMethod.getResponseBodyAsStream();
+                if (instream != null) {
+                    instream = new GZIPInputStream(lastMethod.getResponseBodyAsStream());
+                    if (instream != null) {
+                        ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+                        byte[] buffer = new byte[4096];
+                        int len;
+                        while ((len = instream.read(buffer)) > 0) {
+                            outstream.write(buffer, 0, len);
+                        }
+                        outstream.close();
+                        response = new String(outstream.toByteArray(),
+                                ((HttpMethodBase) lastMethod).getResponseCharSet());
+                    }
+                }
+            }
+            catch (IOException e) {
+                CVSGrab.getLog().error("I/O failure reading response body", e);
+            }
+        } else {
+            response = lastMethod.getResponseBodyAsString();
+        }
         lastMethod.releaseConnection();
-        return response;
+        return response;    
     }
     
     /**
