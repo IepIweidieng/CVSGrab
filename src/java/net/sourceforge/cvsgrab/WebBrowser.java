@@ -5,20 +5,6 @@
  */
 package net.sourceforge.cvsgrab;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.zip.GZIPInputStream;
-
 import net.sourceforge.cvsgrab.util.PasswordField;
 
 import org.apache.commons.httpclient.Header;
@@ -33,47 +19,62 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.util.URIUtil;
+import org.apache.xerces.parsers.DOMParser;
 import org.apache.xerces.xni.parser.XMLInputSource;
-import org.cyberneko.html.parsers.DOMParser;
+import org.cyberneko.html.HTMLConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.zip.GZIPInputStream;
+
 /**
  * Emulates a web browser
- *  
+ *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 11 oct. 2003
  */
 public class WebBrowser {
-    
+
     private static WebBrowser _instance = new WebBrowser();
-    
+
     private HttpClient _client;
-    private DOMParser _parser;
+    private DOMParser _htmlParser;
 
     /**
      * @return the singleton instance
      */
     public static WebBrowser getInstance() {
-        return _instance;    
+        return _instance;
     }
-    
+
     public static String forceFinalSlash(String s) {
         if (!s.endsWith("/")) {
             return s + "/";
         }
         return s;
     }
-    
+
     public static String removeFinalSlash(String s) {
         if (s.endsWith("/")) {
             return s.substring(0, s.length()-1);
         }
         return s;
     }
-    
+
     public static String addQueryParam(String url, String queryParam) {
         String newUrl = url;
         if (queryParam != null) {
@@ -86,7 +87,7 @@ public class WebBrowser {
         }
         return newUrl;
     }
-    
+
     public static String addQueryParam(String url, String paramName, String paramValue) {
         String newUrl = url;
         if (paramName != null && paramValue != null) {
@@ -104,9 +105,9 @@ public class WebBrowser {
         }
         return newUrl;
     }
-    
+
     /**
-     * Extract the query parameters 
+     * Extract the query parameters
      * @param urlQuery The query section of the url. Must be of the form ? (optional) key1=value1&key2=value2
      * @return the parameters extracted as properties
      */
@@ -121,7 +122,7 @@ public class WebBrowser {
         }
         return p;
     }
-    
+
     /**
      * Converts the query items to a single query string
      * @param queryItems The set of (key,value) for the query
@@ -141,7 +142,7 @@ public class WebBrowser {
         }
         return sb.toString();
     }
-    
+
     /**
      * Constructor for WebBrowser
      */
@@ -150,9 +151,13 @@ public class WebBrowser {
         CookiePolicy.setDefaultPolicy(CookiePolicy.COMPATIBILITY);
         _client = new HttpClient();
         _client.setConnectionTimeout(5000);
-        _parser = new DOMParser();
+        _htmlParser = new DOMParser(new HTMLConfiguration());
         try {
-            _parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
+            _htmlParser.setProperty("http://cyberneko.org/html/properties/names/elems", "upper");
+            _htmlParser.setProperty("http://cyberneko.org/html/properties/names/attrs", "lower");
+            _htmlParser.setFeature("http://apache.org/xml/features/scanner/notify-builtin-refs", true);
+            _htmlParser.setFeature("http://cyberneko.org/html/features/scanner/notify-builtin-refs", true);
+            _htmlParser.setFeature("http://xml.org/sax/features/namespaces", false);
         } catch (SAXNotRecognizedException e) {
             e.printStackTrace();
         } catch (SAXNotSupportedException e) {
@@ -198,10 +203,10 @@ public class WebBrowser {
             }
         }
     }
-    
+
     /**
-     * Use authentification for the web server 
-     * 
+     * Use authentification for the web server
+     *
      * @param userName The username to use on the web server
      * @param password The password to use on the web server
      */
@@ -217,30 +222,30 @@ public class WebBrowser {
         }
         _client.getState().setCredentials(null, null,
           new UsernamePasswordCredentials(userName, password));
-    }  
-    
+    }
+
     /**
      * Allow simultaneous connections on different threads.
      */
     public void useMultithreading() {
         _client = new HttpClient(new MultiThreadedHttpConnectionManager());
     }
-    
+
     /**
      * Execute a http method
-     * 
+     *
      * @param method The method
      * @return the last http method executed (after following redirects)
      */
     public HttpMethod executeMethod(HttpMethod method) {
         int statusCode = -1;
         int attempt = 0;
-        
+
         try {
-            method.setRequestHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0b; Windows 98)");
+            method.setRequestHeader("User-Agent", "cvsgrab (http://cvsgrab.sourceforge.net)");
             method.setRequestHeader("Cache-Control", "no-cache");
             method.setRequestHeader("Accept-Encoding", "gzip");
-            
+
             // We will retry up to 3 times.
             while ((statusCode == -1) && (attempt < 3)) {
                 try {
@@ -250,37 +255,37 @@ public class WebBrowser {
                 } catch (HttpRecoverableException e) {
                     CVSGrab.getLog().warn("A recoverable exception occurred, retrying. " + e.getMessage());
                 } catch (IOException e) {
-                    CVSGrab.getLog().error("Failed to download file.");
+                    CVSGrab.getLog().error("Failed to download file " + method.getPath());
                     e.printStackTrace();
                     throw new RuntimeException("Failed to download file.");
                 }
             }
-            
+
             // Check that we didn't run out of retries.
             if (statusCode == -1) {
                 CVSGrab.getLog().error("Failed to recover from exception.");
                 throw new RuntimeException("Error when reading " + method.getPath());
             }
-            
+
             if (statusCode >= 400) {
                 CVSGrab.getLog().debug("Page not found (error " + statusCode + ")");
                 throw new RuntimeException("Error when reading " + method.getPath());
             }
-            
+
             // Tests for redirects
             if ((statusCode >= 300) && (statusCode < 400)) {
                 Header locationHeader = method.getResponseHeader("location");
-                
+
                 if (locationHeader != null) {
                     String redirectLocation = locationHeader.getValue();
-                    
-                    method.releaseConnection();    
+
+                    method.releaseConnection();
                     CVSGrab.getLog().debug("Redirect to " + redirectLocation);
-                    
+
                     HttpMethod redirectMethod = new GetMethod(redirectLocation);
-                    
+
                     executeMethod(redirectMethod);
-                    
+
                     return redirectMethod;
                 } else {
                     // The response is invalid and did not provide the new location for
@@ -294,13 +299,13 @@ public class WebBrowser {
             method.releaseConnection();
             throw e;
         }
-    
+
         return method;
     }
 
     /**
      * Gets the response from a method that has been executed
-     * 
+     *
      * @param method
      * @return
      */
@@ -340,24 +345,41 @@ public class WebBrowser {
         } finally {
             lastMethod.releaseConnection();
         }
-        return response;    
+        return response;
     }
-    
+
     /**
-     * Execute the method and gets the response as a xml document. 
-     * 
+     * Execute the method and gets the response as a xml document.
+     *
      * @param method
      * @return
      */
     public Document getDocument(HttpMethod method) throws Exception {
         String response = getResponse(method);
-        
-        XMLInputSource source = new XMLInputSource(null, null, null, new StringReader(response), null);
-    
-        _parser.parse(source);
-    
-        Document doc = _parser.getDocument();
-        return doc;        
+        return getDocument(response);
+    }
+
+    public Document getDocument(String docSource) throws Exception {
+        // Hack to kill namespaces in xhtml
+        int pos = 0;
+        do {
+           pos = docSource.indexOf("xmlns", pos);
+           if (pos > 0) {
+               int eq = docSource.indexOf('=', pos);
+               int lt = docSource.indexOf('<', pos);
+               int gt = docSource.indexOf('>', pos);
+               if (eq > 0 && eq < gt && gt < lt) {
+                   docSource = docSource.substring(0, pos) + docSource.substring(gt);
+               }
+           }
+        } while (pos > 0);
+
+        XMLInputSource source = new XMLInputSource(null, null, null, new StringReader(docSource), null);
+
+        _htmlParser.parse(source);
+
+        Document doc = _htmlParser.getDocument();
+        return doc;
     }
 
     public void loadFile(HttpMethod method, File destFile) throws Exception {
@@ -374,7 +396,7 @@ public class WebBrowser {
             }
             try {
                 out = new FileOutputStream(destFile);
-                
+
                 byte[] buffer = new byte[8 * 1024];
                 int count = 0;
                 do {

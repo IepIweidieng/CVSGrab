@@ -86,7 +86,7 @@ public class CVSGrab {
             PROXY_HOST_OPTION, PROXY_PORT_OPTION, PROXY_NTDOMAIN_OPTION, PROXY_USER_OPTION,
             PROXY_PASSWORD_OPTION, WEB_USER_OPTION, WEB_PASSWORD_OPTION};
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
-    private static final String VERSION = "2.1";
+    private static final String VERSION = "2.2";
     private static final String DEFAULT_DEST_DIR = ".";
     private static Log LOG;
 
@@ -272,7 +272,7 @@ public class CVSGrab {
         
         // Handle autodetection of the full url
         if (cmd.hasOption(URL_OPTION)) {
-            analyseUrl(cmd.getOptionValue(URL_OPTION));
+            setUrl(cmd.getOptionValue(URL_OPTION));
         }
         
         // Handle remote repository options
@@ -520,6 +520,15 @@ public class CVSGrab {
     }
         
     /**
+     * Analyse the root url and try to extract the package path, version tag and web options parameters from it
+     */
+    public void setUrl(String url) {
+        Properties webProperties = CvsWebInterface.getWebProperties(url);
+        // put back the result in the WebOptions
+        _webOptions.readProperties(webProperties);
+    }
+
+    /**
      * Main method for getting and updating files.
      */
     public void grabCVSRepository() {
@@ -688,8 +697,10 @@ public class CVSGrab {
         Map errors = new HashMap();
         for (int i = 0; i < urls.length; i++) {
             try {
+                getLog().debug("Connecting to " + urls[i]);
                 GetMethod connectMethod = new GetMethod(urls[i]);
                 WebBrowser.getInstance().executeMethod(connectMethod);
+                getLog().debug("Connection successful");
                 return;
             } catch (Exception ex) {
                 errors.put(urls[i], ex.getMessage());
@@ -763,15 +774,6 @@ public class CVSGrab {
                 getLog().warn("Cannot read file " + rootAdmin.getAbsolutePath(), e);
             }
         }
-    }
-
-    /**
-     * Analyse the root url and try to extract the package path, version tag and web options parameters from it
-     */
-    private void analyseUrl(String url) {
-        Properties webProperties = CvsWebInterface.getWebProperties(url);
-        // put back the result in the WebOptions
-        _webOptions.readProperties(webProperties);
     }
 
     private void printHeader() {

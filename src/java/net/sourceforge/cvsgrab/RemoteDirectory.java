@@ -104,7 +104,7 @@ public class RemoteDirectory {
     /**
      * Unregisters the remote file
      *
-     * @param file The remote file to unrgister 
+     * @param file The remote file to unrgister
      */
     public void unregisterRemoteFile(RemoteFile file) {
         _remoteFiles.remove(file);
@@ -117,6 +117,7 @@ public class RemoteDirectory {
         String url = getUrl();
         Log log = CVSGrab.getLog();
         log.info("cvs update: Updating " + getDirectoryPath());
+        log.debug("Loading url " + url);
         Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
         RemoteFile[] files = _remoteRepository.getWebInterface().getFiles(doc);
         for (int i = 0; i < files.length; i++) {
@@ -128,8 +129,8 @@ public class RemoteDirectory {
         for (int i = 0; i < directories.length; i++) {
             _remoteRepository.registerDirectoryToProcess(new RemoteDirectory(this, directories[i]));
         }
-    }    
-    
+    }
+
     /**
      * Diff the contents of the repository and store the diffs in the file
      * @param writer

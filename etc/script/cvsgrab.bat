@@ -5,7 +5,7 @@ rem * Define here CVSGRAB_HOME if you didn't define it a a system variable
 rem * CVSGRAB_HOME should be set to the installation directory of cvsgrab.
 rem ************************************************************************
 rem
-rem set CVSGRAB_HOME = c:\cvsgrab 
+rem set CVSGRAB_HOME=c:\cvsgrab 
 rem
 
 if not "%OS%"=="Windows_NT" goto win9xStart
