@@ -51,6 +51,9 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         assertEquals("1.4", files[i++].getVersion());
         assertEquals("jCVS.library", files[i].getName());
         assertEquals("1.1", files[i++].getVersion());
+        
+        assertEquals("Expected no more files", i, files.length);
+        
     }
     
     public void testGetDirectories() throws Exception {
@@ -63,6 +66,9 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         assertEquals("lib", directories[i++]);
         assertEquals("src", directories[i++]);
         assertEquals("web", directories[i++]);
+        
+        assertEquals("Expected no more directories", i, directories.length);
+        
     }
     
     /**

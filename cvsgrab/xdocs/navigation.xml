@@ -24,7 +24,14 @@
         <item name="SFCVS: Another grabber"     href="http://www.angelfire.com/rnb/sfcvs/"/>
         <item name="ViewCVS"                    href="http://viewcvs.sourceforge.net/"/>
         <item name="NetBeans JavaCvs"           href="http://javacvs.netbeans.org/"/>
+        <item name="Commons JRCS"               href="http://jakarta.apache.org/commons/sandbox/jrcs/index.html"/>
         <item name="Ant"                        href="http://ant.apache.org/"/>
+    </menu>
+    <menu name="My other projects">
+        <item name="ScopeMVC framework"         href="http://scope.sourceforge.net"/>
+        <item name="Middlegen"                  href="http://middlegen.sourceforge.net"/>
+        <item name="XDoclet JDO plugin"         href="http://xdoclet.sourceforge.net/ant/xdoclet/modules/jdo/JdoDocletTask.html"/>
+        <item name="Maven Sourceforge plugin"   href="http://maven-plugins.sourceforge.net/maven-sourceforge-plugin/index.html"/>
     </menu>
 
     <!-- Google Search -->

@@ -9,6 +9,10 @@
     <body>
 
         <release version="2.1" date="planned features">
+
+            <action dev="ludovicc" type="add">
+                TODO: add diff functionality.
+            </action>
         
             <action dev="ludovicc" type="add">
                 TODO: add module support by parsing the CVSROOT/modules file.
@@ -23,7 +27,7 @@
 		    </action>
 
             <action dev="ludovicc" type="update">
-				TODO: use Jakarta's CLI library to parse command line arguments
+				use Jakarta's CLI library to parse command line arguments
             </action>
 
             <action dev="ludovicc" type="add">
@@ -51,6 +55,22 @@
 				most useful, as I could possibly add the feature myself.
             </action>
             
+        </release>
+
+        <release version="2.0.2" date="2003-12-27">
+
+            <action dev="ludovicc" type="add">
+	                Added support for SourceCast 1.1 used by NetBeans.org (contributed partially by Laurent Broudoux).
+            </action>
+        
+            <action dev="ludovicc" type="fix">
+	                Fixed cvsgrab.sh: fixed log arguments that were not working on Lnux (contributed by Eric Le Goff).
+            </action>
+
+            <action dev="ludovicc" type="fix">
+	                Simplified XPath expressions to avoid duplicates in file and directory selections.
+            </action>
+        
         </release>
 
         <release version="2.0.1" date="2003-12-07">

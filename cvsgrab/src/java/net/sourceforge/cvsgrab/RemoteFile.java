@@ -7,9 +7,18 @@
  
 package net.sourceforge.cvsgrab;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.jrcs.diff.Diff;
+import org.apache.commons.jrcs.diff.Revision;
+import org.apache.commons.jrcs.diff.myers.MyersDiff;
 
 /**
  * Represent a file stored in the remote repository
@@ -107,7 +116,7 @@ public class RemoteFile {
         }
     }
 
-    private void upload() {
+    protected void upload() {
         RemoteRepository remoteRepository = _directory.getRemoteRepository();
         LocalRepository localRepository = remoteRepository.getLocalRepository();
         try {
@@ -131,4 +140,43 @@ public class RemoteFile {
         }
     }
 
+    static final String[] loadFile(String name) throws IOException
+    {
+        BufferedReader data = new BufferedReader(new FileReader(name));
+        List lines = new ArrayList();
+        String s;
+        while ((s = data.readLine()) != null)
+        {
+            lines.add(s);
+        }
+        return (String[])lines.toArray(new String[lines.size()]);
+    }
+    
+    public static void main(String[] args) throws Exception {
+        Object[] orig = loadFile("RELEASE.txt");
+        Object[] rev = loadFile("RELEASE2.txt");
+
+        MyersDiff df = new MyersDiff();
+        Revision r = df.diff(orig, rev);
+
+        System.err.println("------");
+        System.out.print(r.toRCSString());
+        System.err.println("------" + new Date());
+
+        try
+        {
+            Object[] reco = r.patch(orig);
+            //String recos = Diff.arrayToString(reco);
+            if (!Diff.compare(rev, reco))
+            {
+                System.err.println("INTERNAL ERROR:"
+                        + "files differ after patching!");
+            }
+        }
+        catch (Throwable o)
+        {
+            System.out.println("Patch failed");
+        }
+    }
+    
 }

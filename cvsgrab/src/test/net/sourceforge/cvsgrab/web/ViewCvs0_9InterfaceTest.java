@@ -58,6 +58,9 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
         assertEquals("build.sh", files[i].getName());
         assertTrue(files[i].isInAttic());
         assertEquals("1.1", files[i++].getVersion());
+        
+        assertEquals("Expected no more files", i, files.length);
+        
     }
     
     public void testGetDirectories() throws Exception {
@@ -76,6 +79,9 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
         assertEquals("packaging", directories[i++]);
         assertEquals("src", directories[i++]);
         assertEquals("tests", directories[i++]);
+        
+        assertEquals("Expected no more directories", i, directories.length);
+        
     }
 
     public void testGetDirectoryUrl() throws Exception {

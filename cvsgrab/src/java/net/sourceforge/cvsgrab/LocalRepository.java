@@ -37,12 +37,7 @@ public class LocalRepository {
      * to be implemented.
      */
     private final Set _emptyDirectories = new HashSet();
-    /** 
-     * performs checkout to specified directory other than the module.
-     * @todo use this variable to store files in a directory with different name than the package
-     */
-    private String _checkoutDirectory;
-    
+
     /**
      * The local root of the repository
      */
@@ -219,7 +214,6 @@ public class LocalRepository {
      */
     public void unregisterFile(RemoteFile remoteFile) {
         File file = getLocalFile(remoteFile);
-        Entry entry = null;
         try {
             _handler.removeEntry(file);
             _failedUpdates++;
@@ -358,7 +352,6 @@ public class LocalRepository {
                 throw new IOException("Entry not found");
             }
         } catch (IOException ex) {
-            String lastModified = Entry.getLastModifiedDateFormatter().format(new Date());
             entry = new Entry("D/" + dirName + "////");
         }
         

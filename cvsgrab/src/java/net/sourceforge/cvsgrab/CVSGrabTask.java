@@ -23,14 +23,16 @@ public class CVSGrabTask extends Task {
 
     private CVSGrab _grabber = new CVSGrab();
     private boolean _verbose = true;
-    private int _connections = 0;
     private HttpProxy _proxy = null;
     private WebAuthentification _web = null;
+    private int _connections;
 
     /**
      * Constructor for the CVSGrabTask object
      */
-    public CVSGrabTask() { }
+    public CVSGrabTask() {
+        super();
+    }
 
     /**
      * Sets the root url attribute
@@ -156,6 +158,9 @@ public class CVSGrabTask extends Task {
         }
         if (_web != null) {
             _web.setup(_grabber);
+        }
+        if (_connections > 0) {
+            ThreadPool.init(_connections);
         }
         _grabber.grabCVSRepository();
     }
@@ -413,7 +418,7 @@ public class CVSGrabTask extends Task {
          * @param arg0
          */
         public void trace(Object arg0) {
-            
+            // do nothing
         }
 
         /** 
@@ -422,7 +427,7 @@ public class CVSGrabTask extends Task {
          * @param arg1
          */
         public void trace(Object arg0, Throwable arg1) {
-            
+            // do nothing
         }
 
         /** 
@@ -431,6 +436,7 @@ public class CVSGrabTask extends Task {
          * @param arg1
          */
         public void debug(Object arg0, Throwable arg1) {
+            // do nothing
         }
 
         /** 
@@ -439,6 +445,7 @@ public class CVSGrabTask extends Task {
          * @param arg1
          */
         public void info(Object arg0, Throwable arg1) {
+            // do nothing
         }
 
         /** 
@@ -447,6 +454,7 @@ public class CVSGrabTask extends Task {
          * @param arg1
          */
         public void warn(Object arg0, Throwable arg1) {
+            // do nothing
         }
 
         /** 
@@ -455,6 +463,7 @@ public class CVSGrabTask extends Task {
          * @param arg1
          */
         public void error(Object arg0, Throwable arg1) {
+            // do nothing
         }
 
         /** 
@@ -462,6 +471,7 @@ public class CVSGrabTask extends Task {
          * @param arg0
          */
         public void fatal(Object arg0) {
+            // do nothing
         }
 
         /** 
@@ -470,6 +480,7 @@ public class CVSGrabTask extends Task {
          * @param arg1
          */
         public void fatal(Object arg0, Throwable arg1) {
+            // do nothing
         }
     }
 }
