@@ -8,6 +8,8 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.Properties;
+
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
@@ -109,4 +111,20 @@ public class Sourcecast2_0InterfaceTest extends AbstractTestCase {
         
     }
 
+    public void testGuessWebProperties() {
+        Properties webProperties = _interface.guessWebProperties("https://forms.dev.java.net/source/browse/forms/");
+        assertEquals("https://forms.dev.java.net/source/browse/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("forms/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        webProperties = _interface.guessWebProperties("https://lg3d-core.dev.java.net/source/browse/lg3d-core/?only_with_tag=dev-0-6-1");
+        assertEquals("https://lg3d-core.dev.java.net/source/browse/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("lg3d-core/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("dev-0-6-1", webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+    }
+    
+    
 }

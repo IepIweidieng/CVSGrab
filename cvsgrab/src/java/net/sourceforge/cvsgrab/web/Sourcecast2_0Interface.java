@@ -29,6 +29,7 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
      */
     public Sourcecast2_0Interface() {
         super();
+        setWebInterfaceType("browse");
     }
 
     /** 

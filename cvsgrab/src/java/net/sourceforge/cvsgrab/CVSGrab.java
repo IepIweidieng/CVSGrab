@@ -75,6 +75,7 @@ public class CVSGrab {
     public static final String DEST_DIR_OPTION = "destDir";
     public static final String PACKAGE_PATH_OPTION = "packagePath";
     public static final String ROOT_URL_OPTION = "rootUrl";
+    public static final String URL_OPTION = "url";
     public static final String CLEAN_UPDATE_OPTION = "clean";
     public static final String LIST_WEB_INTERFACES_CMD = "listWebInterfaces";
     public static final String DIFF_CMD = "diff";
@@ -122,11 +123,15 @@ public class CVSGrab {
                 .create(DIFF_CMD));
         _options.addOption(new OptionBuilder().withArgName("url")
                 .hasArg()
-                .withDescription("The root url used to access the CVS repository from a web browser")
+                .withDescription("The full url used to access the CVS repository from a web browser")
+                .create(URL_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("url")
+                .hasArg()
+                .withDescription("[if full url not used] The root url used to access the CVS repository from a web browser")
                 .create(ROOT_URL_OPTION));
         _options.addOption(new OptionBuilder().withArgName("path")
                 .hasArg()
-                .withDescription("The path relative to rootUrl of the package or module to download")
+                .withDescription("[if full url not used] The path relative to rootUrl of the package or module to download")
                 .create(PACKAGE_PATH_OPTION));
         _options.addOption(new OptionBuilder().withArgName("root")
                 .hasArg()
@@ -264,6 +269,11 @@ public class CVSGrab {
             cvsgrabLogLevel("warn", "INFO");                        
             httpclientLogLevel("error", "SEVERE");
         } 
+        
+        // Handle autodetection of the full url
+        if (cmd.hasOption(URL_OPTION)) {
+            analyseUrl(cmd.getOptionValue(URL_OPTION));
+        }
         
         // Handle remote repository options
         Properties webProperties = new Properties();
@@ -522,7 +532,7 @@ public class CVSGrab {
             checkDestDir();
             checkWebConnection();
 
-            CvsWebInterface webInterface = getWebInteface();
+            CvsWebInterface webInterface = getWebInterface();
             
             LocalRepository localRepository = new LocalRepository(this);
             RemoteRepository remoteRepository = new RemoteRepository(getRootUrl(), localRepository);
@@ -591,7 +601,7 @@ public class CVSGrab {
             checkDestDir();
             checkWebConnection();
 
-            CvsWebInterface webInterface = getWebInteface();
+            CvsWebInterface webInterface = getWebInterface();
             File diffFile = new File("patch.txt");
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(diffFile)));
             
@@ -649,7 +659,7 @@ public class CVSGrab {
         }
     }
 
-    private CvsWebInterface getWebInteface() throws Exception {
+    private CvsWebInterface getWebInterface() throws Exception {
         CvsWebInterface webInterface = null;
         if (getWebInterfaceId() != null) {
             // Forces the use of a particular web interface and version of that interface
@@ -753,6 +763,15 @@ public class CVSGrab {
                 getLog().warn("Cannot read file " + rootAdmin.getAbsolutePath(), e);
             }
         }
+    }
+
+    /**
+     * Analyse the root url and try to extract the package path, version tag and web options parameters from it
+     */
+    private void analyseUrl(String url) {
+        Properties webProperties = CvsWebInterface.getWebProperties(url);
+        // put back the result in the WebOptions
+        _webOptions.readProperties(webProperties);
     }
 
     private void printHeader() {

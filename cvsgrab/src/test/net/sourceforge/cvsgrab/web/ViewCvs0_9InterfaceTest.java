@@ -8,6 +8,8 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.Properties;
+
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
@@ -199,6 +201,27 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
         file.setDirectory(dir);
         file.setInAttic(false);
         assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/*checkout*/ooo4r/README.txt?rev=1.1&cvsroot=ooo4r", _interface.getDownloadUrl(file));
+    }
+    
+    public void testGuessWebProperties() {
+        Properties webProperties = _interface.guessWebProperties("http://cvs.apache.org/viewcvs/jakarta-log4j/?only_with_tag=v_1_1");
+        assertEquals("http://cvs.apache.org/viewcvs/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("jakarta-log4j/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("v_1_1", webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        webProperties = _interface.guessWebProperties("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/ooo4r/?only_with_tag=jamesgb&cvsroot=ooo4r");
+        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("ooo4r/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("jamesgb", webProperties.get(CVSGrab.TAG_OPTION));
+        assertEquals("ooo4r", webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        webProperties = _interface.guessWebProperties("http://savannah.gnu.org/cgi-bin/viewcvs/sed/");
+        assertEquals("http://savannah.gnu.org/cgi-bin/viewcvs/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("sed/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
     
     

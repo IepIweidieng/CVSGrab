@@ -8,6 +8,8 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.Properties;
+
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
@@ -75,5 +77,21 @@ public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
         
         assertEquals("http://dev.w3.org/cvsweb/~checkout~/java/README.cvs?rev=1.1", _interface.getDownloadUrl(file));
     }
+    
+    public void testGuessWebProperties() {
+        Properties webProperties = _interface.guessWebProperties("http://dev.w3.org/cvsweb/java/");
+        assertEquals("http://dev.w3.org/cvsweb/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("java/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        webProperties = _interface.guessWebProperties("http://dev.w3.org/cvsweb/java/?only_with_tag=R_2_0_3_B0");
+        assertEquals("http://dev.w3.org/cvsweb/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("java/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("R_2_0_3_B0", webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+    }
+    
 
 }

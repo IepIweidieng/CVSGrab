@@ -8,6 +8,8 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.Properties;
+
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
@@ -167,4 +169,20 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
                         "ant/src/etc/testcases/core/include/with space/");
         assertEquals("http://cvs.apache.org/viewcvs.cgi/ant/src/etc/testcases/core/include/with%20space/", directoryUrl);
     }
+    
+    public void testGuessWebProperties() {
+        Properties webProperties = _interface.guessWebProperties("http://cvs.apache.org/viewcvs.cgi/ant/");
+        assertEquals("http://cvs.apache.org/viewcvs.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("ant/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        webProperties = _interface.guessWebProperties("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/ooo4r/?only_with_tag=jamesgb&cvsroot=ooo4r");
+        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("ooo4r/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("jamesgb", webProperties.get(CVSGrab.TAG_OPTION));
+        assertEquals("ooo4r", webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+    }
+    
 }

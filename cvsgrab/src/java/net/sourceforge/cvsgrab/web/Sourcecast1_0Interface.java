@@ -31,6 +31,7 @@ public class Sourcecast1_0Interface extends CvsWeb2_0Interface {
         super();
         setFilesXpath("//TR[TD/A/A/IMG/@alt = '[TXT]']");
         setDirectoriesXpath("//TR[TD/A/A/IMG/@alt = '[DIR]'][TD/A/@name != 'Attic']");
+        setWebInterfaceType("browse");
     }
 
     /** 

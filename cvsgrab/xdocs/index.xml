@@ -57,6 +57,22 @@
     </section>
 
     <section name="New and Cool">
+      <section name="New url parameter (starting version 2.2)"> 
+        <p>The detection of web interfaces has been improved, and now to start cvsgrab,
+          you need only to give the full url of the web repository to download.</p>
+          
+        <p>For example, to download the latest version of Ant in its 1.6 branch, you may use only</p>
+        <code>
+          cvsgrab -url http://cvs.apache.org/viewcvs.cgi/ant/?only_with_tag=ANT_16_BRANCH
+        </code>
+        <p>
+          This is much simpler, the -rootUrl, -packagePath, -versionTag and -cvsroot parameters are now optional. <br/>
+          But sometimes the autodetection may fail, so it's still possible to use the old style:
+        </p>
+        <code>
+          cvsgrab -rootUrl http://cvs.apache.org/viewcvs.cgi/ -packagePath ant -tag ANT_16_BRANCH
+        </code>
+      </section>
       <section name="Diff functionality (starting version 2.1)"> 
         <p>Now you can create a patch file when you modify source code that has 
             been checked out with CVSGrab.</p>

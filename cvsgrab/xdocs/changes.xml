@@ -14,7 +14,7 @@
       <action dev="ludovicc" type="add">TODO: add module support by
           parsing the CVSROOT/modules file.</action>
 
-      <action dev="ludovicc" type="add">TODO: add unique -url parameter, 
+      <action dev="ludovicc" type="add">added unique -url parameter, 
           guess from this param the root url, package url, project root</action>
 
       <action dev="ludovicc" type="add">TODO: add option to check
@@ -24,6 +24,7 @@
           modification date of the files.</action>
           
       <action dev="ludovicc" type="fix">todo: hangs forever - cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune  </action>
+      <action dev="ludovicc" type="fix">todo: get an accurate number of failures and successes at the end of the execution (false failures were previously counted)</action>
       
       <action dev="ludovicc" type="fix">Decompress files when the pages are gzipped. (bug #983998)</action>
           
