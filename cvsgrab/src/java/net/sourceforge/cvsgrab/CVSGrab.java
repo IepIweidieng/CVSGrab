@@ -8,6 +8,7 @@ package net.sourceforge.cvsgrab;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,13 +21,11 @@ import org.apache.commons.logging.LogFactory;
  * @author Ludovic Claude
  * @created April 19, 2002
  * @version 1.0
- * @todo Read and parse modules file to read a module from the repository
  */
-
 public class CVSGrab {
     static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
-    private static final String VERSION = "2.0";
+    private static final String VERSION = "2.0.1";
     private static Log LOG;
 
     private boolean _verbose = true;
@@ -39,6 +38,7 @@ public class CVSGrab {
     private String _versionTag;
     private String _queryParams;
     private String _cvsRoot = DUMMY_ROOT;
+    private String _webInterfaceId = null;
 
     public static Log getLog() {
         if (LOG == null) {
@@ -78,6 +78,10 @@ public class CVSGrab {
                 printHelp();
                 return;
             }
+            if (args[i].toLowerCase().equals("-help-webinterfaces")) {
+                printWebInterfaces();
+                return;
+            }
             if (args[i].toLowerCase().equals("-rooturl")) {
                 if (!args[i + 1].startsWith("-")) {
                     grabber.setRootUrl(args[i + 1]);
@@ -106,6 +110,11 @@ public class CVSGrab {
             } else if (args[i].toLowerCase().equals("-queryparams")) {
                 if (!args[i + 1].startsWith("-")) {
                     grabber.setQueryParams(args[i + 1]);
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-webinterface")) {
+                if (!args[i + 1].startsWith("-")) {
+                    grabber.setWebInterfaceId(args[i + 1]);
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-cvsroot")) {
@@ -240,27 +249,53 @@ public class CVSGrab {
         System.out.println("CVSGrab version " + VERSION);
         System.out.println("Command line options:");
         System.out.println("\t-help This help message");
-        System.out.println("\t-rootUrl <url> The root url used to access the CVS repository from a web browser");
-        System.out.println("\t-packagePath <path> The path relative to rootUrl of the package or module to download");
+        System.out.println("\t-help-webinterfaces Lists the web interfaces to the CVS repository that are"
+                + "\t supported by this tool");
+        System.out.println("\t-rootUrl <url> The root url used to access the CVS repository from a web"
+                + "\t browser");
+        System.out.println("\t-packagePath <path> The path relative to rootUrl of the package or module to"
+                + "\t download");
         System.out.println("\t-destDir <dir> The destination directory");
-        System.out.println("\t-packageDir <path> [optional] The name of the package to use locally, relative to destDir, overrides packagePath");
+        System.out.println("\t-packageDir <path> [optional] The name of the package to use locally, "
+                + "\t relative to destDir, overrides packagePath");
         System.out.println("\t-tag <tag> [optional] The version tag of the files to download");
         System.out.println("\t-queryParams <query params> [optional] Additional query parameters");
-        System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain compatibility with a standard CVS client");
+        System.out.println("\t-webInterface <web interface id> [optional] The id for the web interface for"
+                + "\t the CVS repository to use. If this option is not set, autodetect the web interface."
+            + "\t Call cvsgrab -help-webinterfaces to get a list of valid values for this option.");
+        System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain" 
+                + "\t compatibility with a standard CVS client");
         System.out.println("\t-verbose true|false [optional] Verbosity. Default is verbose");
-        System.out.println("\t-prune true|false [optional] Prune (remove) the empty directories. Default is false");
-        System.out.println("\t-connections <nb of connections> [optional] The number of simultaneous connections to use for downloads, default 1");
+        System.out.println("\t-prune true|false [optional] Prune (remove) the empty directories."
+                + "\t Default is false");
+        System.out.println("\t-connections <nb of connections> [optional] The number of simultaneous"
+                + "\t connections to use for downloads, default 1");
         System.out.println("\t-proxyHost [optional] Proxy host");
         System.out.println("\t-proxyPort [optional] Proxy port");
         System.out.println("\t-proxyNTDomain [optional] NT Domain for the authentification on a MS proxy");
         System.out.println("\t-proxyUser [optional] Username for the proxy");
-        System.out.println("\t-proxyPassword [optional] Password for the proxy. If this option is omitted, then cvsgrab will prompt securely for the password.");
+        System.out.println("\t-proxyPassword [optional] Password for the proxy. If this option is omitted,"
+                + "\t then cvsgrab will prompt securely for the password.");
         System.out.println("\t-webUser [optional] Username for the web server");
-        System.out.println("\t-webPassword [optional] Password for the web server. If this option is omitted, then cvsgrab will prompt securely for the password.");
+        System.out.println("\t-webPassword [optional] Password for the web server. If this option is"
+                + "\t omitted, then cvsgrab will prompt securely for the password.");
         System.out.println("Copyright (c) 2002-2003 - Ludovic Claude.");
         // Undocumented options: debug, debug:wire
     }
 
+    /**
+     * Prints the list of available web interfaces
+     */
+    public static void printWebInterfaces() {
+        System.out.println("CVSGrab version " + VERSION);
+        System.out.println("Currently supporting the following web interfaces:");
+        String[] webInterfaces = CvsWebInterface.getInterfaceIds();
+        for (int i = 0; i < webInterfaces.length; i++) {
+            System.out.println("\t" + webInterfaces[i]);
+        }
+        System.out.println("Those ids can be use with the -webinterface option to force cvsgrab to use a specific web interface.");
+    }
+    
     /**
      * Gets the prune empty dirs
      *
@@ -387,6 +422,22 @@ public class CVSGrab {
     }
 
     /**
+     * Gets the webInterfaceId.
+     * @return the webInterfaceId.
+     */
+    public String getWebInterfaceId() {
+        return _webInterfaceId;
+    }
+
+    /**
+     * Sets the webInterfaceId.
+     * @param webInterfaceId The webInterfaceId to set.
+     */
+    public void setWebInterfaceId(String webInterfaceId) {
+        _webInterfaceId = webInterfaceId;
+    }
+
+    /**
      * Main method for getting and updating files.
      */
     public void grabCVSRepository() {
@@ -420,9 +471,24 @@ public class CVSGrab {
             } catch (IOException ex) {
                 throw new IllegalArgumentException("Could not locate the destination directory " + _destDir + ", error was " + ex.getMessage());
             }
+            
+            // Tests the connection to the website
+            try {
+                GetMethod connectMethod = new GetMethod(_rootUrl);
+                WebBrowser.getInstance().executeMethod(connectMethod);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new Exception("Cannot connect to the website using url " + _rootUrl + ", check your proxy settings");
+            }
 
-            // Auto detection of the type of the remote interface
-            CvsWebInterface webInterface = detectWebInterface();
+            CvsWebInterface webInterface = null;
+            if (_webInterfaceId != null) {
+                // Forces the use of a particular web interface and version of that interface
+                webInterface = CvsWebInterface.getInterface(this, _webInterfaceId);
+            } else {
+                // Auto detection of the type of the remote interface
+                webInterface = detectWebInterface();
+            }
             if (webInterface == null) {
                 getLog().error("Could not detect the type of the web interface");
                 throw new RuntimeException("Could not detect the type of the web interface");

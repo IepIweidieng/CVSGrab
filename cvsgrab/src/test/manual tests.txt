@@ -2,3 +2,5 @@ cvsgrab -rootUrl http://cvs.picocontainer.codehaus.org/viewcvs.cgi/ -packagePath
 cvsgrab -rootUrl http://dev.eclipse.org/viewcvs/index.cgi/ -packagePath org.eclipse.ant.core -destDir c:/tmp 
 cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune true
 cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/ -packagePath cvsgrab/cvsgrab -destDir c:/tmp -packageDir cvsgrab -prune true -connections 3
+cvsgrab -rootUrl http://cvs.apache.org/viewcvs.cgi/ -packagePath ant/src/etc/testcases/core/include -destDir c:\tmp
+cvsgrab -rootUrl http://webcvs.kde.org/cgi-bin/cvsweb.cgi/ -packagePath quanta/quanta/data/toolbars -destDir c:\tmp

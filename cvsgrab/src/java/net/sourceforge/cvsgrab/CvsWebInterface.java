@@ -6,6 +6,7 @@
  */
 package net.sourceforge.cvsgrab;
 
+import net.sourceforge.cvsgrab.web.CvsWeb2_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast2_0Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_7Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_8Interface;
@@ -30,8 +31,37 @@ public abstract class CvsWebInterface {
         new ViewCvs0_8Interface(),  
         new ViewCvs0_9Interface(),  
         new ViewCvs1_0Interface(),  
-        new Sourcecast2_0Interface()  
+        new Sourcecast2_0Interface(),
+        new CvsWeb2_0Interface()
     };
+    
+    /**
+     * Explicitely select a web interface capable of handle the web pages.
+     * @param grabber The cvs grabber
+     * @param interfaceId The id of the interface 
+     * @return the selected web interface, or null if the id is not recognized
+     * @throws Exception if initialisation of the web interface fails
+     */
+    public static final CvsWebInterface getInterface(CVSGrab grabber, String interfaceId) throws Exception {
+        for (int i = 0; i < _webInterfaces.length; i++) {
+            if (_webInterfaces[i].getId().equals(interfaceId)) {
+                _webInterfaces[i].init(grabber);
+                return _webInterfaces[i]; 
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * @return an array containing the ids of the registered web interfaces
+     */
+    public static final String[] getInterfaceIds() {
+        String ids[] = new String[_webInterfaces.length];
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = _webInterfaces[i].getId();
+        }
+        return ids;
+    }
     
     /**
      * Find the cvs web interface that could have generated this html page
@@ -48,17 +78,17 @@ public abstract class CvsWebInterface {
 
     /**
      * Find the cvs web interface that could have generated this html page. <br>
-     * Makes testign easier
+     * Makes testing easier
      * 
      * @param grabber
      * @param doc
      * @return
      * @throws Exception
      */
-    public static CvsWebInterface findInterface(CVSGrab grabber, Document doc) throws Exception {
+    static CvsWebInterface findInterface(CVSGrab grabber, Document doc) throws Exception {
         for (int i = 0; i < _webInterfaces.length; i++) {
             try {
-                _webInterfaces[i].init(grabber, doc);
+                _webInterfaces[i].detect(grabber, doc);
                 return _webInterfaces[i];
             } catch (Exception ex) {
                 // ignore
@@ -107,9 +137,32 @@ public abstract class CvsWebInterface {
     public void setQueryParams(String params) {
         _queryParams = params;
     }
+
+    /**
+     * Initialize the web interface
+     * 
+     * @param grabber The cvs grabber
+     * @throws Exception if initialisation fails
+     */
+    public abstract void init(CVSGrab grabber) throws Exception;        
     
-    public abstract void init(CVSGrab grabber, Document htmlPage) throws Exception; 
+    /**
+     * Detects if the web page is compatible with this web interface, and if yes initialize it.
+     *  
+     * @param grabber The cvs grabber
+     * @param htmlPage The web page
+     * @throws Exception if the web page is not compatible with this type of web interface
+     */
+    public abstract void detect(CVSGrab grabber, Document htmlPage) throws Exception; 
         
+    /**
+     * @return the id identifying the web interface, and used for initialisation
+     */
+    public abstract String getId();
+    
+    /**
+     * @return thr\e type of the web interface as detected from the actual website 
+     */
     public abstract String getType();
 
     /**

@@ -27,7 +27,8 @@
 		  </p>
 		  <p>
             Disadvantages are that you have only read access
-            to the repository, the repository needs to be public and have ViewCVS set up.
+            to the repository, the repository needs to be public and have ViewCVS set up. <br/>
+            Also, it adds a more important load on the web server, so try to use this tool reasonably.
 		  </p>
 		</section>
 		<section name="How it works:">
@@ -52,6 +53,7 @@
 		      <li>ViewCVS 0.9.2 on <a href="http://jakarta.apache.org">jakarta.apache.org</a></li>
 		      <li>ViewCVS 1.0-dev on <a href="http://www.picocontainer.org">www.picocontainer.org</a></li>
 		      <li>SourceCast 2.0 on <a href="http://dev.java.net">dev.java.net</a></li>
+		      <li>CvsWeb 2.0 on <a href="http://www.kde.org/">www.kde.org</a></li>
 		    </ul>
 		  </p>
 		  <p>

@@ -98,4 +98,61 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
         assertEquals("http://cvs.apache.org/viewcvs/*checkout*/jakarta-log4j/Attic/Makefile?rev=1.2", _interface.getDownloadUrl(file));
     }
     
+    public void testGetFilesWithGraph() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2_graph.html");
+        
+        int i = 0;
+        RemoteFile[] files = _interface.getFiles(doc);
+        assertEquals(".cvsignore", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.25", files[i++].getVersion());
+        
+        assertEquals("BuildCVS.txt", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.34", files[i++].getVersion());
+        
+        assertEquals("Makefile.in", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.352", files[i++].getVersion());
+        
+        assertEquals("acinclude.m4", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.14", files[i++].getVersion());
+        
+        assertEquals("aclocal.m4", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.57", files[i++].getVersion());
+        
+        assertEquals("autoconf_inc.m4", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.44", files[i++].getVersion());
+    }
+        
+    public void testGetDirectoriesWithGraph() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2_graph.html");
+        
+        int i = 0;
+        String[] directories = _interface.getDirectories(doc);
+        assertEquals("art", directories[i++]);
+        assertEquals("build", directories[i++]);
+        assertEquals("contrib", directories[i++]);
+        assertEquals("debian", directories[i++]);
+        assertEquals("demos", directories[i++]);
+        assertEquals("distrib", directories[i++]);
+        assertEquals("docs", directories[i++]);
+        assertEquals("include", directories[i++]);
+        assertEquals("install", directories[i++]);
+        assertEquals("lib", directories[i++]);
+        assertEquals("locale", directories[i++]);
+        assertEquals("misc", directories[i++]);
+        assertEquals("mobile", directories[i++]);
+        assertEquals("samples", directories[i++]);
+        assertEquals("setup", directories[i++]);
+        assertEquals("src", directories[i++]);
+        assertEquals("tests", directories[i++]);
+        assertEquals("user", directories[i++]);
+        assertEquals("utils", directories[i++]);
+        assertEquals("wxPython", directories[i++]);
+    }
+    
 }

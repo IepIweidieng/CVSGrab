@@ -1,8 +1,7 @@
 /*
- * Created on 11 oct. 2003
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * CVSGrab
+ * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
+ * Distributable under BSD license.
  */
 package net.sourceforge.cvsgrab.web;
 
@@ -23,6 +22,8 @@ import org.apache.commons.jxpath.Pointer;
 import org.w3c.dom.Document;
 
 /**
+ * Support for ViewCvs-like interfaces to a cvs repository
+ * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 11 oct. 2003
@@ -32,7 +33,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     private String _type;
     private String _filesXpath = "//TABLE//TR[TD/A/IMG/@alt = '(file)']";
     private String _fileNameXpath = "TD[1]/A/@name";
-    private String _fileVersionXpath = "TD[2]/A/B";
+    private String _fileVersionXpath = "TD[A/IMG/@alt != '(graph)'][2]/A/B";
     private String _directoriesXpath = "//TABLE//TR[TD/A/IMG/@alt = '(dir)'][TD/A/@name != 'Attic']";
     private String _directoryXpath = "TD[1]/A/@name";
     private String _checkoutPath = "*checkout*/";
@@ -44,13 +45,23 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     public ViewCvsInterface() {
         super();
     }
-
+    
+    /**
+     * Initialize the web interface
+     * 
+     * @param grabber The cvs grabber
+     */
+    public void init(CVSGrab grabber) throws Exception {
+        checkRootUrl(grabber.getRootUrl());
+        _type = getId();
+    }
+    
     /** 
      * {@inheritDoc}
      * @param htmlPage
      * @throws Exception
      */
-    public void init(CVSGrab grabber, Document htmlPage) throws Exception {
+    public void detect(CVSGrab grabber, Document htmlPage) throws Exception {
         checkRootUrl(grabber.getRootUrl());
         
         JXPathContext context = JXPathContext.newContext(htmlPage);
@@ -72,6 +83,17 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      * {@inheritDoc}
      * @return
      */
+    public String getId() {
+        String className = getClass().getName();
+        className = className.substring(className.lastIndexOf('.') + 1);
+        className = className.substring(0, className.indexOf("Interface"));
+        return className;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     * @return
+     */
     public String getType() {
         return _type;
     }
@@ -85,7 +107,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         try {
             String tag = getVersionTag(); 
             String url = WebBrowser.forceFinalSlash(rootUrl);
-            url += WebBrowser.forceFinalSlash(URIUtil.encodePath(directoryName));
+            url += WebBrowser.forceFinalSlash(quote(directoryName));
             url = WebBrowser.addQueryParam(url, "only_with_tag", tag);
             url = WebBrowser.addQueryParam(url, getQueryParams());
             return url;
@@ -144,11 +166,11 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
             String url = WebBrowser.forceFinalSlash(file.getDirectory().getRemoteRepository().getRootUrl());
             String dir = file.getDirectory().getDirectoryPath();
             url += getCheckoutPath();
-            url += WebBrowser.forceFinalSlash(URIUtil.encodePath(dir));
+            url += WebBrowser.forceFinalSlash(quote(dir));
             if (file.isInAttic()) {
                 url += "Attic/";
             }
-            url += URIUtil.encodePath(file.getName());
+            url += quote(file.getName());
             url = WebBrowser.addQueryParam(url, "rev", file.getVersion());
             url = WebBrowser.addQueryParam(url, getQueryParams());
             return url;
@@ -288,4 +310,13 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         }
     }
 
+    /**
+     * Python-style of URIUtil.encodePath
+     * 
+     * @param original The string to quote
+     * @return the quoted string
+     */
+    protected String quote(String original) throws URIException {
+        return URIUtil.encodePath(original, "ISO-8859-1");
+    }
 }

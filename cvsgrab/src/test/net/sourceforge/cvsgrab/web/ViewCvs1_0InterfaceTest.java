@@ -110,4 +110,16 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
         assertEquals("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/*checkout*/pico/src/java/picocontainer/Attic/ClassRegistrationPicoContainer.java?rev=1.4&root=picocontainer", _interface.getDownloadUrl(file));
     }
     
+    /**
+     * Fix for help request https://sourceforge.net/forum/message.php?msg_id=2294014
+     */
+    public void testStrangeUrls() {
+        _interface.setRoot(null);
+        String directoryUrl = _interface.getDirectoryUrl("http://cvs.apache.org/viewcvs.cgi/", 
+                        "ant/src/etc/testcases/core/include/frag#ment/");
+        assertEquals("http://cvs.apache.org/viewcvs.cgi/ant/src/etc/testcases/core/include/frag%23ment/", directoryUrl);
+        directoryUrl = _interface.getDirectoryUrl("http://cvs.apache.org/viewcvs.cgi/", 
+                        "ant/src/etc/testcases/core/include/with space/");
+        assertEquals("http://cvs.apache.org/viewcvs.cgi/ant/src/etc/testcases/core/include/with%20space/", directoryUrl);
+    }
 }

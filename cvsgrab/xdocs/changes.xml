@@ -24,7 +24,71 @@
 
             <action dev="ludovicc" type="update">
 				TODO: use Jakarta's CLI library to parse command line arguments
-		    </action>
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Contributed by Amaury Forgeot d'Arc.
+				TODO: Also, I think that an option that forces the update of older files would be useful, 
+				especially when one changes the version tag.
+				Maybe this check should be removed completely, and replaced by setting the read-only attribute of the files?
+				Then a read-only file would be replaced anyway, whereas read/write files would trigger the error 
+				"cannot clobber writeable file xxx". (an "error", not an "info" log message).
+            </action>
+
+            <action dev="ludovicc" type="add">
+				TODO: I'm curious as to ways to emulate -kb (binary file
+				checkout/update) functionality in CVSGrab. One of the
+				repositories I use mixes binary files with source, and
+				it's important for updating binary files later with
+				conventional CVS that the -kb flag be set in
+				CVS/Entries. I'd be much appreciative if this feature
+				could be added to a future version of CVSGrab, or if
+				someone could point out how to enable it now (I can't
+				seem to find anything on it in the CVSGrab documents,
+				so I'm not sure if it exists already or not). If
+				someone more familiar with CVSGrab could even point out
+				where such a modification needs to go, that would be
+				most useful, as I could possibly add the feature myself.
+            </action>
+            
+        </release>
+
+        <release version="2.0.1" date="2003-12-07">
+
+            <action dev="ludovicc" type="add">
+                Added support for CvsWeb 2.0.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Added initial test that connects to the site by using the root url, this should help to detect
+                proxy settings issues.
+            </action>
+
+            <action dev="ludovicc" type="add">
+                Added manual selection of the web interface, this can fix issues with some web sites where the autodetect feature 
+                doesn't work.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Fixed incorrect urls for directories that contain spaces
+            </action>
+        
+            <action dev="ludovicc" type="fix">
+                ViewCVS 1.0: fixed detection when ViewCvs is not configured with multiple cvs roots.
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Contributed by Amaury Forgeot d'Arc.
+                wxWindows apparently uses ViewCVS 0.9.2, but with an additional link after each 
+                file name to show the "revision graph". See http://cvs.wxwindows.org/viewcvs.cgi/wxWindows/
+                So I had to modify the ViewCvsInterface.java file and change
+                _fileVersionXpath = "TD[A/IMG/@alt != '(graph)'][2]/A/B";
+            </action>
+
+            <action dev="ludovicc" type="fix">
+                Contributed by Amaury Forgeot d'Arc.
+                Removed caching of pages by the server to get the up-to-date version of the directory lists.
+            </action>
 
         </release>
 

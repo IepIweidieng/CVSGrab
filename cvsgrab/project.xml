@@ -5,6 +5,7 @@
   <pomVersion>3</pomVersion>
   
   <!-- a unique name for this project -->
+  <groupId>cvsgrab</groupId>
   <id>cvsgrab</id>
   
   <!-- a short but descriptive name for the project -->
@@ -12,7 +13,7 @@
   
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-  <currentVersion>2.0</currentVersion>
+  <currentVersion>2.0.1</currentVersion>
   
   <!-- details about the organization that 'owns' the project -->
   <organization>
@@ -93,14 +94,14 @@
     <dependency>
       <groupId>nekohtml</groupId>
       <artifactId>nekohtml</artifactId>
-      <version>0.7.7</version>
+      <version>0.8.1</version>
       <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
     </dependency>
     
     <dependency>
       <groupId>nekohtml</groupId>
       <artifactId>nekohtmlXni</artifactId>
-      <version>0.7.7</version>
+      <version>0.8.1</version>
       <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
     </dependency>
     
@@ -125,7 +126,7 @@
     <dependency>
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
-      <version>2.0-rc2</version>
+      <version>2.0-rc2-patch</version>
     </dependency>
     
     <dependency>
@@ -155,8 +156,18 @@
       <version>1.5.3-1</version>
       <url>http://ant.apache.org/</url>
     </dependency>
+
+    <dependency>
+      <groupId>javaapp</groupId>
+      <artifactId>maven-javaapp-plugin</artifactId>
+      <version>1.1</version>
+      <url>http://maven-plugins.sourceforge.net/maven-javaapp-plugin/</url>
+      <type>plugin</type>
+    </dependency>    
+
   </dependencies>
   
+
   <!-- build information for the project -->
   <build>
     <nagEmailAddress>ludovicc@users.sourceforge.net</nagEmailAddress>

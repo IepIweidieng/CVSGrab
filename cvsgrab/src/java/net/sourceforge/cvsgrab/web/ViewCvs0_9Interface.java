@@ -8,6 +8,8 @@ package net.sourceforge.cvsgrab.web;
 
 
 /**
+ * Support for ViewCvs 0.9 interfaces to a cvs repository
+ * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 11 oct. 2003
