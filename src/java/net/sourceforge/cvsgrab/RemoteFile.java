@@ -47,6 +47,7 @@ public class RemoteFile {
     private String _name;
     private String _version; 
     private boolean _inAttic = false;
+    private Date _lastModified;
     
     /**
      * Sets the file types recognized by CVSGrab. Valid file types are text and binary.
@@ -128,6 +129,10 @@ public class RemoteFile {
         _directory = directory;
     }
 
+    public Date getLastModified() {
+        return _lastModified;
+    }
+    
     /**
      * @param repository
      */
@@ -290,6 +295,7 @@ public class RemoteFile {
             
             // Download the file
             WebBrowser.getInstance().loadFile(new GetMethod(url), destFile);
+            _lastModified = new Date();
 
             localRepository.updateFileVersion(this);
 

@@ -1,0 +1,16 @@
+
+Building Cvsgrab
+----------------
+
+
+* To build Cvsgrab, first you need to install Java J2SDK version 1.2 or better
+Then install Maven 1.0 or better from http://maven.apache.org
+Open the command line, CD to the the project root, then run
+
+	maven dist
+	
+That's all, maven takes care of building cvsgrab from the source and it downloads all 
+the necessary libraries from the network.
+
+
+ 

@@ -8,6 +8,8 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.Properties;
+
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
@@ -100,4 +102,20 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
         
     }
 
+    public void testGuessWebProperties() {
+        Properties webProperties = _interface.guessWebProperties("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/quanta/");
+        assertEquals("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("quanta/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        webProperties = _interface.guessWebProperties("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/quanta/?sortby=date;only_with_tag=QUANTA_3_1_BRANCH");
+        assertEquals("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("quanta/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("QUANTA_3_1_BRANCH", webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertEquals("sortby=date", webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+    }
+    
+    
 }

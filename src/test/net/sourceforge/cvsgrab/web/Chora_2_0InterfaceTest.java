@@ -8,6 +8,8 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.Properties;
+
 
 /**
  * Test for Chora 2.0
@@ -121,6 +123,15 @@ public class Chora_2_0InterfaceTest extends AbstractTestCase {
         file.setDirectory(dir);
         
         assertEquals("http://cvs.php.net/co.php/smarty/BUGS?r=1.7&p=1", _interface.getDownloadUrl(file));
+    }
+    
+    public void testGuessWebProperties() {
+        Properties webProperties = _interface.guessWebProperties("http://cvs.php.net/cvs.php/smarty/");
+        assertEquals("http://cvs.php.net/cvs.php/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("smarty/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
     
 }

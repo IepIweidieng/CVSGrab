@@ -8,6 +8,7 @@ package net.sourceforge.cvsgrab.web;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.CvsWebInterface;
@@ -38,6 +39,9 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     private String _directoriesXpath = "//TR[TD/A/IMG/@alt = '(dir)'][TD/A/@name != 'Attic']";
     private String _directoryXpath = "TD[1]/A/@name";
     private String _checkoutPath = "*checkout*/";
+    private String _webInterfaceType = "viewcvs";
+    private String _tagParam = "only_with_tag";
+    private String _cvsrootParam = "cvsroot";
 
     /**
      * Constructor for ViewCvsInterface
@@ -119,7 +123,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     		String tag = getVersionTag(); 
     		String url = WebBrowser.forceFinalSlash(rootUrl);
     		url += WebBrowser.forceFinalSlash(quote(directoryName));
-    		url = WebBrowser.addQueryParam(url, "only_with_tag", tag);
+            url = WebBrowser.addQueryParam(url, _tagParam, tag);
     		url = WebBrowser.addQueryParam(url, getQueryParams());
     		return url;
     	} catch (URIException ex) {
@@ -189,6 +193,53 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
             ex.printStackTrace();
             throw new RuntimeException("Cannot create URI");
         }
+    }
+        
+    public Properties guessWebProperties(String url) {
+        Properties properties = new Properties();
+        // Simple heuristic for detecting the type of the web interface
+        int keywordPosition = url.toLowerCase().indexOf(_webInterfaceType);
+        if (keywordPosition > 0) {
+            int rootUrlPosition = url.indexOf('/', keywordPosition) + 1;
+            int cgiFolderPos = url.indexOf("cgi/", rootUrlPosition);
+            if (cgiFolderPos > 0) {
+                rootUrlPosition = cgiFolderPos + 4;
+            }
+            int nextSlashPos = url.indexOf('/', rootUrlPosition) + 1;
+            int magicScriptPos = url.indexOf(".cgi", rootUrlPosition);
+            if (magicScriptPos < 0 ) {
+                magicScriptPos = url.indexOf(".py", rootUrlPosition);
+            }
+            if (magicScriptPos > 0 && magicScriptPos < nextSlashPos) {
+                rootUrlPosition = nextSlashPos;
+            }
+            String guessedRootUrl = url.substring(0, rootUrlPosition);
+            String guessedPackagePath = url.substring(rootUrlPosition);
+            String versionTag = null;
+            String cvsroot = null; 
+            String query = null;
+            int queryPos = guessedPackagePath.indexOf('?');
+            if (queryPos >= 0) {
+                query = guessedPackagePath.substring(queryPos + 1);
+                guessedPackagePath = guessedPackagePath.substring(0, queryPos);
+                Properties queryItems = WebBrowser.getQueryParams(query);
+                versionTag = (String) queryItems.remove(_tagParam);
+                cvsroot = (String) queryItems.remove(_cvsrootParam);
+                query = WebBrowser.toQueryParams(queryItems);
+            }
+            properties.put(CVSGrab.ROOT_URL_OPTION, guessedRootUrl);
+            properties.put(CVSGrab.PACKAGE_PATH_OPTION, guessedPackagePath);
+            if (versionTag != null && versionTag.trim().length() > 0) {
+                properties.put(CVSGrab.TAG_OPTION, versionTag);
+            }
+            if (cvsroot != null && cvsroot.trim().length() > 0) {
+                properties.put(CVSGrab.CVS_ROOT_OPTION, cvsroot);
+            }
+            if (query != null && query.trim().length() > 0) {
+                properties.put(CVSGrab.QUERY_PARAMS_OPTION, query);
+            }
+        }
+        return properties;
     }
     
     /**
@@ -274,7 +325,23 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     public void setFilesXpath(String filesXpath) {
         _filesXpath = filesXpath;
     }
-
+    
+    public String getTagParam() {
+        return _tagParam;
+    }
+    
+    public void setTagParam(String param) {
+        _tagParam = param;
+    }
+    
+    public String getWebInterfaceType() {
+        return _webInterfaceType;
+    }
+    
+    protected void setWebInterfaceType(String webInterfaceType) {
+        this._webInterfaceType = webInterfaceType;
+    }
+    
     /**
      * @param type
      */

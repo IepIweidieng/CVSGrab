@@ -14,6 +14,9 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
 
 import net.sourceforge.cvsgrab.util.PasswordField;
@@ -100,6 +103,43 @@ public class WebBrowser {
             }
         }
         return newUrl;
+    }
+    
+    /**
+     * Extract the query parameters 
+     * @param urlQuery The query section of the url. Must be of the form ? (optional) key1=value1&key2=value2
+     * @return the parameters extracted as properties
+     */
+    public static Properties getQueryParams(String urlQuery) {
+        Properties p = new Properties();
+        StringTokenizer st = new StringTokenizer(urlQuery, "?&;");
+        while (st.hasMoreTokens()) {
+            String part = st.nextToken();
+            String key = part.substring(0, part.indexOf('='));
+            String value = part.substring(part.indexOf('=') + 1);
+            p.put(key, value);
+        }
+        return p;
+    }
+    
+    /**
+     * Converts the query items to a single query string
+     * @param queryItems The set of (key,value) for the query
+     * @return a query string compatible with the format of url queries
+     */
+    public static String toQueryParams(Properties queryItems) {
+        StringBuffer sb = new StringBuffer();
+        for (Iterator i = queryItems.keySet().iterator(); i.hasNext();) {
+            String key = (String) i.next();
+            String value = queryItems.getProperty(key);
+            sb.append(key);
+            sb.append('=');
+            sb.append(value);
+            if (i.hasNext()) {
+                sb.append('&');
+            }
+        }
+        return sb.toString();
     }
     
     /**
@@ -353,4 +393,5 @@ public class WebBrowser {
             lastMethod.releaseConnection();
         }
     }
+
 }

@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -141,6 +142,23 @@ public abstract class CvsWebInterface {
         return null;
     }
     
+    /**
+     * Guess the connection properties by parsing the full url used when connecting to the web repository 
+     * @param rootUrl the rool url
+     * @return the properties compatible with the naming scheme of WebOptions, or an empty list of properties
+     * if nothing is found
+     */
+    public static Properties getWebProperties(String rootUrl) {
+        for (int i = 0; i < _webInterfaces.length; i++) {
+            CvsWebInterface webInterface = _webInterfaces[i];
+            Properties webProperties = webInterface.guessWebProperties(rootUrl); 
+            if (!webProperties.isEmpty()) {
+                return webProperties;
+            }
+        }
+        return new Properties();
+    }
+
     private static Document loadDocument(String url) {
         if (url == null) {
             throw new IllegalArgumentException("Null url");
@@ -331,4 +349,11 @@ public abstract class CvsWebInterface {
      */
     public abstract String getDownloadUrl(RemoteFile file);
 
+    /**
+     * Guess the web properties frmo the full url
+     * @param fullUrl the full url
+     * @return a list of Properties guessed from the full url, or an empty property list if no match was possible
+     */
+    public abstract Properties guessWebProperties(String fullUrl);
+    
 }

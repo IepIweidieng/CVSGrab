@@ -8,6 +8,8 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.Properties;
+
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
@@ -85,6 +87,19 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         file.setDirectory(dir);
         String fileUrl = _interface.getDownloadUrl(file);
         assertEquals("http://cvs.sourceforge.net/viewcvs.py/*checkout*/avantgarde/AvantGarde/src/st/fr/cageauxtrolls/avantgarde/gestion/partie/RestrictionsArm%E9e.java?rev=1.1", fileUrl);
+    }
+    
+    public void testGuessWebProperties() {
+        Properties webProperties = _interface.guessWebProperties("http://cvs.sourceforge.net/viewcvs.py/cvsgrab/cvsgrab/");
+        assertEquals("http://cvs.sourceforge.net/viewcvs.py/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("cvsgrab/cvsgrab/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        webProperties = _interface.guessWebProperties("http://cvs.sourceforge.net/viewcvs.py/cvsgrab/cvsgrab/?only_with_tag=RELEASE_2_0_3");
+        assertEquals("http://cvs.sourceforge.net/viewcvs.py/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("cvsgrab/cvsgrab/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("RELEASE_2_0_3", webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
     
 }

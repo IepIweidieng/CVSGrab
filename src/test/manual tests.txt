@@ -9,3 +9,5 @@ cvsgrab -rootUrl http://savannah.nongnu.org/cgi-bin/viewcvs/ -packagePath sdx/sd
 cvsgrab -rootUrl http://cvs.php.net/cvs.php/ -packagePath smarty -destDir c:/tmp
 
 cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/ -packagePath maven-plugins/maven-plugins -destDir c:/tmp -packageDir maven-plugins -prune -connections 3
+
+cvsgrab -url http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/ -destDir c:/tmp 

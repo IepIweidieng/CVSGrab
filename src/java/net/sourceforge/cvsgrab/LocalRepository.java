@@ -5,20 +5,19 @@
  */
 package net.sourceforge.cvsgrab;
 
+import org.netbeans.lib.cvsclient.admin.AdminHandler;
+import org.netbeans.lib.cvsclient.admin.Entry;
+import org.netbeans.lib.cvsclient.command.GlobalOptions;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
-
-import org.netbeans.lib.cvsclient.admin.AdminHandler;
-import org.netbeans.lib.cvsclient.admin.Entry;
-import org.netbeans.lib.cvsclient.command.GlobalOptions;
 
 /**
  * The local repository where the files are stored on this computer.
@@ -246,23 +245,23 @@ public class LocalRepository {
         File dir = getLocalDir(remoteFile.getDirectory());
         File file = getLocalFile(remoteFile);
         Entry entry = null;
-        // Add 10 seconds to the date of modification to play it safe on Windows where the date of last
-        // modification is often accurate by 1 second.
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.SECOND, 10);
+        Date lastModified = remoteFile.getLastModified();
+        if (lastModified == null) {
+            lastModified = new Date();
+        }
         try {
             entry = _handler.getEntry(file);
             if (entry == null) {
                 throw new IOException("Entry not found");
             }
             entry.setRevision(remoteFile.getVersion());
-            entry.setDate(now.getTime());
+            entry.setDate(lastModified);
             _updatedFiles++;
         } catch (IOException ex) {
             boolean binary = remoteFile.isBinary();
-            String lastModified = Entry.getLastModifiedDateFormatter().format(now);
+            String lastModifiedStr = Entry.getLastModifiedDateFormatter().format(lastModified);
             entry = new Entry("/" + remoteFile.getName() + "/" + remoteFile.getVersion() + "/" 
-                    + lastModified + "/" + (binary ? "-kb/" : "/"));
+                    + lastModifiedStr + "/" + (binary ? "-kb/" : "/"));
             _newFiles++;
         }
         

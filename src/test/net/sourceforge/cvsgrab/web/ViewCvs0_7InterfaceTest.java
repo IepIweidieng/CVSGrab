@@ -8,6 +8,8 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.Properties;
+
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
@@ -128,6 +130,18 @@ public class ViewCvs0_7InterfaceTest extends AbstractTestCase {
         file.setInAttic(true);
         
         assertEquals("http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/org.eclipse.ant.core/Attic/ant.jar?rev=1.1.2.1", _interface.getDownloadUrl(file));
-        
+    }
+    
+    public void testGuessWebProperties() {
+        Properties webProperties = _interface.guessWebProperties("http://dev.eclipse.org/viewcvs/index.cgi/jdt-core-home/");
+        assertEquals("http://dev.eclipse.org/viewcvs/index.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("jdt-core-home/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        webProperties = _interface.guessWebProperties("http://dev.eclipse.org/viewcvs/index.cgi/jdt-core-home/?only_with_tag=MAIN");
+        assertEquals("http://dev.eclipse.org/viewcvs/index.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("jdt-core-home/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("MAIN", webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
 }
