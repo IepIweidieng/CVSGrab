@@ -70,6 +70,11 @@
             </action>
 
             <action dev="ludovicc" type="fix">
+                Fixed cvsgrab.sh: use unix-style file format, updated script and make it use the $CVSGRAB_HOME environment variable 
+                (copied from Ant script).
+            </action>
+
+            <action dev="ludovicc" type="fix">
                 Fixed incorrect urls for directories that contain spaces
             </action>
         

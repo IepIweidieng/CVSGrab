@@ -13,6 +13,11 @@
             <include name="samples/*" />
         </fileset>
     </copy>
+    <!-- ensures that cvsgrab.sh is unix-style text file -->
+    <fixcrlf srcdir="${maven.dist.bin.assembly.dir}"
+       eol="lf" eof="remove"
+       includes="**/*.sh"
+    />
 
     <attainGoal name="site"/>
     
@@ -28,12 +33,6 @@
     
     <mkdir dir="${maven.dist.bin.assembly.dir}/lib" />
     
-    <!--attainGoal name="uberjar:uberjar"/>
-    <move 
-    	file="${maven.build.dir}/${pom.artifactId}-${pom.currentVersion}-uber.jar" 
-    	tofile="${maven.dist.bin.assembly.dir}/lib/cvsgrab.jar"
-   	/-->
-
     <attainGoal name="javaapp:jar"/>
     <move 
     	file="${maven.build.dir}/${pom.artifactId}-app.jar" 

@@ -158,9 +158,17 @@
     </dependency>
 
     <dependency>
-      <groupId>javaapp</groupId>
+      <groupId>maven-plugins</groupId>
       <artifactId>maven-javaapp-plugin</artifactId>
       <version>1.1</version>
+      <url>http://maven-plugins.sourceforge.net/maven-javaapp-plugin/</url>
+      <type>plugin</type>
+    </dependency>    
+
+    <dependency>
+      <groupId>maven-plugins</groupId>
+      <artifactId>maven-sourceforge-plugin</artifactId>
+      <version>1.0</version>
       <url>http://maven-plugins.sourceforge.net/maven-javaapp-plugin/</url>
       <type>plugin</type>
     </dependency>    
