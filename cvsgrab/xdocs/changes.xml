@@ -13,13 +13,21 @@
             <action dev="ludovicc" type="add">
                 TODO: add module support by parsing the CVSROOT/modules file.
             </action>
+            
+            <action dev="ludovicc" type="add">
+				TODO: add option to check out files in DOS mode, UNIX mode
+		    </action>
+
+            <action dev="ludovicc" type="add">
+				TODO: add exclusion list for directories you don't want to download
+		    </action>
 
         </release>
 
         <release version="2.0" date="not released">
 
             <action dev="ludovicc" type="update">
-                change license from LGPL to BSD
+                Changed license from LGPL to BSD
             </action>
 
             <action dev="ludovicc" type="update">
@@ -27,7 +35,7 @@
             </action>
 
             <action dev="ludovicc" type="update">
-                replace jcvsii by NetBeans' cvsclient, license is more friendly and this is better designed and supported
+                Replace jcvsii by NetBeans' cvsclient, license is more friendly and this is better designed and supported
             </action>
 
             <action dev="ludovicc" type="update">
@@ -40,29 +48,33 @@
             </action>
         
             <action dev="ludovicc" type="add">
-                Add support for authentification with NT credentials used on MS proxies.
+                Added support for authentification with NT credentials used on MS proxies.
             </action>
 
             <action dev="ludovicc" type="add">
-                Add support for authentification on the web server.
+                Added support for authentification on the web server.
             </action>
 
             <action dev="ludovicc" type="add">
-                add support for localy modified files: they should not be updated even if there is a more recent 
+                Added support for localy modified files: they should not be updated even if there is a more recent 
                 version on the remote repository.
             </action>
 
+            <action dev="ludovicc" type="add">
+				Added support for multiple cvsroots (argument cvsroot=[root] to the query on viewcvs 0.9.2)
+		    </action>
+		    
             <action dev="ludovicc" type="fix">
                 Fixed issue with files recovered from the Attic/ folder when using version tags.
             </action>
 
             <action dev="ludovicc" type="add">
-                Add support for different cvs web interfaces. Currently ViewCVS version 0.7, 0.8, 0.9, 1.0-dev and
+                Added support for different cvs web interfaces. Currently ViewCVS version 0.7, 0.8, 0.9, 1.0-dev and
                 SourceCast 2.0 are supported.
             </action>
 
             <action dev="ludovicc" type="add">
-                Adding unit tests for better quality.
+                Added unit tests for better quality.
             </action>
 
         </release>

@@ -21,6 +21,8 @@
             <include name="docs/*" />
         </fileset>
     </copy>
+    
+    <delete dir="${maven.dist.bin.assembly.dir}/docs/apidocs" />
 
     <delete file="${maven.dist.bin.assembly.dir}/${maven.final.name}.jar" />
     

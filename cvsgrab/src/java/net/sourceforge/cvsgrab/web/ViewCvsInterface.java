@@ -81,9 +81,8 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         String tag = getVersionTag(); 
         String url = WebBrowser.forceFinalSlash(rootUrl);
         url += WebBrowser.forceFinalSlash(directoryName);
-        if (tag != null && !tag.equals("")) {
-            url += "?only_with_tag=" + tag;
-        }
+        url = WebBrowser.addQueryParam(url, "only_with_tag", tag);
+        url = WebBrowser.addQueryParam(url, getQueryParams());
         return url;
     }
     
@@ -141,7 +140,8 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
                 url += "Attic/";
             }
             url += URIUtil.encodePath(file.getName());
-            url += "?rev=" + URIUtil.encodePath(file.getVersion());
+            url = WebBrowser.addQueryParam(url, "rev", file.getVersion());
+            url = WebBrowser.addQueryParam(url, getQueryParams());
             return url;
         } catch (URIException ex) {
             ex.printStackTrace();

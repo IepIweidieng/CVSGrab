@@ -43,10 +43,11 @@ public class ViewCvs0_7Interface extends ViewCvsInterface {
             // http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/org.eclipse.ant.core/about.html?rev=1.20
             String url = WebBrowser.forceFinalSlash(rootUrl);
             String dir = file.getDirectory().getDirectoryName();
-            url += "~checkout~/";
+            url += getCheckoutPath();
             url += WebBrowser.forceFinalSlash(URIUtil.encodePath(dir));
             url += URIUtil.encodePath(file.getName());
-            url += "?rev=" + URIUtil.encodePath(file.getVersion());
+            url = WebBrowser.addQueryParam(url, "rev", URIUtil.encodePath(file.getVersion()));
+            url = WebBrowser.addQueryParam(url, getQueryParams());
             return url;
         } catch (URIException ex) {
             ex.printStackTrace();

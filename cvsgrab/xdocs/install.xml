@@ -17,6 +17,10 @@
 		      </li>
 		    </ol>
 		  </p>
+          <p> Note: On Windows, environment variables can be defined from the Dos command line with: <br/>
+            set ENVIRONMENT_VARIABLE = value <br/>
+            Or for Windows XP, from Control Panel / System / Advanced tab / Environment variables button
+          </p>
 		  <p>
 		    To run cvsgrab, from the command line do: <br/>
             cd &lt;cvsgrab install dir&gt; <br/> 

@@ -16,6 +16,7 @@
             <item name="Run from the command line"		href="/cmd-usage.html"/>
             <item name="Run from Ant"					href="/ant-usage.html"/>
         </item>
+        <item name="FAQ"                        href="/faq.html"/>
         <item name="License"                    href="/LICENSE.html"/>
         <item name="Feedback"                   href="/feedback.html"/>
     </menu>

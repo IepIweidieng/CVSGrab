@@ -22,9 +22,11 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpRecoverableException;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NTCredentials;
+import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.xerces.xni.parser.XMLInputSource;
 import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Document;
@@ -62,6 +64,37 @@ public class WebBrowser {
             return s.substring(0, s.length()-1);
         }
         return s;
+    }
+    
+    public static String addQueryParam(String url, String queryParam) {
+        String newUrl = url;
+        if (queryParam != null) {
+            if (newUrl.indexOf('?') > 0) {
+                newUrl += "&";
+            } else {
+                newUrl += "?";
+            }
+            newUrl += queryParam;
+        }
+        return newUrl;
+    }
+    
+    public static String addQueryParam(String url, String paramName, String paramValue) {
+        String newUrl = url;
+        if (paramName != null && paramValue != null) {
+            if (newUrl.indexOf('?') > 0) {
+                newUrl += "&";
+            } else {
+                newUrl += "?";
+            }
+            try {
+                newUrl += paramName + "=" + URIUtil.encodeQuery(paramValue);
+            } catch (URIException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Cannot encode parameter value " + paramValue);
+            }
+        }
+        return newUrl;
     }
     
     /**
@@ -147,12 +180,12 @@ public class WebBrowser {
         // Check that we didn't run out of retries.
         if (statusCode == -1) {
             DefaultLogger.getInstance().error("Failed to recover from exception.");
-            throw new RuntimeException("Error when reading " + method);
+            throw new RuntimeException("Error when reading " + method.getPath());
         }
     
         if (statusCode >= 400) {
             DefaultLogger.getInstance().error("Page not found (error " + statusCode + ")");
-            throw new RuntimeException("Error when reading " + method);
+            throw new RuntimeException("Error when reading " + method.getPath());
         }
     
         // Tests for redirects
@@ -189,7 +222,10 @@ public class WebBrowser {
      * @return
      */
     public String getResponse(HttpMethod method) {
-        return new String(method.getResponseBody());
+        HttpMethod lastMethod = executeMethod(method);
+        String response = new String(lastMethod.getResponseBody());
+        lastMethod.releaseConnection();
+        return response;
     }
     
     /**
@@ -199,9 +235,7 @@ public class WebBrowser {
      * @return
      */
     public Document getDocument(HttpMethod method) throws Exception {
-        HttpMethod lastMethod = executeMethod(method);
-        String response = getResponse(lastMethod);
-        lastMethod.releaseConnection();
+        String response = getResponse(method);
         
         XMLInputSource source = new XMLInputSource(null, null, null, new StringReader(response), null);
     

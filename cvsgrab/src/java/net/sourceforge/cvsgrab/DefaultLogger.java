@@ -15,7 +15,7 @@ package net.sourceforge.cvsgrab;
 public class DefaultLogger implements Logger {
     
     private static Logger _instance = new DefaultLogger();
-    private boolean _verbose;
+    private boolean _verbose = true;
     private boolean _debug;
     
     /**

@@ -27,10 +27,15 @@ public class CVSGrab {
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
     private static final String VERSION = "2.0-beta";
 
-    private String _dir = null;
     private boolean _verbose = true;
     private boolean _pruneEmptyDirs = false;
     private boolean _error = false;
+    private String _rootUrl;
+    private String _packageName;
+    private String _destDir;
+    private String _versionTag;
+    private String _queryParams;
+    private String _cvsRoot = DUMMY_ROOT;
 
     /**
      * Constructor for the CVSGrab object
@@ -43,13 +48,6 @@ public class CVSGrab {
      * @param args The command line arguments
      */
     public static void main(String[] args) {
-        String rootUrl = null;
-        String destDir = null;
-        String packageName = null;
-        String tag = null;
-        String cvsRoot = DUMMY_ROOT;
-        String verbose = "true";
-        String prune = "false";
         String proxyHost = null;
         int proxyPort = 0;
         String proxyNTDomain = null;
@@ -57,7 +55,7 @@ public class CVSGrab {
         String proxyPassword = null;
         String webUser = null;
         String webPassword = null;
-        int connections = 0;
+        CVSGrab grabber = new CVSGrab();
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].toLowerCase().equals("-help")) {
@@ -66,37 +64,42 @@ public class CVSGrab {
             }
             if (args[i].toLowerCase().equals("-rooturl")) {
                 if (!args[i + 1].startsWith("-")) {
-                    rootUrl = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-destdir")) {
-                if (!args[i + 1].startsWith("-")) {
-                    destDir = args[i + 1];
+                    grabber.setRootUrl(args[i + 1]);
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-package")) {
                 if (!args[i + 1].startsWith("-")) {
-                    packageName = args[i + 1];
+                    grabber.setPackageName(args[i + 1]);
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-destdir")) {
+                if (!args[i + 1].startsWith("-")) {
+                    grabber.setDestDir(args[i + 1]);
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-tag")) {
                 if (!args[i + 1].startsWith("-")) {
-                    tag = args[i + 1];
+                    grabber.setVersionTag(args[i + 1]);
+                    i++;
+                }
+            } else if (args[i].toLowerCase().equals("-queryparams")) {
+                if (!args[i + 1].startsWith("-")) {
+                    grabber.setQueryParams(args[i + 1]);
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-cvsroot")) {
                 if (!args[i + 1].startsWith("-")) {
-                    cvsRoot = args[i + 1];
+                    grabber.setCvsRoot(args[i + 1]);
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-verbose")) {
                 if (!args[i + 1].startsWith("-")) {
-                    verbose = args[i + 1];
+                    DefaultLogger.getInstance().setVerbose(args[i + 1].toLowerCase().equals("true"));;
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-prune")) {
                 if (!args[i + 1].startsWith("-")) {
-                    prune = args[i + 1];
+                    grabber.setPruneEmptyDirs(args[i + 1].toLowerCase().equals("true"));;
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-proxyhost")) {
@@ -136,37 +139,21 @@ public class CVSGrab {
                 }
             } else if (args[i].toLowerCase().equals("-connections")) {
                 if (!args[i + 1].startsWith("-")) {
-                    connections = Integer.parseInt(args[i + 1]);
+                    int connections = Integer.parseInt(args[i + 1]);
+                    if (connections > 0) {
+                        ThreadPool.init(connections);
+                    }
                     i++;
                 }
             }
         }
-        if (rootUrl == null || destDir == null || packageName == null) {
-            if (rootUrl == null) {
-                System.out.println("Error: rootUrl parameter is mandatory");
-            }
-            if (destDir == null) {
-                System.out.println("Error: destDir parameter is mandatory");
-            }
-            if (packageName == null) {
-                System.out.println("Error: package parameter is mandatory");
-            }
-            printHelp();
-            return;
-        }
-        DefaultLogger.getInstance().setVerbose(verbose.toLowerCase().equals("true"));
-        CVSGrab grabber = new CVSGrab();
-        grabber.setPruneEmptyDirs(prune.toLowerCase().equals("true"));
         if (proxyHost != null) {
             WebBrowser.getInstance().useProxy(proxyHost, proxyPort, proxyNTDomain, proxyUser, proxyPassword);
         }
         if (webUser != null) {
             WebBrowser.getInstance().useWebAuthentification(webUser, webPassword);
         }
-        if (connections > 0) {
-            ThreadPool.init(connections);
-        }
-        grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsRoot);
+        grabber.grabCVSRepository();
     }
 
     /**
@@ -180,6 +167,7 @@ public class CVSGrab {
         System.out.println("\t-destDir <dir> The destination directory");
         System.out.println("\t-package <package> The package or module to download");
         System.out.println("\t-tag <tag> [optional] The version tag of the files to download");
+        System.out.println("\t-queryParams <query params> [optional] Additional query parameters");
         System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain compatibility with a standard CVS client");
         System.out.println("\t-verbose true|false [optional] Verbosity. Default is verbose");
         System.out.println("\t-prune true|false [optional] Prune (remove) the empty directories. Default is false");
@@ -211,57 +199,137 @@ public class CVSGrab {
     public void setPruneEmptyDirs(boolean value) {
         _pruneEmptyDirs = value;
     }
+    
+    /**
+     * @return Returns the rootUrl.
+     */
+    public String getRootUrl() {
+        return _rootUrl;
+    }
 
     /**
-     * Main method for getting and updating files. <br>
-     * This method uses only the minimun nuner of arguments
-     *
-     * @param rootUrl The url for the root of the CVS repository accessible via
-     *      ViewCVS
-     * @param destDir Destination directory for the files to be retrieved from
-     *      the repository
-     * @param packageName Name of the package/module to update from CVS
+     * Sets the url for the root of the CVS repository accessible via ViewCVS
+     * @param rootUrl The rootUrl to set.
      */
-    public void grabCVSRepository(String rootUrl, String destDir, String packageName) {
-        grabCVSRepository(rootUrl, destDir, packageName, null, DUMMY_ROOT);
+    public void setRootUrl(String rootUrl) {
+        _rootUrl = rootUrl;
+    }
+
+    /**
+     * @return Returns the packageName.
+     */
+    public String getPackageName() {
+        return _packageName;
+    }
+
+    /**
+     * Sets the name of the package/module to update from CVS
+     * @param packageName The packageName to set.
+     */
+    public void setPackageName(String packageName) {
+        _packageName = packageName;
+    }
+
+    /**
+     * @return Returns the destDir.
+     */
+    public String getDestDir() {
+        return _destDir;
+    }
+
+    /**
+     * Sets the destination directory for the files to be retrieved from the repository
+     * @param destDir The destDir to set.
+     */
+    public void setDestDir(String destDir) {
+        _destDir = destDir;
+    }
+
+    /**
+     * @return Returns the cvsRoot.
+     */
+    public String getCvsRoot() {
+        return _cvsRoot;
+    }
+
+    /**
+     * Sets the cvs root. This is used by CVSGrab only to rebuild the
+     * CVS admin files that may be used later by a standard CVS client.
+     * @param cvsRoot The cvsRoot to set.
+     */
+    public void setCvsRoot(String cvsRoot) {
+        _cvsRoot = cvsRoot;
+    }
+
+    /**
+     * @return Returns the versionTag.
+     */
+    public String getVersionTag() {
+        return _versionTag;
+    }
+
+    /**
+     * Sets the name of the tagged version of the files to retrieve, or null  
+     * @param versionTag The versionTag to set.
+     */
+    public void setVersionTag(String versionTag) {
+        _versionTag = versionTag;
+    }
+
+    /**
+     * @return Returns the queryParams.
+     */
+    public String getQueryParams() {
+        return _queryParams;
+    }
+
+    /**
+     * @param queryParams The queryParams to set.
+     */
+    public void setQueryParams(String queryParams) {
+        _queryParams = queryParams;
     }
 
     /**
      * Main method for getting and updating files.
-     *
-     * @param rootUrl The url for the root of the CVS repository accessible via
-     *      ViewCVS
-     * @param destDir Destination directory for the files to be retrieved from
-     *      the repository
-     * @param packageName Name of the package/module to update from CVS
-     * @param tag The name of the tagged version of the files to retrieve, or
-     *      null
-     * @param cvsRoot The cvs root. This is used by CVSGrab only to rebuild the
-     *      CVS admin files that may be used later by a standard CVS client.
      */
-    public void grabCVSRepository(String rootUrl, String destDir, String packageName, String tag, String cvsRoot) {
+    public void grabCVSRepository() {
         DefaultLogger.getInstance().info("CVSGrab version " + VERSION + " stating...");
 
+        if (_rootUrl == null || _destDir == null || _packageName == null) {
+            if (_rootUrl == null) {
+                System.out.println("Error: rootUrl parameter is mandatory");
+            }
+            if (_destDir == null) {
+                System.out.println("Error: destDir parameter is mandatory");
+            }
+            if (_packageName == null) {
+                System.out.println("Error: package parameter is mandatory");
+            }
+            printHelp();
+            return;
+        }
+        
         try {
             // check the parameters
-            File dd = new File(destDir);
+            File dd = new File(_destDir);
             if (!dd.exists()) {
-                throw new RuntimeException("Destination directory " + destDir + " doesn't exist");
+                throw new RuntimeException("Destination directory " + _destDir + " doesn't exist");
             }
             if (!dd.isDirectory()) {
-                throw new RuntimeException("Destination " + destDir + " is not a directory");
+                throw new RuntimeException("Destination " + _destDir + " is not a directory");
             }
             try {
-                destDir = dd.getCanonicalPath().replace(File.separatorChar, '/');
+                _destDir = dd.getCanonicalPath().replace(File.separatorChar, '/');
             } catch (IOException ex) {
-                throw new IllegalArgumentException("Could not locate the destination directory " + destDir + ", error was " + ex.getMessage());
+                throw new IllegalArgumentException("Could not locate the destination directory " + _destDir + ", error was " + ex.getMessage());
             }
-            rootUrl = WebBrowser.forceFinalSlash(rootUrl);
+            _rootUrl = WebBrowser.forceFinalSlash(_rootUrl);
 
             // Auto detection of the type of the remote interface
             CvsWebInterface webInterface = null;
             try {
-                Document doc = WebBrowser.getInstance().getDocument(new GetMethod(rootUrl));
+                Document doc = WebBrowser.getInstance().getDocument(new GetMethod(WebBrowser.addQueryParam(_rootUrl, _queryParams)));
                 webInterface = CvsWebInterface.findInterface(doc);
                 DefaultLogger.getInstance().info("Detected cvs web interface: " + webInterface.getType());
             } catch (Exception ex) {
@@ -272,15 +340,16 @@ public class CVSGrab {
                 throw new RuntimeException("Could not detect the type of the web interface");
             }
             
-            if (tag != null) {
-                webInterface.setVersionTag(tag);
+            webInterface.setQueryParams(_queryParams);
+            if (_versionTag != null) {
+                webInterface.setVersionTag(_versionTag);
             }
             
-            LocalRepository localRepository = new LocalRepository(cvsRoot, destDir, packageName);
-            RemoteRepository remoteRepository = new RemoteRepository(rootUrl, localRepository);
+            LocalRepository localRepository = new LocalRepository(_cvsRoot, _destDir, _packageName);
+            RemoteRepository remoteRepository = new RemoteRepository(_rootUrl, localRepository);
             remoteRepository.setWebInterface(webInterface);
 
-            remoteRepository.registerDirectoryToProcess(packageName);
+            remoteRepository.registerDirectoryToProcess(_packageName);
             while (remoteRepository.hasDirectoryToProcess()) {
                 RemoteDirectory remoteDir = null;
                 try {
@@ -302,6 +371,7 @@ public class CVSGrab {
             int updatedFileCount = localRepository.getUpdatedFileCount();
             int removedFileCount = localRepository.getRemovedFileCount();
             int failedUpdateCount = localRepository.getFailedUpdateCount();
+            DefaultLogger.getInstance().info("-----");
             if (newFileCount > 0) {
                 DefaultLogger.getInstance().info(newFileCount + " new files");
             }
@@ -312,12 +382,16 @@ public class CVSGrab {
                 DefaultLogger.getInstance().info(removedFileCount + " removed files");
             }
             if (failedUpdateCount > 0) {
-                DefaultLogger.getInstance().error(failedUpdateCount + " files");
+                DefaultLogger.getInstance().error(failedUpdateCount + " files could not be downloaded");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             DefaultLogger.getInstance().error(ex.getMessage());
             _error = true;
+        }
+        
+        if (ThreadPool.getInstance() != null) {
+            ThreadPool.getInstance().destroy();
         }
         
         if (_error) {

@@ -156,6 +156,7 @@ public class ThreadPool {
                     }
 
                     try {
+
                         task.run();
 
                         if (_debugging) {

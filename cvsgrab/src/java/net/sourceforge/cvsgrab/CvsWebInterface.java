@@ -48,6 +48,7 @@ public abstract class CvsWebInterface {
     } 
 
     private String _versionTag;
+    private String _queryParams;
     
     /**
      * Constructor for CvsWebInterface
@@ -72,6 +73,21 @@ public abstract class CvsWebInterface {
         this._versionTag = versionTag;
     }
 
+    /**
+     * @return the queryParams.
+     */
+    public String getQueryParams() {
+        return _queryParams;
+    }
+
+    /**
+     * Sets the additional query parameters 
+     * @param params
+     */
+    public void setQueryParams(String params) {
+        _queryParams = params;
+    }
+    
     public abstract void init(Document htmlPage) throws Exception; 
         
     public abstract String getType();
@@ -100,4 +116,5 @@ public abstract class CvsWebInterface {
      * @return
      */
     public abstract String getDownloadUrl(RemoteFile file);
+
 }
