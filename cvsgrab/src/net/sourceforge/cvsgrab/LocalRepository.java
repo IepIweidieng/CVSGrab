@@ -241,7 +241,7 @@ public class LocalRepository {
             entry = new CVSEntry();
             entry.setLocalDirectory(ldir);
             entry.setName(name);
-            entry.setRepository("/"+getRepo(ldir));
+            entry.setRepository("/" + getRepo(ldir));
             entry.setVersion(version);
             cvsProject.addNewEntry(entry);
             newFiles++;
@@ -326,6 +326,72 @@ public class LocalRepository {
         }
         if (!dirFiles.isEmpty()) {
             cvsProject.writeAdminFiles();
+        }
+    }
+
+    /**
+     * Remove the empty directories from the local repository
+     */
+    public void pruneEmptyDirs() {
+        pruneEmptyDirs(cvsProject.getDirEntryForLocalDir("./"));
+    }
+
+    private void pruneEmptyDirs(CVSEntry dirEntry) {
+        if (dirEntry == null) {
+            return;
+        }
+        Vector toRemove = new Vector();
+        for (Iterator i = dirEntry.getEntryList().iterator(); i.hasNext(); ) {
+            CVSEntry entry = (CVSEntry) i.next();
+            if (entry.isDirectory() && !entry.getName().equals("")) {
+                pruneEmptyDirs(entry);
+                if (entry.isToBeRemoved()) {
+                    toRemove.add(entry);
+                }
+            }
+        }
+        for (Iterator i = toRemove.iterator(); i.hasNext(); ) {
+            CVSEntry entry = (CVSEntry) i.next();
+            dirEntry.removeEntry(entry);
+            File dir = new File(cvsProject.getLocalRootDirectory(), entry.getLocalPathName());
+            try {
+                removeDir(dir);
+            } catch (IOException ex) {
+                System.err.println("Error while pruning directories: " + ex.getMessage());
+            }
+        }
+        if (dirEntry.getEntryList() == null || dirEntry.getEntryList().size() == 0) {
+            dirEntry.markForRemoval(true);
+        }
+        if (dirEntry.getEntryList().size() == 1) {
+            CVSEntry uniqueEntry = (CVSEntry) dirEntry.getEntryList().get(0);
+            if (uniqueEntry.getName().equals("")) {
+                uniqueEntry.markForRemoval(true);
+            }
+        }
+        cvsProject.writeAdminFiles();
+    }
+
+    private void removeDir(File dir) throws IOException {
+
+        String[] list = dir.list();
+        if (list != null) {
+            for (int i = 0; i < list.length; i++) {
+                String s = list[i];
+                File f = new File(dir, s);
+                if (f.isDirectory()) {
+                    removeDir(f);
+                } else {
+                    if (!f.delete()) {
+                        throw new IOException("Unable to delete file "
+                                + f.getAbsolutePath());
+                    }
+                }
+            }
+        }
+        if (!dir.delete()) {
+            throw new IOException("Unable to delete directory "
+                    + dir.getAbsolutePath());
         }
     }
 

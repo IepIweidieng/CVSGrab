@@ -26,6 +26,7 @@ public class CVSGrabTask extends Task {
     private String packageName;
     private String tag = null;
     private boolean verbose = true;
+    private boolean pruneEmptyDirs = false;
     private HttpProxy proxy = null;
 
     /**
@@ -106,6 +107,15 @@ public class CVSGrabTask extends Task {
     }
 
     /**
+     * Sets the prune empty dirs
+     *
+     * @param value The new pruneEmptyDirs value
+     */
+    public void setPruneEmptyDirs(boolean value) {
+        pruneEmptyDirs = value;
+    }
+
+    /**
      * Description of the Method
      *
      * @return Description of the Return Value
@@ -135,6 +145,7 @@ public class CVSGrabTask extends Task {
         log.setVerbose(verbose);
         CVSGrab grabber = new CVSGrab();
         grabber.setLog(log);
+        grabber.setPruneEmptyDirs(pruneEmptyDirs);
         if (proxy != null) {
             proxy.setup(grabber);
         }

@@ -28,6 +28,7 @@ public class CVSGrab {
     private String dir = null;
     private CVSProject cvsProject = null;
     private boolean verbose = true;
+    private boolean pruneEmptyDirs = false;
     private Logger log = new DefaultLogger();
 
     /**
@@ -49,6 +50,7 @@ public class CVSGrab {
         String cvsRoot = "";
         String cvsUser = "anonymous";
         String verbose = "true";
+        String prune = "false";
         String proxyHost = null;
         int proxyPort = 0;
         String proxyUser = null;
@@ -99,6 +101,11 @@ public class CVSGrab {
                     verbose = args[i + 1];
                     i++;
                 }
+            } else if (args[i].toLowerCase().equals("-prune")) {
+                if (!args[i + 1].startsWith("-")) {
+                    prune = args[i + 1];
+                    i++;
+                }
             } else if (args[i].toLowerCase().equals("-proxyhost")) {
                 if (!args[i + 1].startsWith("-")) {
                     proxyHost = args[i + 1];
@@ -136,6 +143,7 @@ public class CVSGrab {
         }
         CVSGrab grabber = new CVSGrab();
         grabber.getLog().setVerbose(verbose.toLowerCase().equals("true"));
+        grabber.setPruneEmptyDirs(prune.toLowerCase().equals("true"));
         if (proxyHost != null) {
             grabber.useProxy(proxyHost, proxyPort, proxyUser, proxyPassword);
         }
@@ -156,6 +164,7 @@ public class CVSGrab {
         System.out.println("\t-cvsHost <cvs host> [optional] The original cvs host, used to maintain compatibility with a standard CVS client");
         System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain compatibility with a standard CVS client");
         System.out.println("\t-verbose true|false [optional] Verbosity. Default is verbose");
+        System.out.println("\t-prune true|false [optional] Prune (remove) the empty directories. Default is false");
         System.out.println("\t-proxyHost [optional] Proxy host");
         System.out.println("\t-proxyPort [optional] Proxy port");
         System.out.println("\t-proxyUser [optional] Username for the proxy");
@@ -173,12 +182,30 @@ public class CVSGrab {
     }
 
     /**
+     * Gets the prune empty dirs
+     *
+     * @return The pruneEmptyDirs value
+     */
+    public boolean getPruneEmptyDirs() {
+        return pruneEmptyDirs;
+    }
+
+    /**
      * Sets the log attribute
      *
      * @param value The new log value
      */
     public void setLog(Logger value) {
         log = value;
+    }
+
+    /**
+     * Sets the prune empty dirs
+     *
+     * @param value The new pruneEmptyDirs value
+     */
+    public void setPruneEmptyDirs(boolean value) {
+        pruneEmptyDirs = value;
     }
 
     /**
@@ -277,6 +304,9 @@ public class CVSGrab {
                 ex.printStackTrace();
                 log.error("Error while getting files from " + rDir.getUrl());
             }
+        }
+        if (pruneEmptyDirs) {
+            localRepository.pruneEmptyDirs();
         }
         localRepository.removeRootEntries();
 
