@@ -241,7 +241,7 @@ public class LocalRepository {
             entry = new CVSEntry();
             entry.setLocalDirectory(ldir);
             entry.setName(name);
-            entry.setRepository(getRepo(ldir));
+            entry.setRepository("/"+getRepo(ldir));
             entry.setVersion(version);
             cvsProject.addNewEntry(entry);
             newFiles++;
