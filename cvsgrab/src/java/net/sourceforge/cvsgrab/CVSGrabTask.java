@@ -34,6 +34,15 @@ public class CVSGrabTask extends Task {
     }
 
     /**
+     * Sets the url attribute
+     *
+     * @param value The new rootUrl value
+     */
+    public void setUrl(String value) {
+        _grabber.setUrl(value);
+    }
+
+    /**
      * Sets the root url attribute
      *
      * @param value The new rootUrl value

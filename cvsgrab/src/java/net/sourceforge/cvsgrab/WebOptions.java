@@ -9,13 +9,13 @@ import java.util.Properties;
 
 /**
  * Options for the web repository
- * 
+ *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 9 mars 2004
  */
 public class WebOptions {
-    
+
     private HttpProxy _httpProxy;
     private WebAuthentification _webAuthentification;
     private String _rootUrl;
@@ -24,7 +24,7 @@ public class WebOptions {
     private String _versionTag;
     private String _queryParams;
     private String _webInterfaceId;
-    
+
     /**
      * Setup the the http proxy and the web authentification settings.
      */
@@ -44,6 +44,16 @@ public class WebOptions {
         setVersionTag(properties.getProperty(CVSGrab.TAG_OPTION));
         setQueryParams(properties.getProperty(CVSGrab.QUERY_PARAMS_OPTION));
         setWebInterfaceId(properties.getProperty(CVSGrab.WEB_INTERFACE_OPTION));
+
+        if (CVSGrab.getLog().isDebugEnabled()) {
+            CVSGrab.getLog().debug("Web option/root url = " + getRootUrl());
+            CVSGrab.getLog().debug("Web option/package path = " + getPackagePath());
+            CVSGrab.getLog().debug("Web option/project root = " + getProjectRoot());
+            CVSGrab.getLog().debug("Web option/version tag = " + getVersionTag());
+            CVSGrab.getLog().debug("Web option/query params = " + getQueryParams());
+            CVSGrab.getLog().debug("Web option/web interface = " + getWebInterfaceId());
+        }
+
         if (properties.containsKey(CVSGrab.PROXY_HOST_OPTION)) {
             if (_httpProxy == null) {
                 _httpProxy = new HttpProxy();
@@ -57,7 +67,7 @@ public class WebOptions {
             _webAuthentification.readProperties(properties);
         }
     }
-    
+
     public void writeProperties(Properties properties) {
         if (getRootUrl() != null) {
             properties.setProperty(CVSGrab.ROOT_URL_OPTION, getRootUrl());
@@ -84,7 +94,7 @@ public class WebOptions {
             _webAuthentification.writeProperties(properties);
         }
     }
-    
+
     /**
      * @return Returns the rootUrl.
      */
@@ -120,16 +130,16 @@ public class WebOptions {
     }
 
     /**
-     * @return The project root, used by CVS with multiple repositories 
+     * @return The project root, used by CVS with multiple repositories
      */
     public String getProjectRoot() {
         return _projectRoot;
     }
-    
+
     public void setProjectRoot(String projectRoot) {
         _projectRoot = projectRoot;
     }
-    
+
     /**
      * @return Returns the versionTag.
      */
@@ -138,7 +148,7 @@ public class WebOptions {
     }
 
     /**
-     * Sets the name of the tagged version of the files to retrieve, or null  
+     * Sets the name of the tagged version of the files to retrieve, or null
      * @param versionTag The versionTag to set.
      */
     public void setVersionTag(String versionTag) {
@@ -182,7 +192,7 @@ public class WebOptions {
     public HttpProxy getHttpProxy() {
         return _httpProxy;
     }
-    
+
     /**
      * Sets the httpProxy.
      * @param httpProxy The httpProxy to set.
@@ -190,7 +200,7 @@ public class WebOptions {
     public void setHttpProxy(HttpProxy httpProxy) {
         this._httpProxy = httpProxy;
     }
-    
+
     /**
      * Gets the webAuthentification.
      * @return the webAuthentification.
@@ -198,7 +208,7 @@ public class WebOptions {
     public WebAuthentification getWebAuthentification() {
         return _webAuthentification;
     }
-    
+
     /**
      * Sets the webAuthentification.
      * @param webAuthentification The webAuthentification to set.
@@ -274,7 +284,7 @@ public class WebOptions {
         public String getHost() {
             return _host;
         }
-        
+
         /**
          * Gets the ntDomain.
          * @return the ntDomain.
@@ -282,7 +292,7 @@ public class WebOptions {
         public String getNtdomain() {
             return _ntDomain;
         }
-        
+
         /**
          * Gets the password.
          * @return the password.
@@ -290,7 +300,7 @@ public class WebOptions {
         public String getPassword() {
             return _password;
         }
-        
+
         /**
          * Gets the port.
          * @return the port.
@@ -298,7 +308,7 @@ public class WebOptions {
         public int getPort() {
             return _port;
         }
-        
+
         /**
          * Gets the user.
          * @return the user.
@@ -306,7 +316,7 @@ public class WebOptions {
         public String getUsername() {
             return _username;
         }
-        
+
         /**
          * Sets the host
          *
@@ -327,8 +337,8 @@ public class WebOptions {
 
         /**
          * Sets the nt domain
-         *  
-         * @param ntDomain The new net domain 
+         *
+         * @param ntDomain The new net domain
          */
         public void setNtdomain(String ntDomain) {
             this._ntDomain = ntDomain;
@@ -400,7 +410,7 @@ public class WebOptions {
         public String getPassword() {
             return _password;
         }
-        
+
         /**
          * Gets the user.
          * @return the user.
@@ -408,7 +418,7 @@ public class WebOptions {
         public String getUsername() {
             return _user;
         }
-        
+
         /**
          * Sets the username
          *
