@@ -1,3 +1,7 @@
+1.1     Maintenance release
+- added support for proxies and http authentication
+- bugfix: removed first / in the name stored in the Repository admin file for more compatibility with WinCVS
+
 1.0	First public release.
 - used clean Java code instead of BSF scripts
 - created a cvsgrab Ant task
