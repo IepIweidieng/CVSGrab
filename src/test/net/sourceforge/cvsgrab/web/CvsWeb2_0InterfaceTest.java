@@ -50,6 +50,9 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
         assertEquals("kde_docbook.toolbar.tgz", files[i].getName());
         assertFalse(files[i].isInAttic());
         assertEquals("1.1", files[i++].getVersion());
+        
+        assertEquals("Expected no more files", i, files.length);
+        
     }
     
     public void testGetDirectories() throws Exception {
@@ -66,6 +69,9 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
         assertEquals("tagxml", directories[i++]);
         assertEquals("wml-1-2", directories[i++]);
         assertEquals("xml", directories[i++]);
+        
+        assertEquals("Expected no more directories", i, directories.length);
+        
     }
 
     public void testGetDirectoryUrl() throws Exception {

@@ -8,6 +8,15 @@ package net.sourceforge.cvsgrab;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.logging.Log;
@@ -23,12 +32,33 @@ import org.apache.commons.logging.LogFactory;
  * @version 1.0
  */
 public class CVSGrab {
+    private static final String CONNECTIONS_OPTION = "connections";
+    private static final String WEB_PASSWORD_OPTION = "webPassword";
+    private static final String WEB_USER_OPTION = "webUser";
+    private static final String PROXY_PASSWORD_OPTION = "proxyPassword";
+    private static final String PROXY_USER_OPTION = "proxyUser";
+    private static final String PROXY_NTDOMAIN_OPTION = "proxyNTDomain";
+    private static final String PROXY_PORT_OPTION = "proxyPort";
+    private static final String PROXY_HOST_OPTION = "proxyHost";
+    private static final String PRUNE_OPTION = "prune";
+    private static final String VERBOSE_OPTION = "verbose";
+    private static final String DEBUG_WIRE_OPTION = "debugWire";
+    private static final String DEBUG_OPTION = "debug";
+    private static final String CVS_ROOT_OPTION = "cvsRoot";
+    private static final String WEB_INTERFACE_OPTION = "webInterface";
+    private static final String QUERY_PARAMS_OPTION = "queryParams";
+    private static final String TAG_OPTION = "tag";
+    private static final String PACKAGE_DIR_OPTION = "packageDir";
+    private static final String DEST_DIR_OPTION = "destDir";
+    private static final String PACKAGE_PATH_OPTION = "packagePath";
+    private static final String ROOT_URL_OPTION = "rootUrl";
+    private static final String LIST_WEB_INTERFACES_OPTION = "listWebInterfaces";
+    private static final String HELP_OPTION = "help";
     static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
     private static final String VERSION = "2.0.2";
     private static Log LOG;
 
-    private boolean _verbose = true;
     private boolean _pruneEmptyDirs = false;
     private boolean _error = false;
     private String _rootUrl;
@@ -39,6 +69,7 @@ public class CVSGrab {
     private String _queryParams;
     private String _cvsRoot = DUMMY_ROOT;
     private String _webInterfaceId = null;
+    private Options _options;
 
     public static Log getLog() {
         if (LOG == null) {
@@ -54,7 +85,93 @@ public class CVSGrab {
     /**
      * Constructor for the CVSGrab object
      */
-    public CVSGrab() { }
+    public CVSGrab() {
+        _options = new Options();
+        _options.addOption(HELP_OPTION, false, "This help message");
+        _options.addOption(LIST_WEB_INTERFACES_OPTION, false, "Lists the web interfaces to the CVS repository that are" 
+                + "\t supported by this tool");
+        _options.addOption(new OptionBuilder().withArgName("url")
+                .hasArg()
+                .withDescription("The root url used to access the CVS repository from a web browser")
+                .create(ROOT_URL_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("path")
+                .hasArg()
+                .withDescription("The path relative to rootUrl of the package or module to download")
+                .create(PACKAGE_PATH_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("dir")
+                .hasArg()
+                .withDescription("The destination directory")
+                .create(DEST_DIR_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("dir")
+                .hasArg()
+                .withDescription("The name of the package to use locally, relative to destDir, overrides packagePath")
+                .create(PACKAGE_DIR_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("version tag")
+                .hasArg()
+                .withDescription("[optional] The version tag of the files to download")
+                .create(TAG_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("query params")
+                .hasArg()
+                .withDescription("[optional] Additional query parameters")
+                .create(QUERY_PARAMS_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("web interface id")
+                .hasArg()
+                .withDescription("[optional] The id for the web interface for the CVS repository to use. " +
+                        "If this option is not set, autodetect the web interface." +
+                        "Call cvsgrab -help-webinterfaces to get a list of valid values for this option.")
+                .create(WEB_INTERFACE_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("cvs root")
+                .hasArg()
+                .withDescription("[optional] The original cvs root, used to maintain compatibility with a standard CVS client")
+                .create(CVS_ROOT_OPTION));
+        _options.addOption(new OptionBuilder()
+                .withDescription("[optional] Prune (remove) the empty directories.")
+                .create(PRUNE_OPTION));
+        Option debugOption = new OptionBuilder()
+                .withDescription("[optional] Turn debugging on.")
+                .create(DEBUG_OPTION);
+        Option debugWireOption = new OptionBuilder()
+                .withDescription("[optional] Turn debugging on, including very verbose network traffic.")
+                .create(DEBUG_WIRE_OPTION);
+        Option verboseOption = new OptionBuilder()
+                .withDescription("[optional] Turn verbosity on.")
+                .create(VERBOSE_OPTION);
+        _options.addOptionGroup(new OptionGroup().addOption(debugOption)
+                .addOption(debugWireOption)
+                .addOption(verboseOption));
+        _options.addOption(new OptionBuilder().withArgName("nb of connections")
+                .hasArg()
+                .withDescription("[optional] The number of simultaneous connections to use for downloads, default 1")
+                .create(CONNECTIONS_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("host")
+                .hasArg()
+                .withDescription("[optional] Proxy host")
+                .create(PROXY_HOST_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("port")
+                .hasArg()
+                .withDescription("[optional] Proxy port")
+                .create(PROXY_PORT_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("domain")
+                .hasArg()
+                .withDescription("[optional] NT Domain for the authentification on a MS proxy")
+                .create(PROXY_NTDOMAIN_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("user")
+                .hasArg()
+                .withDescription("[optional] Username for the proxy")
+                .create(PROXY_USER_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("password")
+                .hasArg()
+                .withDescription("[optional] Password for the proxy. If this option is omitted, then cvsgrab will prompt securely for the password.")
+                .create(PROXY_PASSWORD_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("user")
+                .hasArg()
+                .withDescription("[optional] Username for the web server")
+                .create(WEB_USER_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("password")
+                .hasArg()
+                .withDescription("[optional] Password for the web server. If this option is omitted, then cvsgrab will prompt securely for the password.")
+                .create(WEB_PASSWORD_OPTION));
+    }
 
     /**
      * The main program for the CVSGrab class
@@ -62,153 +179,90 @@ public class CVSGrab {
      * @param args The command line arguments
      */
     public static void main(String[] args) {
-        String proxyHost = null;
-        int proxyPort = 0;
-        String proxyNTDomain = null;
-        String proxyUser = null;
-        String proxyPassword = null;
-        String webUser = null;
-        String webPassword = null;
         CVSGrab grabber = new CVSGrab();
-
+        try {
+            grabber.run(args);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            grabber.printHelp();
+        }
+    }
+    
+    private void run(String[] args) throws ParseException {
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmd = parser.parse( _options, args);
+        
         cvsgrabLogLevel("info", "INFO");
         httpclientLogLevel("error", "SEVERE");
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].toLowerCase().equals("-help")) {
-                printHelp();
-                return;
+    
+        if (cmd.hasOption(HELP_OPTION)) {
+            printHelp();
+            return;
+        }
+        if (cmd.hasOption(LIST_WEB_INTERFACES_OPTION)) {
+            printWebInterfaces();
+            return;
+        }
+        if (cmd.hasOption(ROOT_URL_OPTION)) {
+            setRootUrl(cmd.getOptionValue(ROOT_URL_OPTION));
+        } 
+        if (cmd.hasOption(PACKAGE_PATH_OPTION)) {
+            setPackagePath(cmd.getOptionValue(PACKAGE_PATH_OPTION));
+        } 
+        if (cmd.hasOption(DEST_DIR_OPTION)) {
+            setDestDir(cmd.getOptionValue(DEST_DIR_OPTION));
+        } 
+        if (cmd.hasOption(PACKAGE_DIR_OPTION)) {
+            setPackageDir(cmd.getOptionValue(PACKAGE_DIR_OPTION));
+        } 
+        if (cmd.hasOption(TAG_OPTION)) {
+            setVersionTag(cmd.getOptionValue(TAG_OPTION));
+        } 
+        if (cmd.hasOption(QUERY_PARAMS_OPTION)) {
+            setQueryParams(cmd.getOptionValue(QUERY_PARAMS_OPTION));
+        } 
+        if (cmd.hasOption(WEB_INTERFACE_OPTION)) {
+            setWebInterfaceId(cmd.getOptionValue(WEB_INTERFACE_OPTION));
+        } 
+        if (cmd.hasOption(CVS_ROOT_OPTION)) {
+            setCvsRoot(cmd.getOptionValue(CVS_ROOT_OPTION));
+        } 
+        if (cmd.hasOption(DEBUG_OPTION)) {
+                cvsgrabLogLevel(DEBUG_OPTION, "FINE");                        
+                httpclientLogLevel("info", "INFO");
+        } 
+        if (cmd.hasOption(DEBUG_WIRE_OPTION)) {
+                httpclientLogLevel(DEBUG_OPTION, "FINE");
+                logLevel("httpclient.wire", DEBUG_OPTION, "FINE");
+        } 
+        if (cmd.hasOption(VERBOSE_OPTION)) {
+                cvsgrabLogLevel("info", "INFO");                        
+                httpclientLogLevel("error", "SEVERE");
+            } else {
+                cvsgrabLogLevel("warn", "WARNING");                        
+                httpclientLogLevel("error", "SEVERE");
             }
-            if (args[i].toLowerCase().equals("-help-webinterfaces")) {
-                printWebInterfaces();
-                return;
-            }
-            if (args[i].toLowerCase().equals("-rooturl")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setRootUrl(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-packagepath")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setPackagePath(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-destdir")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setDestDir(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-packagedir")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setPackageDir(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-tag")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setVersionTag(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-queryparams")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setQueryParams(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-webinterface")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setWebInterfaceId(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-cvsroot")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setCvsRoot(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-debug")) {
-                if (!args[i + 1].startsWith("-")) {
-                    boolean debug = args[i + 1].toLowerCase().equals("true");
-                    if (debug) {
-                        cvsgrabLogLevel("debug", "FINE");                        
-                        httpclientLogLevel("info", "INFO");
-                    }
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-debug:wire")) {
-                if (!args[i + 1].startsWith("-")) {
-                    boolean debug = args[i + 1].toLowerCase().equals("true");
-                    if (debug) {
-                        httpclientLogLevel("debug", "FINE");
-                        logLevel("httpclient.wire", "debug", "FINE");
-                    }
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-verbose")) {
-                if (!args[i + 1].startsWith("-")) {
-                    boolean verbose = args[i + 1].toLowerCase().equals("true");
-                    if (verbose) {
-                        cvsgrabLogLevel("info", "INFO");                        
-                        httpclientLogLevel("error", "SEVERE");
-                    } else {
-                        cvsgrabLogLevel("warn", "WARNING");                        
-                        httpclientLogLevel("error", "SEVERE");
-                    }
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-prune")) {
-                if (!args[i + 1].startsWith("-")) {
-                    grabber.setPruneEmptyDirs(args[i + 1].toLowerCase().equals("true"));;
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-proxyhost")) {
-                if (!args[i + 1].startsWith("-")) {
-                    proxyHost = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-proxyport")) {
-                if (!args[i + 1].startsWith("-")) {
-                    proxyPort = Integer.parseInt(args[i + 1]);
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-proxyntdomain")) {
-                if (!args[i + 1].startsWith("-")) {
-                    proxyNTDomain = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-proxyuser")) {
-                if (!args[i + 1].startsWith("-")) {
-                    proxyUser = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-proxypassword")) {
-                if (!args[i + 1].startsWith("-")) {
-                    proxyPassword = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-webuser")) {
-                if (!args[i + 1].startsWith("-")) {
-                    webUser = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-webpassword")) {
-                if (!args[i + 1].startsWith("-")) {
-                    webPassword = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-connections")) {
-                if (!args[i + 1].startsWith("-")) {
-                    int connections = Integer.parseInt(args[i + 1]);
-                    if (connections > 0) {
-                        ThreadPool.init(connections);
-                    }
-                    i++;
-                }
+        if (cmd.hasOption(PRUNE_OPTION)) {
+            setPruneEmptyDirs(true);
+        } 
+        if (cmd.hasOption(PROXY_HOST_OPTION)) {
+            WebBrowser.getInstance().useProxy(cmd.getOptionValue(PROXY_HOST_OPTION), 
+                    Integer.parseInt(cmd.getOptionValue(PROXY_PORT_OPTION)), 
+                    cmd.getOptionValue(PROXY_NTDOMAIN_OPTION), 
+                    cmd.getOptionValue(PROXY_USER_OPTION), 
+                    cmd.getOptionValue(PROXY_PASSWORD_OPTION));
+        } 
+        if (cmd.hasOption(WEB_USER_OPTION)) {
+            WebBrowser.getInstance().useWebAuthentification(cmd.getOptionValue(WEB_USER_OPTION), 
+                    cmd.getOptionValue(WEB_PASSWORD_OPTION));
+        } 
+        if (cmd.hasOption(CONNECTIONS_OPTION)) {
+            int connections = Integer.parseInt(cmd.getOptionValue(CONNECTIONS_OPTION));
+            if (connections > 0) {
+                ThreadPool.init(connections);
             }
         }
-        if (proxyHost != null) {
-            WebBrowser.getInstance().useProxy(proxyHost, proxyPort, proxyNTDomain, proxyUser, proxyPassword);
-        }
-        if (webUser != null) {
-            WebBrowser.getInstance().useWebAuthentification(webUser, webPassword);
-        }
-        grabber.grabCVSRepository();
+        grabCVSRepository();
     }
 
     private static void cvsgrabLogLevel(String simpleLevel, String jdk14Level) {
@@ -245,42 +299,11 @@ public class CVSGrab {
     /**
      * Prints help for the command line program
      */
-    public static void printHelp() {
-        System.out.println("CVSGrab version " + VERSION);
-        System.out.println("Command line options:");
-        System.out.println("\t-help This help message");
-        System.out.println("\t-help-webinterfaces Lists the web interfaces to the CVS repository that are"
-                + "\t supported by this tool");
-        System.out.println("\t-rootUrl <url> The root url used to access the CVS repository from a web"
-                + "\t browser");
-        System.out.println("\t-packagePath <path> The path relative to rootUrl of the package or module to"
-                + "\t download");
-        System.out.println("\t-destDir <dir> The destination directory");
-        System.out.println("\t-packageDir <path> [optional] The name of the package to use locally, "
-                + "\t relative to destDir, overrides packagePath");
-        System.out.println("\t-tag <tag> [optional] The version tag of the files to download");
-        System.out.println("\t-queryParams <query params> [optional] Additional query parameters");
-        System.out.println("\t-webInterface <web interface id> [optional] The id for the web interface for"
-                + "\t the CVS repository to use. If this option is not set, autodetect the web interface."
-            + "\t Call cvsgrab -help-webinterfaces to get a list of valid values for this option.");
-        System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain" 
-                + "\t compatibility with a standard CVS client");
-        System.out.println("\t-verbose true|false [optional] Verbosity. Default is verbose");
-        System.out.println("\t-prune true|false [optional] Prune (remove) the empty directories."
-                + "\t Default is false");
-        System.out.println("\t-connections <nb of connections> [optional] The number of simultaneous"
-                + "\t connections to use for downloads, default 1");
-        System.out.println("\t-proxyHost [optional] Proxy host");
-        System.out.println("\t-proxyPort [optional] Proxy port");
-        System.out.println("\t-proxyNTDomain [optional] NT Domain for the authentification on a MS proxy");
-        System.out.println("\t-proxyUser [optional] Username for the proxy");
-        System.out.println("\t-proxyPassword [optional] Password for the proxy. If this option is omitted,"
-                + "\t then cvsgrab will prompt securely for the password.");
-        System.out.println("\t-webUser [optional] Username for the web server");
-        System.out.println("\t-webPassword [optional] Password for the web server. If this option is"
-                + "\t omitted, then cvsgrab will prompt securely for the password.");
-        System.out.println("Copyright (c) 2002-2003 - Ludovic Claude.");
-        // Undocumented options: debug, debug:wire
+    public void printHelp() {
+        // automatically generate the help statement
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(HelpFormatter.DEFAULT_WIDTH, "cvsgrab", "where options are", 
+                _options, "CVSGrab version " + VERSION +", copyright (c) 2002-2004 - Ludovic Claude.", true);
     }
 
     /**
@@ -293,7 +316,7 @@ public class CVSGrab {
         for (int i = 0; i < webInterfaces.length; i++) {
             System.out.println("\t" + webInterfaces[i]);
         }
-        System.out.println("Those ids can be use with the -webinterface option to force cvsgrab to use a specific web interface.");
+        System.out.println("Those ids can be use with the -webInterface option to force cvsgrab to use a specific web interface.");
     }
     
     /**
@@ -564,4 +587,5 @@ public class CVSGrab {
         }    
         return webInterface;
     }
+    
 }

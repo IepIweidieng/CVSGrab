@@ -76,6 +76,9 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
         assertEquals("ClassRegistrationPicoContainer.java", files[i].getName());
         assertTrue(files[i].isInAttic());
         assertEquals("1.4", files[i++].getVersion());
+        
+        assertEquals("Expected no more files", i, files.length);
+        
     }
     
     public void testGetDirectories() throws Exception {
@@ -85,6 +88,9 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
         String[] directories = _interface.getDirectories(doc);
         assertEquals("src", directories[i++]);
         assertEquals("xdocs", directories[i++]);
+        
+        assertEquals("Expected no more directories", i, directories.length);
+        
     }
  
     public void testGetDirectoryUrl() throws Exception {

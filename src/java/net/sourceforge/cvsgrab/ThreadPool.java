@@ -80,14 +80,14 @@ public class ThreadPool {
     public void doTask(Runnable task) {
         WorkerThread worker = null;
 
-        synchronized (_pool) {
-            while (_pool.isEmpty()) {
-                if (_stopped) {
+        synchronized (getPool()) {
+            while (getPool().isEmpty()) {
+                if (isStopped()) {
                     return;
                 }
 
                 try {
-                    _pool.wait();
+                    getPool().wait();
                 } catch (InterruptedException ex) {
                     System.err.println(ex.getMessage());
 
@@ -95,10 +95,26 @@ public class ThreadPool {
                 }
             }
 
-            worker = (WorkerThread) _pool.remove(0);
+            worker = (WorkerThread) getPool().remove(0);
         }
 
         worker.runTask(task);
+    }
+
+    /**
+     * Gets the pool.
+     * @return the pool.
+     */
+    protected List getPool() {
+        return _pool;
+    }
+
+    /**
+     * Gets the stopped.
+     * @return the stopped.
+     */
+    protected boolean isStopped() {
+        return _stopped;
     }
 
     private class WorkerThread extends Thread {
@@ -145,6 +161,7 @@ public class ThreadPool {
                             wait();
                         }
                     } catch (InterruptedException ex) {
+                        // ignore
                     }
 
                     if (_debugging) {
@@ -168,7 +185,7 @@ public class ThreadPool {
 
                     task = null;
 
-                    if (_stopped) {
+                    if (isStopped()) {
                         if (_debugging) {
                             System.err.println(getName() + ".run: <- (Stopped)");
                         }
@@ -176,9 +193,9 @@ public class ThreadPool {
                         return;
                     }
 
-                    synchronized (_pool) {
-                        _pool.add(this);
-                        _pool.notifyAll();
+                    synchronized (getPool()) {
+                        getPool().add(this);
+                        getPool().notifyAll();
                     }
                 }
             }

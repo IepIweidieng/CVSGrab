@@ -36,9 +36,8 @@ package net.sourceforge.cvsgrab.util;
  * @author <a href=mailto:"qmahmoud@javacourses.com">Qusay H. Mahmoud</a> 
  */
 public class MaskingThread extends Thread {
-    private boolean stop = false;
-    private int index;
-    private String prompt;
+    private boolean _stop = false;
+    private String _prompt;
 
     /**
      * Constructor for MaskingThread
@@ -46,14 +45,14 @@ public class MaskingThread extends Thread {
      * @param prompt The prompt displayed to the user
      */
     public MaskingThread(String prompt) {
-        this.prompt = prompt;
+        this._prompt = prompt;
     }
 
     /**
      * Begin masking until asked to stop.
      */
     public void run() {
-        while (!stop) {
+        while (!_stop) {
             try {
                 // attempt masking at this rate
                 Thread.sleep(1);
@@ -61,8 +60,8 @@ public class MaskingThread extends Thread {
                 iex.printStackTrace();
             }
 
-            if (!stop) {
-                System.out.print("\r" + prompt + " \r" + prompt);
+            if (!_stop) {
+                System.out.print("\r" + _prompt + " \r" + _prompt);
             }
 
             System.out.flush();
@@ -73,6 +72,6 @@ public class MaskingThread extends Thread {
      * Instruct the thread to stop masking.
      */
     public void stopMasking() {
-        this.stop = true;
+        this._stop = true;
     }
 }

@@ -274,7 +274,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     protected abstract String getVersionMarker();
 
     protected void adjustFile(RemoteFile file, JXPathContext nodeContext) {
-        boolean inAttic = false;
         String fileName = file.getName();
         if (fileName.startsWith("Attic/")) {
             file.setName(fileName.substring(6));

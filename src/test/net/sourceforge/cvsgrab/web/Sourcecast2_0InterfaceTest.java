@@ -62,6 +62,9 @@ public class Sourcecast2_0InterfaceTest extends AbstractTestCase {
         assertEquals("todo.txt", files[i].getName());
         assertFalse(files[i].isInAttic());
         assertEquals("1.2", files[i++].getVersion());
+        
+        assertEquals("Expected no more files", i, files.length);
+        
     }
     
     public void testGetDirectories() throws Exception {
@@ -75,6 +78,9 @@ public class Sourcecast2_0InterfaceTest extends AbstractTestCase {
         assertEquals("jgoodies", directories[i++]);
         assertEquals("src", directories[i++]);
         assertEquals("www", directories[i++]);
+        
+        assertEquals("Expected no more directories", i, directories.length);
+        
     }
 
     public void testGetDirectoryUrl() throws Exception {
