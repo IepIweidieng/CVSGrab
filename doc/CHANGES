@@ -1,0 +1,9 @@
+1.0	First public release.
+- used clean Java code instead of BSF scripts
+- created a cvsgrab Ant task
+- packaging, documentation
+- now able to delete the files removed from the repository
+- support for version tags/branches.
+
+0.1	Version based on BSF (Bean scripting framework) and Hotsax,
+        initially available under the Hotsax project (http://sourceforge.net/hotsax)

@@ -1,0 +1,53 @@
+
+Please see the file INSTALL for installation instructions and building information.
+
+PRESENTATION:
+
+CVSGrab is another kind of CVS client. When other CVS clients use the cvs protocol
+to read the repository, CVSGrab reads the repository via its ViewCVS web interface.
+The advantage is that if you are behind a firewall that prevents you from updating files
+from a remote CVS server, this program will be able to bypass the firewall and download
+the latest files from the repository. Disadvantages are that you have read-only access
+to the repository, and the repository needs to be public (password-protected sites are not 
+yet supported, they will be if people ask for it...)
+
+HOW IT WORKS:
+
+It works by reading the top page of the ViewCVS repository, then parses the links in this
+page and browses all the pages bellow while downloading the files on them.
+In addition, the CVS administration files (the files under the Cvs folder present on every directory) 
+are created and store the version number for each files. The next time you run CVSGrab, those version
+numbers are used to download only the files that have be modified.
+
+USAGE:
+
+It can be used from the command line, or as an Ant task.
+
+From the command line, use cvsgrab.bat or cvsgrab.sh to run it.
+Type cvsgrab -help to get help
+
+From Ant, add the following to the build file:
+<property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" />
+<taskdef name="cvsgrab" classname="net.sourceforge.cvsgrab.CVSGrabTask" classpath="${cvsgrab.dir}/lib/cvs-grab.jar;${cvsgrab.dir}/lib/hotsax.jar;${cvsgrab.dir}/lib/jcvsii-light.jar"/>
+Then you can use cvsgrab just as another Ant task:
+      <cvsgrab destdir="${destDir}"
+               rootUrl="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/hotsax/"
+	       package="HotSAX"
+               cvsHost="cvs.hotsax.sourceforge.net"
+               cvsRoot="/cvsroot/hotsax"
+               verbose="true" />
+   
+See COPYING for the LGPL source license CVSGrab is released under.
+# Not done:  See the FAQ for more information. 
+Go to http://sourceforge.net/projects/cvsgrab/ or http://cvsgrab.sourceforge.net/
+to get the latest project information
+
+
+Thanks to Ed Howland and his Hotsax project for providing a simple way of parsing HTML pages
+	
+Thanks also to the SourceForge people and VA Linux for hosting this project.
+
+May 2002
+ludovicc@users.sourceforge.net
+
+
