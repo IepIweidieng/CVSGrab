@@ -1,0 +1,3 @@
+Sample usage:
+
+cvsgrab -rootUrl http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/cvsgrab/ -package cvsgrab -destDir . -prune true
