@@ -7,6 +7,7 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
+import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.RemoteDirectory;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.RemoteRepository;
@@ -28,6 +29,15 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
      */
     public CvsWeb2_0InterfaceTest(String testName) {
         super(testName);
+    }
+
+    public void testDetect() throws Exception {
+        Document doc = getDocument("src/test/html_docs/cvsweb_2_0.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.setRootUrl("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/");
+        _interface.detect(grabber, doc);
+        
+        assertEquals("FreeBSD-CVSweb 2.0.6", _interface.getType());
     }
 
     public void testGetFiles() throws Exception {

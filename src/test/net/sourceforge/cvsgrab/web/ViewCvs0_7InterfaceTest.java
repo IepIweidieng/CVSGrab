@@ -7,6 +7,7 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
+import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.RemoteDirectory;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.RemoteRepository;
@@ -33,6 +34,15 @@ public class ViewCvs0_7InterfaceTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         _interface = new ViewCvs0_7Interface();
+    }
+
+    public void testDetect() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_0_7.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.setRootUrl("http://dev.eclipse.org/viewcvs/index.cgi/");
+        _interface.detect(grabber, doc);
+        
+        assertEquals("ViewCVS 0.7", _interface.getType());
     }
 
     public void testGetFiles() throws Exception {

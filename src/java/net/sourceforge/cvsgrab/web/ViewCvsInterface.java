@@ -12,6 +12,8 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.CvsWebInterface;
+import net.sourceforge.cvsgrab.InvalidVersionException;
+import net.sourceforge.cvsgrab.MarkerNotFoundException;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
 
@@ -58,24 +60,26 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     
     /** 
      * {@inheritDoc}
-     * @param htmlPage
-     * @throws Exception
+     * @param htmlPage The web page
+     * @throws MarkerNotFoundException if the version marker for the web interface was not found
+     * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws Exception {
+    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         checkRootUrl(grabber.getRootUrl());
         
         JXPathContext context = JXPathContext.newContext(htmlPage);
         Iterator viewCvsTexts = context.iterate("//A[@href]/text()[starts-with(.,'ViewCVS')]");
         _type = null;
+        String viewCvsVersion = null;
         while (viewCvsTexts.hasNext()) {
-            String viewCvsVersion = (String) viewCvsTexts.next(); 
+            viewCvsVersion = (String) viewCvsTexts.next(); 
             if (viewCvsVersion.startsWith(getVersionMarker())) {
                 _type = viewCvsVersion;
                 break;
             } 
         }
         if (_type == null) {
-            throw new Exception("Invalid version");
+            throw new MarkerNotFoundException("Expected marker " + getVersionMarker() + ", found " + viewCvsVersion);
         }
     }
 
@@ -96,6 +100,16 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      */
     public String getType() {
         return _type;
+    }
+    
+    /**
+     * @return the base url to use when trying to auto-detect this type of web interface
+     */
+    public String getBaseUrl(CVSGrab grabber) {
+        String url = WebBrowser.forceFinalSlash(grabber.getRootUrl());
+        url += grabber.getPackagePath();
+        url = WebBrowser.addQueryParam(url, grabber.getQueryParams());
+        return url;
     }
     
     /**

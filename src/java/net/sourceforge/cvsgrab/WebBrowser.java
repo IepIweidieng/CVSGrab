@@ -196,7 +196,7 @@ public class WebBrowser {
             try {
                 // execute the method.
                 statusCode = _client.executeMethod(method);
-                CVSGrab.getLog().debug("Executed method " + method.getPath() + " with status code " + statusCode);
+                CVSGrab.getLog().trace("Executed method " + method.getPath() + " with status code " + statusCode);
             } catch (HttpRecoverableException e) {
                 CVSGrab.getLog().warn("A recoverable exception occurred, retrying.  " + e.getMessage());
             } catch (IOException e) {

@@ -7,6 +7,8 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.CVSGrab;
+import net.sourceforge.cvsgrab.InvalidVersionException;
+import net.sourceforge.cvsgrab.MarkerNotFoundException;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.w3c.dom.Document;
@@ -24,7 +26,6 @@ public class Sourcecast1_0Interface extends CvsWeb2_0Interface {
 
     /**
      * Constructor for Sourcecast1_0Interface
-     * 
      */
     public Sourcecast1_0Interface() {
         super();
@@ -34,17 +35,23 @@ public class Sourcecast1_0Interface extends CvsWeb2_0Interface {
 
     /** 
      * {@inheritDoc}
-     * @param htmlPage
-     * @throws Exception
+     * @param htmlPage The web page
+     * @throws MarkerNotFoundException if the version marker for the web interface was not found
+     * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws Exception {
+    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         checkRootUrl(grabber.getRootUrl());
         
         JXPathContext context = JXPathContext.newContext(htmlPage);
+        context.setLenient(true);
+        
         // Check that this is Sourcecast
         String version = (String) context.getValue("//META[@name = 'SOURCECAST-VERSION']/@content");
+        if (version == null) {
+            throw new MarkerNotFoundException();
+        }
         if (!version.startsWith("1.")) {
-            throw new Exception("Invalid version " + version);
+            throw new InvalidVersionException("Invalid version " + version);
         }
         setType("SourceCast " + version);
     }

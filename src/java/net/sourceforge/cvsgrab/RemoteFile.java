@@ -7,18 +7,9 @@
  
 package net.sourceforge.cvsgrab;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.jrcs.diff.Diff;
-import org.apache.commons.jrcs.diff.Revision;
-import org.apache.commons.jrcs.diff.myers.MyersDiff;
 
 /**
  * Represent a file stored in the remote repository
@@ -101,10 +92,30 @@ public class RemoteFile {
         _directory.registerRemoteFile(this);
         RemoteRepository remoteRepository = _directory.getRemoteRepository();
         LocalRepository localRepository = remoteRepository.getLocalRepository();
-        boolean needUpdate = localRepository.needUpdate(this);
-        if (!needUpdate) {
-            return;
+        int updateStatus = localRepository.checkUpdateStatus(this);
+        switch (updateStatus) {
+            case LocalRepository.UPDATE_NO_CHANGES:
+                return;
+            case LocalRepository.UPDATE_LOCAL_CHANGE:
+                CVSGrab.getLog().info("M " + this);
+                return;
+            case LocalRepository.UPDATE_IMPOSSIBLE:
+                CVSGrab.getLog().warn("cvs update: warning: cannot update " + this + ". A file with the same name is in the way.");
+                break;
+            case LocalRepository.UPDATE_NEEDED:
+                CVSGrab.getLog().info("U " + this);
+                doUpload();
+                break;
+            case LocalRepository.UPDATE_MERGE_NEEDED:
+                CVSGrab.getLog().info("C " + this);
+                CVSGrab.getLog().warn("cvs update: warning: cannot merge this modified file with the new remote version, feature not yet supported");
+                break;
+            default:
+                throw new RuntimeException("Invalid status " + updateStatus);
         }
+    }
+
+    private void doUpload() {
         if (ThreadPool.getInstance() != null) {
             ThreadPool.getInstance().doTask(new Runnable() {
                 public void run() {
@@ -116,6 +127,14 @@ public class RemoteFile {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @return a string representation
+     */
+    public String toString() {
+        return getDirectory().toString() + getName();
+    }
+    
     protected void upload() {
         RemoteRepository remoteRepository = _directory.getRemoteRepository();
         LocalRepository localRepository = remoteRepository.getLocalRepository();
@@ -124,7 +143,6 @@ public class RemoteFile {
             File localDir = localRepository.getLocalDir(_directory);
             localDir.mkdirs();
             File destFile = new File(localDir, _name);
-            CVSGrab.getLog().info("Updating " + destFile);
             String url = remoteRepository.getDownloadUrl(this);
             
             // Download the file
@@ -140,43 +158,4 @@ public class RemoteFile {
         }
     }
 
-    static final String[] loadFile(String name) throws IOException
-    {
-        BufferedReader data = new BufferedReader(new FileReader(name));
-        List lines = new ArrayList();
-        String s;
-        while ((s = data.readLine()) != null)
-        {
-            lines.add(s);
-        }
-        return (String[])lines.toArray(new String[lines.size()]);
-    }
-    
-    public static void main(String[] args) throws Exception {
-        Object[] orig = loadFile("RELEASE.txt");
-        Object[] rev = loadFile("RELEASE2.txt");
-
-        MyersDiff df = new MyersDiff();
-        Revision r = df.diff(orig, rev);
-
-        System.err.println("------");
-        System.out.print(r.toRCSString());
-        System.err.println("------" + new Date());
-
-        try
-        {
-            Object[] reco = r.patch(orig);
-            //String recos = Diff.arrayToString(reco);
-            if (!Diff.compare(rev, reco))
-            {
-                System.err.println("INTERNAL ERROR:"
-                        + "files differ after patching!");
-            }
-        }
-        catch (Throwable o)
-        {
-            System.out.println("Patch failed");
-        }
-    }
-    
 }

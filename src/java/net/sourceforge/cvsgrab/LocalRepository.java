@@ -28,7 +28,13 @@ import org.netbeans.lib.cvsclient.command.GlobalOptions;
  */
 
 public class LocalRepository {
-
+    
+    public static final int UPDATE_NEEDED = 1;
+    public static final int UPDATE_NO_CHANGES = 2;
+    public static final int UPDATE_LOCAL_CHANGE = 3;
+    public static final int UPDATE_MERGE_NEEDED = 4;
+    public static final int UPDATE_IMPOSSIBLE = 5;
+    
     private AdminHandler _handler = new StandardAdminHandler();
     private GlobalOptions _globalOptions = new GlobalOptions();
     /**
@@ -141,35 +147,49 @@ public class LocalRepository {
      * @param remoteFile The remote file
      * @return true if the file needs to be loaded from the server
      */
-    public boolean needUpdate(RemoteFile remoteFile) {
+    public int checkUpdateStatus(RemoteFile remoteFile) {
         boolean needUpdate = true;
         File file = getLocalFile(remoteFile);
         
         if (file.exists()) {
             try {
                 Entry entry = _handler.getEntry(file);
-                if (entry != null) {
+                if (entry == null) {
+                    _failedUpdates++;
+                    return UPDATE_IMPOSSIBLE;
+                } else {
                     needUpdate = !remoteFile.getVersion().equals(entry.getRevision());
                     if (needUpdate) {
-                        Date fileLastModified = new Date(file.lastModified());
-                        // Allow a tolerance of 1 minute because on Windows seconds are omitted
-                        if (fileLastModified.getTime() > entry.getLastModified().getTime() + 60*1000) {
-                            CVSGrab.getLog().info("File " + file + " was modified since last update, cannot upload the new version of this file");
-                            CVSGrab.getLog().info("Last modified date on disk: " + fileLastModified);
-                            CVSGrab.getLog().info("Last modified date on cvs: " + entry.getLastModified());
-                            needUpdate = false;
+                        if (isLocallyModified(file, entry)) {
+                            CVSGrab.getLog().debug("File " + file + " was modified since last update, cannot upload the new version of this file");
+                            CVSGrab.getLog().debug("Last modified date on disk: " + new Date(file.lastModified()));
+                            CVSGrab.getLog().debug("Last modified date on cvs: " + entry.getLastModified());
+                            // TODO: remove this when the merge functionality works
                             _failedUpdates++;
+                            return UPDATE_MERGE_NEEDED;
+                        } else {
+                            return UPDATE_NEEDED;
                         }
+                    } else {
+                        return isLocallyModified(file, entry) ? UPDATE_LOCAL_CHANGE : UPDATE_NO_CHANGES;
                     }
                 }
             } catch (IOException ex) {
                 // ignore
                 ex.printStackTrace();
+                _failedUpdates++;
+                return UPDATE_IMPOSSIBLE;
             }
+        } else {
+            return UPDATE_NEEDED;
         }
-        return needUpdate;
     }
 
+    private boolean isLocallyModified(File file, Entry entry) {
+        // Allow a tolerance of 1 minute because on Windows seconds are omitted
+        return (file.lastModified() > entry.getLastModified().getTime() + 60*1000);
+    }
+    
     /**
      * Update a file version in the local CVS entries
      *
@@ -254,7 +274,7 @@ public class LocalRepository {
             for (Iterator i = dirFiles.iterator(); i.hasNext(); ) {
                 String fileName = (String) i.next();
                 File file = new File(getLocalDir(remoteDirectory), fileName);
-                CVSGrab.getLog().info("Removing " + file);
+                CVSGrab.getLog().debug("Removing " + file);
                 _handler.removeEntry(file);
                 file.delete();
             }
@@ -317,7 +337,7 @@ public class LocalRepository {
                     for (int i = 0; i < adminFiles.length; i++) {
                         adminFiles[i].delete();
                     }
-                    CVSGrab.getLog().info("Removing empty directory " + directory);
+                    CVSGrab.getLog().debug("Removing empty directory " + directory);
                     adminDir.delete();
                     try {
                         // Remove the directory from the entries

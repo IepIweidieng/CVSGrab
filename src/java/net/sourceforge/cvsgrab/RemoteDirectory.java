@@ -10,6 +10,7 @@ package net.sourceforge.cvsgrab;
 import java.util.Vector;
 
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 
 /**
@@ -114,7 +115,8 @@ public class RemoteDirectory {
      */
     public void loadContents() throws Exception {
         String url = getUrl();
-        CVSGrab.getLog().info("Parsing page: " + url);
+        Log log = CVSGrab.getLog();
+        log.info("cvs update: Updating " + getDirectoryPath());
         Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
         RemoteFile[] files = _remoteRepository.getWebInterface().getFiles(doc);
         for (int i = 0; i < files.length; i++) {
@@ -126,6 +128,13 @@ public class RemoteDirectory {
         for (int i = 0; i < directories.length; i++) {
             _remoteRepository.registerDirectoryToProcess(new RemoteDirectory(this, directories[i]));
         }
-    }
+    }    
     
+    /**
+     * {@inheritDoc}
+     * @return a string representation
+     */
+    public String toString() {
+        return getDirectoryPath();
+    }
 }

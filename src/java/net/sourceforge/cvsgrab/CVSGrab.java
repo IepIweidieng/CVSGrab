@@ -8,19 +8,23 @@ package net.sourceforge.cvsgrab;
 import java.io.File;
 import java.io.IOException;
 
+import net.sourceforge.cvsgrab.util.CVSGrabLog;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.impl.LogFactoryImpl;
+import org.w3c.dom.Document;
 
 /**
  * Application class for CVSGrab. <br>
@@ -41,11 +45,13 @@ public class CVSGrab {
     private static final String PROXY_PORT_OPTION = "proxyPort";
     private static final String PROXY_HOST_OPTION = "proxyHost";
     private static final String PRUNE_OPTION = "prune";
+    private static final String QUIET_OPTION = "quiet";
     private static final String VERBOSE_OPTION = "verbose";
     private static final String DEBUG_WIRE_OPTION = "debugWire";
     private static final String DEBUG_OPTION = "debug";
     private static final String CVS_ROOT_OPTION = "cvsRoot";
     private static final String WEB_INTERFACE_OPTION = "webInterface";
+    private static final String PROJECT_ROOT_OPTION = "projectRoot";
     private static final String QUERY_PARAMS_OPTION = "queryParams";
     private static final String TAG_OPTION = "tag";
     private static final String PACKAGE_DIR_OPTION = "packageDir";
@@ -54,7 +60,7 @@ public class CVSGrab {
     private static final String ROOT_URL_OPTION = "rootUrl";
     private static final String LIST_WEB_INTERFACES_OPTION = "listWebInterfaces";
     private static final String HELP_OPTION = "help";
-    static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
+    public static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
     private static final String VERSION = "2.0.2";
     private static Log LOG;
@@ -63,6 +69,7 @@ public class CVSGrab {
     private boolean _error = false;
     private String _rootUrl;
     private String _packagePath;
+    private String _projectRoot;
     private String _packageDir;
     private String _destDir;
     private String _versionTag;
@@ -98,14 +105,10 @@ public class CVSGrab {
                 .hasArg()
                 .withDescription("The path relative to rootUrl of the package or module to download")
                 .create(PACKAGE_PATH_OPTION));
-        _options.addOption(new OptionBuilder().withArgName("dir")
+        _options.addOption(new OptionBuilder().withArgName("root")
                 .hasArg()
-                .withDescription("The destination directory")
-                .create(DEST_DIR_OPTION));
-        _options.addOption(new OptionBuilder().withArgName("dir")
-                .hasArg()
-                .withDescription("The name of the package to use locally, relative to destDir, overrides packagePath")
-                .create(PACKAGE_DIR_OPTION));
+                .withDescription("[optional] The project root, for cvs with multiple repositories")
+                .create(PROJECT_ROOT_OPTION));
         _options.addOption(new OptionBuilder().withArgName("version tag")
                 .hasArg()
                 .withDescription("[optional] The version tag of the files to download")
@@ -118,8 +121,16 @@ public class CVSGrab {
                 .hasArg()
                 .withDescription("[optional] The id for the web interface for the CVS repository to use. " +
                         "If this option is not set, autodetect the web interface." +
-                        "Call cvsgrab -help-webinterfaces to get a list of valid values for this option.")
+                "Call cvsgrab -listWebInterfaces to get a list of valid values for this option.")
                 .create(WEB_INTERFACE_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("dir")
+                .hasArg()
+                .withDescription("The destination directory")
+                .create(DEST_DIR_OPTION));
+        _options.addOption(new OptionBuilder().withArgName("dir")
+                .hasArg()
+                .withDescription("The name of the package to use locally, relative to destDir, overrides packagePath")
+                .create(PACKAGE_DIR_OPTION));
         _options.addOption(new OptionBuilder().withArgName("cvs root")
                 .hasArg()
                 .withDescription("[optional] The original cvs root, used to maintain compatibility with a standard CVS client")
@@ -136,9 +147,13 @@ public class CVSGrab {
         Option verboseOption = new OptionBuilder()
                 .withDescription("[optional] Turn verbosity on.")
                 .create(VERBOSE_OPTION);
+        Option quietOption = new OptionBuilder()
+                .withDescription("[optional] Be extra quiet.")
+                .create(QUIET_OPTION);
         _options.addOptionGroup(new OptionGroup().addOption(debugOption)
                 .addOption(debugWireOption)
-                .addOption(verboseOption));
+                .addOption(verboseOption)
+                .addOption(quietOption));
         _options.addOption(new OptionBuilder().withArgName("nb of connections")
                 .hasArg()
                 .withDescription("[optional] The number of simultaneous connections to use for downloads, default 1")
@@ -179,6 +194,7 @@ public class CVSGrab {
      * @param args The command line arguments
      */
     public static void main(String[] args) {
+        System.setProperty(LogFactoryImpl.LOG_PROPERTY, CVSGrabLog.class.getName());
         CVSGrab grabber = new CVSGrab();
         try {
             grabber.run(args);
@@ -189,12 +205,10 @@ public class CVSGrab {
     }
     
     private void run(String[] args) throws ParseException {
-        CommandLineParser parser = new PosixParser();
+        CommandLineParser parser = new GnuParser();
         CommandLine cmd = parser.parse( _options, args);
         
-        cvsgrabLogLevel("info", "INFO");
-        httpclientLogLevel("error", "SEVERE");
-    
+        // Help and list supported web interfaces
         if (cmd.hasOption(HELP_OPTION)) {
             printHelp();
             return;
@@ -203,17 +217,37 @@ public class CVSGrab {
             printWebInterfaces();
             return;
         }
+        
+        // Handle logging levels
+        cvsgrabLogLevel("info", "WARNING");                        
+        httpclientLogLevel("error", "SEVERE");
+        
+        if (cmd.hasOption(DEBUG_OPTION)) {
+            cvsgrabLogLevel("trace", "FINEST");                        
+            httpclientLogLevel("info", "INFO");
+        } 
+        if (cmd.hasOption(DEBUG_WIRE_OPTION)) {
+            httpclientLogLevel("trace", "FINEST");
+            logLevel("httpclient.wire", "trace", "FINE");
+        } 
+        if (cmd.hasOption(VERBOSE_OPTION)) {
+            cvsgrabLogLevel("debug", "INFO");                        
+            httpclientLogLevel("error", "SEVERE");
+        } 
+        if (cmd.hasOption(QUIET_OPTION)) {
+            cvsgrabLogLevel("warn", "INFO");                        
+            httpclientLogLevel("error", "SEVERE");
+        } 
+        
+        // Handle remote repository options
         if (cmd.hasOption(ROOT_URL_OPTION)) {
             setRootUrl(cmd.getOptionValue(ROOT_URL_OPTION));
         } 
         if (cmd.hasOption(PACKAGE_PATH_OPTION)) {
             setPackagePath(cmd.getOptionValue(PACKAGE_PATH_OPTION));
         } 
-        if (cmd.hasOption(DEST_DIR_OPTION)) {
-            setDestDir(cmd.getOptionValue(DEST_DIR_OPTION));
-        } 
-        if (cmd.hasOption(PACKAGE_DIR_OPTION)) {
-            setPackageDir(cmd.getOptionValue(PACKAGE_DIR_OPTION));
+        if (cmd.hasOption(PROJECT_ROOT_OPTION)) {
+            setProjectRoot(cmd.getOptionValue(PROJECT_ROOT_OPTION));
         } 
         if (cmd.hasOption(TAG_OPTION)) {
             setVersionTag(cmd.getOptionValue(TAG_OPTION));
@@ -224,30 +258,39 @@ public class CVSGrab {
         if (cmd.hasOption(WEB_INTERFACE_OPTION)) {
             setWebInterfaceId(cmd.getOptionValue(WEB_INTERFACE_OPTION));
         } 
+        
+        // Handle local repository options 
+        if (cmd.hasOption(DEST_DIR_OPTION)) {
+            setDestDir(cmd.getOptionValue(DEST_DIR_OPTION));
+        } 
+        if (cmd.hasOption(PACKAGE_DIR_OPTION)) {
+            setPackageDir(cmd.getOptionValue(PACKAGE_DIR_OPTION));
+        } 
         if (cmd.hasOption(CVS_ROOT_OPTION)) {
             setCvsRoot(cmd.getOptionValue(CVS_ROOT_OPTION));
         } 
-        if (cmd.hasOption(DEBUG_OPTION)) {
-                cvsgrabLogLevel(DEBUG_OPTION, "FINE");                        
-                httpclientLogLevel("info", "INFO");
-        } 
-        if (cmd.hasOption(DEBUG_WIRE_OPTION)) {
-                httpclientLogLevel(DEBUG_OPTION, "FINE");
-                logLevel("httpclient.wire", DEBUG_OPTION, "FINE");
-        } 
-        if (cmd.hasOption(VERBOSE_OPTION)) {
-                cvsgrabLogLevel("info", "INFO");                        
-                httpclientLogLevel("error", "SEVERE");
-            } else {
-                cvsgrabLogLevel("warn", "WARNING");                        
-                httpclientLogLevel("error", "SEVERE");
-            }
         if (cmd.hasOption(PRUNE_OPTION)) {
             setPruneEmptyDirs(true);
         } 
+        
+        // Handle connection settings
         if (cmd.hasOption(PROXY_HOST_OPTION)) {
+            String portStr = cmd.getOptionValue(PROXY_PORT_OPTION);
+            if (portStr == null) {
+                System.err.println("Argument -" + PROXY_PORT_OPTION + " expected");
+                printHelp();
+                return;
+            }
+            int port = -1;
+            try {
+                port = Integer.parseInt(portStr);
+            } catch (NumberFormatException e) {
+                System.err.println("Argument -" + PROXY_PORT_OPTION + " must be a number");
+                printHelp();
+                return;
+            }
             WebBrowser.getInstance().useProxy(cmd.getOptionValue(PROXY_HOST_OPTION), 
-                    Integer.parseInt(cmd.getOptionValue(PROXY_PORT_OPTION)), 
+                    port, 
                     cmd.getOptionValue(PROXY_NTDOMAIN_OPTION), 
                     cmd.getOptionValue(PROXY_USER_OPTION), 
                     cmd.getOptionValue(PROXY_PASSWORD_OPTION));
@@ -303,7 +346,7 @@ public class CVSGrab {
         // automatically generate the help statement
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp(HelpFormatter.DEFAULT_WIDTH, "cvsgrab", "where options are", 
-                _options, "CVSGrab version " + VERSION +", copyright (c) 2002-2004 - Ludovic Claude.", true);
+                _options, "CVSGrab version " + VERSION +", copyright (c) 2002-2004 - Ludovic Claude.", false);
     }
 
     /**
@@ -416,6 +459,17 @@ public class CVSGrab {
     }
 
     /**
+     * @return The project root, used by CVSwith multiple repositories 
+     */
+    public String getProjectRoot() {
+        return _projectRoot;
+    }
+    
+    public void setProjectRoot(String projectRoot) {
+        _projectRoot = projectRoot;
+    }
+    
+    /**
      * @return Returns the versionTag.
      */
     public String getVersionTag() {
@@ -464,7 +518,11 @@ public class CVSGrab {
      * Main method for getting and updating files.
      */
     public void grabCVSRepository() {
-        getLog().info("CVSGrab version " + VERSION + " starting...");
+        if (getLog().isInfoEnabled()) {
+            getLog().info("CVSGrab version " + VERSION + " starting...");
+        } else {
+            System.out.println("CVSGrab version " + VERSION + " starting...");
+        }
 
         if (_rootUrl == null || _destDir == null || _packagePath == null) {
             if (_rootUrl == null) {
@@ -508,6 +566,24 @@ public class CVSGrab {
             if (_webInterfaceId != null) {
                 // Forces the use of a particular web interface and version of that interface
                 webInterface = CvsWebInterface.getInterface(this, _webInterfaceId);
+                Document document = webInterface.getDocumentForDetect(this);
+                if (document == null) {
+                    String testUrl = webInterface.getBaseUrl(this);
+                    String testUrl2 = webInterface.getAltBaseUrl(this);
+                    getLog().error("Could not detect the type of the web interface. Check that those urls are valid:");
+                    if (testUrl != null) {
+                        getLog().error(testUrl);
+                    }
+                    if (testUrl2 != null) {
+                        getLog().error(testUrl2);
+                    }
+                    throw new RuntimeException("Could not detect the type of the web interface");
+                }
+                try {
+                    webInterface.detect(this, document);
+                } catch (DetectException ex) {
+                    // ignore, suppose that the user knows what he's doing
+                }
             } else {
                 // Auto detection of the type of the remote interface
                 webInterface = detectWebInterface();
@@ -515,6 +591,8 @@ public class CVSGrab {
             if (webInterface == null) {
                 getLog().error("Could not detect the type of the web interface");
                 throw new RuntimeException("Could not detect the type of the web interface");
+            } else {
+                getLog().info("Detected cvs web interface: " + webInterface.getType());
             }
             
             webInterface.setQueryParams(_queryParams);
@@ -581,7 +659,6 @@ public class CVSGrab {
         CvsWebInterface webInterface = null;
         try {
             webInterface = CvsWebInterface.findInterface(this);
-            getLog().info("Detected cvs web interface: " + webInterface.getType());
         } catch (Exception ex) {
             ex.printStackTrace();
         }    

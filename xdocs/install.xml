@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
-	<properties>
-		<author email="ludovicc@users.sourceforge.net">Ludovic Claude</author>
-		<title>CVSGrab - Installation</title>
-	</properties>
-	<body>
-		<section name="Installation">
-		  <p>
-		    <ol>
-		      <li>Install <a href="http://java.sun.com/j2se/1.4/download.html">Java</a> JRE version 1.2 or better on your computer, select the JRE dowload for your computer</li>
-		      <li>Set the JAVA_HOME environment variable to your java installation directory</li>
-		      <li>Unzip cvsgrab_v2.0.zip or cvsgrab_v2.0.tar</li>
-		      <li>(optional) Set the CVSGRAB_HOME environment variable to your cvsgrab installation directory, 
-   		          for example CVSGRAB_HOME=c:\cvsgrab, this is required for the batch script if you don't run it from its 
-   		          install directory. 
-		      </li>
-		    </ol>
-		  </p>
-          <p> Note: On Windows, environment variables can be defined from the Dos command line with: <br/>
-            set ENVIRONMENT_VARIABLE = value <br/>
-            Or, for Windows XP, from Control Panel / System / Advanced tab / Environment variables button, define the variable there 
-            then restart the Dos command line.
-          </p>
-		  <p>
-		    To run cvsgrab, from the command line do: <br/>
-            cd &lt;cvsgrab install dir&gt; <br/> 
-			cvsgrab &lt;options&gt;
-		  </p>
-		</section>
-	</body>
+  <properties>
+    <author email="ludovicc@users.sourceforge.net">Ludovic
+    Claude</author>
+
+    <title>CVSGrab - Installation</title>
+  </properties>
+
+  <body>
+    <section name="Installation">
+      <p>
+        <ol>
+          <li>Install 
+          <a href="http://java.sun.com/j2se/1.4/download.html">
+          Java</a>
+
+          JRE version 1.2 or better on your computer, select the
+          JRE dowload for your computer</li>
+
+          <li>Set the JAVA_HOME environment variable to your java
+          installation directory</li>
+
+          <li>Unzip cvsgrab_v2.0.zip or cvsgrab_v2.0.tar</li>
+
+          <li>(optional) Set the CVSGRAB_HOME environment variable
+          to your cvsgrab installation directory, for example
+          CVSGRAB_HOME=c:\cvsgrab, this is required for the batch
+          script if you don't run it from its install
+          directory.</li>
+        </ol>
+      </p>
+
+      <p>Note: On Windows, environment variables can be defined
+      from the Dos command line with: 
+      <br />
+
+      set ENVIRONMENT_VARIABLE = value 
+      <br />
+
+      Or, for Windows XP, from Control Panel / System / Advanced
+      tab / Environment variables button, define the variable there
+      then restart the Dos command line.</p>
+
+      <p>To run cvsgrab, from the command line do: 
+      <br />
+
+      cd &lt;cvsgrab install dir&gt; 
+      <br />
+
+      cvsgrab &lt;options&gt;</p>
+    </section>
+  </body>
 </document>
+

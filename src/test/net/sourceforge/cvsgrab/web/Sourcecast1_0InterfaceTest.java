@@ -7,6 +7,7 @@
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
+import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.RemoteDirectory;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.RemoteRepository;
@@ -28,6 +29,15 @@ public class Sourcecast1_0InterfaceTest extends AbstractTestCase {
      */
     public Sourcecast1_0InterfaceTest(String testName) {
         super(testName);
+    }
+
+    public void testDetect() throws Exception {
+        Document doc = getDocument("src/test/html_docs/sourcecast_1_0.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.setRootUrl("http://javacvs.netbeans.org/source/browse/");
+        _interface.detect(grabber, doc);
+        
+        assertEquals("SourceCast 1.1.3.000", _interface.getType());
     }
 
     public void testGetFiles() throws Exception {
