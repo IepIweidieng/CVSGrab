@@ -6,9 +6,10 @@
  */
 package net.sourceforge.cvsgrab;
 
-import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import net.sourceforge.cvsgrab.web.CvsWeb1_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb2_0Interface;
@@ -79,6 +80,7 @@ public abstract class CvsWebInterface {
      * @return the cvs web interface that matches best this page
      */
     public static CvsWebInterface findInterface(CVSGrab grabber) throws Exception {
+        checkRootUrl(grabber.getRootUrl());
         for (int i = 0; i < _webInterfaces.length; i++) {
             try {
             	Document doc = _webInterfaces[i].getDocumentForDetect(grabber);
@@ -113,6 +115,34 @@ public abstract class CvsWebInterface {
             }
         }
         return doc;
+    }
+
+    private static void checkRootUrl(String url) {
+        // Sanity check
+        // Get the last part of the root url
+        int slash = url.indexOf('/', 8);
+        if (slash > 0) {
+            String path = url.substring(slash);
+            String beforeLastPart = "";
+            String lastPart = null;
+            StringTokenizer st = new StringTokenizer(path, "/", false);
+            while (st.hasMoreTokens()) {
+                if (lastPart != null) {
+                    beforeLastPart += "/" + lastPart;
+                }
+                lastPart = st.nextToken();
+            }
+            if (lastPart != null) {
+                lastPart = lastPart.toLowerCase();
+                if (beforeLastPart.length() > 0 && lastPart.indexOf("cvs") < 0 && lastPart.indexOf(".") < 0 
+                        && lastPart.indexOf("source") < 0 && lastPart.indexOf("src") < 0 
+                        && lastPart.indexOf("browse") < 0) {
+                    CVSGrab.getLog().warn("The root url " + url + " doesn't seem valid");
+                    String newRootUrl = url.substring(0, slash) + beforeLastPart;
+                    CVSGrab.getLog().warn("Try " + newRootUrl + " as the root url instead");
+                }
+            }
+        }
     }
 
     private String _versionTag;

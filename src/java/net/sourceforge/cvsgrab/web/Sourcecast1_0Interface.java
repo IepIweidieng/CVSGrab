@@ -40,8 +40,6 @@ public class Sourcecast1_0Interface extends CvsWeb2_0Interface {
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
     public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
-        checkRootUrl(grabber.getRootUrl());
-        
         JXPathContext context = JXPathContext.newContext(htmlPage);
         context.setLenient(true);
         

@@ -8,6 +8,7 @@ package net.sourceforge.cvsgrab;
 import java.io.File;
 import java.io.IOException;
 
+import net.sourceforge.cvsgrab.util.*;
 import net.sourceforge.cvsgrab.util.CVSGrabLog;
 
 import org.apache.commons.cli.CommandLine;
@@ -62,7 +63,7 @@ public class CVSGrab {
     private static final String HELP_OPTION = "help";
     public static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
-    private static final String VERSION = "2.0.2";
+    private static final String VERSION = "2.0.3";
     private static Log LOG;
 
     private boolean _pruneEmptyDirs = false;

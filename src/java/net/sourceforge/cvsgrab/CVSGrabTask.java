@@ -6,6 +6,8 @@
  */
 package net.sourceforge.cvsgrab;
 
+import net.sourceforge.cvsgrab.util.*;
+
 import org.apache.commons.logging.Log;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
