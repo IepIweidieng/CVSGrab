@@ -1,3 +1,4 @@
 cvsgrab -rootUrl http://cvs.picocontainer.codehaus.org/viewcvs.cgi/ -packagePath pico -destDir c:/tmp 
 cvsgrab -rootUrl http://dev.eclipse.org/viewcvs/index.cgi/ -packagePath org.eclipse.ant.core -destDir c:/tmp 
 cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune true
+cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/ -packagePath cvsgrab/cvsgrab -destDir c:/tmp -packageDir cvsgrab -prune true -connections 3

@@ -15,6 +15,8 @@ import org.w3c.dom.Document;
  */
 public class CvsWebInterfaceTest extends AbstractTestCase {
 
+    private CVSGrab grabber;
+     
     /**
      * Constructor for CvsWebInterfaceTest
      * @param testName
@@ -23,38 +25,48 @@ public class CvsWebInterfaceTest extends AbstractTestCase {
         super(testName);
     }
     
+    protected void setUp() throws Exception {
+        super.setUp();
+        grabber = new CVSGrab();
+    }
+    
     public void testDetectViewCvs0_7() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_7.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface("http://dev.eclipse.org/viewcvs/index.cgi/", doc);
+        grabber.setRootUrl("http://dev.eclipse.org/viewcvs/index.cgi/");
+        CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs0_7Interface);
     }
 
     public void testDetectViewCvs0_8() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_8.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface("http://cvs.sourceforge.net/viewcvs.py/", doc);
+        grabber.setRootUrl("http://cvs.sourceforge.net/viewcvs.py/");
+        CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs0_8Interface);
     }
 
     public void testDetectViewCvs0_9() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_9_2.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface("http://cvs.apache.org/viewcvs/", doc);
+        grabber.setRootUrl("http://cvs.apache.org/viewcvs/");
+        CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs0_9Interface);
     }
 
     public void testDetectViewCvs1_0() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/", doc);
+        grabber.setRootUrl("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/");
+        CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
         assertTrue("Was " + webInterface,  webInterface instanceof ViewCvs1_0Interface);
     }
 
     public void testDetectSourceCast2_0() throws Exception {
         Document doc = getDocument("src/test/html_docs/sourcecast_2_0.html");
         
-        CvsWebInterface webInterface = CvsWebInterface.findInterface("https://forms.dev.java.net/source/browse/", doc);
+        grabber.setRootUrl("https://forms.dev.java.net/source/browse/");
+        CvsWebInterface webInterface = CvsWebInterface.findInterface(grabber, doc);
         assertTrue("Was " + webInterface,  webInterface instanceof Sourcecast2_0Interface);
     }
 }

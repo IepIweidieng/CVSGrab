@@ -8,10 +8,9 @@ package net.sourceforge.cvsgrab;
 import java.io.File;
 import java.io.IOException;
 
-import net.sourceforge.cvsgrab.util.*;
-
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.w3c.dom.Document;
+import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Application class for CVS Grab. <br>
@@ -27,7 +26,8 @@ import org.w3c.dom.Document;
 public class CVSGrab {
     static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
-    private static final String VERSION = "2.0-beta3";
+    private static final String VERSION = "2.0";
+    private static Log LOG;
 
     private boolean _verbose = true;
     private boolean _pruneEmptyDirs = false;
@@ -40,6 +40,17 @@ public class CVSGrab {
     private String _queryParams;
     private String _cvsRoot = DUMMY_ROOT;
 
+    public static Log getLog() {
+        if (LOG == null) {
+            LOG = LogFactory.getLog(CVSGrab.class);
+        }
+        return LOG;
+    }
+    
+    public static void setLog(Log log) {
+        LOG = log;
+    }
+    
     /**
      * Constructor for the CVSGrab object
      */
@@ -60,6 +71,8 @@ public class CVSGrab {
         String webPassword = null;
         CVSGrab grabber = new CVSGrab();
 
+        cvsgrabLogLevel("info", "INFO");
+        httpclientLogLevel("error", "SEVERE");
         for (int i = 0; i < args.length; i++) {
             if (args[i].toLowerCase().equals("-help")) {
                 printHelp();
@@ -104,10 +117,8 @@ public class CVSGrab {
                 if (!args[i + 1].startsWith("-")) {
                     boolean debug = args[i + 1].toLowerCase().equals("true");
                     if (debug) {
-                        DefaultLogger.getInstance().setDebug(debug);
-                        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
-                        System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
-                        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.commons.httpclient", "debug");                        
+                        cvsgrabLogLevel("debug", "FINE");                        
+                        httpclientLogLevel("info", "INFO");
                     }
                     i++;
                 }
@@ -115,15 +126,21 @@ public class CVSGrab {
                 if (!args[i + 1].startsWith("-")) {
                     boolean debug = args[i + 1].toLowerCase().equals("true");
                     if (debug) {
-                        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
-                        System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
-                        System.setProperty("org.apache.commons.logging.simplelog.log.httpclient.wire", "debug");
+                        httpclientLogLevel("debug", "FINE");
+                        logLevel("httpclient.wire", "debug", "FINE");
                     }
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-verbose")) {
                 if (!args[i + 1].startsWith("-")) {
-                    DefaultLogger.getInstance().setVerbose(args[i + 1].toLowerCase().equals("true"));;
+                    boolean verbose = args[i + 1].toLowerCase().equals("true");
+                    if (verbose) {
+                        cvsgrabLogLevel("info", "INFO");                        
+                        httpclientLogLevel("error", "SEVERE");
+                    } else {
+                        cvsgrabLogLevel("warn", "WARNING");                        
+                        httpclientLogLevel("error", "SEVERE");
+                    }
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-prune")) {
@@ -183,6 +200,37 @@ public class CVSGrab {
             WebBrowser.getInstance().useWebAuthentification(webUser, webPassword);
         }
         grabber.grabCVSRepository();
+    }
+
+    private static void cvsgrabLogLevel(String simpleLevel, String jdk14Level) {
+        logLevel("net.sourceforge.cvsgrab", simpleLevel, jdk14Level);
+    }
+
+    private static void httpclientLogLevel(String simpleLevel, String jdk14Level) {
+        logLevel("org.apache.commons.httpclient", simpleLevel, jdk14Level);
+    }
+
+    private static void logLevel(String packageName, String simpleLevel, String jdk14Level) {
+        if (SystemUtils.isJavaVersionAtLeast(1.4f)) {
+            setJdk14LogLevel(packageName + ".level", jdk14Level);
+        }
+        System.setProperty("org.apache.commons.logging.simplelog.log." + packageName, simpleLevel);                        
+    }
+    
+    /**
+     * @param properties
+     */
+    private static void setJdk14LogLevel(String className, String level) {
+        try {
+            Class loggerClass = Class.forName("java.util.logging.Logger");
+            Class levelClass = Class.forName("java.util.logging.Level");
+            Object logger = loggerClass.getMethod("getLogger", new Class[] {String.class}).invoke(null, new Object[] {className});
+            Object levelObj = levelClass.getField(level).get(null);
+            loggerClass.getMethod("setLevel", new Class[] {levelClass}).invoke(logger, new Object[] {levelObj});
+        } catch (Exception ex) {
+            System.err.println("Cannot change the configuration of the Java 1.4 logger");
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -258,7 +306,7 @@ public class CVSGrab {
      * @param packagePath The packagePath to set.
      */
     public void setPackagePath(String packagePath) {
-        _packagePath = packagePath;
+        _packagePath = WebBrowser.forceFinalSlash(packagePath);
     }
 
     /**
@@ -273,7 +321,7 @@ public class CVSGrab {
      * @param destDir The destDir to set.
      */
     public void setDestDir(String destDir) {
-        _destDir = destDir;
+        _destDir = WebBrowser.forceFinalSlash(destDir);
     }
 
     /**
@@ -290,7 +338,7 @@ public class CVSGrab {
      * @param packageDir The packageDir to set.
      */
     public void setPackageDir(String packageDir) {
-        _packageDir = packageDir;
+        _packageDir = WebBrowser.forceFinalSlash(packageDir);
     }
     
     /**
@@ -306,7 +354,7 @@ public class CVSGrab {
      * @param cvsRoot The cvsRoot to set.
      */
     public void setCvsRoot(String cvsRoot) {
-        _cvsRoot = cvsRoot;
+        _cvsRoot = WebBrowser.forceFinalSlash(cvsRoot);
     }
 
     /**
@@ -342,7 +390,7 @@ public class CVSGrab {
      * Main method for getting and updating files.
      */
     public void grabCVSRepository() {
-        DefaultLogger.getInstance().info("CVSGrab version " + VERSION + " starting...");
+        getLog().info("CVSGrab version " + VERSION + " starting...");
 
         if (_rootUrl == null || _destDir == null || _packagePath == null) {
             if (_rootUrl == null) {
@@ -374,17 +422,9 @@ public class CVSGrab {
             }
 
             // Auto detection of the type of the remote interface
-            CvsWebInterface webInterface = null;
-            try {
-                String url = WebBrowser.addQueryParam(_rootUrl, _queryParams);
-                Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
-                webInterface = CvsWebInterface.findInterface(url, doc);
-                DefaultLogger.getInstance().info("Detected cvs web interface: " + webInterface.getType());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            CvsWebInterface webInterface = detectWebInterface();
             if (webInterface == null) {
-                DefaultLogger.getInstance().error("Could not detect the type of the web interface");
+                getLog().error("Could not detect the type of the web interface");
                 throw new RuntimeException("Could not detect the type of the web interface");
             }
             
@@ -406,7 +446,7 @@ public class CVSGrab {
                     localRepository.cleanRemovedFiles(remoteDir);
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    DefaultLogger.getInstance().error("Error while getting files from " + remoteDir.getUrl());
+                    getLog().error("Error while getting files from " + remoteDir.getUrl());
                     _error = true;
                 }
             }
@@ -419,22 +459,22 @@ public class CVSGrab {
             int updatedFileCount = localRepository.getUpdatedFileCount();
             int removedFileCount = localRepository.getRemovedFileCount();
             int failedUpdateCount = localRepository.getFailedUpdateCount();
-            DefaultLogger.getInstance().info("-----");
+            getLog().info("-----");
             if (newFileCount > 0) {
-                DefaultLogger.getInstance().info(newFileCount + " new files");
+                getLog().info(newFileCount + " new files");
             }
             if (updatedFileCount > 0) {
-                DefaultLogger.getInstance().info(updatedFileCount + " updated files");
+                getLog().info(updatedFileCount + " updated files");
             }
             if (removedFileCount > 0) {
-                DefaultLogger.getInstance().info(removedFileCount + " removed files");
+                getLog().info(removedFileCount + " removed files");
             }
             if (failedUpdateCount > 0) {
-                DefaultLogger.getInstance().error(failedUpdateCount + " files could not be downloaded");
+                getLog().error(failedUpdateCount + " files could not be downloaded");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            DefaultLogger.getInstance().error(ex.getMessage());
+            getLog().error(ex.getMessage());
             _error = true;
         }
         
@@ -443,9 +483,19 @@ public class CVSGrab {
         }
         
         if (_error) {
-            DefaultLogger.getInstance().error("There were some errors.");
-            DefaultLogger.getInstance().error("If you cannot find an obvious answer, report the problem to " + FORUM_URL);
+            getLog().error("There were some errors.");
+            getLog().error("If you cannot find an obvious answer, report the problem to " + FORUM_URL);
         }
     }
 
+    private CvsWebInterface detectWebInterface() {
+        CvsWebInterface webInterface = null;
+        try {
+            webInterface = CvsWebInterface.findInterface(this);
+            getLog().info("Detected cvs web interface: " + webInterface.getType());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }    
+        return webInterface;
+    }
 }

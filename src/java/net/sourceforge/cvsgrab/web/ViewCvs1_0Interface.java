@@ -6,6 +6,7 @@
  */
 package net.sourceforge.cvsgrab.web;
 
+import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
 
@@ -37,8 +38,8 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
      * @param htmlPage
      * @throws Exception
      */
-    public void init(String url, Document htmlPage) throws Exception {
-        super.init(url, htmlPage);
+    public void init(CVSGrab grabber, Document htmlPage) throws Exception {
+        super.init(grabber, htmlPage);
         JXPathContext context = JXPathContext.newContext(htmlPage);
         String href = (String) context.getValue("//A/@href[contains(., 'root=')]");
         _root = href.substring(href.indexOf("root=")+ 5);

@@ -16,7 +16,7 @@ import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import net.sourceforge.cvsgrab.util.*;
+import net.sourceforge.cvsgrab.util.PasswordField;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -128,7 +128,7 @@ public class WebBrowser {
      * @param password Password (if authentification is required), or null
      */
     public void useProxy(String proxyHost, int proxyPort, final String ntDomain, final String userName, String password) {
-        DefaultLogger.getInstance().info("Using proxy " + proxyHost + ":" + proxyPort);
+        CVSGrab.getLog().info("Using proxy " + proxyHost + ":" + proxyPort);
         _client.getHostConfiguration().setProxy(proxyHost, proxyPort);
         if (userName != null) {
             if (password == null ) {
@@ -140,13 +140,13 @@ public class WebBrowser {
                 }
             }
             if (ntDomain == null) {
-                DefaultLogger.getInstance().info("Login on the proxy with user name " + userName);
+                CVSGrab.getLog().info("Login on the proxy with user name " + userName);
                 _client.getState().setProxyCredentials(null, proxyHost,
                     new UsernamePasswordCredentials(userName, password));
             } else {
                 try {
                     String host = InetAddress.getLocalHost().getHostName();
-                    DefaultLogger.getInstance().info("Login on the NT proxy with user name " + userName
+                    CVSGrab.getLog().info("Login on the NT proxy with user name " + userName
                             + ", host " + host + ", NT domain " + ntDomain);
                     _client.getState().setProxyCredentials(null, proxyHost,
                         new NTCredentials(userName, password, host, ntDomain));
@@ -164,7 +164,7 @@ public class WebBrowser {
      * @param password The password to use on the web server
      */
     public void useWebAuthentification(final String userName, String password) {
-        DefaultLogger.getInstance().info("Login on the web server with user name " + userName + " and password " + password);
+        CVSGrab.getLog().info("Login on the web server with user name " + userName + " and password " + password);
         if (password == null ) {
             PasswordField pwdField = new PasswordField();
             try {
@@ -194,11 +194,11 @@ public class WebBrowser {
             try {
                 // execute the method.
                 statusCode = _client.executeMethod(method);
-                DefaultLogger.getInstance().debug("Executed method " + method.getPath() + " with status code " + statusCode);
+                CVSGrab.getLog().debug("Executed method " + method.getPath() + " with status code " + statusCode);
             } catch (HttpRecoverableException e) {
-                DefaultLogger.getInstance().warn("A recoverable exception occurred, retrying.  " + e.getMessage());
+                CVSGrab.getLog().warn("A recoverable exception occurred, retrying.  " + e.getMessage());
             } catch (IOException e) {
-                DefaultLogger.getInstance().error("Failed to download file.");
+                CVSGrab.getLog().error("Failed to download file.");
                 e.printStackTrace();
                 throw new RuntimeException("Failed to download file.");
             }
@@ -206,12 +206,12 @@ public class WebBrowser {
     
         // Check that we didn't run out of retries.
         if (statusCode == -1) {
-            DefaultLogger.getInstance().error("Failed to recover from exception.");
+            CVSGrab.getLog().error("Failed to recover from exception.");
             throw new RuntimeException("Error when reading " + method.getPath());
         }
     
         if (statusCode >= 400) {
-            DefaultLogger.getInstance().error("Page not found (error " + statusCode + ")");
+            CVSGrab.getLog().error("Page not found (error " + statusCode + ")");
             throw new RuntimeException("Error when reading " + method.getPath());
         }
     
@@ -223,7 +223,7 @@ public class WebBrowser {
                 String redirectLocation = locationHeader.getValue();
                 
                 method.releaseConnection();    
-                DefaultLogger.getInstance().error("Redirect to " + redirectLocation);
+                CVSGrab.getLog().error("Redirect to " + redirectLocation);
     
                 HttpMethod redirectMethod = new GetMethod(redirectLocation);
     
@@ -234,7 +234,7 @@ public class WebBrowser {
                 // The response is invalid and did not provide the new location for
                 // the resource.  Report an error or possibly handle the response
                 // like a 404 Not Found error.
-                DefaultLogger.getInstance().error("Page not found");
+                CVSGrab.getLog().error("Page not found");
                 throw new RuntimeException("Error when reading " + method);
             }
         }

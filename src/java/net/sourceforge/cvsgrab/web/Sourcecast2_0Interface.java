@@ -6,6 +6,8 @@
  */
 package net.sourceforge.cvsgrab.web;
 
+import net.sourceforge.cvsgrab.CVSGrab;
+
 import org.apache.commons.jxpath.JXPathContext;
 import org.w3c.dom.Document;
 
@@ -30,8 +32,8 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
      * @param htmlPage
      * @throws Exception
      */
-    public void init(String url, Document htmlPage) throws Exception {
-        checkRootUrl(url);
+    public void init(CVSGrab grabber, Document htmlPage) throws Exception {
+        checkRootUrl(grabber.getRootUrl());
         
         JXPathContext context = JXPathContext.newContext(htmlPage);
         // Check that this is Sourcecast

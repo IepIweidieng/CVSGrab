@@ -6,6 +6,8 @@
  */
 package net.sourceforge.cvsgrab.web;
 
+import net.sourceforge.cvsgrab.CVSGrab;
+
 import org.w3c.dom.Document;
 
 
@@ -28,12 +30,13 @@ public class ViewCvs0_8Interface extends ViewCvsInterface {
      * @param htmlPage
      * @throws Exception
      */
-    public void init(String url, Document htmlPage) throws Exception {
-        if (url.indexOf("sourceforge.net") > 0 || url.indexOf("sf.net") > 0) {
-            checkRootUrl(url);
+    public void init(CVSGrab grabber, Document htmlPage) throws Exception {
+        String rootUrl = grabber.getRootUrl();
+        if (rootUrl.indexOf("sourceforge.net") > 0 || rootUrl.indexOf("sf.net") > 0) {
+            checkRootUrl(grabber.getRootUrl());
             setType("ViewCVS 0.8 on Sourceforge");
         } else {
-            super.init(url, htmlPage);
+            super.init(grabber, htmlPage);
         }
     }
     

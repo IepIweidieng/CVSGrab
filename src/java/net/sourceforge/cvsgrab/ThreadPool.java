@@ -15,8 +15,6 @@ package net.sourceforge.cvsgrab;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.cvsgrab.util.*;
-
 
 /** 
  * Simple fized sized Thread Pool
@@ -33,7 +31,7 @@ public class ThreadPool {
      * @param maxThreads The max number of threads
      */
     public static void init(int maxThreads) {
-        DefaultLogger.getInstance().info("Using up to " + maxThreads + " simultaneous connections to load files");
+        CVSGrab.getLog().info("Using up to " + maxThreads + " simultaneous connections to load files");
         _instance = new ThreadPool(maxThreads);
     }
     

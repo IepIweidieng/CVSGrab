@@ -6,9 +6,7 @@
  */
 package net.sourceforge.cvsgrab;
 
-import net.sourceforge.cvsgrab.util.DefaultLogger;
-import net.sourceforge.cvsgrab.util.Logger;
-
+import org.apache.commons.logging.Log;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
@@ -150,9 +148,9 @@ public class CVSGrabTask extends Task {
             throw new BuildException("packagePath argument is not specified");
         }
 
-        Logger log = new AntLogger(project);
+        AntLogger log = new AntLogger(project);
         log.setVerbose(_verbose);
-        DefaultLogger.setInstance(log);
+        CVSGrab.setLog(log);
         if (_proxy != null) {
             _proxy.setup(_grabber);
         }
@@ -281,7 +279,7 @@ public class CVSGrabTask extends Task {
      * @author lclaude
      * @created April 29, 2002
      */
-    class AntLogger implements Logger {
+    class AntLogger implements Log {
         private boolean verbose;
         private Project antProject;
 
@@ -313,53 +311,165 @@ public class CVSGrabTask extends Task {
         }
 
         /**
-         * Description of the Method
+         * {@inheritDoc}
          *
-         * @param msg Description of the Parameter
+         * @param msg The message
          */
-        public void debug(String msg) {
+        public void debug(Object msg) {
             // use VERBOSE and not DEBUG, because Ant debug messages are really too much...
-            antProject.log(msg, Project.MSG_VERBOSE);
+            antProject.log(msg.toString(), Project.MSG_VERBOSE);
         }
 
         /**
-         * Description of the Method
+         * {@inheritDoc}
          *
-         * @param msg Description of the Parameter
+         * @param msg The message
          */
-        public void verbose(String msg) {
+        public void verbose(Object msg) {
             if (verbose) {
-                antProject.log(msg, Project.MSG_INFO);
+                antProject.log(msg.toString(), Project.MSG_INFO);
             } else {
-                antProject.log(msg, Project.MSG_VERBOSE);
+                antProject.log(msg.toString(), Project.MSG_VERBOSE);
             }
         }
 
         /**
-         * Description of the Method
+         * {@inheritDoc}
          *
-         * @param msg Description of the Parameter
+         * @param msg The message
          */
-        public void info(String msg) {
-            antProject.log(msg, Project.MSG_INFO);
+        public void info(Object msg) {
+            antProject.log(msg.toString(), Project.MSG_INFO);
         }
 
         /**
-         * Description of the Method
+         * {@inheritDoc}
          *
-         * @param msg Description of the Parameter
+         * @param msg The message
          */
-        public void warn(String msg) {
-            antProject.log(msg, Project.MSG_WARN);
+        public void warn(Object msg) {
+            antProject.log(msg.toString(), Project.MSG_WARN);
         }
 
         /**
-         * Description of the Method
+         * {@inheritDoc}
          *
-         * @param msg Description of the Parameter
+         * @param msg The message
          */
-        public void error(String msg) {
-            antProject.log(msg, Project.MSG_ERR);
+        public void error(Object msg) {
+            antProject.log(msg.toString(), Project.MSG_ERR);
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @return
+         */
+        public boolean isDebugEnabled() {
+            return true;
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @return
+         */
+        public boolean isErrorEnabled() {
+            return true;
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @return
+         */
+        public boolean isFatalEnabled() {
+            return true;
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @return
+         */
+        public boolean isInfoEnabled() {
+            return true;
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @return
+         */
+        public boolean isTraceEnabled() {
+            return false;
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @return
+         */
+        public boolean isWarnEnabled() {
+            return true;
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @param arg0
+         */
+        public void trace(Object arg0) {
+            
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @param arg0
+         * @param arg1
+         */
+        public void trace(Object arg0, Throwable arg1) {
+            
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @param arg0
+         * @param arg1
+         */
+        public void debug(Object arg0, Throwable arg1) {
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @param arg0
+         * @param arg1
+         */
+        public void info(Object arg0, Throwable arg1) {
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @param arg0
+         * @param arg1
+         */
+        public void warn(Object arg0, Throwable arg1) {
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @param arg0
+         * @param arg1
+         */
+        public void error(Object arg0, Throwable arg1) {
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @param arg0
+         */
+        public void fatal(Object arg0) {
+        }
+
+        /** 
+         * {@inheritDoc}
+         * @param arg0
+         * @param arg1
+         */
+        public void fatal(Object arg0, Throwable arg1) {
         }
     }
 }

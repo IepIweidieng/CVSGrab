@@ -9,8 +9,6 @@ package net.sourceforge.cvsgrab;
 
 import java.util.Vector;
 
-import net.sourceforge.cvsgrab.util.*;
-
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.w3c.dom.Document;
 
@@ -116,7 +114,7 @@ public class RemoteDirectory {
      */
     public void loadContents() throws Exception {
         String url = getUrl();
-        DefaultLogger.getInstance().info("Parsing page: " + url);
+        CVSGrab.getLog().info("Parsing page: " + url);
         Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
         RemoteFile[] files = _remoteRepository.getWebInterface().getFiles(doc);
         for (int i = 0; i < files.length; i++) {

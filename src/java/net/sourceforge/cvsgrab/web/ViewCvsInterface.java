@@ -11,10 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.CvsWebInterface;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
-import net.sourceforge.cvsgrab.util.DefaultLogger;
 
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.util.URIUtil;
@@ -50,8 +50,8 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      * @param htmlPage
      * @throws Exception
      */
-    public void init(String url, Document htmlPage) throws Exception {
-        checkRootUrl(url);
+    public void init(CVSGrab grabber, Document htmlPage) throws Exception {
+        checkRootUrl(grabber.getRootUrl());
         
         JXPathContext context = JXPathContext.newContext(htmlPage);
         Iterator viewCvsTexts = context.iterate("//A[@href]/text()[starts-with(.,'ViewCVS')]");
@@ -275,9 +275,9 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
                 if (beforeLastPart.length() > 0 && lastPart.indexOf("cvs") < 0 && lastPart.indexOf(".") < 0 
                         && lastPart.indexOf("source") < 0 && lastPart.indexOf("src") < 0 
                         && lastPart.indexOf("browse") < 0) {
-                    DefaultLogger.getInstance().warn("The root url " + url + " doesn't seem valid");
+                    CVSGrab.getLog().warn("The root url " + url + " doesn't seem valid");
                     String newRootUrl = url.substring(0, slash) + beforeLastPart;
-                    DefaultLogger.getInstance().warn("Try " + newRootUrl + " as the root url instead");
+                    CVSGrab.getLog().warn("Try " + newRootUrl + " as the root url instead");
                 }
             }
         }
