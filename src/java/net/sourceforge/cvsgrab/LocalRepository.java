@@ -2,21 +2,21 @@
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
  * Distributable under BSD license.
- * See terms of license at gnu.org.
  */
 package net.sourceforge.cvsgrab;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Vector;
 
 import org.netbeans.lib.cvsclient.admin.AdminHandler;
 import org.netbeans.lib.cvsclient.admin.Entry;
-import org.netbeans.lib.cvsclient.admin.StandardAdminHandler;
 import org.netbeans.lib.cvsclient.command.GlobalOptions;
 
 /**
@@ -35,35 +35,34 @@ public class LocalRepository {
     public static final int UPDATE_MERGE_NEEDED = 4;
     public static final int UPDATE_IMPOSSIBLE = 5;
     
-    private AdminHandler _handler = new StandardAdminHandler();
+    private AdminHandler _handler;
     private GlobalOptions _globalOptions = new GlobalOptions();
-    /**
-     * A store of potentially empty directories. When a directory has a file
-     * in it, it is removed from this set. This set allows the prune option
-     * to be implemented.
-     */
-    private final Set _emptyDirectories = new HashSet();
-
     /**
      * The local root of the repository
      */
     private File _localRootDir;
+    /**
+     * The local root of the project
+     */
+    private File _localProjectDir;
     private int _newFiles = 0;
     private int _updatedFiles = 0;
     private int _removedFiles = 0;
     private int _failedUpdates = 0;
+    private boolean _cleanUpdate;
 
     /**
      * Constructor for the LocalRepository object
      *
-     * @param cvsRoot The cvs root 
-     * @param destDir The destination directory
-     * @param packageName The package 
+     * @param cvsGrab The cvs grabber
      */
-    public LocalRepository(String cvsRoot, String destDir, String packageName) {
-        _globalOptions.setCVSRoot(cvsRoot);
+    public LocalRepository(CVSGrab cvsGrab) {
+        _handler = new CVSGrabAdminHandler(cvsGrab);
+        _globalOptions.setCVSRoot(cvsGrab.getCvsRoot());
         _globalOptions.setCheckedOutFilesReadOnly(true);
-        _localRootDir = new File(destDir);
+        _localRootDir = new File(cvsGrab.getDestDir());
+        _cleanUpdate = cvsGrab.isCleanUpdate();
+        _localProjectDir = new File(_localRootDir, cvsGrab.getPackagePath());
     }
     
     /**
@@ -132,6 +131,15 @@ public class LocalRepository {
     }
 
     /**
+     * Gets the cleanUpdate flag.
+     * 
+     * @return the cleanUpdate.
+     */
+    public boolean isCleanUpdate() {
+        return _cleanUpdate;
+    }
+    
+    /**
      * Resets the counters in this class 
      */
     public void resetFileCounts() {
@@ -171,6 +179,11 @@ public class LocalRepository {
                             return UPDATE_NEEDED;
                         }
                     } else {
+                        if (isLocallyModified(file, entry)) {
+                            CVSGrab.getLog().debug("File " + file + " was modified since last update, cannot upload the new version of this file");
+                            CVSGrab.getLog().debug("Last modified date on disk: " + new Date(file.lastModified()));
+                            CVSGrab.getLog().debug("Last modified date on cvs: " + entry.getLastModified());
+                        }
                         return isLocallyModified(file, entry) ? UPDATE_LOCAL_CHANGE : UPDATE_NO_CHANGES;
                     }
                 }
@@ -185,6 +198,32 @@ public class LocalRepository {
         }
     }
 
+    /**
+     * Returns the local version of the remote file
+     * @param remoteFile The remote file
+     * @return The version of the local file, or null if it doesn't exist
+     */
+    public String getLocalVersion(RemoteFile remoteFile) {
+        File file = getLocalFile(remoteFile);
+        
+        if (file.exists()) {
+            try {
+                Entry entry = _handler.getEntry(file);
+                if (entry == null) {
+                    return null;
+                } else {
+                    return entry.getRevision();
+                }
+            } catch (IOException ex) {
+                // ignore
+                ex.printStackTrace();
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    
     private boolean isLocallyModified(File file, Entry entry) {
         // Allow a tolerance of 1 minute because on Windows seconds are omitted
         return (file.lastModified() > entry.getLastModified().getTime() + 60*1000);
@@ -209,8 +248,10 @@ public class LocalRepository {
             entry.setDate(new Date());
             _updatedFiles++;
         } catch (IOException ex) {
+            boolean binary = remoteFile.isBinary();
             String lastModified = Entry.getLastModifiedDateFormatter().format(new Date());
-            entry = new Entry("/" + remoteFile.getName() + "/" + remoteFile.getVersion() + "/" + lastModified + "//");
+            entry = new Entry("/" + remoteFile.getName() + "/" + remoteFile.getVersion() + "/" 
+                    + lastModified + "/" + (binary ? "-kb/" : "/"));
             _newFiles++;
         }
         
@@ -220,9 +261,48 @@ public class LocalRepository {
             _handler.updateAdminData(localDirectory, repositoryPath, entry, _globalOptions);
         } catch (IOException ex) {
             _failedUpdates++;
-            ex.printStackTrace();
-            CVSGrab.getLog().error("Cannot update CVS entry for file " + file);
+            CVSGrab.getLog().error("Cannot update CVS entry for file " + file, ex);
             throw new RuntimeException("Cannot update CVS entry for file " + file);
+        }
+    }
+    
+    /**
+     * Backup a remote file that was locally modified
+     * 
+     * @param remoteFile The remote file
+     */
+    public void backupFile(RemoteFile remoteFile) {
+        File dir = getLocalDir(remoteFile.getDirectory());
+        File file = getLocalFile(remoteFile);
+        File backupFile = new File(dir, ".#" + remoteFile.getName() + "." + remoteFile.getVersion());
+        CVSGrab.getLog().info("Move " + remoteFile.getName() + " to " + backupFile.getName());
+        //file.renameTo(backupFile);
+        InputStream in = null;
+        FileOutputStream out = null;
+        try {
+            try {
+                in = new BufferedInputStream(new FileInputStream(file));
+                out = new FileOutputStream(backupFile);
+                
+                byte[] buffer = new byte[8 * 1024];
+                int count = 0;
+                do {
+                    out.write(buffer, 0, count);
+                    count = in.read(buffer, 0, buffer.length);
+                } while (count != -1);
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            }
+        } catch (IOException ex) {
+            _failedUpdates++;
+            ex.printStackTrace();
+            CVSGrab.getLog().error("Cannot create backup for file " + file);
+            throw new RuntimeException("Cannot create backup for file " + file);
         }
     }
 
@@ -258,7 +338,6 @@ public class LocalRepository {
                 //System.out.println("Null entries in " + dir);
                 return;
             }
-            _emptyDirectories.add(dir);
             for (Iterator i = _handler.getEntries(dir); i.hasNext(); ) {
                 Entry cvsFile = (Entry) i.next();
                 if (cvsFile.isDirectory()) {
@@ -286,19 +365,10 @@ public class LocalRepository {
     }
 
     /**
-     * Remove any directories that don't contain any files
+     * Remove any directory that doesn't contain any files
      */
     public void pruneEmptyDirectories() throws IOException {
-        final Iterator it = _emptyDirectories.iterator();
-        while (it.hasNext()) {
-            final File dir = (File)it.next();
-            // we might have deleted it already (due to recursive delete)
-            // so we need to check existence
-            if (dir.exists()) {
-                pruneEmptyDirectory(dir);
-            }
-        }
-        _emptyDirectories.clear();
+        pruneEmptyDirectory(_localProjectDir);
     }
     
     /**
@@ -315,15 +385,10 @@ public class LocalRepository {
             for (int i = 0; i < contents.length; i++) {
                 if (contents[i].isFile()) {
                     empty = false;
-                }
-                else {
+                } else {
                     if (!contents[i].getName().equals("CVS")) { //NOI18N
                         empty = pruneEmptyDirectory(contents[i]);
                     }
-                }
-
-                if (!empty) {
-                    break;
                 }
             }
 
@@ -357,7 +422,7 @@ public class LocalRepository {
     }
 
     /**
-     * Adds a remote directory in the local filesystem, and updaet the CVS admin entries for that directory.
+     * Adds a remote directory in the local filesystem, and update the CVS admin entries for that directory.
      * 
      * @param remoteDir The remote directory
      */

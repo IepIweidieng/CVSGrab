@@ -2,11 +2,8 @@
  * CVSGrab
  * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
  * Distributable under BSD license.
- * See terms of license at gnu.org.
  */
 package net.sourceforge.cvsgrab;
-
-import net.sourceforge.cvsgrab.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.tools.ant.BuildException;
@@ -25,15 +22,16 @@ public class CVSGrabTask extends Task {
 
     private CVSGrab _grabber = new CVSGrab();
     private boolean _verbose = true;
-    private HttpProxy _proxy = null;
-    private WebAuthentification _web = null;
+    private boolean _quiet = false;
     private int _connections;
+    private WebOptions _webOptions;
 
     /**
      * Constructor for the CVSGrabTask object
      */
     public CVSGrabTask() {
         super();
+        _webOptions = _grabber.getWebOptions();
     }
 
     /**
@@ -42,7 +40,7 @@ public class CVSGrabTask extends Task {
      * @param value The new rootUrl value
      */
     public void setRootUrl(String value) {
-        _grabber.setRootUrl(value);
+        _webOptions.setRootUrl(value);
     }
 
     /**
@@ -51,7 +49,11 @@ public class CVSGrabTask extends Task {
      * @param value The new package value
      */
     public void setPackagePath(String value) {
-        _grabber.setPackagePath(value);
+        _webOptions.setPackagePath(value);
+    }
+    
+    public void setProjectRoot(String value) {
+        _webOptions.setProjectRoot(value);
     }
 
     /**
@@ -87,7 +89,11 @@ public class CVSGrabTask extends Task {
      * @param value The new tag value
      */
     public void setTag(String value) {
-        _grabber.setVersionTag(value);
+        _webOptions.setVersionTag(value);
+    }
+
+    public void setWebInterface(String value) {
+        _webOptions.setWebInterfaceId(value);
     }
 
     /**
@@ -109,6 +115,15 @@ public class CVSGrabTask extends Task {
     }
 
     /**
+     * Sets the clean update 
+     * 
+     * @param value The new cleanUpdate value
+     */
+    public void setCleanUpdate(boolean value) {
+        _grabber.setCleanUpdate(value);
+    }
+    
+    /**
      * Sets the number of simultaneous connections to open
      * @param connections The connections to set.
      */
@@ -121,9 +136,10 @@ public class CVSGrabTask extends Task {
      *
      * @return the nested element for the proxy
      */
-    public HttpProxy createProxy() {
-        _proxy = new HttpProxy();
-        return _proxy;
+    public WebOptions.HttpProxy createProxy() {
+        WebOptions.HttpProxy proxy = _webOptions.new HttpProxy();
+        _webOptions.setHttpProxy(proxy);
+        return proxy;
     }
 
     /**
@@ -131,9 +147,10 @@ public class CVSGrabTask extends Task {
      *
      * @return the nested element for the web
      */
-    public WebAuthentification createWeb() {
-        _web = new WebAuthentification();
-        return _web;
+    public WebOptions.WebAuthentification createWeb() {
+        WebOptions.WebAuthentification auth = _webOptions.new WebAuthentification();
+        _webOptions.setWebAuthentification(auth);
+        return auth;
     }
 
     /**
@@ -155,129 +172,13 @@ public class CVSGrabTask extends Task {
         AntLogger log = new AntLogger(project);
         log.setVerbose(_verbose);
         CVSGrab.setLog(log);
-        if (_proxy != null) {
-            _proxy.setup(_grabber);
-        }
-        if (_web != null) {
-            _web.setup(_grabber);
-        }
-        if (_connections > 0) {
+        _webOptions.setupConnectionSettings();
+
+        if (_connections > 1) {
             ThreadPool.init(_connections);
+            WebBrowser.getInstance().useMultithreading();
         }
         _grabber.grabCVSRepository();
-    }
-
-    /**
-     * Nested element for configuring the proxy for http connections
-     *
-     * @author lclaude
-     * @created May 14, 2002
-     */
-    public class HttpProxy {
-        private String _host = null;
-        private int _port = 0;
-        private String _ntDomain = null;
-        private String _user = null;
-        private String _password = null;
-
-        /**
-         * Setup the proxy
-         *
-         * @param grabber Description of the Parameter
-         * @throws BuildException Description of the Exception
-         */
-        public void setup(CVSGrab grabber) throws BuildException {
-            if (_host != null && _port == 0) {
-                throw new BuildException("port argument is not specified in the proxy");
-            }
-            WebBrowser.getInstance().useProxy(_host, _port, _ntDomain, _user, _password);
-        }
-
-        /**
-         * Sets the host
-         *
-         * @param value The new host value
-         */
-        public void setHost(String value) {
-            _host = value;
-        }
-
-        /**
-         * Sets the port
-         *
-         * @param value The new port value
-         */
-        public void setPort(int value) {
-            _port = value;
-        }
-
-        /**
-         * Sets the nt domain
-         *  
-         * @param ntDomain The new net domain 
-         */
-        public void setNtdomain(String ntDomain) {
-            this._ntDomain = ntDomain;
-        }
-
-        /**
-         * Sets the username
-         *
-         * @param value The new username value
-         */
-        public void setUsername(String value) {
-            _user = value;
-        }
-
-        /**
-         * Sets the password
-         *
-         * @param value The new password value
-         */
-        public void setPassword(String value) {
-            _password = value;
-        }
-
-    }
-
-    /**
-     * Nested element for configuring the web server authentification
-     *
-     * @author lclaude
-     * @created May 14, 2002
-     */
-    public class WebAuthentification {
-        private String _user = null;
-        private String _password = null;
-
-        /**
-         * Setup the web authentification
-         *
-         * @param grabber Description of the Parameter
-         * @throws BuildException Description of the Exception
-         */
-        public void setup(CVSGrab grabber) throws BuildException {
-            WebBrowser.getInstance().useWebAuthentification(_user, _password);
-        }
-
-        /**
-         * Sets the username
-         *
-         * @param value The new username value
-         */
-        public void setUsername(String value) {
-            _user = value;
-        }
-
-        /**
-         * Sets the password
-         *
-         * @param value The new password value
-         */
-        public void setPassword(String value) {
-            _password = value;
-        }
-
     }
 
     /**

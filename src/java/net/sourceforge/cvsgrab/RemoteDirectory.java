@@ -2,16 +2,16 @@
  *  CVSGrab
  *  Author: Ludovic Claude (ludovicc@users.sourceforge.net)
  *  Distributable under BSD license.
- *  See terms of license at gnu.org.
  */
 
 package net.sourceforge.cvsgrab;
 
-import java.util.Vector;
-
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
+
+import java.io.PrintWriter;
+import java.util.Vector;
 
 /**
  * Represents a directory from the remote CVS server
@@ -131,10 +131,36 @@ public class RemoteDirectory {
     }    
     
     /**
+     * Diff the contents of the repository and store the diffs in the file
+     * @param writer
+     */
+    public void diffContents(PrintWriter writer) throws Exception {
+        String url = getUrl();
+        Log log = CVSGrab.getLog();
+        log.info("cvs update: Updating " + getDirectoryPath());
+        Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
+        RemoteFile[] files = _remoteRepository.getWebInterface().getFiles(doc);
+        for (int i = 0; i < files.length; i++) {
+            RemoteFile file = files[i];
+            file.setDirectory(this);
+            int updateStatus = _remoteRepository.getLocalRepository().checkUpdateStatus(file);
+            if (!file.isBinary() && (updateStatus == LocalRepository.UPDATE_LOCAL_CHANGE
+                    || updateStatus == LocalRepository.UPDATE_MERGE_NEEDED)) {
+                file.diff(_remoteRepository.getLocalRepository(), writer);
+            }
+        }
+        String[] directories = _remoteRepository.getWebInterface().getDirectories(doc);
+        for (int i = 0; i < directories.length; i++) {
+            _remoteRepository.registerDirectoryToProcess(new RemoteDirectory(this, directories[i]));
+        }
+    }
+
+    /**
      * {@inheritDoc}
      * @return a string representation
      */
     public String toString() {
         return getDirectoryPath();
     }
+
 }

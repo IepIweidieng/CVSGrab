@@ -1,10 +1,8 @@
 /*
- *  CVSGrab
- *  Author: Ludovic Claude (ludovicc@users.sourceforge.net)
- *  Distributable under BSD license.
- *  See terms of license at gnu.org.
+ * CVSGrab
+ * Author: Ludovic Claude (ludovicc@users.sourceforge.net)
+ * Distributable under BSD license.
  */
-
 package net.sourceforge.cvsgrab;
 
 import java.io.BufferedInputStream;
@@ -110,7 +108,7 @@ public class WebBrowser {
     public WebBrowser() {
         super();
         CookiePolicy.setDefaultPolicy(CookiePolicy.COMPATIBILITY);
-        _client = new HttpClient(new MultiThreadedHttpConnectionManager());
+        _client = new HttpClient();
         _parser = new DOMParser();
         try {
             _parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
@@ -181,6 +179,13 @@ public class WebBrowser {
     }  
     
     /**
+     * Allow simultaneous connections on different threads.
+     */
+    public void useMultithreading() {
+        _client = new HttpClient(new MultiThreadedHttpConnectionManager());
+    }
+    
+    /**
      * Execute a http method
      * 
      * @param method The method
@@ -216,7 +221,7 @@ public class WebBrowser {
         }
     
         if (statusCode >= 400) {
-            CVSGrab.getLog().error("Page not found (error " + statusCode + ")");
+            CVSGrab.getLog().debug("Page not found (error " + statusCode + ")");
             throw new RuntimeException("Error when reading " + method.getPath());
         }
     
@@ -228,7 +233,7 @@ public class WebBrowser {
                 String redirectLocation = locationHeader.getValue();
                 
                 method.releaseConnection();    
-                CVSGrab.getLog().error("Redirect to " + redirectLocation);
+                CVSGrab.getLog().debug("Redirect to " + redirectLocation);
     
                 HttpMethod redirectMethod = new GetMethod(redirectLocation);
     
@@ -256,32 +261,39 @@ public class WebBrowser {
     public String getResponse(HttpMethod method) {
         HttpMethod lastMethod = executeMethod(method);
         String response = null;
-        // Gzip support by Ralf Stoffels (rstoffels)
-        if (lastMethod.getResponseHeader("Content-Encoding").getValue().equals("gzip")) {
-            try {
-                InputStream instream = lastMethod.getResponseBodyAsStream();
-                if (instream != null) {
-                    instream = new GZIPInputStream(lastMethod.getResponseBodyAsStream());
+        try {
+            // Gzip support by Ralf Stoffels (rstoffels)
+            String contentEncoding = null;
+            if (lastMethod.getResponseHeader("Content-Encoding") != null) {
+                contentEncoding = lastMethod.getResponseHeader("Content-Encoding").getValue();
+            }
+            if ("gzip".equalsIgnoreCase(contentEncoding)) {
+                try {
+                    InputStream instream = lastMethod.getResponseBodyAsStream();
                     if (instream != null) {
-                        ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-                        byte[] buffer = new byte[4096];
-                        int len;
-                        while ((len = instream.read(buffer)) > 0) {
-                            outstream.write(buffer, 0, len);
+                        instream = new GZIPInputStream(lastMethod.getResponseBodyAsStream());
+                        if (instream != null) {
+                            ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+                            byte[] buffer = new byte[4096];
+                            int len;
+                            while ((len = instream.read(buffer)) > 0) {
+                                outstream.write(buffer, 0, len);
+                            }
+                            outstream.close();
+                            response = new String(outstream.toByteArray(),
+                                    ((HttpMethodBase) lastMethod).getResponseCharSet());
                         }
-                        outstream.close();
-                        response = new String(outstream.toByteArray(),
-                                ((HttpMethodBase) lastMethod).getResponseCharSet());
                     }
                 }
+                catch (IOException e) {
+                    CVSGrab.getLog().error("I/O failure reading response body", e);
+                }
+            } else {
+                response = lastMethod.getResponseBodyAsString();
             }
-            catch (IOException e) {
-                CVSGrab.getLog().error("I/O failure reading response body", e);
-            }
-        } else {
-            response = lastMethod.getResponseBodyAsString();
+        } finally {
+            lastMethod.releaseConnection();
         }
-        lastMethod.releaseConnection();
         return response;    
     }
     
@@ -304,25 +316,29 @@ public class WebBrowser {
 
     public void loadFile(HttpMethod method, File destFile) throws Exception {
         HttpMethod lastMethod = executeMethod(method);
-        InputStream in = null;
-        FileOutputStream out = null;
         try {
-            in = new BufferedInputStream(lastMethod.getResponseBodyAsStream());
-            out = new FileOutputStream(destFile);
-
-            byte[] buffer = new byte[8 * 1024];
-            int count = 0;
-            do {
-                out.write(buffer, 0, count);
-                count = in.read(buffer, 0, buffer.length);
-            } while (count != -1);
+            InputStream in = null;
+            FileOutputStream out = null;
+            try {
+                in = new BufferedInputStream(lastMethod.getResponseBodyAsStream());
+                out = new FileOutputStream(destFile);
+                
+                byte[] buffer = new byte[8 * 1024];
+                int count = 0;
+                do {
+                    out.write(buffer, 0, count);
+                    count = in.read(buffer, 0, buffer.length);
+                } while (count != -1);
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            }
         } finally {
-            if (out != null) {
-                out.close();
-            }
-            if (in != null) {
-                in.close();
-            }
+            lastMethod.releaseConnection();
         }
     }
 }

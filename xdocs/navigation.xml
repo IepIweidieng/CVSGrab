@@ -54,7 +54,7 @@
       href="http://scope.sourceforge.net" />
 
       <item name="Middlegen"
-      href="http://middlegen.sourceforge.net" />
+      href="http://sourceforge.net/projects/middlegen" />
 
       <item name="XDoclet JDO plugin"
       href="http://xdoclet.sourceforge.net/ant/xdoclet/modules/jdo/JdoDocletTask.html" />
@@ -65,6 +65,10 @@
 
 <!-- Google Search -->
     <search />
+    
+    <a href="http://www.mozilla.org/products/firefox/" title="Get Firefox - Web Browsing Redefined">
+      <img src="http://www.mozilla.org/products/firefox/buttons/getfirefox_88x31.png" width="88" height="31" border="0" alt="Get Firefox"/>
+    </a>
   </body>
 </project>
 

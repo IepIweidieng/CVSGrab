@@ -1,9 +1,3 @@
-/*
- * Created on 12 oct. 2003
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
@@ -39,7 +33,7 @@ public class ViewCvs0_7InterfaceTest extends AbstractTestCase {
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_7.html");
         CVSGrab grabber = new CVSGrab();
-        grabber.setRootUrl("http://dev.eclipse.org/viewcvs/index.cgi/");
+        grabber.getWebOptions().setRootUrl("http://dev.eclipse.org/viewcvs/index.cgi/");
         _interface.detect(grabber, doc);
         
         assertEquals("ViewCVS 0.7", _interface.getType());

@@ -5,11 +5,22 @@
  */
 package net.sourceforge.cvsgrab;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.LineNumberReader;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
-import net.sourceforge.cvsgrab.util.*;
 import net.sourceforge.cvsgrab.util.CVSGrabLog;
+import net.sourceforge.cvsgrab.util.ThreadPool;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -25,7 +36,6 @@ import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.LogFactoryImpl;
-import org.w3c.dom.Document;
 
 /**
  * Application class for CVSGrab. <br>
@@ -37,47 +47,56 @@ import org.w3c.dom.Document;
  * @version 1.0
  */
 public class CVSGrab {
-    private static final String CONNECTIONS_OPTION = "connections";
-    private static final String WEB_PASSWORD_OPTION = "webPassword";
-    private static final String WEB_USER_OPTION = "webUser";
-    private static final String PROXY_PASSWORD_OPTION = "proxyPassword";
-    private static final String PROXY_USER_OPTION = "proxyUser";
-    private static final String PROXY_NTDOMAIN_OPTION = "proxyNTDomain";
-    private static final String PROXY_PORT_OPTION = "proxyPort";
-    private static final String PROXY_HOST_OPTION = "proxyHost";
-    private static final String PRUNE_OPTION = "prune";
-    private static final String QUIET_OPTION = "quiet";
-    private static final String VERBOSE_OPTION = "verbose";
-    private static final String DEBUG_WIRE_OPTION = "debugWire";
-    private static final String DEBUG_OPTION = "debug";
-    private static final String CVS_ROOT_OPTION = "cvsRoot";
-    private static final String WEB_INTERFACE_OPTION = "webInterface";
-    private static final String PROJECT_ROOT_OPTION = "projectRoot";
-    private static final String QUERY_PARAMS_OPTION = "queryParams";
-    private static final String TAG_OPTION = "tag";
-    private static final String PACKAGE_DIR_OPTION = "packageDir";
-    private static final String DEST_DIR_OPTION = "destDir";
-    private static final String PACKAGE_PATH_OPTION = "packagePath";
-    private static final String ROOT_URL_OPTION = "rootUrl";
-    private static final String LIST_WEB_INTERFACES_OPTION = "listWebInterfaces";
-    private static final String HELP_OPTION = "help";
+
+    /**
+     * The dummy root to use if the cvsRoot option is not set
+     */
     public static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
+    
+    public static final String CONNECTIONS_OPTION = "connections";
+    public static final String WEB_PASSWORD_OPTION = "webPassword";
+    public static final String WEB_USER_OPTION = "webUser";
+    public static final String PROXY_PASSWORD_OPTION = "proxyPassword";
+    public static final String PROXY_USER_OPTION = "proxyUser";
+    public static final String PROXY_NTDOMAIN_OPTION = "proxyNTDomain";
+    public static final String PROXY_PORT_OPTION = "proxyPort";
+    public static final String PROXY_HOST_OPTION = "proxyHost";
+    public static final String PRUNE_OPTION = "prune";
+    public static final String QUIET_OPTION = "quiet";
+    public static final String VERBOSE_OPTION = "verbose";
+    public static final String DEBUG_WIRE_OPTION = "debugWire";
+    public static final String DEBUG_OPTION = "debug";
+    public static final String CVS_ROOT_OPTION = "cvsRoot";
+    public static final String WEB_INTERFACE_OPTION = "webInterface";
+    public static final String PROJECT_ROOT_OPTION = "projectRoot";
+    public static final String QUERY_PARAMS_OPTION = "queryParams";
+    public static final String TAG_OPTION = "tag";
+    public static final String PACKAGE_DIR_OPTION = "packageDir";
+    public static final String DEST_DIR_OPTION = "destDir";
+    public static final String PACKAGE_PATH_OPTION = "packagePath";
+    public static final String ROOT_URL_OPTION = "rootUrl";
+    public static final String CLEAN_UPDATE_OPTION = "clean";
+    public static final String LIST_WEB_INTERFACES_CMD = "listWebInterfaces";
+    public static final String DIFF_CMD = "diff";
+    public static final String HELP_CMD = "help";
+    
+    private static final String[] WEB_OPTIONS = {ROOT_URL_OPTION, PACKAGE_PATH_OPTION, 
+            PROJECT_ROOT_OPTION, TAG_OPTION, QUERY_PARAMS_OPTION, WEB_INTERFACE_OPTION,
+            PROXY_HOST_OPTION, PROXY_PORT_OPTION, PROXY_NTDOMAIN_OPTION, PROXY_USER_OPTION,
+            PROXY_PASSWORD_OPTION, WEB_USER_OPTION, WEB_PASSWORD_OPTION};
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
-    private static final String VERSION = "2.0.3";
+    private static final String VERSION = "2.1";
+    private static final String DEFAULT_DEST_DIR = ".";
     private static Log LOG;
 
     private boolean _pruneEmptyDirs = false;
+    private boolean _cleanUpdate;
     private boolean _error = false;
-    private String _rootUrl;
-    private String _packagePath;
-    private String _projectRoot;
     private String _packageDir;
-    private String _destDir;
-    private String _versionTag;
-    private String _queryParams;
+    private String _destDir = DEFAULT_DEST_DIR;
     private String _cvsRoot = DUMMY_ROOT;
-    private String _webInterfaceId = null;
     private Options _options;
+    private WebOptions _webOptions = new WebOptions();
 
     public static Log getLog() {
         if (LOG == null) {
@@ -95,9 +114,12 @@ public class CVSGrab {
      */
     public CVSGrab() {
         _options = new Options();
-        _options.addOption(HELP_OPTION, false, "This help message");
-        _options.addOption(LIST_WEB_INTERFACES_OPTION, false, "Lists the web interfaces to the CVS repository that are" 
+        _options.addOption(HELP_CMD, false, "[Command] Prints this help message");
+        _options.addOption(LIST_WEB_INTERFACES_CMD, false, "[Command] Lists the web interfaces to the CVS repository that are" 
                 + "\t supported by this tool");
+        _options.addOption(new OptionBuilder()
+                .withDescription("[Command] Builds the differences against the same remote version. Result is stored in the file patch.txt")
+                .create(DIFF_CMD));
         _options.addOption(new OptionBuilder().withArgName("url")
                 .hasArg()
                 .withDescription("The root url used to access the CVS repository from a web browser")
@@ -126,7 +148,7 @@ public class CVSGrab {
                 .create(WEB_INTERFACE_OPTION));
         _options.addOption(new OptionBuilder().withArgName("dir")
                 .hasArg()
-                .withDescription("The destination directory")
+                .withDescription("[optional] The destination directory.")
                 .create(DEST_DIR_OPTION));
         _options.addOption(new OptionBuilder().withArgName("dir")
                 .hasArg()
@@ -139,6 +161,9 @@ public class CVSGrab {
         _options.addOption(new OptionBuilder()
                 .withDescription("[optional] Prune (remove) the empty directories.")
                 .create(PRUNE_OPTION));
+        _options.addOption(new OptionBuilder()
+                .withDescription("[optional] Clean update. Backup locally modified files and download anyway the latest version of the file.")
+                .create(CLEAN_UPDATE_OPTION));
         Option debugOption = new OptionBuilder()
                 .withDescription("[optional] Turn debugging on.")
                 .create(DEBUG_OPTION);
@@ -200,7 +225,7 @@ public class CVSGrab {
         try {
             grabber.run(args);
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             grabber.printHelp();
         }
     }
@@ -210,11 +235,11 @@ public class CVSGrab {
         CommandLine cmd = parser.parse( _options, args);
         
         // Help and list supported web interfaces
-        if (cmd.hasOption(HELP_OPTION)) {
+        if (cmd.hasOption(HELP_CMD)) {
             printHelp();
             return;
         }
-        if (cmd.hasOption(LIST_WEB_INTERFACES_OPTION)) {
+        if (cmd.hasOption(LIST_WEB_INTERFACES_CMD)) {
             printWebInterfaces();
             return;
         }
@@ -241,24 +266,14 @@ public class CVSGrab {
         } 
         
         // Handle remote repository options
-        if (cmd.hasOption(ROOT_URL_OPTION)) {
-            setRootUrl(cmd.getOptionValue(ROOT_URL_OPTION));
-        } 
-        if (cmd.hasOption(PACKAGE_PATH_OPTION)) {
-            setPackagePath(cmd.getOptionValue(PACKAGE_PATH_OPTION));
-        } 
-        if (cmd.hasOption(PROJECT_ROOT_OPTION)) {
-            setProjectRoot(cmd.getOptionValue(PROJECT_ROOT_OPTION));
-        } 
-        if (cmd.hasOption(TAG_OPTION)) {
-            setVersionTag(cmd.getOptionValue(TAG_OPTION));
-        } 
-        if (cmd.hasOption(QUERY_PARAMS_OPTION)) {
-            setQueryParams(cmd.getOptionValue(QUERY_PARAMS_OPTION));
-        } 
-        if (cmd.hasOption(WEB_INTERFACE_OPTION)) {
-            setWebInterfaceId(cmd.getOptionValue(WEB_INTERFACE_OPTION));
-        } 
+        Properties webProperties = new Properties();
+        for (int i = 0; i < WEB_OPTIONS.length; i++) {
+            String option = WEB_OPTIONS[i];
+            if (cmd.hasOption(option)) {
+                webProperties.put(option, cmd.getOptionValue(option));
+            }
+        }
+        _webOptions.readProperties(webProperties);
         
         // Handle local repository options 
         if (cmd.hasOption(DEST_DIR_OPTION)) {
@@ -273,40 +288,37 @@ public class CVSGrab {
         if (cmd.hasOption(PRUNE_OPTION)) {
             setPruneEmptyDirs(true);
         } 
+        if (cmd.hasOption(CLEAN_UPDATE_OPTION)) {
+            setCleanUpdate(true);
+        } 
         
         // Handle connection settings
-        if (cmd.hasOption(PROXY_HOST_OPTION)) {
-            String portStr = cmd.getOptionValue(PROXY_PORT_OPTION);
-            if (portStr == null) {
-                System.err.println("Argument -" + PROXY_PORT_OPTION + " expected");
-                printHelp();
-                return;
-            }
-            int port = -1;
-            try {
-                port = Integer.parseInt(portStr);
-            } catch (NumberFormatException e) {
-                System.err.println("Argument -" + PROXY_PORT_OPTION + " must be a number");
-                printHelp();
-                return;
-            }
-            WebBrowser.getInstance().useProxy(cmd.getOptionValue(PROXY_HOST_OPTION), 
-                    port, 
-                    cmd.getOptionValue(PROXY_NTDOMAIN_OPTION), 
-                    cmd.getOptionValue(PROXY_USER_OPTION), 
-                    cmd.getOptionValue(PROXY_PASSWORD_OPTION));
-        } 
-        if (cmd.hasOption(WEB_USER_OPTION)) {
-            WebBrowser.getInstance().useWebAuthentification(cmd.getOptionValue(WEB_USER_OPTION), 
-                    cmd.getOptionValue(WEB_PASSWORD_OPTION));
-        } 
+        _webOptions.setupConnectionSettings();
         if (cmd.hasOption(CONNECTIONS_OPTION)) {
             int connections = Integer.parseInt(cmd.getOptionValue(CONNECTIONS_OPTION));
-            if (connections > 0) {
+            if (connections > 1) {
                 ThreadPool.init(connections);
+                WebBrowser.getInstance().useMultithreading();
             }
         }
-        grabCVSRepository();
+        
+        // Handle file types
+        String cvsGrabHome = System.getProperty("cvsgrab.home");
+        File file = new File(cvsGrabHome, "FileTypes.properties");
+        try {
+            Properties fileTypes = new Properties();
+            InputStream is = new FileInputStream(file);
+            fileTypes.load(is);
+            RemoteFile.setFileTypes(fileTypes);
+        } catch (IOException ex) {
+            getLog().error("Cannot read the file " + file.getPath());
+        }
+        
+        if (cmd.hasOption(DIFF_CMD)) {
+            diffCVSRepository();
+        } else {
+            grabCVSRepository();
+        }
     }
 
     private static void cvsgrabLogLevel(String simpleLevel, String jdk14Level) {
@@ -382,33 +394,35 @@ public class CVSGrab {
     }
     
     /**
+     * Gets the cleanUpdate.
+     * 
+     * @return the cleanUpdate.
+     */
+    public boolean isCleanUpdate() {
+        return _cleanUpdate;
+    }
+    
+    /**
+     * Sets the cleanUpdate.
+     * 
+     * @param cleanUpdate The cleanUpdate to set.
+     */
+    public void setCleanUpdate(boolean cleanUpdate) {
+        _cleanUpdate = cleanUpdate;
+    }
+    
+    /**
      * @return Returns the rootUrl.
      */
     public String getRootUrl() {
-        return _rootUrl;
-    }
-
-    /**
-     * Sets the url for the root of the CVS repository accessible via ViewCVS
-     * @param rootUrl The rootUrl to set.
-     */
-    public void setRootUrl(String rootUrl) {
-        _rootUrl = WebBrowser.forceFinalSlash(rootUrl);
+        return _webOptions.getRootUrl();
     }
 
     /**
      * @return Returns the packagePath.
      */
     public String getPackagePath() {
-        return _packagePath;
-    }
-
-    /**
-     * Sets the path of the package/module to update from CVS
-     * @param packagePath The packagePath to set.
-     */
-    public void setPackagePath(String packagePath) {
-        _packagePath = WebBrowser.forceFinalSlash(packagePath);
+        return _webOptions.getPackagePath();
     }
 
     /**
@@ -460,43 +474,24 @@ public class CVSGrab {
     }
 
     /**
-     * @return The project root, used by CVSwith multiple repositories 
+     * @return The project root, used by CVS with multiple repositories 
      */
     public String getProjectRoot() {
-        return _projectRoot;
-    }
-    
-    public void setProjectRoot(String projectRoot) {
-        _projectRoot = projectRoot;
+        return _webOptions.getProjectRoot();
     }
     
     /**
      * @return Returns the versionTag.
      */
     public String getVersionTag() {
-        return _versionTag;
-    }
-
-    /**
-     * Sets the name of the tagged version of the files to retrieve, or null  
-     * @param versionTag The versionTag to set.
-     */
-    public void setVersionTag(String versionTag) {
-        _versionTag = versionTag;
+        return _webOptions.getVersionTag();
     }
 
     /**
      * @return Returns the queryParams.
      */
     public String getQueryParams() {
-        return _queryParams;
-    }
-
-    /**
-     * @param queryParams The queryParams to set.
-     */
-    public void setQueryParams(String queryParams) {
-        _queryParams = queryParams;
+        return _webOptions.getQueryParams();
     }
 
     /**
@@ -504,108 +499,36 @@ public class CVSGrab {
      * @return the webInterfaceId.
      */
     public String getWebInterfaceId() {
-        return _webInterfaceId;
+        return _webOptions.getWebInterfaceId();
     }
 
     /**
-     * Sets the webInterfaceId.
-     * @param webInterfaceId The webInterfaceId to set.
+     * @return the web options
      */
-    public void setWebInterfaceId(String webInterfaceId) {
-        _webInterfaceId = webInterfaceId;
+    public WebOptions getWebOptions() {
+        return _webOptions;
     }
-
+        
     /**
      * Main method for getting and updating files.
      */
     public void grabCVSRepository() {
-        if (getLog().isInfoEnabled()) {
-            getLog().info("CVSGrab version " + VERSION + " starting...");
-        } else {
-            System.out.println("CVSGrab version " + VERSION + " starting...");
-        }
+        printHeader();
+        loadExistingAdminFiles();
 
-        if (_rootUrl == null || _destDir == null || _packagePath == null) {
-            if (_rootUrl == null) {
-                System.out.println("Error: rootUrl parameter is mandatory");
-            }
-            if (_destDir == null) {
-                System.out.println("Error: destDir parameter is mandatory");
-            }
-            if (_packagePath == null) {
-                System.out.println("Error: packagePath parameter is mandatory");
-            }
-            printHelp();
-            return;
-        }
-        
+        if (!checkMandatoryParameters()) return;
+                
         try {
-            // check the parameters
-            File dd = new File(_destDir);
-            if (!dd.exists()) {
-                throw new RuntimeException("Destination directory " + _destDir + " doesn't exist");
-            }
-            if (!dd.isDirectory()) {
-                throw new RuntimeException("Destination " + _destDir + " is not a directory");
-            }
-            try {
-                _destDir = dd.getCanonicalPath().replace(File.separatorChar, '/');
-            } catch (IOException ex) {
-                throw new IllegalArgumentException("Could not locate the destination directory " + _destDir + ", error was " + ex.getMessage());
-            }
-            
-            // Tests the connection to the website
-            try {
-                GetMethod connectMethod = new GetMethod(_rootUrl);
-                WebBrowser.getInstance().executeMethod(connectMethod);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new Exception("Cannot connect to the website using url " + _rootUrl + ", check your proxy settings");
-            }
+            checkDestDir();
+            checkWebConnection();
 
-            CvsWebInterface webInterface = null;
-            if (_webInterfaceId != null) {
-                // Forces the use of a particular web interface and version of that interface
-                webInterface = CvsWebInterface.getInterface(this, _webInterfaceId);
-                Document document = webInterface.getDocumentForDetect(this);
-                if (document == null) {
-                    String testUrl = webInterface.getBaseUrl(this);
-                    String testUrl2 = webInterface.getAltBaseUrl(this);
-                    getLog().error("Could not detect the type of the web interface. Check that those urls are valid:");
-                    if (testUrl != null) {
-                        getLog().error(testUrl);
-                    }
-                    if (testUrl2 != null) {
-                        getLog().error(testUrl2);
-                    }
-                    throw new RuntimeException("Could not detect the type of the web interface");
-                }
-                try {
-                    webInterface.detect(this, document);
-                } catch (DetectException ex) {
-                    // ignore, suppose that the user knows what he's doing
-                }
-            } else {
-                // Auto detection of the type of the remote interface
-                webInterface = detectWebInterface();
-            }
-            if (webInterface == null) {
-                getLog().error("Could not detect the type of the web interface");
-                throw new RuntimeException("Could not detect the type of the web interface");
-            } else {
-                getLog().info("Detected cvs web interface: " + webInterface.getType());
-            }
+            CvsWebInterface webInterface = getWebInteface();
             
-            webInterface.setQueryParams(_queryParams);
-            if (_versionTag != null) {
-                webInterface.setVersionTag(_versionTag);
-            }
-            
-            LocalRepository localRepository = new LocalRepository(_cvsRoot, _destDir, _packagePath);
-            RemoteRepository remoteRepository = new RemoteRepository(_rootUrl, localRepository);
+            LocalRepository localRepository = new LocalRepository(this);
+            RemoteRepository remoteRepository = new RemoteRepository(getRootUrl(), localRepository);
             remoteRepository.setWebInterface(webInterface);
 
-            RemoteDirectory remoteDir = new RemoteDirectory(remoteRepository, _packagePath, getPackageDir());
+            RemoteDirectory remoteDir = new RemoteDirectory(remoteRepository, getPackagePath(), getPackageDir());
             remoteRepository.registerDirectoryToProcess(remoteDir);
             while (remoteRepository.hasDirectoryToProcess()) {
                 try {
@@ -641,6 +564,74 @@ public class CVSGrab {
                 getLog().error(failedUpdateCount + " files could not be downloaded");
             }
         } catch (Exception ex) {
+            getLog().error(ex.getMessage());
+            _error = true;
+        }
+        
+        if (ThreadPool.getInstance() != null) {
+            ThreadPool.getInstance().destroy();
+        }
+        
+        if (_error) {
+            getLog().error("There were some errors.");
+            getLog().error("If you cannot find an obvious answer, report the problem to " + FORUM_URL);
+        }
+    }
+
+    /**
+     * Builds the differences against the remote repository
+     */
+    public void diffCVSRepository() {
+        printHeader();
+        loadExistingAdminFiles();
+
+        if (!checkMandatoryParameters()) return;
+                
+        try {
+            checkDestDir();
+            checkWebConnection();
+
+            CvsWebInterface webInterface = getWebInteface();
+            File diffFile = new File("patch.txt");
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(diffFile)));
+            
+            LocalRepository localRepository = new LocalRepository(this);
+            RemoteRepository remoteRepository = new RemoteRepository(getRootUrl(), localRepository);
+            remoteRepository.setWebInterface(webInterface);
+
+            RemoteDirectory remoteDir = new RemoteDirectory(remoteRepository, getPackagePath(), getPackageDir());
+            remoteRepository.registerDirectoryToProcess(remoteDir);
+            while (remoteRepository.hasDirectoryToProcess()) {
+                try {
+                    remoteDir = remoteRepository.nextDirectoryToProcess();
+                    remoteDir.diffContents(writer);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    getLog().error("Error while getting files from " + remoteDir.getUrl());
+                    _error = true;
+                }
+            }
+
+            // Print a summary
+            int newFileCount = localRepository.getNewFileCount();
+            int updatedFileCount = localRepository.getUpdatedFileCount();
+            int removedFileCount = localRepository.getRemovedFileCount();
+            int failedUpdateCount = localRepository.getFailedUpdateCount();
+            getLog().info("-----");
+            if (newFileCount > 0) {
+                getLog().info(newFileCount + " new files");
+            }
+            if (updatedFileCount > 0) {
+                getLog().info(updatedFileCount + " updated files");
+            }
+            if (removedFileCount > 0) {
+                getLog().info(removedFileCount + " removed files");
+            }
+            if (failedUpdateCount > 0) {
+                getLog().error(failedUpdateCount + " files could not be downloaded");
+            }
+            getLog().info("Differences stored in " + diffFile.getAbsolutePath());
+        } catch (Exception ex) {
             ex.printStackTrace();
             getLog().error(ex.getMessage());
             _error = true;
@@ -656,6 +647,118 @@ public class CVSGrab {
         }
     }
 
+    private CvsWebInterface getWebInteface() throws Exception {
+        CvsWebInterface webInterface = null;
+        if (getWebInterfaceId() != null) {
+            // Forces the use of a particular web interface and version of that interface
+            webInterface = CvsWebInterface.findInterface(this, getWebInterfaceId());
+        } else {
+            // Auto detection of the type of the remote interface
+            webInterface = detectWebInterface();
+        }
+        if (webInterface == null) {
+            getLog().error("Could not detect the type of the web interface");
+            throw new RuntimeException("Could not detect the type of the web interface");
+        } else {
+            getLog().info("Detected cvs web interface: " + webInterface.getType());
+        }
+        
+        webInterface.setQueryParams(getQueryParams());
+        if (getVersionTag() != null) {
+            webInterface.setVersionTag(getVersionTag());
+        }
+        return webInterface;
+    }
+
+    private void checkWebConnection() throws Exception {
+        // Tests the connection to the website
+        String[] urls = CvsWebInterface.getBaseUrls(this);
+        Map errors = new HashMap();
+        for (int i = 0; i < urls.length; i++) {
+            try {
+                GetMethod connectMethod = new GetMethod(urls[i]);
+                WebBrowser.getInstance().executeMethod(connectMethod);
+                return;
+            } catch (Exception ex) {
+                errors.put(urls[i], ex.getMessage());
+            }
+        }
+        for (Iterator i = errors.keySet().iterator(); i.hasNext();) {
+            String  url = (String) i.next();
+            System.err.println("When attempting to connect to " + url + ", got error: " + errors.get(url));
+        }
+        throw new Exception("Cannot connect to the website, check your proxy settings");
+    }
+
+    private void checkDestDir() {
+        File dd = new File(_destDir);
+        if (!dd.exists()) {
+            throw new RuntimeException("Destination directory " + _destDir + " doesn't exist");
+        }
+        if (!dd.isDirectory()) {
+            throw new RuntimeException("Destination " + _destDir + " is not a directory");
+        }
+        try {
+            _destDir = dd.getCanonicalPath().replace(File.separatorChar, '/');
+        } catch (IOException ex) {
+            throw new IllegalArgumentException("Could not locate the destination directory " + _destDir + ", error was " + ex.getMessage());
+        }
+    }
+
+    private boolean checkMandatoryParameters() {
+        if (getRootUrl() == null || getPackagePath() == null) {
+            if (getRootUrl() == null) {
+                System.out.println("Error: rootUrl parameter is mandatory");
+            }
+            if (getPackagePath() == null) {
+                System.out.println("Error: packagePath parameter is mandatory");
+            }
+            printHelp();
+            return false;
+        }
+        return true;
+    }
+
+    private void loadExistingAdminFiles() {
+        // Try to load the web options from the CVS admin files
+        File webRepositoryAdmin = new File(_destDir, "CVS/WebRepository");
+        if (webRepositoryAdmin.exists()) {
+            Properties webProperties = new Properties();
+            try {
+                webProperties.load(new FileInputStream(webRepositoryAdmin));
+                // Now merge with the current properties
+                _webOptions.writeProperties(webProperties);
+                // And put back the result in the WebOptions
+                _webOptions.readProperties(webProperties);
+                // Update local settings
+                if (getDestDir().equals(DEFAULT_DEST_DIR)) {
+                    setDestDir(_destDir);
+                }
+            } catch (IOException e) {
+                getLog().warn("Cannot read file " + webRepositoryAdmin.getAbsolutePath(), e);
+            }
+        }
+        // Read the cvsRoot from CVS admin files
+        File rootAdmin = new File(_destDir, "CVS/Root");
+        if (rootAdmin.exists() && _cvsRoot.equals(DUMMY_ROOT)) {
+            try {
+                FileReader reader = new FileReader(rootAdmin);
+                LineNumberReader lnReader = new LineNumberReader(reader);
+                _cvsRoot = lnReader.readLine();
+            } catch (IOException e) {
+                getLog().warn("Cannot read file " + rootAdmin.getAbsolutePath(), e);
+            }
+        }
+    }
+
+    private void printHeader() {
+        if (getLog().isInfoEnabled()) {
+            getLog().info("CVSGrab version " + VERSION + " starting...");
+        } else {
+            System.out.println("CVSGrab version " + VERSION + " starting...");
+        }
+    }
+
     private CvsWebInterface detectWebInterface() {
         CvsWebInterface webInterface = null;
         try {
@@ -665,5 +768,5 @@ public class CVSGrab {
         }    
         return webInterface;
     }
-    
+
 }

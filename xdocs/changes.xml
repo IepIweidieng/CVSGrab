@@ -10,48 +10,49 @@
 
 <!-- action types are add/update/fix/remove -->
   <body>
-    <release version="2.1" date="planned features">
-      <action dev="ludovicc" type="add">TODO: add diff
-      functionality.</action>
-
+    <release version="2.2" date="planned features">
       <action dev="ludovicc" type="add">TODO: add module support by
-      parsing the CVSROOT/modules file.</action>
+          parsing the CVSROOT/modules file.</action>
+
+      <action dev="ludovicc" type="add">TODO: add unique -url parameter, 
+          guess from this param the root url, package url, project root</action>
 
       <action dev="ludovicc" type="add">TODO: add option to check
-      out files in DOS mode, UNIX mode</action>
+          out files in DOS mode, UNIX mode</action>
 
-      <action dev="ludovicc" type="add">TODO: add support
-      for gz-compressed web pages</action>
+    </release>
+    
+    <release version="2.1" date="planned features">
+      <action dev="ludovicc" type="add">TODO: add diff
+          functionality. Feature request from Aslak Helsoy (and me!)</action>
 
-      <action dev="ludovicc" type="add">Contributed by Amaury
-      Forgeot d'Arc. TODO: Also, I think that an option that forces
-      the update of older files would be useful, especially when
-      one changes the version tag. Maybe this check should be
-      removed completely, and replaced by setting the read-only
-      attribute of the files? Then a read-only file would be
-      replaced anyway, whereas read/write files would trigger the
-      error "cannot clobber writeable file xxx". (an "error", not
-      an "info" log message).</action>
+      <action dev="ludovicc" type="add">TODO: running cvsgrab on a repository changes the
+          modification date of the files.</action>
 
-      <action dev="ludovicc" type="add">TODO: I'm curious as to
-      ways to emulate -kb (binary file checkout/update)
-      functionality in CVSGrab. One of the repositories I use mixes
-      binary files with source, and it's important for updating
-      binary files later with conventional CVS that the -kb flag be
-      set in CVS/Entries. I'd be much appreciative if this feature
-      could be added to a future version of CVSGrab, or if someone
-      could point out how to enable it now (I can't seem to find
-      anything on it in the CVSGrab documents, so I'm not sure if
-      it exists already or not). If someone more familiar with
-      CVSGrab could even point out where such a modification needs
-      to go, that would be most useful, as I could possibly add the
-      feature myself.</action>
+      <action dev="ludovicc" type="add">store the cvsgrab options like the
+          root url in the CVS admin files. This allow you to execute cvsgrab the second
+          time with no parameters, as it can locate the web repository from those admin files.
+      </action>
 
-      <action dev="ludovicc" type="fix">TODO: pruneEmptyDirs doesn't remove the
-      pruned directories from the CVS entries.</action>
+      <action dev="ludovicc" type="add">Add support for Chora 2.0.
+      </action>
 
-      <action dev="ludovicc" type="update">Add support for gzipped content. Patch
-      provided by Ralf Stoffels.</action>
+      <action dev="ludovicc" type="add">Add a clean update option,
+          to force downloading the latest version of a locally modified
+          file. Feature request from Amaury Forgeot d'Arc.</action>
+
+      <action dev="ludovicc" type="add">Detect file type (text or binary)
+          and set the =kb flag in the CVS entries for binary files.
+          Feature request from Amaury Forgeot d'Arc.</action>
+
+      <action dev="ludovicc" type="fix">Fixed: pruneEmptyDirs doesn't remove the
+          pruned directories from the CVS entries.</action>
+
+      <action dev="ludovicc" type="update">Support cvsWeb 1.0 with multiple project roots.
+          Necessary to get files from http://cvs.hispalinux.es/cgi-bin/cvsweb/?cvsroot=mono</action>
+      
+      <action dev="ludovicc" type="add">Add support for gzipped content. Patch
+          provided by Ralf Stoffels.</action>
       
     </release>
 

@@ -1,9 +1,3 @@
-/*
- * Created on 12 oct. 2003
- *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
- */
 package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
@@ -34,7 +28,7 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/cvsweb_2_0.html");
         CVSGrab grabber = new CVSGrab();
-        grabber.setRootUrl("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/");
+        grabber.getWebOptions().setRootUrl("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/");
         _interface.detect(grabber, doc);
         
         assertEquals("FreeBSD-CVSweb 2.0.6", _interface.getType());

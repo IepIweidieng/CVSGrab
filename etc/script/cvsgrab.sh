@@ -115,5 +115,6 @@ fi
 
 LOG_ARGS1="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog" 
 LOG_ARGS2="-Dorg.apache.commons.logging.simplelog.showShortLogName=false"
+HOME_ARG="-Dcvsgrab.home=$CVSGRAB_HOME"
 
-"$JAVACMD" -classpath "$LOCALCLASSPATH" "$LOG_ARGS1" "$LOG_ARGS2" net.sourceforge.cvsgrab.CVSGrab "$@"
+"$JAVACMD" -classpath "$LOCALCLASSPATH" "$LOG_ARGS1" "$LOG_ARGS2" "$HOME_ARG" net.sourceforge.cvsgrab.CVSGrab "$@"
