@@ -56,7 +56,7 @@ public class LocalRepository {
             String ldir = "./";
             entry.setLocalDirectory(ldir);
             entry.setName(packageName);
-            entry.setRepository(getRepo(ldir));
+            entry.setRepository("");
             entry.setDirectoryEntryList(new CVSEntryVector());
             cvsProject.addNewEntry(entry);
 
@@ -123,6 +123,9 @@ public class LocalRepository {
         String repo = cvsProject.getRepository() + "/" + ldir.substring(2);
         if (repo.endsWith("/")) {
             repo = repo.substring(0, repo.length() - 1);
+        }
+        if (repo.startsWith("./")) {
+            repo = repo.substring(2);
         }
         if (repo.startsWith("/")) {
             repo = repo.substring(1);
