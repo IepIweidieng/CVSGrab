@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<library>
+  <!--JBuilder Library Definition File-->
+  <fullname>jCVS</fullname>
+  <class>
+    <path>[lib/jcvsii-light.jar]</path>
+  </class>
+  <source>
+    <path>[../../download/jcvs-522.zip]/jCVS-5.2.2/source</path>
+  </source>
+</library>
+
