@@ -1,6 +1,7 @@
 1.2
 - added the date in the cvs entries
 - made update more robust when there is an upload that failed (failed uploads don't get their version updated)
+- defined CVSGRAB_HOME, used to run cvsgrab.bat from any location
 
 1.1     Maintenance release
 - package rename: from cvsgrab to net.sourceforge.cvsgrab
