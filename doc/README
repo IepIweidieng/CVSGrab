@@ -25,6 +25,8 @@ It can be used from the command line, or as an Ant task.
 
 From the command line, use cvsgrab.bat or cvsgrab.sh to run it.
 Type cvsgrab -help to get help
+You may need to define the CVSGRAB_HOME environment property if you want to call cvsgrab.bat from any location.
+It works like the ANT_HOME or JAVA_HOME property: put in CVSGRAB_HOME the location of your CVSGrab installation.
 
 From Ant, add the following to the build file:
 <property name="cvsgrab.dir" value="[Your CVSgrab installation directory]" />
