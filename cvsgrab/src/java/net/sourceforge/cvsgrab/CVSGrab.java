@@ -11,8 +11,6 @@ import java.io.IOException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.w3c.dom.Document;
 
-import com.ice.cvsc.CVSProject;
-
 /**
  * Application class for CVS Grab. <br>
  * CVSGrab loads and updates the files from the ViewCVS web interface of a CVS
@@ -25,10 +23,10 @@ import com.ice.cvsc.CVSProject;
  */
 
 public class CVSGrab {
+    static final String DUMMY_ROOT = ":pserver:anonymous@dummyhost:/dummyroot";
     private static final String VERSION = "2.0-alpha";
 
     private String dir = null;
-    private CVSProject cvsProject = null;
     private boolean verbose = true;
     private boolean pruneEmptyDirs = false;
 
@@ -47,9 +45,7 @@ public class CVSGrab {
         String destDir = null;
         String packageName = null;
         String tag = null;
-        String cvsHost = "dummyHost";
-        String cvsRoot = "dummyRoot";
-        String cvsUser = "anonymous";
+        String cvsRoot = DUMMY_ROOT;
         String verbose = "true";
         String prune = "false";
         String proxyHost = null;
@@ -84,16 +80,6 @@ public class CVSGrab {
             } else if (args[i].toLowerCase().equals("-tag")) {
                 if (!args[i + 1].startsWith("-")) {
                     tag = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-cvsuser")) {
-                if (!args[i + 1].startsWith("-")) {
-                    cvsUser = args[i + 1];
-                    i++;
-                }
-            } else if (args[i].toLowerCase().equals("-cvshost")) {
-                if (!args[i + 1].startsWith("-")) {
-                    cvsHost = args[i + 1];
                     i++;
                 }
             } else if (args[i].toLowerCase().equals("-cvsroot")) {
@@ -175,7 +161,7 @@ public class CVSGrab {
         if (webUser != null) {
             WebBrowser.getInstance().useWebAuthentification(webUser, webPassword);
         }
-        grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsUser, cvsHost, cvsRoot);
+        grabber.grabCVSRepository(rootUrl, destDir, packageName, tag, cvsRoot);
     }
 
     /**
@@ -189,7 +175,6 @@ public class CVSGrab {
         System.out.println("\t-destDir <dir> The destination directory");
         System.out.println("\t-package <package> The package or module to download");
         System.out.println("\t-tag <tag> [optional] The version tag of the files to download");
-        System.out.println("\t-cvsHost <cvs host> [optional] The original cvs host, used to maintain compatibility with a standard CVS client");
         System.out.println("\t-cvsRoot <cvs root> [optional] The original cvs root, used to maintain compatibility with a standard CVS client");
         System.out.println("\t-verbose true|false [optional] Verbosity. Default is verbose");
         System.out.println("\t-prune true|false [optional] Prune (remove) the empty directories. Default is false");
@@ -233,7 +218,7 @@ public class CVSGrab {
      * @param packageName Name of the package/module to update from CVS
      */
     public void grabCVSRepository(String rootUrl, String destDir, String packageName) {
-        grabCVSRepository(rootUrl, destDir, packageName, null, "anonymous", "", "");
+        grabCVSRepository(rootUrl, destDir, packageName, null, DUMMY_ROOT);
     }
 
     /**
@@ -246,14 +231,10 @@ public class CVSGrab {
      * @param packageName Name of the package/module to update from CVS
      * @param tag The name of the tagged version of the files to retrieve, or
      *      null
-     * @param cvsHost The cvs host. This is used by CVSGrab only to rebuild the
-     *      CVS admin files that may be used later by a standard CVS client.
      * @param cvsRoot The cvs root. This is used by CVSGrab only to rebuild the
      *      CVS admin files that may be used later by a standard CVS client.
-     * @param cvsUser The cvs user. This is used by CVSGrab only to rebuild the
-     *      CVS admin files that may be used later by a standard CVS client.
      */
-    public void grabCVSRepository(String rootUrl, String destDir, String packageName, String tag, String cvsUser, String cvsHost, String cvsRoot) {
+    public void grabCVSRepository(String rootUrl, String destDir, String packageName, String tag, String cvsRoot) {
         DefaultLogger.getInstance().info("CVSGrab version " + VERSION + " stating...");
 
         // check the parameters
@@ -290,7 +271,7 @@ public class CVSGrab {
                 webInterface.setVersionTag(tag);
             }
             
-            LocalRepository localRepository = new LocalRepository(cvsUser, cvsHost, cvsRoot, destDir, packageName);
+            LocalRepository localRepository = new LocalRepository(cvsRoot, destDir, packageName);
             RemoteRepository remoteRepository = new RemoteRepository(rootUrl, localRepository);
             remoteRepository.setWebInterface(webInterface);
 
@@ -300,7 +281,6 @@ public class CVSGrab {
                 try {
                     remoteDir = remoteRepository.nextDirectoryToProcess();
                     remoteDir.loadContents();
-                    localRepository.update();
                     // TODO
                     //if (handler.isPageFullyLoaded()) {
                     localRepository.cleanRemovedFiles(remoteDir);
@@ -315,7 +295,6 @@ public class CVSGrab {
             if (pruneEmptyDirs) {
                 localRepository.pruneEmptyDirs();
             }
-            localRepository.removeRootEntries();
 
             // Print a summary
             int newFileCount = localRepository.getNewFileCount();

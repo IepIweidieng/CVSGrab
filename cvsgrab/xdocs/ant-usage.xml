@@ -49,13 +49,9 @@
 		            <td valign="Top" align="Center">No.</td>
 		          </tr>
 		          <tr>
-		            <td valign="Top">cvshost</td>
-		            <td valign="Top">The original cvs host, used to maintain compatibility with a standard CVS client.</td>
-		            <td valign="Top" align="Center">No.</td>
-		          </tr>
-		          <tr>
 		            <td valign="Top">cvsroot</td>
-		            <td valign="Top">The original cvs root, used to maintain compatibility with a standard CVS client.</td>
+		            <td valign="Top">The original cvs root, used to maintain compatibility with a standard CVS client. <br/>
+		               Example: :pserser:anonymous@cvs.apache.org:/cvsroot/public </td>
 		            <td valign="Top" align="Center">No.</td>
 		          </tr>
 		          <tr>

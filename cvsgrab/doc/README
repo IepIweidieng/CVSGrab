@@ -35,8 +35,7 @@ Then you can use cvsgrab just as another Ant task:
       <cvsgrab destdir="${destDir}"
                rootUrl="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/"	       
                package="hotsax/HotSAX"
-               cvsHost="cvs.hotsax.sourceforge.net"
-               cvsRoot="/cvsroot/hotsax"
+               cvsRoot=":pserser:anonymous@cvs.sourceforge.net:/cvsroot/hotsax"
                verbose="true" />
    
 See COPYING for the LGPL source license CVSGrab is released under.

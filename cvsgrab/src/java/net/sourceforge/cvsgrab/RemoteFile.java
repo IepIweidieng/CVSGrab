@@ -87,27 +87,26 @@ public class RemoteFile {
      */
     public void grab(LocalRepository repository) {
         // Remove all http params, keep only the file name
-        String cvsName = WebBrowser.forceFinalSlash(_directory.getDirectoryName()) + _name;
         _directory.registerRemoteFile(this);
         RemoteRepository remoteRepository = _directory.getRemoteRepository();
         LocalRepository localRepository = remoteRepository.getLocalRepository();
-        boolean needUpdate = localRepository.needUpdate(cvsName, _version);
+        boolean needUpdate = localRepository.needUpdate(this);
         if (!needUpdate) {
             return;
         }
         // Make the destination dirs
         try {
-            File localDir = new File(localRepository.getLocalDir(_directory));
+            File localDir = localRepository.getLocalDir(_directory);
             localDir.mkdirs();
             File destFile = new File(localDir, _name);
             DefaultLogger.getInstance().verbose("Updating " + destFile);
             String url = remoteRepository.getDownloadUrl(this);
             WebBrowser.getInstance().loadFile(new GetMethod(url), destFile);
 
-            localRepository.updateFileVersion(cvsName, _version, destFile);
+            localRepository.updateFileVersion(this);
 
         } catch (Exception ex) {
-            localRepository.unregisterFile(cvsName);
+            localRepository.unregisterFile(this);
             _directory.unregisterRemoteFile(this);
             DefaultLogger.getInstance().error("IO Error: " + ex);
             ex.printStackTrace();

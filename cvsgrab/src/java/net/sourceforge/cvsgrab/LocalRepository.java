@@ -8,7 +8,8 @@ package net.sourceforge.cvsgrab;
 
 import java.io.*;
 import java.util.*;
-import com.ice.cvsc.*;
+import org.netbeans.lib.cvsclient.admin.*;
+import org.netbeans.lib.cvsclient.command.GlobalOptions;
 
 /**
  * The local repository where the files are stored on this computer.
@@ -20,8 +21,23 @@ import com.ice.cvsc.*;
 
 public class LocalRepository {
 
-    private CVSProject cvsProject;
-    private String localRootDir;
+    private AdminHandler handler = new StandardAdminHandler();
+    private GlobalOptions globalOptions = new GlobalOptions();
+    /**
+     * A store of potentially empty directories. When a directory has a file
+     * in it, it is removed from this set. This set allows the prune option
+     * to be implemented.
+     */
+    private final Set emptyDirectories = new HashSet();
+    /** 
+     * performs checkout to specified directory other than the module.
+     */
+    private String checkoutDirectory;
+    
+    /**
+     * The local root of the repository
+     */
+    private File localRootDir;
     private int newFiles = 0;
     private int updatedFiles = 0;
     private int removedFiles = 0;
@@ -30,110 +46,43 @@ public class LocalRepository {
     /**
      * Constructor for the LocalRepository object
      *
-     * @param cvsHost Description of the Parameter
-     * @param cvsRoot Description of the Parameter
-     * @param destDir Description of the Parameter
-     * @param cvsUser Description of the Parameter
-     * @param packageName Description of the Parameter
+     * @param cvsRoot The cvs root 
+     * @param destDir The destination directory
+     * @param packageName The package 
      */
-    public LocalRepository(String cvsUser, String cvsHost, String cvsRoot, String destDir, String packageName) throws IOException {
-        //CVSProject.debugEntryIO = true;
-        //CVSTracer.turnOn();
-        cvsProject = new CVSProject();
-        localRootDir = WebBrowser.removeFinalSlash(destDir);
-
-        try {
-            initCVSProject(cvsUser, cvsHost, cvsRoot);
-            cvsProject.openProject(new File(localRootDir));
-        } catch (IOException ignore) {
-            // Build the entry files for the root directory
-            cvsProject.establishRootEntry("");
-            CVSEntry entry = new CVSEntry();
-            String ldir = "./";
-            entry.setLocalDirectory(ldir);
-            entry.setName(WebBrowser.removeFinalSlash(packageName));
-            entry.setRepository("");
-            entry.setDirectoryEntryList(new CVSEntryVector());
-            cvsProject.addNewEntry(entry);
-
-            CVSEntry dirEntry = cvsProject.getRootEntry();
-            String localDir = ldir;
-            String adminRootPath =
-                    CVSProject.rootPathToAdminPath(localRootDir);
-
-            File adminFile = new File
-                    (CVSCUtilities.exportPath(adminRootPath));
-
-            File rootFile = new File
-                    (CVSCUtilities.exportPath
-                    (CVSProject.getAdminRootPath(adminRootPath)));
-
-            File reposFile = new File
-                    (CVSCUtilities.exportPath
-                    (CVSProject.getAdminRepositoryPath(adminRootPath)));
-
-            File entriesFile = new File
-                    (CVSCUtilities.exportPath
-                    (CVSProject.getAdminEntriesPath(adminRootPath)));
-
-            CVSEntryVector entries = dirEntry.getEntryList();
-
-            if (!adminFile.exists()) {
-                if (!adminFile.mkdir()) {
-                    DefaultLogger.getInstance().error("Could not create the admin directory '"
-                            + adminFile.getPath() + "'");
-                }
-            }
-
-            cvsProject.writeAdminEntriesFile(entriesFile, entries);
-            String rootDirStr = "";
-            writeAdminRootFile(rootFile, rootDirStr);
-            cvsProject.writeAdminRepositoryFile(reposFile, dirEntry.getRepository());
-
-            // Use a fresh cvsProject, due to some initialisation issues that break in particular the pruneEmpryDirs functionality
-            cvsProject = new CVSProject();
-            initCVSProject(cvsUser, cvsHost, cvsRoot);
-
-            // Read the previous entries for the files and their versions
-            cvsProject.openProject(new File(localRootDir));
-        }
-
+    public LocalRepository(String cvsRoot, String destDir, String packageName) throws IOException {
+        globalOptions.setCVSRoot(cvsRoot);
+        globalOptions.setCheckedOutFilesReadOnly(true);
+        localRootDir = new File(destDir);
     }
     
-    /**
-     * Gets the local directory to use for storing the contents of the remote directory
-     * @param remoteDir The remote directory
-     * @return The local directory
-     */
-    public String getLocalDir(RemoteDirectory remoteDir) {
-        return WebBrowser.forceFinalSlash(getRootDirectory()) + remoteDir.getDirectoryName();
-    }
-
     /**
      * Gets the root directory
      *
      * @return The rootDirectory value
      */
-    public String getRootDirectory() {
+    public File getLocalRootDir() {
         return localRootDir;
     }
 
     /**
-     * Gets the repository
-     *
-     * @param ldir The local directory, relative to the destination directory
-     * @return The repo value
+     * Gets the local directory to use for storing the contents of the remote directory
+     * @param remoteDir The remote directory
+     * @return The local directory
      */
-    public String getRepo(String ldir) {
-        String repo = WebBrowser.forceFinalSlash(cvsProject.getRepository()) + ldir.substring(2);
-        repo = WebBrowser.removeFinalSlash(repo);
-        if (repo.startsWith("./")) {
-            repo = repo.substring(2);
-        }
-        if (repo.startsWith("/")) {
-            repo = repo.substring(1);
-        }
-        return repo;
+    public File getLocalDir(RemoteDirectory remoteDir) {
+        return new File(getLocalRootDir(), remoteDir.getDirectoryName());
+    }
+    
+    /**
+     * Gets the local file to use for storing the contents of the remote file
+     * @param remoteFile The remote file
+     * @return The local file
+     */
+    public File getLocalFile(RemoteFile remoteFile) {
+        File dir = getLocalDir(remoteFile.getDirectory());
+        File file = new File(dir, remoteFile.getName());
+        return file;
     }
 
     /**
@@ -183,62 +132,25 @@ public class LocalRepository {
     }
 
     /**
-     * Removes the Cvs directory in the destDir top-level folder
-     */
-    public void removeRootEntries() {
-        try {
-            String adminRootPath =
-                    CVSProject.rootPathToAdminPath(localRootDir);
-            File adminRootDir = new File(adminRootPath);
-            File[] entryFiles = adminRootDir.listFiles();
-            for (int i = 0; i < entryFiles.length; i++) {
-                entryFiles[i].delete();
-            }
-            adminRootDir.delete();
-        } catch (Exception ignore) {}
-    }
-
-    /**
-     * Updates the CVS admin files
-     */
-    public void update() {
-        cvsProject.writeAdminFiles();
-    }
-
-    /**
      * Return true if the file needs to be updated
      *
-     * @param cvsName CVS name of the file
-     * @param version Version of the file
+     * @param remoteFile The remote file
      * @return true if the file needs to be loaded from the server
      */
-    public boolean needUpdate(String cvsName, String version) {
+    public boolean needUpdate(RemoteFile remoteFile) {
         boolean needUpdate = true;
-        cvsName = "./" + cvsName;
-        String ldir;
-        String name;
-        if (cvsName.indexOf("/", 2) > 0) {
-            int slash = cvsName.lastIndexOf("/");
-            if (slash == -1) {
-                slash = 0;
+        File file = getLocalFile(remoteFile);
+        
+        if (file.exists()) {
+            try {
+                Entry entry = handler.getEntry(file);
+                if (entry != null) {
+                    needUpdate = !remoteFile.getVersion().equals(entry.getRevision());
+                }
+            } catch (IOException ex) {
+                // ignore
+                ex.printStackTrace();
             }
-            name = cvsName.substring(slash + 1);
-            ldir = cvsName.substring(0, slash + 1);
-        } else {
-            name = cvsName.substring(2);
-            ldir = "./";
-        }
-        File dir = new File(cvsProject.getLocalRootDirectory(), ldir);
-        if (!dir.exists()) {
-            return true;
-        }
-        CVSEntry dirEntry = cvsProject.getDirEntryForLocalDir(ldir);
-        CVSEntry entry = null;
-        if (dirEntry != null && dirEntry.getEntryList() != null) {
-            entry = dirEntry.getEntryList().locateEntry(name);
-        }
-        if (entry != null) {
-            needUpdate = !version.equals(entry.getVersion());
         }
         return needUpdate;
     }
@@ -246,48 +158,32 @@ public class LocalRepository {
     /**
      * Update a file version in the local CVS entries
      *
-     * @param cvsName CVS name of the file
-     * @param version Version of the file
-     * @param file Description of the Parameter
+     * @param remoteFile The remote file
      */
-    public void updateFileVersion(String cvsName, String version, File file) {
-        cvsName = "./" + cvsName;
-        String ldir;
-        String name;
-        if (cvsName.indexOf("/", 2) > 0) {
-            int slash = cvsName.lastIndexOf("/");
-            if (slash == -1) {
-                slash = 0;
+    public void updateFileVersion(RemoteFile remoteFile) {
+        File dir = getLocalDir(remoteFile.getDirectory());
+        File file = getLocalFile(remoteFile);
+        Entry entry = null;
+        try {
+            entry = handler.getEntry(file);
+            if (entry == null) {
+                throw new IOException("Entry not found");
             }
-            name = cvsName.substring(slash + 1);
-            ldir = cvsName.substring(0, slash + 1);
-        } else {
-            name = cvsName.substring(2);
-            ldir = "./";
-        }
-        File dir = new File(cvsProject.getLocalRootDirectory(), ldir);
-        dir.mkdirs();
-        CVSEntry dirEntry = cvsProject.getDirEntryForLocalDir(ldir);
-        CVSEntry entry = null;
-        if (dirEntry != null && dirEntry.getEntryList() != null) {
-            entry = dirEntry.getEntryList().locateEntry(name);
-        }
-        if (entry == null) {
-            entry = new CVSEntry();
-            entry.setLocalDirectory(ldir);
-            entry.setName(name);
-            entry.setRepository("/" + getRepo(ldir));
-            entry.setVersion(version);
-            entry.setTimestamp(file);
-            cvsProject.addNewEntry(entry);
+            updatedFiles++;
+        } catch (IOException ex) {
+            String lastModified = Entry.getLastModifiedDateFormatter().format(new Date());
+            entry = new Entry("/" + remoteFile.getName() + "/" + remoteFile.getVersion() + "/" + lastModified + "//");
             newFiles++;
-        } else {
-            if (!version.equals(entry.getVersion())) {
-                entry.setVersion(version);
-                entry.setTimestamp(file);
-                cvsProject.updateEntriesItem(entry);
-                updatedFiles++;
-            }
+        }
+        
+        String localDirectory = WebBrowser.removeFinalSlash(dir.getAbsolutePath());
+        String repositoryPath = remoteFile.getDirectory().getDirectoryName();
+        try {
+            handler.updateAdminData(localDirectory, repositoryPath, entry, globalOptions);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            DefaultLogger.getInstance().error("Cannot update CVS entry for file " + file);
+            throw new RuntimeException("Cannot update CVS entry for file " + file);
         }
     }
 
@@ -295,31 +191,17 @@ public class LocalRepository {
      * Unregister a file from the CVS entries, forcing it to be reloaded next
      * time the program is run
      *
-     * @param cvsName CVS name of the file
+     * @param remoteFile The remote file
      */
-    public void unregisterFile(String cvsName) {
-        cvsName = "./" + cvsName;
-        String ldir;
-        String name;
-        if (cvsName.indexOf("/", 2) > 0) {
-            int slash = cvsName.lastIndexOf("/");
-            if (slash == -1) {
-                slash = 0;
-            }
-            name = cvsName.substring(slash + 1);
-            ldir = cvsName.substring(0, slash + 1);
-        } else {
-            name = cvsName.substring(2);
-            ldir = "./";
-        }
-        CVSEntry dirEntry = cvsProject.getDirEntryForLocalDir(ldir);
-        CVSEntry entry = null;
-        if (dirEntry != null && dirEntry.getEntryList() != null) {
-            entry = dirEntry.getEntryList().locateEntry(name);
-            if (entry != null) {
-                dirEntry.removeEntry(entry);
-                failedUpdates++;
-            }
+    public void unregisterFile(RemoteFile remoteFile) {
+        File file = getLocalFile(remoteFile);
+        Entry entry = null;
+        try {
+            handler.removeEntry(file);
+            failedUpdates++;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            // ignore
         }
     }
 
@@ -330,6 +212,7 @@ public class LocalRepository {
      * @param remoteDirectory The remote directory to clean-up
      */
     public void cleanRemovedFiles(RemoteDirectory remoteDirectory) {
+        /*
         String ldir = remoteDirectory.getDirectoryName();
         CVSEntry dirEntry = cvsProject.getDirEntryForLocalDir("./" + ldir);
         Vector dirFiles = new Vector();
@@ -360,36 +243,46 @@ public class LocalRepository {
         if (!dirFiles.isEmpty()) {
             cvsProject.writeAdminFiles();
         }
+        */
     }
 
     /**
      * Remove the empty directories from the local repository
      */
     public void pruneEmptyDirs() {
-        cvsProject.pruneEmptySubDirs(true);
+        //cvsProject.pruneEmptySubDirs(true);
     }
 
-    private void initCVSProject(String cvsUser, String cvsHost, String cvsRoot) {
-        CVSClient cvsClient = new CVSClient();
-        cvsProject.setClient(cvsClient);
-        cvsProject.setLocalRootDirectory(localRootDir);
-        cvsProject.setRepository("");
-        cvsProject.setRootDirectory(cvsRoot);
-        cvsProject.setConnectionMethod(CVSRequest.METHOD_INETD);
-        cvsProject.setPServer(true);
-        cvsProject.setUserName(cvsUser);
-        cvsClient.setHostName(cvsHost);
-    }
-
-    private void writeAdminRootFile(File rootFile, String rootDirectoryStr) {
+    /**
+     * @param remoteDir
+     */
+    public void add(RemoteDirectory remoteDir) {
+        File dir = getLocalDir(remoteDir);
+        Entry entry = null;
+        String dirName = WebBrowser.removeFinalSlash(dir.getName());
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(rootFile));
-            out.write(":pserver:" + cvsProject.getUserName() + "@" + cvsProject.getClient().getHostName() + ":" + cvsProject.getRootDirectory());
-            out.newLine();
-            out.close();
+            entry = handler.getEntry(dir);
+            if (entry == null) {
+                throw new IOException("Entry not found");
+            }
+        } catch (IOException ex) {
+            String lastModified = Entry.getLastModifiedDateFormatter().format(new Date());
+            entry = new Entry("D/" + dirName + "////");
+        }
+        
+        String localDirectory = WebBrowser.removeFinalSlash(dir.getParent());
+        String repositoryPath = WebBrowser.removeFinalSlash(remoteDir.getDirectoryName());
+        int lastSlash = repositoryPath.lastIndexOf('/');
+        if (lastSlash > 0) {
+            repositoryPath = repositoryPath.substring(0, lastSlash);
+        }
+        try {
+            handler.updateAdminData(localDirectory, repositoryPath, entry, globalOptions);
         } catch (IOException ex) {
             ex.printStackTrace();
+            DefaultLogger.getInstance().error("Cannot update CVS entry for directory " + dir);
+            throw new RuntimeException("Cannot update CVS entry for directory " + dir);
         }
     }
-
+    
 }
