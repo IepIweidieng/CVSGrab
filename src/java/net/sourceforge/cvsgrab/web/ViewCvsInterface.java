@@ -82,12 +82,17 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      * @return the url to use to access the contents of the repository
      */
     public String getDirectoryUrl(String rootUrl, String directoryName) {
-        String tag = getVersionTag(); 
-        String url = WebBrowser.forceFinalSlash(rootUrl);
-        url += WebBrowser.forceFinalSlash(directoryName);
-        url = WebBrowser.addQueryParam(url, "only_with_tag", tag);
-        url = WebBrowser.addQueryParam(url, getQueryParams());
-        return url;
+        try {
+            String tag = getVersionTag(); 
+            String url = WebBrowser.forceFinalSlash(rootUrl);
+            url += WebBrowser.forceFinalSlash(URIUtil.encodePath(directoryName));
+            url = WebBrowser.addQueryParam(url, "only_with_tag", tag);
+            url = WebBrowser.addQueryParam(url, getQueryParams());
+            return url;
+           } catch (URIException ex) {
+               ex.printStackTrace();
+               throw new RuntimeException("Cannot create URI");
+           }
     }
     
     /** 
