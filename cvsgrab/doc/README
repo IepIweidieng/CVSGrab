@@ -13,11 +13,11 @@ yet supported, they will be if people ask for it...)
 
 HOW IT WORKS:
 
-It works by reading the top page of the ViewCVS repository, then parses the links in this
-page and browses all the pages bellow while downloading the files on them.
-In addition, the CVS administration files (the files under the Cvs folder present on every directory) 
+It starts by reading the top page of the ViewCVS repository, then parses the links in this
+page and browses all the pages bellow while downloading the files in them.
+In addition, the CVS administration files (the files under the Cvs folder present on every directory)
 are created and store the version number for each files. The next time you run CVSGrab, those version
-numbers are used to download only the files that have be modified.
+numbers are used to download only the files that have being updated.
 
 USAGE:
 

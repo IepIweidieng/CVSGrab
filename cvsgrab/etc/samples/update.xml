@@ -15,7 +15,9 @@
 	       package="HotSAX"
                cvsHost="cvs.hotsax.sourceforge.net"
                cvsRoot="/cvsroot/hotsax"
-               verbose="true" />
+               verbose="true" >
+	<proxy host="wwwproxy.unicc.org" port="8080"/>
+     </cvsgrab>
   </target>
 
   <target name="hotsax.build" depends="init">
