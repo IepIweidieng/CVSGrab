@@ -134,7 +134,7 @@ public class RemoteDirectory {
      * Diff the contents of the repository and store the diffs in the file
      * @param writer
      */
-    public void diffContents(PrintWriter writer) throws Exception {
+    public void diffContents(PrintWriter writer, CVSGrab grabber) throws Exception {
         String url = getUrl();
         Log log = CVSGrab.getLog();
         log.info("cvs update: Updating " + getDirectoryPath());
@@ -143,11 +143,7 @@ public class RemoteDirectory {
         for (int i = 0; i < files.length; i++) {
             RemoteFile file = files[i];
             file.setDirectory(this);
-            int updateStatus = _remoteRepository.getLocalRepository().checkUpdateStatus(file);
-            if (!file.isBinary() && (updateStatus == LocalRepository.UPDATE_LOCAL_CHANGE
-                    || updateStatus == LocalRepository.UPDATE_MERGE_NEEDED)) {
-                file.diff(_remoteRepository.getLocalRepository(), writer);
-            }
+            file.diff(_remoteRepository.getLocalRepository(), writer, grabber);
         }
         String[] directories = _remoteRepository.getWebInterface().getDirectories(doc);
         for (int i = 0; i < directories.length; i++) {

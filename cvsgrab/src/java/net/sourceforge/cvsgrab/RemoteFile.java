@@ -169,7 +169,7 @@ public class RemoteFile {
      * @param repository
      * @param diffFile
      */
-    public void diff(LocalRepository repository, PrintWriter writer) {
+    public void diff(LocalRepository repository, PrintWriter writer, CVSGrab grabber) {
         RemoteRepository remoteRepository = _directory.getRemoteRepository();
         LocalRepository localRepository = remoteRepository.getLocalRepository();
         // Force the version of the remote file to be the same as the local file
@@ -180,30 +180,49 @@ public class RemoteFile {
         int updateStatus = localRepository.checkUpdateStatus(this);
         switch (updateStatus) {
             case LocalRepository.UPDATE_NO_CHANGES:
+                CVSGrab.getLog().debug("File not updated " + this);
                 return;
             case LocalRepository.UPDATE_IMPOSSIBLE:
+                CVSGrab.getLog().warn("cvs update: warning: cannot update " + this + ". A file with the same name is in the way.");
                 return;
             case LocalRepository.UPDATE_NEEDED:
+                CVSGrab.getLog().info("U " + this);
                 return;
             case LocalRepository.UPDATE_LOCAL_CHANGE:
             case LocalRepository.UPDATE_MERGE_NEEDED:
+                CVSGrab.getLog().info("M " + this);
+                if (isBinary()) {
+                    CVSGrab.getLog().warn("File is modified locally but its type is binary. Update FileTypes.properties if needed.");
+                    return;
+                }
                 try {
                     String url = remoteRepository.getDownloadUrl(this);
                     File origFile = File.createTempFile(_name, null);
                     File revFile = localRepository.getLocalFile(this);
                     
                     // Download the remote file
-                    WebBrowser.getInstance().loadFile(new GetMethod(url), origFile);
-                    String[] orig = loadFile(origFile.getAbsolutePath());
+                    String[] orig = new String[0];
+                    if (localVersion != null) {
+                        // This file already exists on the repository as there is a version
+                        WebBrowser.getInstance().loadFile(new GetMethod(url), origFile);
+                        orig = loadFile(origFile.getAbsolutePath());
+                    }
                     
                     String[] rev = loadFile(revFile.getAbsolutePath());
                     MyersDiff diff = new MyersDiff();
                     Revision revision = diff.diff(orig, rev);
                     StringBuffer sb = new StringBuffer();
                     UnifiedPrint print = new UnifiedPrint(sb, orig, rev);
-                    print.setFileName("src/java/net/sourceforge/cvsgrab/CVSGrabTask.java");
-                    print.setRCSFileName("/cvsroot/cvsgrab/cvsgrab/src/java/net/sourceforge/cvsgrab/CVSGrabTask.java,v");
-                    print.setOriginalVersion("1.6");
+                    // Local name: "src/java/net/sourceforge/cvsgrab/CVSGrabTask.java"
+                    String localName = localRepository.getLocalFile(this).getCanonicalPath();
+                    localName = localName.substring(new File(grabber.getDestDir()).getCanonicalPath().length() + 1);
+                    print.setFileName(localName);
+                    // RCS name : "/cvsroot/cvsgrab/cvsgrab/src/java/net/sourceforge/cvsgrab/CVSGrabTask.java,v"
+                    String rcsName = WebBrowser.forceFinalSlash(grabber.getCvsRoot()) 
+                        + WebBrowser.forceFinalSlash(getDirectory().getDirectoryPath()) + getName();
+                    rcsName = rcsName.substring(rcsName.lastIndexOf(':') + 1);
+                    print.setRCSFileName(rcsName);
+                    print.setOriginalVersion(localRepository.getLocalVersion(this));
                     print.setRevisedModifDate(new Date(revFile.lastModified()));
                     revision.accept(print);
                     print.close();

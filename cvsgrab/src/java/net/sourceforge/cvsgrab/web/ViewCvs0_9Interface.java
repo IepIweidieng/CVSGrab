@@ -47,6 +47,7 @@ public class ViewCvs0_9Interface extends ViewCvsInterface {
         _root = grabber.getProjectRoot();
         if (_root == null) {
             JXPathContext context = JXPathContext.newContext(htmlPage);
+            context.setLenient(true);
             String href = (String) context.getValue("//A/@href[contains(., 'cvsroot=')]");
             if (href != null) {
                 _root = href.substring(href.indexOf("cvsroot=") + 8);

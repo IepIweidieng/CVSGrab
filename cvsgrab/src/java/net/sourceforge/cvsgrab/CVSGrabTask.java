@@ -22,7 +22,6 @@ public class CVSGrabTask extends Task {
 
     private CVSGrab _grabber = new CVSGrab();
     private boolean _verbose = true;
-    private boolean _quiet = false;
     private int _connections;
     private WebOptions _webOptions;
 

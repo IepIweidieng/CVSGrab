@@ -56,6 +56,25 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
         assertNull(_interface.getRoot());
     }
     
+    /**
+     * Test for bug #1024587, cannot download file in Attic, caused by bad detection of attic flag  
+     * @throws Exception if the test fails
+     */
+    public void testFileInAttic() throws Exception {
+        Document doc = getDocument("src/test/html_docs/view_cvs_1_0_attic.html");
+        CVSGrab grabber = new CVSGrab();
+        grabber.getWebOptions().setRootUrl("http://cvs.apache.org/viewcvs.cgi/");
+        grabber.getWebOptions().setVersionTag("JCS_1_0");
+        
+        int i = 0;
+        RemoteFile[] files = _interface.getFiles(doc);
+        assertEquals("ILateralCacheTCPListener.java", files[i].getName());
+        assertTrue(files[i].isInAttic());
+        assertEquals("1.1.1.1", files[i++].getVersion());
+        
+        assertEquals("Expected no more files", i, files.length);
+    }
+    
     public void testGetFiles() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
         

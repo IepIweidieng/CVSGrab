@@ -163,12 +163,17 @@ public class LocalRepository {
             try {
                 Entry entry = _handler.getEntry(file);
                 if (entry == null) {
+                    CVSGrab.getLog().debug("No entry for file " + file);
                     _failedUpdates++;
                     return UPDATE_IMPOSSIBLE;
                 } else {
                     needUpdate = !remoteFile.getVersion().equals(entry.getRevision());
+                    boolean locallyModified = isLocallyModified(file, entry);
+                    if (locallyModified) {
+                        CVSGrab.getLog().debug("File " + file + " is locally modified");
+                    }
                     if (needUpdate) {
-                        if (isLocallyModified(file, entry)) {
+                        if (locallyModified) {
                             CVSGrab.getLog().debug("File " + file + " was modified since last update, cannot upload the new version of this file");
                             CVSGrab.getLog().debug("Last modified date on disk: " + new Date(file.lastModified()));
                             CVSGrab.getLog().debug("Last modified date on cvs: " + entry.getLastModified());
@@ -176,15 +181,16 @@ public class LocalRepository {
                             _failedUpdates++;
                             return UPDATE_MERGE_NEEDED;
                         } else {
+                            CVSGrab.getLog().debug("New version available on the remote repository for file " + file);
                             return UPDATE_NEEDED;
                         }
                     } else {
-                        if (isLocallyModified(file, entry)) {
+                        if (locallyModified) {
                             CVSGrab.getLog().debug("File " + file + " was modified since last update, cannot upload the new version of this file");
                             CVSGrab.getLog().debug("Last modified date on disk: " + new Date(file.lastModified()));
                             CVSGrab.getLog().debug("Last modified date on cvs: " + entry.getLastModified());
                         }
-                        return isLocallyModified(file, entry) ? UPDATE_LOCAL_CHANGE : UPDATE_NO_CHANGES;
+                        return locallyModified ? UPDATE_LOCAL_CHANGE : UPDATE_NO_CHANGES;
                     }
                 }
             } catch (IOException ex) {
@@ -234,7 +240,7 @@ public class LocalRepository {
      *
      * @param remoteFile The remote file
      */
-    // synchronized as it can be access from the multiple download threads
+    // synchronized as it can be accessed from multiple download threads
     public synchronized void updateFileVersion(RemoteFile remoteFile) {
         File dir = getLocalDir(remoteFile.getDirectory());
         File file = getLocalFile(remoteFile);
@@ -329,7 +335,8 @@ public class LocalRepository {
      *
      * @param remoteDirectory The remote directory to clean-up
      */
-    public void cleanRemovedFiles(RemoteDirectory remoteDirectory) {
+    // synchronized as it can be accessed from multiple download threads
+    public synchronized void cleanRemovedFiles(RemoteDirectory remoteDirectory) {
         try {
             File dir = getLocalDir(remoteDirectory);
             Entry dirEntry = _handler.getEntry(dir);

@@ -145,6 +145,7 @@ public class ThreadPool {
                             wait();
                         }
                     } catch (InterruptedException ex) {
+                        // ignore
                     }
 
                     if (_debugging) {

@@ -18,36 +18,36 @@ if [ -z "$CVSGRAB_HOME" ] ; then
   # try to find CVSGRAB
   if [ -d /opt/cvsgrab ] ; then 
     CVSGRAB_HOME=/opt/cvsgrab
-  fi
-
-  if [ -d "${HOME}/opt/cvsgrab" ] ; then 
-    CVSGRAB_HOME="${HOME}/opt/cvsgrab"
-  fi
-
-  ## resolve links - $0 may be a link to cvsgrab's home
-  PRG="$0"
-  progname=`basename "$0"`
-  saveddir=`pwd`
-
-  # need this for relative symlinks
-  cd `dirname "$PRG"`
-  
-  while [ -h "$PRG" ] ; do
-    ls=`ls -ld "$PRG"`
-    link=`expr "$ls" : '.*-> \(.*\)$'`
-    if expr "$link" : '.*/.*' > /dev/null; then
-	PRG="$link"
+  else
+    if [ -d "${HOME}/opt/cvsgrab" ] ; then 
+      CVSGRAB_HOME="${HOME}/opt/cvsgrab"
     else
-	PRG=`dirname "$PRG"`"/$link"
-    fi
-  done
+      ## resolve links - $0 may be a link to cvsgrab's home
+      PRG="$0"
+      progname=`basename "$0"`
+      saveddir=`pwd`
+
+      # need this for relative symlinks
+      cd `dirname "$PRG"`
   
-  CVSGRAB_HOME=`dirname "$PRG"`/..
+      while [ -h "$PRG" ] ; do
+        ls=`ls -ld "$PRG"`
+        link=`expr "$ls" : '.*-> \(.*\)$'`
+        if expr "$link" : '.*/.*' > /dev/null; then
+          PRG="$link"
+        else
+          PRG=`dirname "$PRG"`"/$link"
+        fi
+      done
+  
+      CVSGRAB_HOME=`dirname "$PRG"`/..
 
-  cd "$saveddir"
+      cd "$saveddir"
 
-  # make it fully qualified
-  CVSGRAB_HOME=`cd "$CVSGRAB_HOME" && pwd`
+      # make it fully qualified
+      CVSGRAB_HOME=`cd "$CVSGRAB_HOME" && pwd`
+    fi
+  fi
 fi
 
 # For Cygwin, ensure paths are in UNIX format before anything is touched
@@ -115,6 +115,5 @@ fi
 
 LOG_ARGS1="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog" 
 LOG_ARGS2="-Dorg.apache.commons.logging.simplelog.showShortLogName=false"
-HOME_ARG="-Dcvsgrab.home=$CVSGRAB_HOME"
 
-"$JAVACMD" -classpath "$LOCALCLASSPATH" "$LOG_ARGS1" "$LOG_ARGS2" "$HOME_ARG" net.sourceforge.cvsgrab.CVSGrab "$@"
+"$JAVACMD" -classpath "$LOCALCLASSPATH" "$LOG_ARGS1" "$LOG_ARGS2" net.sourceforge.cvsgrab.CVSGrab "$@"

@@ -604,13 +604,15 @@ public class CVSGrab {
             while (remoteRepository.hasDirectoryToProcess()) {
                 try {
                     remoteDir = remoteRepository.nextDirectoryToProcess();
-                    remoteDir.diffContents(writer);
+                    remoteDir.diffContents(writer, this);
+                    writer.flush();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     getLog().error("Error while getting files from " + remoteDir.getUrl());
                     _error = true;
                 }
             }
+            writer.close();
 
             // Print a summary
             int newFileCount = localRepository.getNewFileCount();
@@ -732,7 +734,9 @@ public class CVSGrab {
                 _webOptions.readProperties(webProperties);
                 // Update local settings
                 if (getDestDir().equals(DEFAULT_DEST_DIR)) {
-                    setDestDir(_destDir);
+                    File currentDir = new File(".");
+                    currentDir = currentDir.getAbsoluteFile();
+                    setPackageDir(currentDir.getName());
                 }
             } catch (IOException e) {
                 getLog().warn("Cannot read file " + webRepositoryAdmin.getAbsolutePath(), e);
