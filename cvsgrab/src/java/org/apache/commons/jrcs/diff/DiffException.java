@@ -69,6 +69,7 @@ public class DiffException extends Exception
 
     public DiffException()
     {
+        // do nothing
     }
 
     public DiffException(String msg)

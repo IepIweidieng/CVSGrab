@@ -118,31 +118,6 @@ public abstract class CvsWebInterface {
     /**
      * Find the cvs web interface that could have generated this html page
      *
-     * @param interfaceId The id of the interface
-     * @return the cvs web interface that matches best this page
-     */
-    public static CvsWebInterface findInterface(CVSGrab grabber, String interfaceId) throws Exception {
-        checkRootUrl(grabber.getRootUrl());
-        List errors = new ArrayList();
-        CvsWebInterface webInterface = getInterface(grabber, interfaceId);
-        if (webInterface.validate(grabber, errors)) {
-            return webInterface;
-        }
-        CVSGrab.getLog().info("Tried to connect to the following urls: ");
-        for (Iterator i = documents.keySet().iterator(); i.hasNext(); ) {
-            CVSGrab.getLog().info(i.next());
-        }
-        CVSGrab.getLog().info("Problems found during automatic detection: ");
-        for (Iterator i = errors.iterator(); i.hasNext();) {
-            String msg = (String) i.next();
-            CVSGrab.getLog().info(msg);
-        }
-        return null;
-    }
-
-    /**
-     * Find the cvs web interface that could have generated this html page
-     *
      * @return the cvs web interface that matches best this page
      */
     public static CvsWebInterface findInterface(CVSGrab grabber) throws Exception {

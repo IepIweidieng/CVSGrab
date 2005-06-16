@@ -41,6 +41,18 @@
             </tr>
 
             <tr>
+              <td valign="Top">url</td>
+
+              <td valign="Top">The url for the ViewCVS repository, copy&amp;pasted from the browser url bar. 
+              <br />
+
+              Example:
+              http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/cvsgrab/?only_with_tag=RELEASE_2_2</td>
+
+              <td valign="Top" align="Center">If rootUrl and packagePath are omitted.</td>
+            </tr>
+            
+            <tr>
               <td valign="Top">rootUrl</td>
 
               <td valign="Top">The root url for the ViewCVS
@@ -50,7 +62,7 @@
               Example:
               http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/</td>
 
-              <td valign="Top" align="Center">Yes.</td>
+              <td valign="Top" align="Center">If url is omitted.</td>
             </tr>
 
             <tr>
@@ -62,7 +74,7 @@
 
               Example: hotsax/HotSAX</td>
 
-              <td valign="Top" align="Center">Yes.</td>
+              <td valign="Top" align="Center">If url is omitted.</td>
             </tr>
 
             <tr>

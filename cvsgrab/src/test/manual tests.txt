@@ -1,13 +1,61 @@
-xxx doesn't work anymore, they switched to fisheye - cvsgrab -rootUrl http://cvs.picocontainer.codehaus.org/viewcvs.cgi/ -packagePath pico -destDir c:/tmp 
-cvsgrab -rootUrl http://dev.eclipse.org/viewcvs/index.cgi/ -packagePath org.eclipse.ant.core -destDir c:/tmp 
-todo: hangs forever - cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune 
+ViewCVS 0.8 on Sourceforge:
 cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/ -packagePath cvsgrab/cvsgrab -destDir c:/tmp -packageDir cvsgrab -prune -connections 3
+-> no known issues
+
+FishEye:
+cvsgrab -url http://cvs.codehaus.org/viewrep/picocontainer/java/picocontainer -destDir c:/tmp
+-> works ok but downloads all files, including deleted files
+
+ViewCVS 0.7:
+cvsgrab -rootUrl http://dev.eclipse.org/viewcvs/index.cgi/ -packagePath org.eclipse.ant.core -destDir c:/tmp
+-> no known issues
+
+Sourcecast 3.0
+cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune
+-> no known issues
+
+ViewCVS 1.0:
 cvsgrab -rootUrl http://cvs.apache.org/viewcvs.cgi/ -packagePath ant/src/etc/testcases/core/include -destDir c:\tmp
-cvsgrab -rootUrl http://webcvs.kde.org/cgi-bin/cvsweb.cgi/ -packagePath quanta/quanta/data/toolbars -destDir c:\tmp
+-> no known issues
+
+ViewCVS 1.0:
+cvsgrab -rootUrl http://webcvs.kde.org/ -packagePath www/areas/guidelines/customization/ -destDir c:\tmp
+-> works ok
+-> cannot detect if we use the syntax cvsgrab -url http://webcvs.kde.org/www/areas/guidelines/customization/
+
+Hennerik CVSweb 1.1:
 cvsgrab -rootUrl http://cvs.hispalinux.es/cgi-bin/cvsweb/ -packagePath mono -destDir c:/tmp -projectRoot mono -packageDir mono
+-> no known issues
+
+ViewCVS 0.9.2:
 cvsgrab -rootUrl http://savannah.nongnu.org/cgi-bin/viewcvs/ -packagePath sdx/sdx_v2/ -destDir c:\tmp -packageDir sdx_v2
+-> no known issues
+
+Chora 2.x:
 cvsgrab -rootUrl http://cvs.php.net/cvs.php/ -packagePath smarty -destDir c:/tmp
+-> no known issues
 
-cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/ -packagePath maven-plugins/maven-plugins -destDir c:/tmp -packageDir maven-plugins -prune -connections 3
+ViewCVS 0.8 on Sourceforge:
+cvsgrab -url http://cvs.sourceforge.net/viewcvs.py/maven-plugins/maven-plugins -destDir c:/tmp -packageDir maven-plugins -prune -connections 3
+-> server down!
 
-cvsgrab -url http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/ -destDir c:/tmp 
+ViewCVS 0.7:
+cvsgrab -url http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ant.core/ -destDir c:/tmp
+-> no known issues
+
+ViewCVS 1.0: (see bug #1077452, #1072751)
+cvsgrab -rootUrl http://cvs.apache.org/viewcvs.cgi/ -packagePath maven -destDir c:\tmp -tag MAVEN_1_0_RC1 -cvsRoot :pserver:anoncvs@cvs.apache.org:/home/cvspublic
+cvsgrab -rootUrl http://cvs.apache.org/viewcvs.cgi/ -packagePath maven -destDir c:\tmp -cvsRoot :pserver:anoncvs@cvs.apache.org:/home/cvspublic
+-> no known issues
+
+ViewCVS 1.0:
+cvsgrab -rootUrl http://cvs.freedesktop.org/ -queryParams root=xlibs -packagePath Xft/ -destDir c:\tmp
+-> no known issues
+
+FreeBSD-cvsweb 2.0: (see bug #1069355)
+cvsgrab -url http://oss.sgi.com/cgi-bin/cvsweb.cgi/linux-2.6-xfs/
+-> no known issues
+
+FreeBSD-CVSweb 3.0: (see bug #1106704)
+cvsgrab -rootUrl http://cvspub.jahia.org/cgi-bin/cvsweb.cgi -packagePath webraptor -cvsRoot :pserver:anonymous@cvspub.jahia.org:/home/cvs/repository_anonymous
+-> no known issues

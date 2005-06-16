@@ -72,6 +72,7 @@ public class DifferentiationFailedException extends DiffException
 
     public DifferentiationFailedException()
     {
+        // do nothing
     }
 
     public DifferentiationFailedException(String msg)

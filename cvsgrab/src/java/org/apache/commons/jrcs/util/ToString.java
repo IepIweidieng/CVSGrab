@@ -72,6 +72,7 @@ public class ToString
 {
     public ToString()
     {
+        // do nothing
     }
 
     /**
@@ -118,6 +119,7 @@ public class ToString
         }
         catch (java.io.IOException e)
         {
+            // do nothing
         }
         return (String[]) l.toArray(new String[l.size()]);
     }

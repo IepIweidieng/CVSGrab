@@ -100,7 +100,7 @@ public abstract class Delta
         }
         catch (Throwable o)
         {
-
+            // do nothing
         }
     }
 
@@ -132,6 +132,7 @@ public abstract class Delta
      */
     protected Delta()
     {
+        // do nothing
     }
 
     /**

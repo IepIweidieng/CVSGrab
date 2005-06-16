@@ -82,6 +82,7 @@ public class MyersDiff
      */
     public MyersDiff()
     {
+        // do nothing
     }
 
     /**
@@ -120,8 +121,6 @@ public class MyersDiff
         final int size = 1 + 2 * MAX;
         final int middle = (size + 1) / 2;
         final PathNode diagonal[] = new PathNode[size];
-
-        PathNode path = null;
 
         diagonal[middle + 1] = new Snake(0, -1, null);
         for (int d = 0; d < MAX; d++)
@@ -201,7 +200,7 @@ public class MyersDiff
             path = path.prev;
         while (path != null && path.prev != null && path.prev.j >= 0)
         {
-            if(path.isSnake()) 
+            if(path.isSnake())
                throw new IllegalStateException("bad diffpath: found snake when looking for diff");
             int i = path.i;
             int j = path.j;

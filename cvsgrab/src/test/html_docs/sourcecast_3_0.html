@@ -1,0 +1,725 @@
+<!DOCTYPE html PUBLIC "-//Tigris//DTD XHTML 1.0 Transitional//EN" "http://style.tigris.org/tigris_transitional.dtd">
+<html><head>
+ <style type="text/css"> /* <![CDATA[ */
+ @import "/branding/css/tigris.css";
+ @import "/branding/css/inst.css";
+ /* ]]> */</style>
+ <link rel="stylesheet" type="text/css" href="sourcecast_3_0_files/print.css" media="print">
+ <script src="sourcecast_3_0_files/tigris.js" type="text/javascript"></script>
+  
+                                                     
+ <title>forms: Version control - CVS</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <meta http-equiv="Content-Style-Type" content="text/css">
+ <meta name="version" content="3.0.2.9.1">
+ <meta name="keywords" content="SourceCast, CollabNet, collaboration, companies, software, development, model, enterprise, open source, developer, network, San Francisco">
+ <meta name="description" content="SourceCast, a collaborative software development platform from CollabNet"></head>
+
+                       
+ 
+ <body onload="loginfocus()" class="composite" marginheight="0" marginwidth="0">
+ 
+ 
+ 
+<div>
+<table style="background: transparent url(/branding/images/header_jnet_bg.gif) repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" border="0" cellpadding="0" cellspacing="0" height="25" width="100%">
+<tbody><tr>
+<td rowspan="2" width="100%"><a href="http://www.java.net/"><img src="sourcecast_3_0_files/header_jnet.gif" alt="The Source for Java Technology Collaboration" border="0" height="53" width="520"></a></td>
+ <td style="vertical-align: middle;" nowrap="nowrap">
+ <div id="login">
+     <form name="loginform" id="loginform" action="https://forms.dev.java.net/servlets/TLogin" method="post">
+  <div>
+  <strong>User:</strong>
+   <input name="loginID" id="loginID" value="" size="7" maxlength="32" type="text">
+   <strong>Password:</strong>
+   <input name="password" id="password" value="" size="7" maxlength="32" type="password">
+   <input name="Login" class="buttonred" id="Button" value="Login" type="submit">
+  </div>
+  <div class="small" align="right"><strong>
+         <a href="https://www.dev.java.net/servlets/Join">Register</a>  | 
+         <a href="https://www.dev.java.net/servlets/TLogin">Login help</a>   &nbsp;&nbsp;&nbsp;</strong></div>
+  </form>
+ 
+</div>
+</td> 
+</tr>
+</tbody></table>
+
+<div class="space"></div>
+ 
+ 
+ 
+ 
+ <div class="tabs" id="toptabs">
+<table border="0" cellpadding="4" cellspacing="0"><tbody><tr>
+
+
+<td>   <a href="https://www.dev.java.net/servlets/StartPage">My pages</a> </td>
+
+<th><a href="http://community.java.net/projects/">Projects</a></th>
+
+
+<td><a href="http://www.java.net/">java.net</a></td>
+
+
+</tr></tbody></table></div>
+
+  
+ 
+ <div id="breadcrumbs">
+   <a href="https://www.dev.java.net/servlets/ProjectList">Projects</a>     &nbsp;&gt;&nbsp;
+     
+
+    <a href="https://javadesktop.dev.java.net/">javadesktop</a>
+     &nbsp;&gt;&nbsp;
+     
+
+    <a href="https://jgoodies.dev.java.net/">jgoodies</a>
+     &nbsp;&gt;&nbsp;
+     
+
+   <strong>   <a href="https://forms.dev.java.net/">forms</a>
+   </strong>  </div>
+ 
+ 
+ 
+ 
+<table id="main" border="0" cellpadding="4" cellspacing="0" width="100%">
+<tbody><tr valign="top">
+<td id="leftcol" width="20%">
+ 
+ 
+ <div id="navcolumn">
+<div class="toolgroup" id="communitylinks">
+
+<div class="label"><strong>Get Involved</strong></div>
+<div class="body">
+<div><a href="https://java-net.dev.java.net/">java-net Project</a></div>
+<div><a href="http://www.java.net/request_project.csp">Request a Project</a></div>
+<div><a href="http://community.java.net/help_wanted/">Project&nbsp;Help&nbsp;Wanted&nbsp;Ads</a></div>
+<div><a href="http://community.java.net/projects/publicize.csp">Publicize your Project</a></div>
+<div><a href="http://today.java.net/cs/user/create/bl?x-layout=content">Submit Content</a></div>
+
+</div>
+</div>
+
+
+
+
+
+  <div id="projecttools" class="toolgroup">
+  <div class="label"><strong>Project tools</strong></div>
+  <div class="body">
+   <div>
+       <a href="https://forms.dev.java.net/servlets/ProjectHome">Project home</a>    </div>
+    
+       
+ 
+ </div>  
+ 
+            
+ 
+ <div class="body">  <div>   <a href="https://forms.dev.java.net/servlets/ProjectNewsList">Announcements</a> </div>  
+ 
+ 
+            
+ 
+    <div>   <a href="https://forms.dev.java.net/servlets/ProjectForumView">Discussion forums</a> </div>  
+  
+ 
+         
+ 
+ <div>   <a href="https://forms.dev.java.net/servlets/ProjectMailingListList">Mailing lists</a> </div>
+</div>  
+ 
+            
+ 
+ <div class="body"><div>   <a href="https://forms.dev.java.net/servlets/ProjectDocumentList">Documents &amp; files</a> </div>
+ 
+ 
+         
+ 
+ <div><a href="https://forms.dev.java.net/source/browse/forms/">Version control - CVS</a>
+
+
+</div>
+</div> 
+ 
+               
+ 
+ <div class="body"><div>
+   <a href="https://forms.dev.java.net/servlets/ProjectIssues">Issue tracker</a> </div>
+ 
+ 
+                    </div>
+   
+</div>
+ 
+
+ 
+
+
+<form action="https://forms.dev.java.net/servlets/Search" method="get">
+ <div id="searchbox" class="toolgroup">
+  
+      <div class="label"><strong>Search</strong></div>
+    <div class="body">
+<div>
+       <select name="scope">
+           <option value="projectAndSubs" selected="selected">This project</option>
+               <option value="domain">All projects</option>
+    </select>
+     </div>
+   <div>
+    <input name="resultsPerPage" value="40" type="hidden"> 
+    <input name="query" size="10" type="text"> 
+    <input name="Button" value="Go" type="submit">
+   </div>
+   <div>
+       <a href="https://forms.dev.java.net/servlets/Search?mode=advanced">Advanced search</a>    </div>
+  </div>
+
+ </div>
+</form>
+
+
+<div id="helptext" class="toolgroup">
+<div class="label"><strong>How do I...</strong></div>
+<div class="body">
+ 
+ 
+      
+ 
+  <div>  <a href="https://www.dev.java.net/scdocs/ProjectSource.html#browsesource" onclick="return launch(this.href, 1)" title="Note: link may open in new window" class="helplink">
+ 
+ Browse project source code?</a>
+</div>
+ <div>  <a href="https://www.dev.java.net/scdocs/ddUsingCVS_command-line.html#gettingsource" onclick="return launch(this.href, 1)" title="Note: link may open in new window" class="helplink">
+ 
+ Get a copy of project source files?</a>
+</div>
+ <div>  <a href="https://www.dev.java.net/scdocs/ddCVS.html" onclick="return launch(this.href, 1)" title="Note: link may open in new window" class="helplink">
+ 
+ Learn more about CVS?</a>
+</div>
+ <div>  <a href="https://www.dev.java.net/scdocs/ProjectSource.html#cvsclients" onclick="return launch(this.href, 1)" title="Note: link may open in new window" class="helplink">
+ 
+ Find a CVS client?</a>
+</div>
+ <div>  <a href="https://www.dev.java.net/scdocs/ddUsingCVS_command-line.html#cvswatch" onclick="return launch(this.href, 1)" title="Note: link may open in new window" class="helplink">
+ 
+ Tell CVS to notify me when a specified file changes?</a>
+</div>
+ 
+ 
+ 
+ 
+
+<div><a href="https://forms.dev.java.net/nonav/servlets/HelpTOC" onclick="return launch(this.href, 1)" title="Note: link may open in new window" class="helplink">Get help?</a></div>
+</div></div>
+
+
+</div>
+ 
+ 
+<div class="strut">&nbsp;</div>
+</td>
+<td>
+ 
+<div id="bodycol">
+<div id="apphead">
+<h2><small>forms</small><br>         Version control - CVS
+    </h2>
+</div>
+ 
+ 
+ 
+
+        
+                 
+          
+  
+
+ 
+ 
+
+
+
+
+<div id="sourcedirectory" class="app">
+<div id="dirlist">
+
+<div class="axial">
+<table border="0" cellpadding="3" cellspacing="2">
+<tbody><tr>
+<th>Current directory</th>
+<td><a href="https://forms.dev.java.net/source/browse/forms/#dirlist">[forms]</a></td>
+</tr>
+
+
+<tr>
+<th>Attic contents</th>
+<td>hidden (<a href="https://forms.dev.java.net/source/browse/forms/?hideattic=0#dirlist">show</a>)
+</td>
+</tr>
+
+
+
+
+<tr>
+<th>Files shown</th>
+<td>7</td>
+</tr>
+
+</tbody></table>
+</div>
+
+
+ 
+<div id="projectsource" class="app">
+<div class="h3" id="setup">
+
+<h3>CVS client setup instructions</h3>
+
+</div>
+
+<p>
+<a href="https://forms.dev.java.net/servlets/ProjectSource">Access options</a>
+</p>
+
+<p>
+<a href="https://forms.dev.java.net/servlets/ProjectSource#wincvs">Setup WinCVS client</a>
+</p>
+<p>
+<a href="https://forms.dev.java.net/servlets/ProjectSource#commandlinecvs">Setup CVS command line client</a>
+</p>
+
+</div>
+
+
+<div class="h3" id="browsesource">
+<h3>Browse source code</h3>
+
+<div class="axial">
+<form name="sourcedirform" id="sourcedirform" action="./" method="get">
+<table border="0" cellpadding="3" cellspacing="2">
+
+<tbody><tr>
+<th> Show files using tag</th>
+<td><select name="only_with_tag" onchange="submit()">
+
+<option value="">- Non-branch tags -</option>
+
+
+<option>MAIN</option>
+
+
+
+<option>HEAD</option>
+
+
+</select>
+<noscript><input type="submit" value="Show" /></noscript>
+
+</td>
+</tr>
+
+
+</tbody></table>
+</form>
+</div>
+
+<table class="filebrowse" border="1" cellpadding="3" cellspacing="2" width="100%">
+<tbody><tr>
+
+<th>File</th>
+
+
+<th><a href="https://forms.dev.java.net/source/browse/forms/?sortby=rev#dirlist">Rev.</a></th>
+
+
+<th><a href="https://forms.dev.java.net/source/browse/forms/?sortby=date#dirlist">Age</a></th>
+
+
+<th><a href="https://forms.dev.java.net/source/browse/forms/?sortby=author#dirlist">Author</a></th>
+
+
+<th><a href="https://forms.dev.java.net/source/browse/forms/?sortby=log#dirlist">Last log entry</a></th>
+
+</tr>
+
+
+<tr class="a">
+
+
+<td>
+<div class="leafnode" id="Attic"><a href="https://forms.dev.java.net/source/browse/forms/Attic/"><span class="alt">[+]</span>
+Attic/
+</a></div>
+</td>
+
+
+<td></td> 
+<td></td> 
+<td></td> 
+
+
+<td></td>
+
+
+
+
+</tr>
+
+<tr class="b">
+
+
+<td>
+<div class="leafnode" id="com"><a href="https://forms.dev.java.net/source/browse/forms/com/"><span class="alt">[+]</span>
+com/
+</a></div>
+</td>
+
+
+<td></td> 
+<td></td> 
+<td></td> 
+
+
+<td></td>
+
+
+
+
+</tr>
+
+<tr class="a">
+
+
+<td>
+<div class="leafnode" id="docs"><a href="https://forms.dev.java.net/source/browse/forms/docs/"><span class="alt">[+]</span>
+docs/
+</a></div>
+</td>
+
+
+<td></td> 
+<td></td> 
+<td></td> 
+
+
+<td></td>
+
+
+
+
+</tr>
+
+<tr class="b">
+
+
+<td>
+<div class="leafnode" id="formsdemo-0.9.9"><a href="https://forms.dev.java.net/source/browse/forms/formsdemo-0.9.9/"><span class="alt">[+]</span>
+formsdemo-0.9.9/
+</a></div>
+</td>
+
+
+<td></td> 
+<td></td> 
+<td></td> 
+
+
+<td></td>
+
+
+
+
+</tr>
+
+<tr class="a">
+
+
+<td>
+<div class="leafnode" id="jgoodies"><a href="https://forms.dev.java.net/source/browse/forms/jgoodies/"><span class="alt">[+]</span>
+jgoodies/
+</a></div>
+</td>
+
+
+<td></td> 
+<td></td> 
+<td></td> 
+
+
+<td></td>
+
+
+
+
+</tr>
+
+<tr class="b">
+
+
+<td>
+<div class="leafnode" id="src"><a href="https://forms.dev.java.net/source/browse/forms/src/"><span class="alt">[+]</span>
+src/
+</a></div>
+</td>
+
+
+<td></td> 
+<td></td> 
+<td></td> 
+
+
+<td></td>
+
+
+
+
+</tr>
+
+<tr class="a">
+
+
+<td>
+<div class="leafnode" id="www"><a href="https://forms.dev.java.net/source/browse/forms/www/"><span class="alt">[+]</span>
+www/
+</a></div>
+</td>
+
+
+<td></td> 
+<td></td> 
+<td></td> 
+
+
+<td></td>
+
+
+
+
+</tr>
+
+<tr class="b">
+
+
+
+<td>
+<div class="leaf" id=".cvsignore"><a href="https://forms.dev.java.net/source/browse/forms/.cvsignore"><span class="alt"></span>
+.cvsignore
+</a></div>
+
+</td>
+
+<td>
+<a href="https://forms.dev.java.net/source/browse/forms/.cvsignore?rev=1.3&amp;view=auto&amp;content-type=text/vnd.viewcvs-markup">
+1.3
+</a>
+
+</td>
+<td>4 weeks</td>
+<td>karsten</td>
+<td>Added '.settings'
+</td>
+
+
+
+</tr>
+
+<tr class="a">
+
+
+
+<td>
+<div class="leaf" id="LICENSE.txt"><a href="https://forms.dev.java.net/source/browse/forms/LICENSE.txt"><span class="alt"></span>
+LICENSE.txt
+</a></div>
+
+</td>
+
+<td>
+<a href="https://forms.dev.java.net/source/browse/forms/LICENSE.txt?rev=1.6&amp;view=auto&amp;content-type=text/vnd.viewcvs-markup">
+1.6
+</a>
+
+</td>
+<td>5 weeks</td>
+<td>karsten</td>
+<td>Refreshed copyright
+</td>
+
+
+
+</tr>
+
+<tr class="b">
+
+
+
+<td>
+<div class="leaf" id="README.html"><a href="https://forms.dev.java.net/source/browse/forms/README.html"><span class="alt"></span>
+README.html
+</a></div>
+
+</td>
+
+<td>
+<a href="https://forms.dev.java.net/source/browse/forms/README.html?rev=1.19&amp;view=auto&amp;content-type=text/vnd.viewcvs-markup">
+1.19
+</a>
+
+</td>
+<td>5 weeks</td>
+<td>karsten</td>
+<td>Refreshed copyright
+</td>
+
+
+
+</tr>
+
+<tr class="a">
+
+
+
+<td>
+<div class="leaf" id="RELEASE-NOTES.txt"><a href="https://forms.dev.java.net/source/browse/forms/RELEASE-NOTES.txt"><span class="alt"></span>
+RELEASE-NOTES.txt
+</a></div>
+
+</td>
+
+<td>
+<a href="https://forms.dev.java.net/source/browse/forms/RELEASE-NOTES.txt?rev=1.35&amp;view=auto&amp;content-type=text/vnd.viewcvs-markup">
+1.35
+</a>
+
+</td>
+<td>2 weeks</td>
+<td>karsten</td>
+<td>Corrected and extended JavaDocs regarding the mnemonic marker
+in ComponentFactor...</td>
+
+
+
+</tr>
+
+<tr class="b">
+
+
+
+<td>
+<div class="leaf" id="build.xml"><a href="https://forms.dev.java.net/source/browse/forms/build.xml"><span class="alt"></span>
+build.xml
+ <img src="sourcecast_3_0_files/xml.png" border="0"></a></div>
+
+</td>
+
+<td>
+<a href="https://forms.dev.java.net/source/browse/forms/build.xml?rev=1.13&amp;view=auto&amp;content-type=text/vnd.viewcvs-markup">
+1.13
+</a>
+
+</td>
+<td>4 months</td>
+<td>karsten</td>
+<td>Added the project's name tag
+</td>
+
+
+
+</tr>
+
+<tr class="a">
+
+
+
+<td>
+<div class="leaf" id="default.properties"><a href="https://forms.dev.java.net/source/browse/forms/default.properties"><span class="alt"></span>
+default.properties
+</a></div>
+
+</td>
+
+<td>
+<a href="https://forms.dev.java.net/source/browse/forms/default.properties?rev=1.26&amp;view=auto&amp;content-type=text/vnd.viewcvs-markup">
+1.26
+</a>
+
+</td>
+<td>5 weeks</td>
+<td>karsten</td>
+<td>Refreshed copyright
+</td>
+
+
+
+</tr>
+
+<tr class="b">
+
+
+
+<td>
+<div class="leaf" id="todo.txt"><a href="https://forms.dev.java.net/source/browse/forms/todo.txt"><span class="alt"></span>
+todo.txt
+</a></div>
+
+</td>
+
+<td>
+<a href="https://forms.dev.java.net/source/browse/forms/todo.txt?rev=1.19&amp;view=auto&amp;content-type=text/vnd.viewcvs-markup">
+1.19
+</a>
+
+</td>
+<td>2 weeks</td>
+<td>karsten</td>
+<td>Corrected and extended JavaDocs regarding the mnemonic marker
+in ComponentFactor...</td>
+
+
+
+</tr>
+
+
+</tbody></table>
+
+
+
+
+</div>
+</div>
+</div>
+
+
+
+</div>
+</td>
+
+</tr>
+</tbody></table>
+ 
+ 
+ <div id="footer">
+<p>&nbsp;<a href="http://today.java.net/pub/q/java_net_rss"><img src="sourcecast_3_0_files/xml.gif" alt="XML" align="center" border="0" height="14" width="36"></a>&nbsp;<b>java.net RSS</b></p>
+
+<table border="0" cellpadding="4" cellspacing="0"><tbody><tr><td><a href="http://www.collab.net/special/clickpbc0502.html" target="collab"><img src="sourcecast_3_0_files/poweredby_036.gif" alt="This site is Powered by CollabNet." id="poweredby" border="0" height="38" width="102"></a></td><td>
+
+<a href="http://java-net.dev.java.net/feedback.html" onclick="return launch(this.href, 1)" title="Note: link may open in new window" class="helplink">Feedback</a>   |
+<a href="http://java.net/faq.csp">FAQ</a> |
+<a href="http://java.net/presscenter/">Press</a> |
+<a href="http://java.net/terms.csp">Terms of Participation</a> | 
+<a href="http://www.collab.net/developers/tools/" target="collab">Developer tools</a>
+<div><a href="http://www.sun.com/share/text/termsofuse.html">Terms of use</a> | <a href="http://www.sun.com/privacy">Privacy</a> | 
+<a href="http://www.sun.com/suntrademarks/">Trademarks</a> | <a href="https://java-net.dev.java.net/sitemap.html">Site Map</a></div>
+
+<p><small>Copyright © 2004 CollabNet, Inc. All rights reserved.</small></p>
+</td>
+<td><a href="http://www.sun.com/" target="sun"><img src="sourcecast_3_0_files/logo_sun_small.gif" id="" border="0" height="29" width="61"></a>
+<a href="http://www.oreilly.com/" target="oreilly"><img src="sourcecast_3_0_files/montague_logo_oreilly.gif" id="" border="0" height="19" width="74"></a></td>
+</tr></tbody></table></div> 
+ 
+</div></body></html>

@@ -70,6 +70,7 @@ public class PatchFailedException extends DiffException
 
     public PatchFailedException()
     {
+        // do nothing
     }
 
     public PatchFailedException(String msg)

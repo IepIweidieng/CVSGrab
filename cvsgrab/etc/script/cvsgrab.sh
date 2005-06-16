@@ -9,17 +9,17 @@ case "`uname`" in
   CYGWIN*) cygwin=true ;;
   Darwin*) darwin=true
            if [ -z "$JAVA_HOME" ] ; then
-             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home   
+             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
            fi
            ;;
 esac
 
 if [ -z "$CVSGRAB_HOME" ] ; then
   # try to find CVSGRAB
-  if [ -d /opt/cvsgrab ] ; then 
+  if [ -d /opt/cvsgrab ] ; then
     CVSGRAB_HOME=/opt/cvsgrab
   else
-    if [ -d "${HOME}/opt/cvsgrab" ] ; then 
+    if [ -d "${HOME}/opt/cvsgrab" ] ; then
       CVSGRAB_HOME="${HOME}/opt/cvsgrab"
     else
       ## resolve links - $0 may be a link to cvsgrab's home
@@ -29,7 +29,7 @@ if [ -z "$CVSGRAB_HOME" ] ; then
 
       # need this for relative symlinks
       cd `dirname "$PRG"`
-  
+
       while [ -h "$PRG" ] ; do
         ls=`ls -ld "$PRG"`
         link=`expr "$ls" : '.*-> \(.*\)$'`
@@ -39,8 +39,8 @@ if [ -z "$CVSGRAB_HOME" ] ; then
           PRG=`dirname "$PRG"`"/$link"
         fi
       done
-  
-      CVSGRAB_HOME=`dirname "$PRG"`/..
+
+      CVSGRAB_HOME=`dirname "$PRG"`
 
       cd "$saveddir"
 
@@ -60,13 +60,13 @@ if $cygwin ; then
   [ -n "$CLASSPATH" ] &&
     CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
 fi
-    
+
 # set CVSGRAB_LIB location
 CVSGRAB_LIB="${CVSGRAB_HOME}/lib"
 
-if [ -z "$JAVACMD" ] ; then 
+if [ -z "$JAVACMD" ] ; then
   if [ -n "$JAVA_HOME"  ] ; then
-    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then 
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
       # IBM's JDK on AIX uses strange locations for the executables
       JAVACMD="$JAVA_HOME/jre/sh/java"
     else
@@ -79,7 +79,7 @@ if [ -z "$JAVACMD" ] ; then
     fi
   fi
 fi
- 
+
 if [ ! -x "$JAVACMD" ] ; then
   echo "Error: JAVA_HOME is not defined correctly."
   echo "  We cannot execute $JAVACMD"
@@ -113,7 +113,7 @@ if $cygwin; then
   CYGHOME=`cygpath --path --windows "$HOME"`
 fi
 
-LOG_ARGS1="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog" 
+LOG_ARGS1="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog"
 LOG_ARGS2="-Dorg.apache.commons.logging.simplelog.showShortLogName=false"
 
 "$JAVACMD" -classpath "$LOCALCLASSPATH" "$LOG_ARGS1" "$LOG_ARGS2" net.sourceforge.cvsgrab.CVSGrab "$@"

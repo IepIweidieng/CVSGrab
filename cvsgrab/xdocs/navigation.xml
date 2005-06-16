@@ -20,10 +20,9 @@
       <item name="Installation" href="/install.html" />
 
       <item name="Usage">
-        <item name="Run from the command line"
-        href="/cmd-usage.html" />
-
+        <item name="Command line" href="/cmd-usage.html" />
         <item name="Run from Ant" href="/ant-usage.html" />
+        <item name="Supported sites" href="/sites.html" />
       </item>
 
       <item name="FAQ" href="/faq.html" />
@@ -50,8 +49,8 @@
     </menu>
 
     <menu name="My other projects">
-      <item name="ScopeMVC framework"
-      href="http://scope.sourceforge.net" />
+      <item name="Clico container for Swing"
+      href="http://sourceforge.net/projects/clico" />
 
       <item name="Middlegen"
       href="http://sourceforge.net/projects/middlegen" />
@@ -65,7 +64,7 @@
 
 <!-- Google Search -->
     <search />
-    
+
     <a href="http://www.mozilla.org/products/firefox/" title="Get Firefox - Web Browsing Redefined">
       <img src="http://www.mozilla.org/products/firefox/buttons/getfirefox_88x31.png" width="88" height="31" border="0" alt="Get Firefox"/>
     </a>
