@@ -68,7 +68,7 @@ import org.apache.commons.jrcs.diff.RevisionVisitor;
 
 /**
  * Base class for printing revisions in various formats.
- * 
+ *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 17 janv. 2004
@@ -81,13 +81,13 @@ public class BasePrint implements RevisionVisitor {
     private String rcsFileName;
     private String originalVersion;
     private String revisedVersion;
-    private Date originalModifDate; 
-    private Date revisedModifDate; 
+    private Date originalModifDate;
+    private Date revisedModifDate;
     private String EOL = Diff.RCS_EOL;
-    
+
     /**
      * Constructor for BasePrint
-     * 
+     *
      */
     public BasePrint(StringBuffer sb) {
         super();
@@ -133,7 +133,7 @@ public class BasePrint implements RevisionVisitor {
     public String getRCSFileName() {
         return rcsFileName;
     }
-    
+
     /**
      * Sets the rcsFileName.
      * @param rcsFileName The rcsFileName to set.
@@ -141,7 +141,7 @@ public class BasePrint implements RevisionVisitor {
     public void setRCSFileName(String rcsFileName) {
         this.rcsFileName = rcsFileName;
     }
-    
+
     /**
      * Gets the originalVersion.
      * @return the originalVersion.
@@ -181,7 +181,7 @@ public class BasePrint implements RevisionVisitor {
     public Date getOriginalModifDate() {
         return originalModifDate;
     }
-    
+
     /**
      * Sets the originalModifDate.
      * @param originalModifDate The originalModifDate to set.
@@ -189,7 +189,7 @@ public class BasePrint implements RevisionVisitor {
     public void setOriginalModifDate(Date originalModifDate) {
         this.originalModifDate = originalModifDate;
     }
-    
+
     /**
      * Gets the revisedModifDate.
      * @return the revisedModifDate.
@@ -197,7 +197,7 @@ public class BasePrint implements RevisionVisitor {
     public Date getRevisedModifDate() {
         return revisedModifDate;
     }
-    
+
     /**
      * Sets the revisedModifDate.
      * @param revisedModifDate The revisedModifDate to set.
@@ -205,7 +205,7 @@ public class BasePrint implements RevisionVisitor {
     public void setRevisedModifDate(Date revisedModifDate) {
         this.revisedModifDate = revisedModifDate;
     }
-    
+
     /**
      * Gets the EOL.
      * @return the EOL.
@@ -222,7 +222,7 @@ public class BasePrint implements RevisionVisitor {
         EOL = eol;
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      * @param revision
      */
@@ -230,30 +230,34 @@ public class BasePrint implements RevisionVisitor {
         printHeader();
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      * @param delta
      */
     public void visit(DeleteDelta delta) {
+        // do nothing
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      * @param delta
      */
     public void visit(ChangeDelta delta) {
+        // do nothing
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      * @param delta
      */
     public void visit(AddDelta delta) {
+        // do nothing
     }
-    
+
     protected void printHeader() {
+        // do nothing
     }
-    
+
     protected StringBuffer getStringBuffer() {
         return sb;
     }

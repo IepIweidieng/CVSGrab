@@ -1,0 +1,102 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta name="robots" content="nofollow">
+<title>CVS Repository</title>
+<!-- FreeBSD-cvsweb 2.0.0 -->
+</head>
+<body text="#000000" bgcolor="#ffffff">
+<img src="/icons/apache_pb.gif"> <h1 align="center">CVS Repository</h1>
+<p>
+This is a WWW interface for CVS Repositories.
+You can browse the file hierarchy by picking directories
+(which have slashes after them, <i>e.g.</i>, <b>src/</b>).
+If you pick a file, you will see the revision history
+for that file.
+Selecting a revision number will download that revision of
+the file.  There is a link at each revision to display
+diffs between that revision and the previous one, and
+a form at the bottom of the page that allows you to
+display diffs between arbitrary revisions.
+</p>
+<p>
+This script has been written by Bill Fenner &lt;<a
+href="mailto:fenner@FreeBSD.org">fenner@FreeBSD.org</a>&gt; and
+improved by Henner Zeller &lt;<a
+href="mailto:zeller@think.de">zeller@think.de</a>&gt;, Henrik
+Nordstr&ouml;m &lt;<a
+href="mailto:hno@hem.passagen.se">hno@hem.passagen.se</a>&gt;, and
+Ken Coar &lt;<a
+href="mailto:Ken.Coar@Golux.Com">Ken.Coar@Golux.Com</a>&gt;, then
+Akinori MUSHA &lt;<a
+href="mailto:knu@FreeBSD.org">knu@FreeBSD.org</a>&gt; brought it
+back to FreeBSD community and made further improvements; it is covered
+by the <a
+href="http://www.opensource.org/licenses/bsd-license.html">BSD-Licence</a>.
+</p>
+<p>
+If you would like to use this CGI script on your own web server and
+CVS tree, download the latest version <a
+href="http://www.idaemons.org/~knu/cvsweb/">here</a>, and also check
+out Zeller's <a
+href="http://linux.fh-heilbronn.de/~zeller/cgi/cvsweb.cgi" >CVSweb
+distribution site</a>.  Bill's original script can be found <a
+href="http://www.FreeBSD.org/~fenner/cvsweb/">here</a>.
+</p>
+<p>
+Please send any suggestions, comments, etc. to
+<a href="mailto:fenner@FreeBSD.org">Bill Fenner</a> or, regarding the
+modifications, to
+<a href="mailto:knu@FreeBSD.org">Akinori MUSHA</a>,
+<a href="mailto:zeller@think.de">Henner Zeller</a>,
+<a href="mailto:hno@hem.passagen.se">Henrik Nordstr&ouml;m</a>, or
+<a href="mailto:Ken.Coar@Golux.Com">Ken Coar</a>.
+</p>
+<P><a name="dirlist"></a>
+<form method="GET" action="/cgi-bin/cvsweb.cgi/">
+CVS Root: <b>[local]</b> Module path or alias:
+<INPUT TYPE=TEXT NAME="path" VALUE="" SIZE=15>
+<input type=submit value="Go"></form><HR NOSHADE>
+<table border=0 cellpadding=0 width="100%"><tr><td bgcolor="#cccccc"><table  width="100%" border=0 cellspacing=1 cellpadding=2>
+<tr><th align=left bgcolor="#ffcc66">File</th></tr>
+<tr bgcolor="#ffffff"><td><A NAME="CVSROOT"></A><A HREF="./CVSROOT/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./CVSROOT/">CVSROOT/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="dmapi"></A><A HREF="./dmapi/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./dmapi/">dmapi/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="failsafe"></A><A HREF="./failsafe/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./failsafe/">failsafe/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="fam"></A><A HREF="./fam/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./fam/">fam/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="inventor"></A><A HREF="./inventor/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./inventor/">inventor/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="linux-2.4-xfs"></A><A HREF="./linux-2.4-xfs/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./linux-2.4-xfs/">linux-2.4-xfs/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="linux-2.4-xfs-OLD"></A><A HREF="./linux-2.4-xfs-OLD/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./linux-2.4-xfs-OLD/">linux-2.4-xfs-OLD/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="linux-2.6-xfs"></A><A HREF="./linux-2.6-xfs/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./linux-2.6-xfs/">linux-2.6-xfs/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="linux-2.6-xfs-OLD"></A><A HREF="./linux-2.6-xfs-OLD/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./linux-2.6-xfs-OLD/">linux-2.6-xfs-OLD/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="linux-2.6-xfs-all"></A><A HREF="./linux-2.6-xfs-all/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./linux-2.6-xfs-all/">linux-2.6-xfs-all/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="ltp"></A><A HREF="./ltp/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./ltp/">ltp/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="ltp-website"></A><A HREF="./ltp-website/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./ltp-website/">ltp-website/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="performer"></A><A HREF="./performer/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./performer/">performer/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="projects"></A><A HREF="./projects/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./projects/">projects/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="xfs-cmds"></A><A HREF="./xfs-cmds/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./xfs-cmds/">xfs-cmds/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="xfs-linux"></A><A HREF="./xfs-linux/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./xfs-linux/">xfs-linux/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="xfs-website"></A><A HREF="./xfs-website/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./xfs-website/">xfs-website/</A></td></tr>
+
+<tr bgcolor="#ffffff"><td><A NAME="xfs-website.orig"></A><A HREF="./xfs-website.orig/"><IMG SRC="/icons/dir.gif" ALT="[DIR]" BORDER="0" WIDTH="20" HEIGHT="22"></A> <A HREF="./xfs-website.orig/">xfs-website.orig/</A></td></tr>
+
+
+</td></tr></table></table>
+<hr noshade><address><font size=-1>CVSweb by &lt;knu@FreeBSD.org&gt;</font></address></body></html>
+</BODY></HTML>

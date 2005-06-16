@@ -10,26 +10,58 @@
 
 <!-- action types are add/update/fix/remove -->
   <body>
-    <release version="2.2" date="planned features">
+
+    <release version="2.3" date="planned features">
+      <action dev="ludovicc" type="fix">TODO: get an accurate number of failures and successes at the end of the execution (false failures were previously counted),
+          list the files that could not be downloaded</action>
+
+      <action dev="ludovicc" type="update">TODO: update to Commons-HttpClient 3.0</action>
+
       <action dev="ludovicc" type="add">TODO: add module support by
           parsing the CVSROOT/modules file.</action>
-
-      <action dev="ludovicc" type="add">added unique -url parameter, 
-          guess from this param the root url, package url, project root</action>
 
       <action dev="ludovicc" type="add">TODO: add option to check
           out files in DOS mode, UNIX mode</action>
 
       <action dev="ludovicc" type="fix">TODO: running cvsgrab on a repository seems to change the
           modification date of the files.</action>
-          
-      <action dev="ludovicc" type="fix">todo: hangs forever - cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune  </action>
-      <action dev="ludovicc" type="fix">todo: get an accurate number of failures and successes at the end of the execution (false failures were previously counted)</action>
-      
-      <action dev="ludovicc" type="fix">Decompress files when the pages are gzipped. (bug #983998)</action>
-          
     </release>
-    
+
+    <release version="2.2.2" date="in cvs">
+      <action dev="ludovicc" type="add">TODO: provide a french version of the messages</action>
+
+      <action dev="ludovicc" type="fix">TODO: Fix downloading of files on Eclipse.org site</action>
+      <action dev="ludovicc" type="fix">TODO: Bug #1212524: support FishEye 1.0.1</action>
+      <action dev="ludovicc" type="fix">TODO: Bug #1212186: support cvsweb 1.58</action>
+      <action dev="ludovicc" type="fix">TODO: Bug #1173243: support Jahia.org, document specific command</action>
+      <action dev="ludovicc" type="fix">Bug #1193006: fix cvsgrab.sh, patch provided by ated at users.sourceforge.net</action>
+    </release>
+
+    <release version="2.2.1" date="2005-03-24">
+      <action dev="ludovicc" type="fix">Don't run validation when user specifies which web interface to use.</action>
+      <action dev="ludovicc" type="fix">Fixed auto-detection of the web interface (SourceCast 2.0) for tigris.org.</action>
+
+    </release>
+
+    <release version="2.2" date="2005-02-10">
+      <action dev="ludovicc" type="add">added unique -url parameter,
+          guess from this param the root url, package url, project root</action>
+
+      <action dev="ludovicc" type="fix">Decompress files when the pages are gzipped. (bug #983998)</action>
+
+      <action dev="ludovicc" type="fix">Restored download of files for the Maven project (bug #1077452, #1072751)</action>
+
+      <action dev="ludovicc" type="update">update to NekoHTML 0.94</action>
+
+      <action dev="ludovicc" type="add">Added support for CVSWeb 3.0</action>
+
+      <action dev="ludovicc" type="add">Added support for SourceCast 3.0 (used by dev.java.net now)</action>
+
+      <action dev="ludovicc" type="add">Added support for CVSWeb 3.0</action>
+
+      <action dev="ludovicc" type="fix">hangs forever - cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune  </action>
+    </release>
+
     <release version="2.1" date="2004-05-12">
       <action dev="ludovicc" type="add">Add diff
           functionality. Feature request from Aslak Helsoy (and me!)</action>
@@ -53,31 +85,31 @@
 
       <action dev="ludovicc" type="update">Support cvsWeb 1.0 with multiple project roots.
           Necessary to get files from http://cvs.hispalinux.es/cgi-bin/cvsweb/?cvsroot=mono</action>
-      
+
       <action dev="ludovicc" type="add">Add support for gzipped content. Patch
           provided by Ralf Stoffels.</action>
-       
+
       <action dev="ludovicc" type="fix">Another fix of cvsgrab.sh, this time about the evaluation
-          of CVSGRAB_HOME variable, contributed by Daniel Fischer.</action>   
-      
+          of CVSGRAB_HOME variable, contributed by Daniel Fischer.</action>
+
     </release>
 
     <release version="2.0.3" date="2004-02-05">
-      
+
       <action dev="ludovicc" type="update">Improved auto-detect
           functionality: now tests different URLs according to the type
           of the expected web interface.</action>
-      
+
       <action dev="ludovicc" type="update">use Jakarta's CLI
           library to parse command line arguments</action>
 
-      <action dev="ludovicc" type="update">Output looks more like 
+      <action dev="ludovicc" type="update">Output looks more like
           the standard cvs command.</action>
-      
-      <action dev="ludovicc" type="add">Add support for ViewCVS 0.9.2 with multiple 
+
+      <action dev="ludovicc" type="add">Add support for ViewCVS 0.9.2 with multiple
           cvs roots (http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/?cvsroot=ooo4r)
           and CVSWeb 1.0 (http://dev.w3.org/cvsweb/).</action>
-      
+
     </release>
 
     <release version="2.0.2" date="2003-12-27">
@@ -184,7 +216,7 @@
       <action dev="ludovicc" type="update">Split parameter package
       into packagePath and packageDir, to be able to give the
       package path on the web site, and use a different name for
-      storing the package on the disk. 
+      storing the package on the disk.
       <br />
 
       WARNING: this affects the command line arguments and the ant

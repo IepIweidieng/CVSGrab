@@ -34,11 +34,14 @@
 
       <p>Disadvantages are that you have only read access to the
       repository, the repository needs to be public and have
-      ViewCVS set up. 
+      ViewCVS set up.
       <br />
 
       Also, it adds a more important load on the web server, so try
       to use this tool reasonably.</p>
+      
+      <p>Never use CVSGrab on a site that supports <a href="http://subversion.tigris.org/">Subversion</a> (aka SVN), 
+      as this version control system can use http for communication and it's not blocked by firewalls.</p>
     </section>
 
     <section name="How it works:">
@@ -57,10 +60,10 @@
     </section>
 
     <section name="New and Cool">
-      <section name="New url parameter (starting version 2.2)"> 
+      <subsection name="Url parameter (added in version 2.2)">
         <p>The detection of web interfaces has been improved, and now to start cvsgrab,
           you need only to give the full url of the web repository to download.</p>
-          
+
         <p>For example, to download the latest version of Ant in its 1.6 branch, you may use only</p>
         <code>
           cvsgrab -url http://cvs.apache.org/viewcvs.cgi/ant/?only_with_tag=ANT_16_BRANCH
@@ -72,88 +75,37 @@
         <code>
           cvsgrab -rootUrl http://cvs.apache.org/viewcvs.cgi/ -packagePath ant -tag ANT_16_BRANCH
         </code>
-      </section>
-      <section name="Diff functionality (starting version 2.1)"> 
-        <p>Now you can create a patch file when you modify source code that has 
+      </subsection>
+      <subsection name="Diff functionality (added in version 2.1)">
+        <p>Now you can create a patch file when you modify source code that has
             been checked out with CVSGrab.</p>
-          
+
         <p>For that, run <b>cvsgrab -diff</b> from your project root, and a file
-            called patch.txt is created that contains your modifications in the 
+            called patch.txt is created that contains your modifications in the
             unified patch format. The file is compatible with the command cvs diff -u
             that is the standard for submitting patches for most open source projects
-            (see <a href="http://jakarta.apache.org/site/source.html#Patches">Apache's guidelines</a>         
+            (see <a href="http://jakarta.apache.org/site/source.html#Patches">Apache's guidelines</a>
         </p>
-      </section>
-      <section name="Compatibility with standard cvs clients"> 
+      </subsection>
+      <subsection name="Compatibility with standard cvs clients">
         <p>Let's suppose that you connect your notebook behind a firewall that blocks cvs.
           Now, you want to download the latest code from project X, which is still under development
-          and with some blocking bugs in their latest release.          
+          and with some blocking bugs in their latest release.
         </p>
         <p>To check out files, you use cvsgrab with the -cvsRoot parameter. This parameter is the equivalent
           of the -d parameter on the cvs command. for example, if you use this command to check out files without a firewall: <br/>
           cvs -z3 -d:ext:developername@cvs.sourceforge.net:/cvsroot/cvsgrab co cvsgrab <br/>
           then the cvsgrab command to use should be: <br/>
-          cvsgrab -cvsRoot :ext:developername@cvs.sourceforge.net:/cvsroot/cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/ 
-             -packagePath cvsgrab/cvsgrab -destDir c:/tmp -packageDir cvsgrab 
+          cvsgrab -cvsRoot :ext:developername@cvs.sourceforge.net:/cvsroot/cvsgrab -rootUrl http://cvs.sourceforge.net/viewcvs.py/
+             -packagePath cvsgrab/cvsgrab -destDir c:/tmp -packageDir cvsgrab
         </p>
-        <p>You have fixed the bugs, and changed lots of source files. To submit your changes back to 
-          project X, where you have write access, you connect your notebook to an internet connection with 
+        <p>You have fixed the bugs, and changed lots of source files. To submit your changes back to
+          project X, where you have write access, you connect your notebook to an internet connection with
           no blocking firewall, then you use your preferred cvs client (command line, ViewCVS...) and commit
           your work directly, with no additional setup.
         </p>
-      </section>
+      </subsection>
     </section>
-
-    <section name="Tested with:">
-      <p>
-        <ul>
-          <li><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 0.7 on 
-          <a href="http://www.eclipse.org">www.eclipse.org</a>
-          </li>
-
-          <li><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 0.8 on 
-          <a href="http://www.sourceforge.net">Sourceforge.net</a>
-          </li>
-
-          <li><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 0.9.2 on 
-          <a href="http://jakarta.apache.org">jakarta.apache.org
-          (some time ago...)</a>
-          </li>
-
-          <li><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 1.0-dev on 
-          <a href="http://www.picocontainer.org">
-          www.picocontainer.org</a>
-
-          , 
-          <a href="http://jakarta.apache.org">
-          jakarta.apache.org</a>
-
-          and 
-          <a href="http://savannah.gnu.org">savannah.gnu.org</a>
-          </li>
-
-          <li><a href="http://www.collab.net/products/sd/version.html">SourceCast</a> 1.0 on 
-          <a href="http://www.netbeans.org">www.netbeans.org</a>
-          </li>
-
-          <li><a href="http://www.collab.net/products/sd/version.html">SourceCast</a> 2.0 on 
-          <a href="http://dev.java.net">dev.java.net</a>
-          </li>
-
-          <li><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> 1.0 on 
-          <a href="http://dev.w3.org/cvsweb/">dev.w3.org</a>
-          </li>
-          
-          <li><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> 2.0 on 
-          <a href="http://www.kde.org/">www.kde.org</a>
-          </li>
-          
-          <li><a href="http://www.horde.org/chora/">Chora</a> 2.0-dev on 
-              <a href="http://cvs.php.net/">cvs.php.net</a>
-          </li>
-        </ul>
-      </p>
-    </section> 
 
     <section name="Quotes">
       <p>
@@ -162,14 +114,23 @@
         CVSGrab. It's really useful and needed. <br/>
         It worked first try for me. The examples are great, everything I need to
         know. <br/>
-        James.       
+        James.
+      </p>
+      <p>
+	That's the tool I've been looking for since the beginning of time ;-)<br/>
+	Yes, I 'live' behind a restrictive FireWall and downloading the full
+	nightly CVS tarball of the SF projects I use is not really an option.<br/>
+        <br/>
+	Thanks again!
+	Stefan      
       </p>
       <p>
         They talk about cvsgrab: <br/>
-        <a href="http://www.gnomebangalore.org/?q=node/view/436">Madan's blog on GNOME Bangalore</a>
+        <a href="http://maven.apache.org">Maven</a> includes a link to CVSGrab in the web sites it generates. <br/>
+        <a href="http://www.gnomebangalore.org/?q=node/view/436">Madan's blog</a> on GNOME Bangalore
       </p>
 
-      <p>Author: Ludovic Claude ( 
+      <p>Author: Ludovic Claude (
       <a href="mailto:ludovicc at users.sourceforge.net">email</a>
 
       ), freelance developer</p>

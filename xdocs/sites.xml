@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <author email="ludovicc@users.sourceforge.net">Ludovic
+    Claude</author>
+
+    <title>CVSGrab - Read sources stored in CVS behind a
+    firewall</title>
+  </properties>
+
+  <meta name="KeyWords"
+  content="WinCvs, cvs, MacCvs, gCvs, jCVS, firewall, proxy, retrieve cvs tree, grab, behind, checkout" />
+
+  <body>
+    <section name="Sites tested with CVSGrab">
+       <p>
+         Those sites have been tested with CVSGrab. <br/>
+         If a site is not on the list, please report your success (or failure) on the 
+         <a href="http://sourceforge.net/forum/forum.php?forum_id=174128">forum</a>
+       </p>
+       <subsection name="Eclipse">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://dev.eclipse.org/viewcvs/index.cgi/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>cvsgrab -url http://dev.eclipse.org/viewcvs/index.cgi/org.junit/</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>The site uses frames. Frames are not supported by CVSGrab, but you can
+             go to the real page by selecting 'Show this frame only' in the context menu of your
+             browser, then you will see the url for the page with no frames in the address bar.</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 0.9.2 with CVSGrab 2.2.2 on June 16th 2005</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="SourceForge">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://sourceforge.net/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>cvsgrab -url http://cvs.sourceforge.net/viewcvs.py/cvsgrab/</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td>ViewCVS 1.0-dev with CVSGrab 2.2.2 on June 16th 2005</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="Jakarta Apache">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://jakarta.apache.org/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td>TODO</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="CodeHaus">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://codehaus.org/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td>TODO <a href="http://www.cenqua.com/fisheye/">FishEye</a></td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="Savannah on Gnu.org">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://savannah.gnu.org/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td>TODO</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="Netbeans">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://www.netbeans.org/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td>TODO <a href="http://www.collab.net/products/sd/version.html">SourceCast</a></td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="dev.java.net">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://dev.java.net/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td>TODO</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="dev.w3.org">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://dev.w3.org/cvsweb/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td>TODO</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="KDE">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://www.kde.org/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> TODO</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="Jahia">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://www.jahia.org/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> TODO</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="PHP">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td>http://cvs.php.net/</td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>TODO</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>-</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td><a href="http://www.horde.org/chora/">Chora</a> TODO</td>
+           </tr>
+         </table>
+       </subsection>
+    </section>
+  </body>
+</document>
+

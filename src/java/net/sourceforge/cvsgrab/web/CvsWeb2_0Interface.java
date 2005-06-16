@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 
 /**
  * Support for CvsWeb 2.0 interfaces to a cvs repository
- * 
+ *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 7 déc. 2003
@@ -33,7 +33,7 @@ public class CvsWeb2_0Interface extends ViewCvsInterface {
         setWebInterfaceType("cvsweb");
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      * @param htmlPage The web page
      * @throws MarkerNotFoundException if the version marker for the web interface was not found
@@ -44,18 +44,22 @@ public class CvsWeb2_0Interface extends ViewCvsInterface {
         context.setLenient(true);
         // Check that this is CvsWeb
         String generator = (String) context.getValue("//META[@name = 'generator']/@content");
-        
+
+        if (generator == null) {
+            generator = (String) context.getValue("//comment()[starts-with(normalize-space(.),'FreeBSD-cvsweb')]");
+        }
+
         if (generator == null || generator.toLowerCase().indexOf("cvsweb") < 0) {
             throw new MarkerNotFoundException("Not CvsWeb, found marker " + generator);
         }
         if (generator.indexOf(" 2.") < 0) {
             throw new InvalidVersionException("Version not supported of CvsWeb: " + generator);
         }
-        
+
         setType(generator);
     }
-        
-    /** 
+
+    /**
      * {@inheritDoc}
      * @return
      */

@@ -1,27 +1,22 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project>
-
   <!-- the version of maven's project object model -->
   <pomVersion>3</pomVersion>
-
   <!-- a unique name for this project -->
+  <artifactId>cvsgrab</artifactId>
   <groupId>cvsgrab</groupId>
   <id>cvsgrab</id>
-
   <!-- a short but descriptive name for the project -->
   <name>CVSGrab</name>
-
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-  <currentVersion>2.2</currentVersion>
-
+  <currentVersion>2.2.1</currentVersion>
   <!-- details about the organization that 'owns' the project -->
   <organization>
     <name>Ludovic Claude</name>
     <url>http://cvsgrab.sourceforge.net/</url>
     <logo>http://sourceforge.net/sflogo.php?group_id=52481&amp;type=5</logo>
   </organization>
-
   <!-- the year the project started -->
   <inceptionYear>2002</inceptionYear>
   <package>net.sourceforge.cvsgrab</package>
@@ -30,10 +25,7 @@
     Use the web interface to CVS repositories to get files from CVS behind a blocking firewall.
   </description>
   <!-- a short description of what the project does -->
-  <shortDescription>
-    CVS client that works behind firewalls.
-  </shortDescription>
-
+  <shortDescription>CVS client that works behind firewalls.</shortDescription>
   <!-- the project home page -->
   <url>http://cvsgrab.sourceforge.net/</url>
   <issueTrackingUrl>https://sourceforge.net/tracker/?group_id=52481&amp;atid=467004</issueTrackingUrl>
@@ -41,7 +33,6 @@
   <siteDirectory>/home/groups/c/cv/cvsgrab/htdocs/</siteDirectory>
   <distributionSite>upload.sourceforge.net</distributionSite>
   <distributionDirectory>/incoming/</distributionDirectory>
-
   <!-- the version control repository and http url for online access
        the connection element has the form:
        scm:<system>:<system specific connection string> -->
@@ -49,10 +40,7 @@
     <!--TODO: connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/cvsgrab</connection-->
     <url>http://cvs.sourceforge.net/viewcvs.py/cvsgrab</url>
   </repository>
-
   <!-- any mailing lists for the project -->
-  <mailingLists/>
-
   <licenses>
     <license>
       <name>BSD License</name>
@@ -60,7 +48,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
   <!-- who the developers are for the project -->
   <developers>
     <developer>
@@ -68,27 +55,18 @@
       <id>ludovicc</id>
       <email>ludovicc at users.sourceforge.net</email>
       <organization>Freelance</organization>
-      <roles>
-        <role>Inventor</role>
-        <role>Administrator</role>
-        <role>Release Manager</role>
-        <role>Developer</role>
-        <role>Architect</role>
-      </roles>
     </developer>
   </developers>
-
   <contributors>
     <contributor>
       <name>Joe</name>
       <email>Joe at users.sourceforge.net</email>
-      <organization></organization>
-      <roles>
-        <role>Contribute the thread pool used for simultaneous downloads.</role>
-      </roles>
+    </contributor>
+    <contributor>
+      <name>Dieter</name>
+      <email>ated at users.sourceforge.net</email>
     </contributor>
   </contributors>
-
   <!-- jar files the project is dependent on -->
   <dependencies>
     <dependency>
@@ -97,14 +75,6 @@
       <version>0.9.4</version>
       <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
     </dependency>
-
-    <dependency>
-      <groupId>nekohtml</groupId>
-      <artifactId>nekohtmlXni</artifactId>
-      <version>0.9.3</version>
-      <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
-    </dependency>
-
     <!-- TODO: use this when the DOM parser is implemented for nekoHtml because the full xerces is too big.
       <dependency>
       <groupId>nekoHtml</groupId>
@@ -112,79 +82,49 @@
       <version>2.0</version>
       <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
     </dependency-->
-
-    <dependency>
-      <groupId>xerces</groupId>
-      <artifactId>xercesImpl</artifactId>
-      <version>2.6.2</version>
-      <url>http://xml.apache.org/xerces2-j/</url>
-    </dependency>
-
     <dependency>
       <groupId>xml-apis</groupId>
       <artifactId>xml-apis</artifactId>
       <version>1.0.b2</version>
       <url>http://xml.apache.org/xerces2-j/</url>
     </dependency>
-
     <dependency>
       <groupId>cvslib</groupId>
       <artifactId>cvslib</artifactId>
       <version>3.6</version>
     </dependency>
-
-    <dependency>
-      <groupId>commons-cli</groupId>
-      <artifactId>commons-cli</artifactId>
-      <version>1.0-patched</version>
-    </dependency>
-
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.1</version>
     </dependency>
-
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.0</version>
     </dependency>
-
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
     </dependency>
-
     <dependency>
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
       <version>2.0.2</version>
     </dependency>
-
     <dependency>
       <groupId>commons-jxpath</groupId>
       <artifactId>commons-jxpath</artifactId>
       <version>1.2</version>
       <url>http://jakarta.apache.org/commons/jxpath/index.html</url>
     </dependency>
-
     <dependency>
       <groupId>ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.6.2</version>
+      <version>1.6.4</version>
       <url>http://ant.apache.org/</url>
     </dependency>
-
-    <dependency>
-      <groupId>maven-plugins</groupId>
-      <artifactId>maven-javaapp-plugin</artifactId>
-      <version>1.1</version>
-      <url>http://maven-plugins.sourceforge.net/maven-javaapp-plugin/</url>
-      <type>plugin</type>
-    </dependency>
-
     <!--dependency>
       <groupId>maven-plugins</groupId>
       <artifactId>maven-sourceforge-plugin</artifactId>
@@ -192,32 +132,46 @@
       <url>http://maven-plugins.sourceforge.net/maven-sourceforge-plugin/</url>
       <type>plugin</type>
     </dependency-->
-
+    <dependency>
+      <groupId>nekohtml</groupId>
+      <artifactId>nekohtmlXni</artifactId>
+      <version>0.9.3</version>
+      <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.6.2</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
+    </dependency>
+    <dependency>
+      <groupId>maven-plugins</groupId>
+      <artifactId>maven-javaapp-plugin</artifactId>
+      <version>1.1</version>
+      <type>plugin</type>
+      <url>http://maven-plugins.sourceforge.net/maven-javaapp-plugin/</url>
+    </dependency>
   </dependencies>
-
-
   <!-- build information for the project -->
   <build>
     <nagEmailAddress>ludovicc@users.sourceforge.net</nagEmailAddress>
     <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
       </includes>
     </unitTest>
-
     <resources>
       <resource>
         <directory>src/conf</directory>
         <includes>
           <include>*.properties</include>
         </includes>
+        <filtering>false</filtering>
       </resource>
     </resources>
   </build>
-
   <reports>
     <report>maven-changes-plugin</report>
     <report>maven-javadoc-plugin</report>
@@ -227,6 +181,5 @@
     <report>maven-linkcheck-plugin</report>
     <report>maven-license-plugin</report>
   </reports>
-
 </project>
 

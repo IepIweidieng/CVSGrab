@@ -145,6 +145,7 @@ public class SimpleDiff
 
     public SimpleDiff()
     {
+        // do nothing
     }
 
     protected int scan(int[] ndx, int i, int target)

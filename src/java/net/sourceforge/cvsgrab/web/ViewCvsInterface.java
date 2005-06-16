@@ -25,7 +25,7 @@ import org.w3c.dom.Document;
 
 /**
  * Support for ViewCvs-like interfaces to a cvs repository
- * 
+ *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
  * @created on 11 oct. 2003
@@ -45,46 +45,46 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
 
     /**
      * Constructor for ViewCvsInterface
-     * 
+     *
      */
     public ViewCvsInterface() {
         super();
     }
-    
+
     /**
      * Initialize the web interface
-     * 
+     *
      * @param grabber The cvs grabber
      */
     public void init(CVSGrab grabber) throws Exception {
         _type = getId();
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      * @param htmlPage The web page
      * @throws MarkerNotFoundException if the version marker for the web interface was not found
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
     public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
-        
+
         JXPathContext context = JXPathContext.newContext(htmlPage);
-        Iterator viewCvsTexts = context.iterate("//A[@href]/text()[starts-with(.,'ViewCVS')]");
+        Iterator viewCvsTexts = context.iterate("//META[@name = 'generator']/@content[starts-with(.,'ViewCVS')] | //A[@href]/text()[starts-with(.,'ViewCVS')]");
         _type = null;
         String viewCvsVersion = null;
         while (viewCvsTexts.hasNext()) {
-            viewCvsVersion = (String) viewCvsTexts.next(); 
+            viewCvsVersion = (String) viewCvsTexts.next();
             if (viewCvsVersion.startsWith(getVersionMarker())) {
                 _type = viewCvsVersion;
                 break;
-            } 
+            }
         }
         if (_type == null) {
             throw new MarkerNotFoundException("Expected marker " + getVersionMarker() + ", found " + viewCvsVersion);
         }
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      * @return
      */
@@ -94,15 +94,15 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         className = className.substring(0, className.indexOf("Interface"));
         return className;
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      * @return
      */
     public String getType() {
         return _type;
     }
-    
+
     /**
      * @return the base url to use when trying to auto-detect this type of web interface
      */
@@ -112,7 +112,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         url = WebBrowser.addQueryParam(url, grabber.getQueryParams());
         return url;
     }
-    
+
     /**
      * @param rootUrl
      * @param directoryName
@@ -120,7 +120,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      */
     public String getDirectoryUrl(String rootUrl, String directoryName) {
     	try {
-    		String tag = getVersionTag(); 
+    		String tag = getVersionTag();
     		String url = WebBrowser.forceFinalSlash(rootUrl);
     		url += WebBrowser.forceFinalSlash(quote(directoryName));
             url = WebBrowser.addQueryParam(url, _tagParam, tag);
@@ -131,8 +131,8 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     		throw new RuntimeException("Cannot create URI");
     	}
     }
-    
-    /** 
+
+    /**
      * {@inheritDoc}
      * @param htmlPage
      * @return
@@ -153,13 +153,15 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         return (RemoteFile[]) files.toArray(new RemoteFile[files.size()]);
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      * @param htmlPage
      * @return
      */
     public String[] getDirectories(Document htmlPage) {
         JXPathContext context = JXPathContext.newContext(htmlPage);
+        context.registerNamespace("HTML", "http://www.w3.org/1999/xhtml");
+        context.registerNamespace("", "http://www.w3.org/1999/xhtml");
         List directories = new ArrayList();
         Iterator i = context.iteratePointers(getDirectoriesXpath());
         while (i.hasNext()) {
@@ -170,7 +172,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         }
         return (String[]) directories.toArray(new String[directories.size()]);
     }
-    
+
     /**
      * @param file
      * @return
@@ -194,7 +196,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
             throw new RuntimeException("Cannot create URI");
         }
     }
-        
+
     public Properties guessWebProperties(String url) {
         Properties properties = new Properties();
         // Simple heuristic for detecting the type of the web interface
@@ -216,7 +218,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
             String guessedRootUrl = url.substring(0, rootUrlPosition);
             String guessedPackagePath = url.substring(rootUrlPosition);
             String versionTag = null;
-            String cvsroot = null; 
+            String cvsroot = null;
             String query = null;
             int queryPos = guessedPackagePath.indexOf('?');
             if (queryPos >= 0) {
@@ -241,7 +243,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         }
         return properties;
     }
-    
+
     /**
      * @return
      */
@@ -325,23 +327,23 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     public void setFilesXpath(String filesXpath) {
         _filesXpath = filesXpath;
     }
-    
+
     public String getTagParam() {
         return _tagParam;
     }
-    
+
     public void setTagParam(String param) {
         _tagParam = param;
     }
-    
+
     public String getWebInterfaceType() {
         return _webInterfaceType;
     }
-    
+
     protected void setWebInterfaceType(String webInterfaceType) {
         this._webInterfaceType = webInterfaceType;
     }
-    
+
     /**
      * @param type
      */
@@ -356,12 +358,12 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         if (fileName.startsWith("Attic/")) {
             file.setName(fileName.substring(6));
             file.setInAttic(true);
-        } 
+        }
     }
-    
+
     /**
      * Python-style of URIUtil.encodePath
-     * 
+     *
      * @param original The string to quote
      * @return the quoted string
      */

@@ -2,12 +2,15 @@ package net.sourceforge.cvsgrab.web;
 
 import net.sourceforge.cvsgrab.AbstractTestCase;
 import net.sourceforge.cvsgrab.CVSGrab;
+import net.sourceforge.cvsgrab.CvsWebInterface;
 import net.sourceforge.cvsgrab.RemoteDirectory;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.RemoteRepository;
 
 import org.w3c.dom.Document;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -18,7 +21,7 @@ import java.util.Properties;
 public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
 
     private ViewCvs0_8Interface _interface = new ViewCvs0_8Interface();
-    
+
     /**
      * Constructor for ViewCvs0_8InterfaceTest
      * @param testName
@@ -27,18 +30,29 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         super(testName);
     }
 
-    public void testDetect() throws Exception {
+    public void testValidateAndDetect() throws Exception {
+        List errors = new ArrayList();
         Document doc = getDocument("src/test/html_docs/view_cvs_0_8.html");
         CVSGrab grabber = new CVSGrab();
+        grabber.getWebOptions().setRootUrl("http://cvs.repository.org/viewcvs.py/");
+        grabber.getWebOptions().setPackagePath("test");
+        CvsWebInterface.registerDocument("http://cvs.repository.org/viewcvs.py/test/", doc);
+        _interface.validate(grabber, errors);
+        assertTrue(errors.isEmpty());
+
+        assertEquals("ViewCVS 0.8", _interface.getType());
+
         grabber.getWebOptions().setRootUrl("http://cvs.sourceforge.net/viewcvs.py/");
-        _interface.detect(grabber, doc);
-        
+        CvsWebInterface.registerDocument("cvs.sourceforge.net/viewcvs.py/test/", doc);
+        _interface.validate(grabber, errors);
+        assertTrue(errors.isEmpty());
+
         assertEquals("ViewCVS 0.8 on Sourceforge", _interface.getType());
     }
 
     public void testGetFiles() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_8.html");
-        
+
         int i = 0;
         RemoteFile[] files = _interface.getFiles(doc);
         assertEquals("AntRunner.properties", files[i].getName());
@@ -57,14 +71,14 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         assertEquals("1.4", files[i++].getVersion());
         assertEquals("jCVS.library", files[i].getName());
         assertEquals("1.1", files[i++].getVersion());
-        
+
         assertEquals("Expected no more files", i, files.length);
-        
+
     }
-    
+
     public void testGetDirectories() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_8.html");
-        
+
         int i = 0;
         String[] directories = _interface.getDirectories(doc);
         assertEquals("doc", directories[i++]);
@@ -72,11 +86,11 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         assertEquals("lib", directories[i++]);
         assertEquals("src", directories[i++]);
         assertEquals("web", directories[i++]);
-        
+
         assertEquals("Expected no more directories", i, directories.length);
-        
+
     }
-    
+
     /**
      * Fix for bug #853915
      */
@@ -88,7 +102,7 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         String fileUrl = _interface.getDownloadUrl(file);
         assertEquals("http://cvs.sourceforge.net/viewcvs.py/*checkout*/avantgarde/AvantGarde/src/st/fr/cageauxtrolls/avantgarde/gestion/partie/RestrictionsArm%E9e.java?rev=1.1", fileUrl);
     }
-    
+
     public void testGuessWebProperties() {
         Properties webProperties = _interface.guessWebProperties("http://cvs.sourceforge.net/viewcvs.py/cvsgrab/cvsgrab/");
         assertEquals("http://cvs.sourceforge.net/viewcvs.py/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
@@ -101,5 +115,5 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         assertEquals("RELEASE_2_0_3", webProperties.get(CVSGrab.TAG_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
-    
+
 }

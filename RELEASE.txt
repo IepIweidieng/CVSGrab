@@ -3,11 +3,15 @@ CVSGrab is a simple CVS client that bypass any firewall blocking port 2401 used 
 It relies on the ViewCVS web interface to the repository to work, and supports other types of web interfaces (CvsWeb, SourceCast...) 
 Use this tool when all other solutions (SSH...) fail. Only read-only access to the CVS repository is possible with this tool.
 
-This release includes the following changes and improvements:
+2.2 release includes the following changes and improvements:
 o Major new feature: creation of patches to report your local changes to the main project (-diff option)
 o Remember the connection settings, so the second time you run CVSGrab on a project you can just type cvsgrab
 o Lots of bugfixes, in particular to run CVSGrab with CVSWeb
 o Added support for Chora web interfaces (cvs.php.net)
+
+2.2.1 release includes the following changes and improvements:
+o don't run validation that may fail when the type of the web interface is given by the user with the -webInterface parameter
+o fixed auto-detection for SourceCast on tigris.org 
 
 Enjoy,
 

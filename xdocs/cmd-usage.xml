@@ -22,8 +22,37 @@
       It works like the ANT_HOME or JAVA_HOME property: put in
       CVSGRAB_HOME the location of your CVSGrab installation.</p>
     </section>
+    
+    <section name="Standard use">
+      <p>
+        Open your browser, go the the page that contains the root of the directory you want to download. 
+      </p> 
+      <p>
+        For example, if you want to download the sources of Jakarta's Ant tool, open your browser with
+        <a href="http://cvs.apache.org/viewcvs.cgi/ant/">http://cvs.apache.org/viewcvs.cgi/ant/</a>. <br/>
+        To get the sources from this repository, simply type on the command line: <br/>
+        cvsgrab -url http://cvs.apache.org/viewcvs.cgi/ant/ 
+      </p> 
+      <p>
+        Now if you wanted the 1.6 branch of Ant, in 'Show files using tag' at the bottom of the web page,
+        select ANT_16_BRANCH and press the Show button. Copy the new url to the clipboard, and type on the command line: <br/>
+		cvsgrab -url http://cvs.apache.org/viewcvs.cgi/ant/?only_with_tag=ANT_16_BRANCH -connections 3 -clean -prune
+      </p> 
+      <p>
+        Note the -connections 3 option that speeds up downloads by allowing up to 3 concurrent downloads of files,
+        -clean that forces cvsgrab to get the latest version of the file and override the local version (backup-ed if
+        there were changes made to it), and -prune that removes empty directories.
+      </p> 
+    </section>
 
-    <section name="Examples">
+    <section name="Advanced use">
+      <p>
+        The following examples are provided for the few times the url autodetection feature of CVSGrab doesn't work,
+        plus some advanced feature like compatibility with ViewCVS/TortoiseCVS/any thoer cvs client, speeding transfer
+        with multiple concurrent downloads and more. <br/>
+   	    If you discover a site that doesn't work with the -url option, or if the version of the files returned
+	     is incorrect, please let me know and file a <a href="http://sourceforge.net/tracker/?func=add&amp;group_id=52481&amp;atid=467004">bug report</a>
+	  </p>   
       <subsection
       name="CVSGrab itself on SourceForge (ViewCVS 0.8)">
         <p>URL: 
@@ -37,7 +66,7 @@
         CVSGrab</p>
 
         <p>Note the -packageDir option that is used to avoid
-        getting a folder called cvsgrab containing another forlder
+        getting a folder called cvsgrab containing another folder
         called cvsgrab also on the disk.</p>
       </subsection>
 

@@ -4,3 +4,4 @@ target
 *.log
 *.gz
 *.index
+deploy.bat

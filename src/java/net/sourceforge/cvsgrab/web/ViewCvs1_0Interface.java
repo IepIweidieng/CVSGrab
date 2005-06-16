@@ -34,6 +34,10 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
     public ViewCvs1_0Interface() {
         super();
         setFileVersionXpath("TD/A/B");
+        setFilesXpath("//TR[TD/A/IMG/@alt = '(file)' or contains(TD/A/IMG/@src, 'text')]");
+        //private String _fileVersionXpath = "TD[A/IMG/@alt != '(graph)'][2]/A/B";
+        setDirectoriesXpath("//TR[TD/A/IMG/@alt = '(dir)' or contains(TD/A/IMG/@src, 'dir')][TD/A/@name != 'Attic']");
+        
     }
 
     /** 
