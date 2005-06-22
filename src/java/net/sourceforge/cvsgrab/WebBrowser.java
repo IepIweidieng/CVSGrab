@@ -309,7 +309,6 @@ public class WebBrowser {
      *
      * @param method The method
      * @param url The url called by the method, only useful for error reporting
-     * @return
      */
     public String getResponse(HttpMethod method, String url) {
         HttpMethod lastMethod = executeMethod(method, url);
@@ -355,7 +354,6 @@ public class WebBrowser {
      *
      * @param method The method
      * @param url The url called by the method, only useful for error reporting
-     * @return
      */
     public Document getDocument(String url) throws Exception {
         return getDocument(new GetMethod(url), url);
@@ -366,7 +364,6 @@ public class WebBrowser {
      *
      * @param method The method
      * @param url The url called by the method, only useful for error reporting
-     * @return
      */
     public Document getDocument(HttpMethod method, String url) throws Exception {
         String response = getResponse(method, url);

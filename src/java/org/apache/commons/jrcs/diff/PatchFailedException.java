@@ -68,7 +68,12 @@ package org.apache.commons.jrcs.diff;
 public class PatchFailedException extends DiffException
 {
 
-    public PatchFailedException()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3813046902139783937L;
+
+	public PatchFailedException()
     {
         // do nothing
     }

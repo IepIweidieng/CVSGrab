@@ -67,7 +67,12 @@ package org.apache.commons.jrcs.diff;
 public class DiffException extends Exception
 {
 
-    public DiffException()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7003326086306173052L;
+
+	public DiffException()
     {
         // do nothing
     }

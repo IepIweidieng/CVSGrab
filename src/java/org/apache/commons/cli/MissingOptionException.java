@@ -69,7 +69,12 @@ package org.apache.commons.cli;
 public class MissingOptionException
     extends ParseException {
 
-    /** 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8880931839813013690L;
+
+	/** 
      * <p>Construct a new <code>MissingSelectedException</code> 
      * with the specified detail message.</p>
      *

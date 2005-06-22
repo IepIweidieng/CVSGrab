@@ -77,6 +77,9 @@ public abstract class AbstractTestCase extends TestCase {
             Pointer pointer = (Pointer) i.next();
             JXPathContext nodeContext = context.getRelativeContext(pointer);
             String text = (String) nodeContext.getValue(".//text()");
+            if (text == null) {
+            	text = String.valueOf(nodeContext.getValue("."));
+            }
             System.out.println(pointer + " " + text);
         }
         System.out.println("---------");

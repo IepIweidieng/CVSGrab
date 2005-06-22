@@ -84,7 +84,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
 
     /**
      * {@inheritDoc}
-     * @return
      */
     public String getId() {
         String className = getClass().getName();
@@ -95,7 +94,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
 
     /**
      * {@inheritDoc}
-     * @return
      */
     public String getType() {
         return _type;
@@ -107,8 +105,8 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     public String getBaseUrl() {
         String url = WebBrowser.forceFinalSlash(getGrabber().getRootUrl());
         url += getGrabber().getPackagePath();
-        if (getGrabber().getProjectRoot() != null) {
-            url = WebBrowser.addQueryParam(url, _cvsrootParam, getGrabber().getProjectRoot());
+        if (getProjectRoot() != null) {
+            url = WebBrowser.addQueryParam(url, _cvsrootParam, getProjectRoot());
         }
         url = WebBrowser.addQueryParam(url, getGrabber().getQueryParams());
         return url;
@@ -124,8 +122,8 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     		String tag = getVersionTag();
     		String url = WebBrowser.forceFinalSlash(rootUrl);
     		url += WebBrowser.forceFinalSlash(quote(directoryName));
-            if (getGrabber().getProjectRoot() != null) {
-                url = WebBrowser.addQueryParam(url, _cvsrootParam, getGrabber().getProjectRoot());
+            if (getProjectRoot() != null) {
+                url = WebBrowser.addQueryParam(url, _cvsrootParam, getProjectRoot());
             }
             url = WebBrowser.addQueryParam(url, _tagParam, tag);
     		url = WebBrowser.addQueryParam(url, getQueryParams());
@@ -138,8 +136,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
 
     /**
      * {@inheritDoc}
-     * @param htmlPage
-     * @return
      */
     public RemoteFile[] getFiles(Document htmlPage) {
         JXPathContext context = JXPathContext.newContext(htmlPage);
@@ -159,8 +155,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
 
     /**
      * {@inheritDoc}
-     * @param htmlPage
-     * @return
      */
     public String[] getDirectories(Document htmlPage) {
         JXPathContext context = JXPathContext.newContext(htmlPage);
@@ -177,10 +171,6 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         return (String[]) directories.toArray(new String[directories.size()]);
     }
 
-    /**
-     * @param file
-     * @return
-     */
     public String getDownloadUrl(RemoteFile file) {
         try {
             // http://cvs.apache.org/viewcvs.cgi/*checkout*/jakarta-regexp/KEYS?rev=1.1
@@ -192,8 +182,8 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
                 url += "Attic/";
             }
             url += quote(file.getName());
-            if (getGrabber().getProjectRoot() != null) {
-                url = WebBrowser.addQueryParam(url, _cvsrootParam, getGrabber().getProjectRoot());
+            if (getProjectRoot() != null) {
+                url = WebBrowser.addQueryParam(url, _cvsrootParam, getProjectRoot());
             }
             url = WebBrowser.addQueryParam(url, "rev", file.getVersion());
             url = WebBrowser.addQueryParam(url, getQueryParams());
@@ -251,86 +241,50 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         return properties;
     }
 
-    /**
-     * @return
-     */
     public String getFilesXpath() {
         return _filesXpath;
     }
 
-    /**
-     * @return
-     */
     public String getFileNameXpath() {
         return _fileNameXpath;
     }
 
-    /**
-     * @return
-     */
     public String getFileVersionXpath() {
         return _fileVersionXpath;
     }
 
-    /**
-     * @return
-     */
     public String getDirectoriesXpath() {
         return _directoriesXpath;
     }
 
-    /**
-     * @return
-     */
     public String getDirectoryXpath() {
         return _directoryXpath;
     }
 
-    /**
-     * @return
-     */
     protected String getCheckoutPath() {
         return _checkoutPath;
     }
 
-    /**
-     * @param checkoutPath
-     */
     protected void setCheckoutPath(String checkoutPath) {
         _checkoutPath = checkoutPath;
     }
 
-    /**
-     * @param directoryXpath
-     */
     public void setDirectoryXpath(String directoryXpath) {
         _directoryXpath = directoryXpath;
     }
 
-    /**
-     * @param directoriesXpath
-     */
     public void setDirectoriesXpath(String directoriesXpath) {
         _directoriesXpath = directoriesXpath;
     }
 
-    /**
-     * @param fileVersionXpath
-     */
     public void setFileVersionXpath(String fileVersionXpath) {
         _fileVersionXpath = fileVersionXpath;
     }
 
-    /**
-     * @param fileNameXpath
-     */
     public void setFileNameXpath(String fileNameXpath) {
         _fileNameXpath = fileNameXpath;
     }
 
-    /**
-     * @param filesXpath
-     */
     public void setFilesXpath(String filesXpath) {
         _filesXpath = filesXpath;
     }
@@ -351,7 +305,15 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         this._webInterfaceType = webInterfaceType;
     }
 
-    /**
+    public String getCvsrootParam() {
+		return _cvsrootParam;
+	}
+
+	public void setCvsrootParam(String cvsrootParam) {
+		_cvsrootParam = cvsrootParam;
+	}
+
+	/**
      * @param type
      */
     protected void setType(String type) {
@@ -377,4 +339,9 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     protected String quote(String original) throws URIException {
         return URIUtil.encodePath(original, "ISO-8859-1");
     }
+    
+	protected String getProjectRoot() {
+		return getGrabber().getProjectRoot();
+	}
+
 }

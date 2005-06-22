@@ -12,11 +12,16 @@ package net.sourceforge.cvsgrab;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 3 févr. 2004
+ * @created on 3 fevr. 2004
  */
 public class MarkerNotFoundException extends DetectException {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7312995762444322183L;
+
+	/**
      * Constructor for MarkerNotFoundException
      */
     public MarkerNotFoundException() {

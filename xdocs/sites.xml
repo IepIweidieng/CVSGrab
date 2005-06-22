@@ -26,7 +26,10 @@
            </tr>
            <tr>
              <td>Command</td>
-             <td>cvsgrab -url http://dev.eclipse.org/viewcvs/index.cgi/org.junit/</td>
+             <td>
+               cvsgrab -url http://dev.eclipse.org/viewcvs/index.cgi/org.junit/ <br/>
+               cvsgrab -url http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ercp/?cvsroot=Technology_Project
+             </td>
            </tr>
            <tr>
              <td>Notes</td>
@@ -68,15 +71,15 @@
            </tr>
            <tr>
              <td>Command</td>
-             <td>TODO</td>
+             <td>cvsgrab -url http://cvs.apache.org/viewcvs.cgi/ws-fx/wss4j/interop</td>
            </tr>
            <tr>
              <td>Notes</td>
-             <td>-</td>
+             <td>Don't use cvsgrab if the project is hosted on the SVN repository.</td>
            </tr>
            <tr>
              <td>Last tested with</td>
-             <td>TODO</td>
+             <td>ViewCVS 1.0-dev with CVSGrab 2.2.2 on June 22nd 2005</td>
            </tr>
          </table>
        </subsection>

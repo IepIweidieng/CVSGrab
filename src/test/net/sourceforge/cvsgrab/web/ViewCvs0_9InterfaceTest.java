@@ -58,7 +58,7 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
         _interface.detect(doc);
         
         assertEquals("ViewCVS 0.9.2", _interface.getType());
-        assertEquals("ooo4r", _interface.getRoot());
+        assertEquals("ooo4r", _interface.getProjectRoot());
     }
 
     public void testGetFiles() throws Exception {
@@ -117,8 +117,16 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
 
     public void testGetDirectoryUrl() throws Exception {
         assertEquals("http://cvs.apache.org/viewcvs/jakarta-log4j/", _interface.getDirectoryUrl("http://cvs.apache.org/viewcvs/", "jakarta-log4j"));
+
+        // with a specific version
         _interface.setVersionTag("v_1_1");
         assertEquals("http://cvs.apache.org/viewcvs/jakarta-log4j/?only_with_tag=v_1_1", _interface.getDirectoryUrl("http://cvs.apache.org/viewcvs/", "jakarta-log4j"));
+        
+        // with a project root
+        _grabber.getWebOptions().setRootUrl("http://dev.eclipse.org/viewcvs/index.cgi/");
+        _grabber.getWebOptions().setProjectRoot("Technology_Project");
+        _interface.setVersionTag(null);
+        assertEquals("http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ercp/?cvsroot=Technology_Project", _interface.getDirectoryUrl("http://dev.eclipse.org/viewcvs/index.cgi/", "org.eclipse.ercp"));
     }
     
     public void testGetDownloadUrl() throws Exception {
@@ -193,20 +201,20 @@ public class ViewCvs0_9InterfaceTest extends AbstractTestCase {
     }
     
     public void testGetDirectoryUrlWithMultipleRoots() throws Exception {
-        _interface.setRoot("ooo4r");
+        _interface.setProjectRoot("ooo4r");
         assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/ooo4r/?cvsroot=ooo4r", _interface.getDirectoryUrl("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", "ooo4r"));
         _interface.setVersionTag("jamesgb");
-        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/ooo4r/?only_with_tag=jamesgb&cvsroot=ooo4r", _interface.getDirectoryUrl("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", "ooo4r"));
+        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/ooo4r/?cvsroot=ooo4r&only_with_tag=jamesgb", _interface.getDirectoryUrl("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", "ooo4r"));
     }
     
     public void testGetDownloadUrlWithMultipleRoots() throws Exception {
-        _interface.setRoot("ooo4r");
+        _interface.setProjectRoot("ooo4r");
         RemoteRepository repository = new RemoteRepository("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", null);
         RemoteDirectory dir = new RemoteDirectory(repository, "ooo4r", "ooo4r");
         RemoteFile file = new RemoteFile("README.txt", "1.1");
         file.setDirectory(dir);
         file.setInAttic(false);
-        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/*checkout*/ooo4r/README.txt?rev=1.1&cvsroot=ooo4r", _interface.getDownloadUrl(file));
+        assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/*checkout*/ooo4r/README.txt?cvsroot=ooo4r&rev=1.1", _interface.getDownloadUrl(file));
     }
     
     public void testGetFilesOnEclipse() throws Exception {

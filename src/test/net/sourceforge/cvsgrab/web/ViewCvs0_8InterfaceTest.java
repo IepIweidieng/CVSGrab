@@ -47,13 +47,6 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         assertTrue(errors.isEmpty());
 
         assertEquals("ViewCVS 0.8", _interface.getType());
-
-        _grabber.getWebOptions().setRootUrl("http://cvs.sourceforge.net/viewcvs.py/");
-        CvsWebInterface.registerDocument("cvs.sourceforge.net/viewcvs.py/test/", doc);
-        _interface.validate(errors);
-        assertTrue(errors.isEmpty());
-
-        assertEquals("ViewCVS 0.8 on Sourceforge", _interface.getType());
     }
 
     public void testGetFiles() throws Exception {
@@ -103,7 +96,7 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
     public void testStrangeUrls() {
         RemoteRepository repository = new RemoteRepository("http://cvs.sourceforge.net/viewcvs.py/", null);
         RemoteDirectory dir = new RemoteDirectory(repository, "avantgarde/AvantGarde/src/st/fr/cageauxtrolls/avantgarde/gestion/partie/", "partie");
-        RemoteFile file = new RemoteFile("RestrictionsArmée.java", "1.1");
+        RemoteFile file = new RemoteFile("RestrictionsArm\u00E9e.java", "1.1");
         file.setDirectory(dir);
         String fileUrl = _interface.getDownloadUrl(file);
         assertEquals("http://cvs.sourceforge.net/viewcvs.py/*checkout*/avantgarde/AvantGarde/src/st/fr/cageauxtrolls/avantgarde/gestion/partie/RestrictionsArm%E9e.java?rev=1.1", fileUrl);

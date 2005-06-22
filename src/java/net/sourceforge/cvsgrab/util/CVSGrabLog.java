@@ -16,11 +16,15 @@ import org.apache.commons.logging.impl.SimpleLog;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 3 févr. 2004
+ * @created on 3 fevr. 2004
  */
 public class CVSGrabLog extends SimpleLog {
 
-    private String prefix;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8484066163771525005L;
+	private String prefix;
     
     /**
      * Constructor for CVSGrabLog

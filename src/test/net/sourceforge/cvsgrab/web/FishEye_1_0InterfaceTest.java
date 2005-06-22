@@ -39,10 +39,19 @@ public class FishEye_1_0InterfaceTest extends AbstractTestCase {
 
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/fisheye_0_8.html");
+        
         _grabber.getWebOptions().setRootUrl("http://cvs.codehaus.org/viewrep/");
         _interface.detect(doc);
 
-        assertEquals("FishEye (0.8.1 build-61)", _interface.getType());
+        //assertEquals("FishEye (0.8.1 build-61)", _interface.getType());
+        
+        doc = getDocument("src/test/html_docs/fisheye_1_0_1.html");
+
+        _grabber.getWebOptions().setRootUrl("http://cvs.groovy.codehaus.org/viewrep/");
+        _interface.detect(doc);
+
+        assertEquals("FishEye (1.0.1 build-78)", _interface.getType());
+        
     }
 
     public void testGetFiles() throws Exception {
@@ -157,6 +166,77 @@ public class FishEye_1_0InterfaceTest extends AbstractTestCase {
 
         _interface.setVersionTag("MX_PROPOSAL");
         assertEquals("http://cvs.codehaus.org/viewrep/~br=MX_PROPOSAL/picocontainer/java/picocontainer/src/", _interface.getDirectoryUrl("http://cvs.codehaus.org/viewrep/", "picocontainer/java/picocontainer/src"));
+    }
+
+    public void testGetFilesGroovy() throws Exception {
+        Document doc = getDocument("src/test/html_docs/fisheye_1_0_1.html");
+
+        int i = 0;
+        RemoteFile[] files = _interface.getFiles(doc);
+        assertEquals(".classpath", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.51", files[i++].getVersion());
+
+        assertEquals(".cvsignore", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.14", files[i++].getVersion());
+
+        assertEquals(".project", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.10", files[i++].getVersion());
+
+        assertEquals("ASM-LICENSE.txt", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.1", files[i++].getVersion());
+
+        assertEquals("build.xml", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.1", files[i++].getVersion());
+
+        assertEquals("GroovyDoc.txt", files[i].getName());
+        assertTrue(files[i].isInAttic());
+        assertEquals("1.3", files[i++].getVersion());
+
+        assertEquals("LICENSE.txt", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.2", files[i++].getVersion());
+
+        assertEquals("maven.xml", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.124", files[i++].getVersion());
+
+        assertEquals("project.properties", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.20", files[i++].getVersion());
+
+        assertEquals("project.xml", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.146", files[i++].getVersion());
+
+        assertEquals("TODO-PARSER.txt", files[i].getName());
+        assertTrue(files[i].isInAttic());
+        assertEquals("1.14", files[i++].getVersion());
+
+        assertEquals("TODO.txt", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.123", files[i++].getVersion());
+
+        assertEquals("Expected no more files", i, files.length);
+
+    }
+
+    public void testGetDirectoriesGroovy() throws Exception {
+        Document doc = getDocument("src/test/html_docs/fisheye_1_0_1.html");
+
+        int i = 0;
+        String[] directories = _interface.getDirectories(doc);
+        assertEquals(".settings", directories[i++]);
+        // lib is not visible
+        assertEquals("security", directories[i++]);
+        assertEquals("src", directories[i++]);
+        assertEquals("xdocs", directories[i++]);
+
+        assertEquals("Expected no more directories", i, directories.length);
     }
 
     public void testGetDownloadUrl() throws Exception {

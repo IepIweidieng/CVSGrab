@@ -70,7 +70,12 @@ package org.apache.commons.cli;
 public class MissingArgumentException
     extends ParseException {
 
-    /** 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4239303189361421477L;
+
+	/** 
      * <p>Construct a new <code>MissingArgumentException</code> 
      * with the specified detail message.</p>
      *

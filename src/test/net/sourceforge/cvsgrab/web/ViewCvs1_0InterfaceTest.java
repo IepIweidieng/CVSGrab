@@ -37,15 +37,14 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
 
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/");
+        _grabber.getWebOptions().setRootUrl("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/");
         _interface.detect(doc);
         
         assertEquals("ViewCVS 1.0-dev", _interface.getType());
         assertEquals("picocontainer", _interface.getRoot());
         
         doc = getDocument("src/test/html_docs/view_cvs_1_0_maven.html");
-        grabber.getWebOptions().setRootUrl("http://cvs.apache.org/viewcvs.cgi/");
+        _grabber.getWebOptions().setRootUrl("http://cvs.apache.org/viewcvs.cgi/");
         _interface.detect(doc);
         
         assertEquals("ViewCVS 1.0-dev", _interface.getType());
@@ -59,8 +58,7 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
      */
     public void testDetectBusyBox() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0_busybox.net.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://cvs.uclibc.org/cgi-bin/cvsweb/");
+        _grabber.getWebOptions().setRootUrl("http://cvs.uclibc.org/cgi-bin/cvsweb/");
         _interface.detect(doc);
         
         assertEquals("ViewCVS 1.0-dev", _interface.getType());

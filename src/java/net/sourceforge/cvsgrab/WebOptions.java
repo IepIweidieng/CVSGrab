@@ -137,7 +137,9 @@ public class WebOptions {
     }
 
     public void setProjectRoot(String projectRoot) {
-        _projectRoot = projectRoot;
+        if (projectRoot != null) {
+        	_projectRoot = projectRoot;
+        }
     }
 
     /**
@@ -152,7 +154,9 @@ public class WebOptions {
      * @param versionTag The versionTag to set.
      */
     public void setVersionTag(String versionTag) {
-        _versionTag = versionTag;
+    	if (versionTag != null) {
+            _versionTag = versionTag;
+    	}
     }
 
     /**
@@ -166,7 +170,9 @@ public class WebOptions {
      * @param queryParams The queryParams to set.
      */
     public void setQueryParams(String queryParams) {
-        _queryParams = queryParams;
+    	if (queryParams != null) {
+    		_queryParams = queryParams;
+    	}
     }
 
     /**
@@ -182,7 +188,9 @@ public class WebOptions {
      * @param webInterfaceId The webInterfaceId to set.
      */
     public void setWebInterfaceId(String webInterfaceId) {
-        _webInterfaceId = webInterfaceId;
+    	if (webInterfaceId != null) {
+    		_webInterfaceId = webInterfaceId;
+    	}
     }
 
     /**
