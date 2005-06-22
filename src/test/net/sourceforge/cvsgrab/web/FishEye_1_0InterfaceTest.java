@@ -21,6 +21,7 @@ import java.util.Properties;
 public class FishEye_1_0InterfaceTest extends AbstractTestCase {
 
     private FishEye_1_0Interface _interface;
+    private CVSGrab _grabber;
 
     /**
      * Constructor for FishEye_1_0InterfaceTest
@@ -32,14 +33,14 @@ public class FishEye_1_0InterfaceTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        _interface = new FishEye_1_0Interface();
+        _grabber = new CVSGrab();
+        _interface = new FishEye_1_0Interface(_grabber);
     }
 
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/fisheye_0_8.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://cvs.codehaus.org/viewrep/");
-        _interface.detect(grabber, doc);
+        _grabber.getWebOptions().setRootUrl("http://cvs.codehaus.org/viewrep/");
+        _interface.detect(doc);
 
         assertEquals("FishEye (0.8.1 build-61)", _interface.getType());
     }
@@ -173,21 +174,21 @@ public class FishEye_1_0InterfaceTest extends AbstractTestCase {
         assertEquals("http://cvs.codehaus.org/viewrep/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("picocontainer/java/picocontainer", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertEquals("hideDeletedFiles=Y", webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
 
         webProperties = _interface.guessWebProperties("http://cvs.codehaus.org/viewrep/~br=MX_PROPOSAL/picocontainer/java/picocontainer");
         assertEquals("http://cvs.codehaus.org/viewrep/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("picocontainer/java/picocontainer", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertEquals("MX_PROPOSAL", webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertEquals("hideDeletedFiles=Y", webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
 
         webProperties = _interface.guessWebProperties("http://cvs.codehaus.org/viewrep/picocontainer/java/picocontainer?hideDeletedFiles=N");
         assertEquals("http://cvs.codehaus.org/viewrep/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("picocontainer/java/picocontainer", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertEquals("hideDeletedFiles=N", webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
 

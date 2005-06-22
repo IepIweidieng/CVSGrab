@@ -8,7 +8,6 @@ package net.sourceforge.cvsgrab;
 
 import net.sourceforge.cvsgrab.util.ThreadPool;
 
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.jrcs.diff.Revision;
 import org.apache.commons.jrcs.diff.myers.MyersDiff;
 import org.apache.commons.jrcs.diff.print.UnifiedPrint;
@@ -209,7 +208,7 @@ public class RemoteFile {
                     String[] orig = new String[0];
                     if (localVersion != null) {
                         // This file already exists on the repository as there is a version
-                        WebBrowser.getInstance().loadFile(new GetMethod(url), origFile);
+                        WebBrowser.getInstance().loadFile(url, origFile);
                         orig = loadFile(origFile.getAbsolutePath());
                     }
                     
@@ -294,7 +293,7 @@ public class RemoteFile {
             String url = remoteRepository.getDownloadUrl(this);
             
             // Download the file
-            WebBrowser.getInstance().loadFile(new GetMethod(url), destFile);
+            WebBrowser.getInstance().loadFile(url, destFile);
             _lastModified = new Date();
 
             localRepository.updateFileVersion(this);

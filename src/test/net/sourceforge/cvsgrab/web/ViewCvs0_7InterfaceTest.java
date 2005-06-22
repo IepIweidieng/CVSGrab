@@ -18,6 +18,7 @@ import java.util.Properties;
 public class ViewCvs0_7InterfaceTest extends AbstractTestCase {
 
     private ViewCvs0_7Interface _interface;
+    private CVSGrab _grabber;
     
     /**
      * Constructor for ViewCvs0_7InterfaceTest
@@ -29,14 +30,14 @@ public class ViewCvs0_7InterfaceTest extends AbstractTestCase {
     
     protected void setUp() throws Exception {
         super.setUp();
-        _interface = new ViewCvs0_7Interface();
+        _grabber = new CVSGrab();
+        _interface = new ViewCvs0_7Interface(_grabber);
     }
 
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/view_cvs_0_7.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://dev.eclipse.org/viewcvs/index.cgi/");
-        _interface.detect(grabber, doc);
+        _grabber.getWebOptions().setRootUrl("http://dev.eclipse.org/viewcvs/index.cgi/");
+        _interface.detect(doc);
         
         assertEquals("ViewCVS 0.7", _interface.getType());
     }

@@ -17,7 +17,8 @@ import java.util.Properties;
  */
 public class Sourcecast1_0InterfaceTest extends AbstractTestCase {
 
-    private Sourcecast1_0Interface _interface = new Sourcecast1_0Interface();
+    private Sourcecast1_0Interface _interface;
+    private CVSGrab _grabber;
     
     /**
      * Constructor for Sourcecast2_0InterfaceTest
@@ -27,11 +28,16 @@ public class Sourcecast1_0InterfaceTest extends AbstractTestCase {
         super(testName);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        _grabber = new CVSGrab();
+        _interface = new Sourcecast1_0Interface(_grabber);
+    }
+
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/sourcecast_1_0.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://javacvs.netbeans.org/source/browse/");
-        _interface.detect(grabber, doc);
+        _grabber.getWebOptions().setRootUrl("http://javacvs.netbeans.org/source/browse/");
+        _interface.detect(doc);
         
         assertEquals("SourceCast 1.1.3.000", _interface.getType());
     }
@@ -102,13 +108,13 @@ public class Sourcecast1_0InterfaceTest extends AbstractTestCase {
         assertEquals("http://javacvs.netbeans.org/source/browse/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("javacvs/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
         webProperties = _interface.guessWebProperties("http://javacvs.netbeans.org/source/browse/javacvs/?only_with_tag=sierrafixes");
         assertEquals("http://javacvs.netbeans.org/source/browse/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("javacvs/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertEquals("sierrafixes", webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
     

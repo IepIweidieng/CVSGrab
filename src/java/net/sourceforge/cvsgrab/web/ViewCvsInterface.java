@@ -47,16 +47,14 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      * Constructor for ViewCvsInterface
      *
      */
-    public ViewCvsInterface() {
-        super();
+    public ViewCvsInterface(CVSGrab grabber) {
+        super(grabber);
     }
 
     /**
      * Initialize the web interface
-     *
-     * @param grabber The cvs grabber
      */
-    public void init(CVSGrab grabber) throws Exception {
+    public void init() throws Exception {
         _type = getId();
     }
 
@@ -66,7 +64,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
      * @throws MarkerNotFoundException if the version marker for the web interface was not found
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
+    public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
 
         JXPathContext context = JXPathContext.newContext(htmlPage);
         Iterator viewCvsTexts = context.iterate("//META[@name = 'generator']/@content[starts-with(.,'ViewCVS')] | //A[@href]/text()[starts-with(.,'ViewCVS')]");
@@ -106,10 +104,13 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     /**
      * @return the base url to use when trying to auto-detect this type of web interface
      */
-    public String getBaseUrl(CVSGrab grabber) {
-        String url = WebBrowser.forceFinalSlash(grabber.getRootUrl());
-        url += grabber.getPackagePath();
-        url = WebBrowser.addQueryParam(url, grabber.getQueryParams());
+    public String getBaseUrl() {
+        String url = WebBrowser.forceFinalSlash(getGrabber().getRootUrl());
+        url += getGrabber().getPackagePath();
+        if (getGrabber().getProjectRoot() != null) {
+            url = WebBrowser.addQueryParam(url, _cvsrootParam, getGrabber().getProjectRoot());
+        }
+        url = WebBrowser.addQueryParam(url, getGrabber().getQueryParams());
         return url;
     }
 
@@ -123,6 +124,9 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
     		String tag = getVersionTag();
     		String url = WebBrowser.forceFinalSlash(rootUrl);
     		url += WebBrowser.forceFinalSlash(quote(directoryName));
+            if (getGrabber().getProjectRoot() != null) {
+                url = WebBrowser.addQueryParam(url, _cvsrootParam, getGrabber().getProjectRoot());
+            }
             url = WebBrowser.addQueryParam(url, _tagParam, tag);
     		url = WebBrowser.addQueryParam(url, getQueryParams());
     		return url;
@@ -188,6 +192,9 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
                 url += "Attic/";
             }
             url += quote(file.getName());
+            if (getGrabber().getProjectRoot() != null) {
+                url = WebBrowser.addQueryParam(url, _cvsrootParam, getGrabber().getProjectRoot());
+            }
             url = WebBrowser.addQueryParam(url, "rev", file.getVersion());
             url = WebBrowser.addQueryParam(url, getQueryParams());
             return url;
@@ -235,7 +242,7 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
                 properties.put(CVSGrab.TAG_OPTION, versionTag);
             }
             if (cvsroot != null && cvsroot.trim().length() > 0) {
-                properties.put(CVSGrab.CVS_ROOT_OPTION, cvsroot);
+                properties.put(CVSGrab.PROJECT_ROOT_OPTION, cvsroot);
             }
             if (query != null && query.trim().length() > 0) {
                 properties.put(CVSGrab.QUERY_PARAMS_OPTION, query);

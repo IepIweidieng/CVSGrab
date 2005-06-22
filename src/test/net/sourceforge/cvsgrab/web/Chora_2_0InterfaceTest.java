@@ -21,6 +21,7 @@ import java.util.Properties;
 public class Chora_2_0InterfaceTest extends AbstractTestCase {
 
     private Chora_2_0Interface _interface;
+    private CVSGrab _grabber;
 
     /**
      * Constructor for Chora_2_0InterfaceTest
@@ -32,14 +33,14 @@ public class Chora_2_0InterfaceTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        _interface = new Chora_2_0Interface();
+        _grabber = new CVSGrab();
+        _interface = new Chora_2_0Interface(_grabber);
     }
 
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/chora_2_0.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://cvs.php.net/cvs.php/");
-        _interface.detect(grabber, doc);
+        _grabber.getWebOptions().setRootUrl("http://cvs.php.net/cvs.php/");
+        _interface.detect(doc);
         
         assertEquals("Chora 2.x", _interface.getType());
     }
@@ -130,7 +131,7 @@ public class Chora_2_0InterfaceTest extends AbstractTestCase {
         assertEquals("http://cvs.php.net/cvs.php/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("smarty/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
     

@@ -29,7 +29,9 @@ import java.util.Properties;
  */
 public class FishEye_1_0Interface extends ViewCvsInterface {
 
-    public FishEye_1_0Interface() {
+    public FishEye_1_0Interface(CVSGrab grabber) {
+        super(grabber);
+        
         setFilesXpath("//TABLE[@id='fileTable']//TR[@class='ftFileRow' or @class='ftFileRowDeleted']");
         setFileNameXpath("TD/A[@class='ftFileName']/text()");
         setFileVersionXpath("TD/A[@class='ftRev'][@title='view' or @title='history' or @title='download']/text()");
@@ -41,7 +43,7 @@ public class FishEye_1_0Interface extends ViewCvsInterface {
     /**
      * {@inheritDoc}
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
+    public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
 
         JXPathContext context = JXPathContext.newContext(htmlPage);
         String type = (String) context.getValue("//DIV[@id='footer']/P/A[@href='http://www.cenqua.com/fisheye/']");
@@ -58,7 +60,7 @@ public class FishEye_1_0Interface extends ViewCvsInterface {
         }
         setType(type + " " + version);
 
-        if (grabber.getVersionTag() != null) {
+        if (getGrabber().getVersionTag() != null) {
         	throw new InvalidVersionException("Chora 2.0 doesn't support version tags");
         }
     }

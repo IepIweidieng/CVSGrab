@@ -27,8 +27,9 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
     /**
      * Constructor for Sourcecast2_0Interface
      */
-    public Sourcecast2_0Interface() {
-        super();
+    public Sourcecast2_0Interface(CVSGrab grabber) {
+        super(grabber);
+        
         setWebInterfaceType("browse");
     }
 
@@ -38,7 +39,7 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
      * @throws MarkerNotFoundException if the version marker for the web interface was not found
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
+    public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         JXPathContext context = JXPathContext.newContext(htmlPage);
         context.setLenient(true);
 

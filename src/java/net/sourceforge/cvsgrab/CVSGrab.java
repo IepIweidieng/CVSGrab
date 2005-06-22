@@ -286,14 +286,23 @@ public class CVSGrab {
         _webOptions.readProperties(webProperties);
 
         // Handle local repository options
+        
+        // By default, projectRoot and cvsRoot should match (they are configured in different parameters,
+        // because projectRoot is the root seen from the web repository, and cvsRoot is the root seen from 
+        // the cvs client, and some sites can have different names for them, but so far that's only speculation
+        // and no real case). cvsRoot exists also because of historical reasons, it was introduced for
+        // compatibility with cvs clients.
+        if (cmd.hasOption(PROJECT_ROOT_OPTION)) {
+            setCvsRoot(cmd.getOptionValue(PROJECT_ROOT_OPTION));
+        }
+        if (cmd.hasOption(CVS_ROOT_OPTION)) {
+            setCvsRoot(cmd.getOptionValue(CVS_ROOT_OPTION));
+        }
         if (cmd.hasOption(DEST_DIR_OPTION)) {
             setDestDir(cmd.getOptionValue(DEST_DIR_OPTION));
         }
         if (cmd.hasOption(PACKAGE_DIR_OPTION)) {
             setPackageDir(cmd.getOptionValue(PACKAGE_DIR_OPTION));
-        }
-        if (cmd.hasOption(CVS_ROOT_OPTION)) {
-            setCvsRoot(cmd.getOptionValue(CVS_ROOT_OPTION));
         }
         if (cmd.hasOption(PRUNE_OPTION)) {
             setPruneEmptyDirs(true);
@@ -378,7 +387,7 @@ public class CVSGrab {
     public static void printWebInterfaces() {
         System.out.println("CVSGrab version " + VERSION);
         System.out.println("Currently supporting the following web interfaces:");
-        String[] webInterfaces = CvsWebInterface.getInterfaceIds();
+        String[] webInterfaces = CvsWebInterface.getInterfaceIds(new CVSGrab());
         for (int i = 0; i < webInterfaces.length; i++) {
             System.out.println("\t" + webInterfaces[i]);
         }
@@ -523,7 +532,7 @@ public class CVSGrab {
      * Analyse the root url and try to extract the package path, version tag and web options parameters from it
      */
     public void setUrl(String url) {
-        Properties webProperties = CvsWebInterface.getWebProperties(url);
+        Properties webProperties = CvsWebInterface.getWebProperties(this, url);
         // put back the result in the WebOptions
         _webOptions.readProperties(webProperties);
     }
@@ -623,7 +632,7 @@ public class CVSGrab {
             while (remoteRepository.hasDirectoryToProcess()) {
                 try {
                     remoteDir = remoteRepository.nextDirectoryToProcess();
-                    remoteDir.diffContents(writer, this);
+                    remoteDir.diffContents(writer);
                     writer.flush();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -699,7 +708,7 @@ public class CVSGrab {
             try {
                 getLog().debug("Connecting to " + urls[i]);
                 GetMethod connectMethod = new GetMethod(urls[i]);
-                WebBrowser.getInstance().executeMethod(connectMethod);
+                WebBrowser.getInstance().executeMethod(connectMethod, urls[i]);
                 getLog().debug("Connection successful");
                 return;
             } catch (Exception ex) {

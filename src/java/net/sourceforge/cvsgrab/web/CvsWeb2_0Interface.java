@@ -25,8 +25,9 @@ public class CvsWeb2_0Interface extends ViewCvsInterface {
     /**
      * Constructor for CvsWeb2_0Interface
      */
-    public CvsWeb2_0Interface() {
-        super();
+    public CvsWeb2_0Interface(CVSGrab grabber) {
+        super(grabber);
+        
         setFilesXpath("//TR[TD/A/IMG/@alt = '[TXT]']");
         setDirectoriesXpath("//TR[TD/A/IMG/@alt = '[DIR]'][TD/A/@name != 'Attic']");
         setCheckoutPath("~checkout~/");
@@ -39,7 +40,7 @@ public class CvsWeb2_0Interface extends ViewCvsInterface {
      * @throws MarkerNotFoundException if the version marker for the web interface was not found
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
+    public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         JXPathContext context = JXPathContext.newContext(htmlPage);
         context.setLenient(true);
         // Check that this is CvsWeb

@@ -6,7 +6,6 @@
 
 package net.sourceforge.cvsgrab;
 
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 
@@ -118,7 +117,7 @@ public class RemoteDirectory {
         Log log = CVSGrab.getLog();
         log.info("cvs update: Updating " + getDirectoryPath());
         log.debug("Loading url " + url);
-        Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
+        Document doc = WebBrowser.getInstance().getDocument(url);
         RemoteFile[] files = _remoteRepository.getWebInterface().getFiles(doc);
         for (int i = 0; i < files.length; i++) {
             RemoteFile file = files[i];
@@ -135,16 +134,16 @@ public class RemoteDirectory {
      * Diff the contents of the repository and store the diffs in the file
      * @param writer
      */
-    public void diffContents(PrintWriter writer, CVSGrab grabber) throws Exception {
+    public void diffContents(PrintWriter writer) throws Exception {
         String url = getUrl();
         Log log = CVSGrab.getLog();
         log.info("cvs update: Updating " + getDirectoryPath());
-        Document doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
+        Document doc = WebBrowser.getInstance().getDocument(url);
         RemoteFile[] files = _remoteRepository.getWebInterface().getFiles(doc);
         for (int i = 0; i < files.length; i++) {
             RemoteFile file = files[i];
             file.setDirectory(this);
-            file.diff(_remoteRepository.getLocalRepository(), writer, grabber);
+            file.diff(_remoteRepository.getLocalRepository(), writer, _remoteRepository.getWebInterface().getGrabber());
         }
         String[] directories = _remoteRepository.getWebInterface().getDirectories(doc);
         for (int i = 0; i < directories.length; i++) {
