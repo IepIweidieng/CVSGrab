@@ -17,7 +17,8 @@ import java.util.Properties;
  */
 public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
 
-    private CvsWeb1_0Interface _interface = new CvsWeb1_0Interface();
+    private CvsWeb1_0Interface _interface;
+    private CVSGrab _grabber;
     
     /**
      * Constructor for CvsWeb1_0InterfaceTest
@@ -27,11 +28,16 @@ public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
         super(testName);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        _grabber = new CVSGrab();
+        _interface = new CvsWeb1_0Interface(_grabber);
+    }
+
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/cvsweb_1_0.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://dev.w3.org/cvsweb/");
-        _interface.detect(grabber, doc);
+        _grabber.getWebOptions().setRootUrl("http://dev.w3.org/cvsweb/");
+        _interface.detect(doc);
         
         assertEquals("hennerik CVSweb Revision: 1.1", _interface.getType());
     }
@@ -83,13 +89,13 @@ public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
         assertEquals("http://dev.w3.org/cvsweb/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("java/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
         webProperties = _interface.guessWebProperties("http://dev.w3.org/cvsweb/java/?only_with_tag=R_2_0_3_B0");
         assertEquals("http://dev.w3.org/cvsweb/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("java/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertEquals("R_2_0_3_B0", webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
     

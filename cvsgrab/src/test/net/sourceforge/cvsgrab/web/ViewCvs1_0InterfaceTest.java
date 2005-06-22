@@ -18,6 +18,7 @@ import java.util.Properties;
 public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
 
     private ViewCvs1_0Interface _interface;
+    private CVSGrab _grabber;
     
     /**
      * Constructor for ViewCvs1_0InterfaceTest
@@ -29,7 +30,8 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        _interface = new ViewCvs1_0Interface();
+        _grabber = new CVSGrab();
+        _interface = new ViewCvs1_0Interface(_grabber);
         _interface.setRoot("picocontainer");
     }
 
@@ -37,14 +39,14 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0.html");
         CVSGrab grabber = new CVSGrab();
         grabber.getWebOptions().setRootUrl("http://cvs.picocontainer.codehaus.org/viewcvs.cgi/");
-        _interface.detect(grabber, doc);
+        _interface.detect(doc);
         
         assertEquals("ViewCVS 1.0-dev", _interface.getType());
         assertEquals("picocontainer", _interface.getRoot());
         
         doc = getDocument("src/test/html_docs/view_cvs_1_0_maven.html");
         grabber.getWebOptions().setRootUrl("http://cvs.apache.org/viewcvs.cgi/");
-        _interface.detect(grabber, doc);
+        _interface.detect(doc);
         
         assertEquals("ViewCVS 1.0-dev", _interface.getType());
         assertNull(_interface.getRoot());
@@ -59,7 +61,7 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
         Document doc = getDocument("src/test/html_docs/view_cvs_1_0_busybox.net.html");
         CVSGrab grabber = new CVSGrab();
         grabber.getWebOptions().setRootUrl("http://cvs.uclibc.org/cgi-bin/cvsweb/");
-        _interface.detect(grabber, doc);
+        _interface.detect(doc);
         
         assertEquals("ViewCVS 1.0-dev", _interface.getType());
         assertNull(_interface.getRoot());
@@ -272,13 +274,13 @@ public class ViewCvs1_0InterfaceTest extends AbstractTestCase {
         assertEquals("http://cvs.apache.org/viewcvs.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("ant/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
         webProperties = _interface.guessWebProperties("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/ooo4r/?only_with_tag=jamesgb&cvsroot=ooo4r");
         assertEquals("http://rubyforge.org/cgi-bin/viewcvs/cgi/viewcvs.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("ooo4r/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertEquals("jamesgb", webProperties.get(CVSGrab.TAG_OPTION));
-        assertEquals("ooo4r", webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertEquals("ooo4r", webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
     

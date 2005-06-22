@@ -6,6 +6,7 @@
  */
 package net.sourceforge.cvsgrab.web;
 
+import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
 
@@ -25,8 +26,9 @@ public class ViewCvs0_7Interface extends ViewCvsInterface {
     /**
      * Constructor for ViewCvs0_7Interface
      */
-    public ViewCvs0_7Interface() {
-        super();
+    public ViewCvs0_7Interface(CVSGrab grabber) {
+        super(grabber);
+        
         setFilesXpath("//TR[TD//A/IMG/@alt = '[FILE_ICON]']");
         setFileNameXpath("TD[1]/A/@name");
         setDirectoriesXpath("//TR[TD//A/IMG/@alt = '[DIR_ICON]'][TD/A/@name != 'Attic']");

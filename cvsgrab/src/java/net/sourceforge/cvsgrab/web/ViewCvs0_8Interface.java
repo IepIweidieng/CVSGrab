@@ -6,6 +6,8 @@
  */
 package net.sourceforge.cvsgrab.web;
 
+import net.sourceforge.cvsgrab.CVSGrab;
+
 
 
 /**
@@ -20,8 +22,8 @@ public class ViewCvs0_8Interface extends ViewCvsInterface {
     /**
      * Constructor for ViewCvs0_8Interface
      */
-    public ViewCvs0_8Interface() {
-        super();
+    public ViewCvs0_8Interface(CVSGrab grabber) {
+        super(grabber);
     }
 
     /**

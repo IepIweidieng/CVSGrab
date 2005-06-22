@@ -27,8 +27,9 @@ public class Sourcecast1_0Interface extends CvsWeb2_0Interface {
     /**
      * Constructor for Sourcecast1_0Interface
      */
-    public Sourcecast1_0Interface() {
-        super();
+    public Sourcecast1_0Interface(CVSGrab grabber) {
+        super(grabber);
+        
         setFilesXpath("//TR[TD/A/A/IMG/@alt = '[TXT]']");
         setDirectoriesXpath("//TR[TD/A/A/IMG/@alt = '[DIR]'][TD/A/@name != 'Attic']");
         setWebInterfaceType("browse");
@@ -40,7 +41,7 @@ public class Sourcecast1_0Interface extends CvsWeb2_0Interface {
      * @throws MarkerNotFoundException if the version marker for the web interface was not found
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
+    public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         JXPathContext context = JXPathContext.newContext(htmlPage);
         context.setLenient(true);
         

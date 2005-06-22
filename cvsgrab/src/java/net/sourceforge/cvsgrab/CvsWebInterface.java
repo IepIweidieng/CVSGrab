@@ -18,7 +18,6 @@ import net.sourceforge.cvsgrab.web.ViewCvs0_8Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_9Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs1_0Interface;
 
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.w3c.dom.Document;
 
 import java.util.ArrayList;
@@ -43,20 +42,22 @@ import java.util.StringTokenizer;
  */
 public abstract class CvsWebInterface {
 
-    private static CvsWebInterface[] _webInterfaces = new CvsWebInterface[] {
-        new ViewCvs0_7Interface(),
-        new ViewCvs0_8Interface(),
-        new ViewCvs0_9Interface(),
-        new ViewCvs1_0Interface(),
-        new Sourcecast1_0Interface(),
-        new Sourcecast2_0Interface(),
-        new Sourcecast3_0Interface(),
-        new CvsWeb1_0Interface(),
-        new CvsWeb2_0Interface(),
-        new CvsWeb3_0Interface(),
-        new Chora_2_0Interface(),
-        new FishEye_1_0Interface()
-    };
+    private static CvsWebInterface[] getWebInterfaces(CVSGrab grabber) {
+        return new CvsWebInterface[] {
+            new ViewCvs0_7Interface(grabber),
+            new ViewCvs0_8Interface(grabber),
+            new ViewCvs0_9Interface(grabber),
+            new ViewCvs1_0Interface(grabber),
+            new Sourcecast1_0Interface(grabber),
+            new Sourcecast2_0Interface(grabber),
+            new Sourcecast3_0Interface(grabber),
+            new CvsWeb1_0Interface(grabber),
+            new CvsWeb2_0Interface(grabber),
+            new CvsWeb3_0Interface(grabber),
+            new Chora_2_0Interface(grabber),
+            new FishEye_1_0Interface(grabber)
+        };
+    }
 
     private static Map documents = new HashMap();
 
@@ -68,10 +69,11 @@ public abstract class CvsWebInterface {
      * @throws Exception if initialisation of the web interface fails
      */
     public static final CvsWebInterface getInterface(CVSGrab grabber, String interfaceId) throws Exception {
-        for (int i = 0; i < _webInterfaces.length; i++) {
-            if (_webInterfaces[i].getId().equals(interfaceId)) {
-                _webInterfaces[i].init(grabber);
-                return _webInterfaces[i];
+        CvsWebInterface[] webInterfaces = getWebInterfaces(grabber);
+        for (int i = 0; i < webInterfaces.length; i++) {
+            if (webInterfaces[i].getId().equals(interfaceId)) {
+                webInterfaces[i].init();
+                return webInterfaces[i];
             }
         }
         return null;
@@ -80,20 +82,22 @@ public abstract class CvsWebInterface {
     /**
      * @return an array containing the ids of the registered web interfaces
      */
-    public static final String[] getInterfaceIds() {
-        String ids[] = new String[_webInterfaces.length];
+    public static final String[] getInterfaceIds(CVSGrab grabber) {
+        CvsWebInterface[] webInterfaces = getWebInterfaces(grabber);
+        String ids[] = new String[webInterfaces.length];
         for (int i = 0; i < ids.length; i++) {
-            ids[i] = _webInterfaces[i].getId();
+            ids[i] = webInterfaces[i].getId();
         }
         return ids;
     }
 
     public static final String[] getBaseUrls(CVSGrab grabber) {
+        CvsWebInterface[] webInterfaces = getWebInterfaces(grabber);
         Set urls = new HashSet();
-        for (int i = 0; i < _webInterfaces.length; i++) {
-            CvsWebInterface webInterface = _webInterfaces[i];
-            urls.add(webInterface.getBaseUrl(grabber));
-            urls.add(webInterface.getAltBaseUrl(grabber));
+        for (int i = 0; i < webInterfaces.length; i++) {
+            CvsWebInterface webInterface = webInterfaces[i];
+            urls.add(webInterface.getBaseUrl());
+            urls.add(webInterface.getAltBaseUrl());
         }
         urls.remove(null);
         String[] listOfUrls = (String[]) urls.toArray(new String[urls.size()]);
@@ -122,18 +126,19 @@ public abstract class CvsWebInterface {
      */
     public static CvsWebInterface findInterface(CVSGrab grabber) throws Exception {
         checkRootUrl(grabber.getRootUrl());
+        CvsWebInterface[] webInterfaces = getWebInterfaces(grabber);
         List errors = new ArrayList();
         // Fast search on know repositories, here we need only to know the url of the web site
-        for (int i = 0; i < _webInterfaces.length; i++) {
-            CvsWebInterface webInterface = _webInterfaces[i];
+        for (int i = 0; i < webInterfaces.length; i++) {
+            CvsWebInterface webInterface = webInterfaces[i];
             if (webInterface.presetMatch(grabber.getRootUrl(), grabber.getPackagePath())) {
                 return webInterface;
             }
         }
         // Deep search, download the web pages and check for markers in the pages
-        for (int i = 0; i < _webInterfaces.length; i++) {
-            CvsWebInterface webInterface = _webInterfaces[i];
-            if (webInterface.validate(grabber, errors)) {
+        for (int i = 0; i < webInterfaces.length; i++) {
+            CvsWebInterface webInterface = webInterfaces[i];
+            if (webInterface.validate(errors)) {
                 return webInterface;
             }
         }
@@ -155,9 +160,10 @@ public abstract class CvsWebInterface {
      * @return the properties compatible with the naming scheme of WebOptions, or an empty list of properties
      * if nothing is found
      */
-    public static Properties getWebProperties(String rootUrl) {
-        for (int i = 0; i < _webInterfaces.length; i++) {
-            CvsWebInterface webInterface = _webInterfaces[i];
+    public static Properties getWebProperties(CVSGrab grabber, String rootUrl) {
+        CvsWebInterface[] webInterfaces = getWebInterfaces(grabber);
+        for (int i = 0; i < webInterfaces.length; i++) {
+            CvsWebInterface webInterface = webInterfaces[i];
             Properties webProperties = webInterface.guessWebProperties(rootUrl);
             if (!webProperties.isEmpty()) {
                 return webProperties;
@@ -174,7 +180,7 @@ public abstract class CvsWebInterface {
         if (doc == null) {
             documents.put(url, null);
             try {
-                doc = WebBrowser.getInstance().getDocument(new GetMethod(url));
+                doc = WebBrowser.getInstance().getDocument(url);
                 documents.put(url, doc);
             } catch (Exception ex) {
                 // ignore
@@ -221,15 +227,21 @@ public abstract class CvsWebInterface {
 
     private String _versionTag;
     private String _queryParams;
+    private CVSGrab _grabber;
 
     /**
      * Constructor for CvsWebInterface
      *
      */
-    public CvsWebInterface() {
+    public CvsWebInterface(CVSGrab grabber) {
         super();
+        _grabber = grabber;
     }
 
+    public CVSGrab getGrabber() {
+        return _grabber;
+    }
+    
     /**
      * Returns true if there is a rule that matches this web interface to the given url
      * @param rootUrl The root url
@@ -241,17 +253,16 @@ public abstract class CvsWebInterface {
 
     /**
      * Validate that this web interface can be used on the remote repository
-     * @param grabber The cvs grabber
      * @param errors A list of errors to fill if any error is found
      * @return true if this interface can work on the remote repository
      */
-    public boolean validate(CVSGrab grabber, List errors) {
+    public boolean validate(List errors) {
         // Perform no checks on known repositories. Just hope that those web sites don't change too often ;-)
-        if (presetMatch(grabber.getRootUrl(), grabber.getPackagePath())) {
+        if (presetMatch(_grabber.getRootUrl(), _grabber.getPackagePath())) {
             return true;
         }
         Document doc = null;
-        String[] urls = new String[] {getBaseUrl(grabber), getAltBaseUrl(grabber)};
+        String[] urls = new String[] {getBaseUrl(), getAltBaseUrl()};
         for (int j = 0; j < urls.length; j++) {
             String url = urls[j];
             if (url == null) {
@@ -265,7 +276,7 @@ public abstract class CvsWebInterface {
                     continue;
                 }
 
-                detect(grabber, doc);
+                detect(doc);
                 return true;
 
             } catch (DetectException ex) {
@@ -314,21 +325,19 @@ public abstract class CvsWebInterface {
     /**
      * Initialize the web interface
      *
-     * @param grabber The cvs grabber
      * @throws Exception if initialisation fails
      */
-    public abstract void init(CVSGrab grabber) throws Exception;
+    public abstract void init() throws Exception;
 
     /**
      * Detects if the web page is compatible with this web interface, and if yes initialize it.
-     *
-     * @param grabber The cvs grabber
      * @param htmlPage The web page
+     *
      * @throws MarkerNotFoundException if the version marker for the web interface was not found.
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      * @throws IncompatibleInterfaceException if the web page is not compatible with this type of web interface
      */
-    public abstract void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException;
+    public abstract void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException;
 
     /**
      * @return the id identifying the web interface, and used for initialisation
@@ -343,12 +352,12 @@ public abstract class CvsWebInterface {
     /**
      * @return the base url to use when trying to auto-detect this type of web interface
      */
-    public abstract String getBaseUrl(CVSGrab grabber);
+    public abstract String getBaseUrl();
 
     /**
      * @return an alternate base url to use when trying to auto-detect this type of web interface
      */
-    public String getAltBaseUrl(CVSGrab grabber) {
+    public String getAltBaseUrl() {
         return null;
     }
 

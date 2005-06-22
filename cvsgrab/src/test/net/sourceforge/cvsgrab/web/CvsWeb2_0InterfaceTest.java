@@ -17,7 +17,8 @@ import java.util.Properties;
  */
 public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
 
-    private CvsWeb2_0Interface _interface = new CvsWeb2_0Interface();
+    private CvsWeb2_0Interface _interface;
+    private CVSGrab _grabber;
 
     /**
      * Constructor for CvsWeb2_0InterfaceTest
@@ -27,11 +28,16 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
         super(testName);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        _grabber = new CVSGrab();
+        _interface = new CvsWeb2_0Interface(_grabber);
+    }
+
     public void testDetect() throws Exception {
         Document doc = getDocument("src/test/html_docs/cvsweb_2_0.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/");
-        _interface.detect(grabber, doc);
+        _grabber.getWebOptions().setRootUrl("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/");
+        _interface.detect(doc);
 
         assertEquals("FreeBSD-CVSweb 2.0.6", _interface.getType());
     }
@@ -44,7 +50,7 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
         Document doc = getDocument("src/test/html_docs/cvsweb_2_0_sgi.html");
         CVSGrab grabber = new CVSGrab();
         grabber.getWebOptions().setRootUrl("http://oss.sgi.com/cgi-bin/cvsweb.cgi/");
-        _interface.detect(grabber, doc);
+        _interface.detect(doc);
 
         assertEquals("FreeBSD-cvsweb 2.0.0", _interface.getType());
     }
@@ -124,13 +130,13 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
         assertEquals("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("quanta/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
         webProperties = _interface.guessWebProperties("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/quanta/?sortby=date;only_with_tag=QUANTA_3_1_BRANCH");
         assertEquals("http://webcvs.kde.org/cgi-bin/cvsweb.cgi/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("quanta/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertEquals("QUANTA_3_1_BRANCH", webProperties.get(CVSGrab.TAG_OPTION));
-        assertNull(webProperties.get(CVSGrab.CVS_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertEquals("sortby=date", webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
 

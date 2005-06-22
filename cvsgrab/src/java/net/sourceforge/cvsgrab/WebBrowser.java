@@ -235,9 +235,10 @@ public class WebBrowser {
      * Execute a http method
      *
      * @param method The method
+     * @param url The url called by the method, only useful for error reporting
      * @return the last http method executed (after following redirects)
      */
-    public HttpMethod executeMethod(HttpMethod method) {
+    public HttpMethod executeMethod(HttpMethod method, String url) {
         int statusCode = -1;
         int attempt = 0;
 
@@ -251,25 +252,25 @@ public class WebBrowser {
                 try {
                     // execute the method.
                     statusCode = _client.executeMethod(method);
-                    CVSGrab.getLog().trace("Executed method " + method.getPath() + " with status code " + statusCode);
+                    CVSGrab.getLog().trace("Executed method " + url + " with status code " + statusCode);
                 } catch (HttpRecoverableException e) {
                     CVSGrab.getLog().warn("A recoverable exception occurred, retrying. " + e.getMessage());
                 } catch (IOException e) {
-                    CVSGrab.getLog().error("Failed to download file " + method.getPath());
+                    CVSGrab.getLog().error("Failed to download file " + url);
                     e.printStackTrace();
-                    throw new RuntimeException("Failed to download file.");
+                    throw new RuntimeException("Failed to download file " + url);
                 }
             }
 
             // Check that we didn't run out of retries.
             if (statusCode == -1) {
                 CVSGrab.getLog().error("Failed to recover from exception.");
-                throw new RuntimeException("Error when reading " + method.getPath());
+                throw new RuntimeException("Error when reading " + url);
             }
 
             if (statusCode >= 400) {
                 CVSGrab.getLog().debug("Page not found (error " + statusCode + ")");
-                throw new RuntimeException("Error when reading " + method.getPath());
+                throw new RuntimeException("Error " + statusCode + " when reading " + url);
             }
 
             // Tests for redirects
@@ -284,7 +285,7 @@ public class WebBrowser {
 
                     HttpMethod redirectMethod = new GetMethod(redirectLocation);
 
-                    executeMethod(redirectMethod);
+                    executeMethod(redirectMethod, redirectLocation);
 
                     return redirectMethod;
                 } else {
@@ -292,7 +293,7 @@ public class WebBrowser {
                     // the resource.  Report an error or possibly handle the response
                     // like a 404 Not Found error.
                     CVSGrab.getLog().error("Page not found");
-                    throw new RuntimeException("Error when reading " + method);
+                    throw new RuntimeException("Error when reading " + url);
                 }
             }
         } catch (RuntimeException e) {
@@ -306,11 +307,12 @@ public class WebBrowser {
     /**
      * Gets the response from a method that has been executed
      *
-     * @param method
+     * @param method The method
+     * @param url The url called by the method, only useful for error reporting
      * @return
      */
-    public String getResponse(HttpMethod method) {
-        HttpMethod lastMethod = executeMethod(method);
+    public String getResponse(HttpMethod method, String url) {
+        HttpMethod lastMethod = executeMethod(method, url);
         String response = null;
         try {
             // Gzip support by Ralf Stoffels (rstoffels)
@@ -351,15 +353,27 @@ public class WebBrowser {
     /**
      * Execute the method and gets the response as a xml document.
      *
-     * @param method
+     * @param method The method
+     * @param url The url called by the method, only useful for error reporting
      * @return
      */
-    public Document getDocument(HttpMethod method) throws Exception {
-        String response = getResponse(method);
-        return getDocument(response);
+    public Document getDocument(String url) throws Exception {
+        return getDocument(new GetMethod(url), url);
+    }
+    
+    /**
+     * Execute the method and gets the response as a xml document.
+     *
+     * @param method The method
+     * @param url The url called by the method, only useful for error reporting
+     * @return
+     */
+    public Document getDocument(HttpMethod method, String url) throws Exception {
+        String response = getResponse(method, url);
+        return getDocumentFromSource(response);
     }
 
-    public Document getDocument(String docSource) throws Exception {
+    public Document getDocumentFromSource(String docSource) throws Exception {
         // Hack to kill namespaces in xhtml
         int pos = 0;
         do {
@@ -382,8 +396,12 @@ public class WebBrowser {
         return doc;
     }
 
-    public void loadFile(HttpMethod method, File destFile) throws Exception {
-        HttpMethod lastMethod = executeMethod(method);
+    public void loadFile(String url, File destFile) throws Exception {
+        loadFile(new GetMethod(url), destFile, url);
+    }
+    
+    public void loadFile(HttpMethod method, File destFile, String url) throws Exception {
+        HttpMethod lastMethod = executeMethod(method, url);
         String contentEncoding = null;
         if (lastMethod.getResponseHeader("Content-Encoding") != null) {
             contentEncoding = lastMethod.getResponseHeader("Content-Encoding").getValue();

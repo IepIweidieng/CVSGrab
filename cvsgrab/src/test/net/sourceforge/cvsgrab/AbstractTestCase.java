@@ -54,7 +54,7 @@ public abstract class AbstractTestCase extends TestCase {
             sb.append(line);
             line = lnReader.readLine();
         }
-        return WebBrowser.getInstance().getDocument(sb.toString());
+        return WebBrowser.getInstance().getDocumentFromSource(sb.toString());
     }
 
     protected void logDocument(Document doc) {

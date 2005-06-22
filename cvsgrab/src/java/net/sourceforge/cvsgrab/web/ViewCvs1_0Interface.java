@@ -31,8 +31,8 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
     /**
      * Constructor for ViewCvs1_0Interface
      */
-    public ViewCvs1_0Interface() {
-        super();
+    public ViewCvs1_0Interface(CVSGrab grabber) {
+        super(grabber);
         setFileVersionXpath("TD/A/B");
         setFilesXpath("//TR[TD/A/IMG/@alt = '(file)' or contains(TD/A/IMG/@src, 'text')]");
         //private String _fileVersionXpath = "TD[A/IMG/@alt != '(graph)'][2]/A/B";
@@ -46,9 +46,9 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
      * @throws MarkerNotFoundException if the version marker for the web interface was not found
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
-        super.detect(grabber, htmlPage);
-        _root = grabber.getProjectRoot();
+    public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
+        super.detect(htmlPage);
+        _root = getGrabber().getProjectRoot();
         
         if (_root == null) {
             JXPathContext context = JXPathContext.newContext(htmlPage);
@@ -72,12 +72,12 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
     /**
      * @return the base url to use when trying to auto-detect this type of web interface
      */
-    public String getBaseUrl(CVSGrab grabber) {
-        String url = WebBrowser.forceFinalSlash(grabber.getRootUrl());
-        url += grabber.getPackagePath();
-        url = WebBrowser.addQueryParam(url, grabber.getQueryParams());
-        if (grabber.getProjectRoot() != null) {
-            url = WebBrowser.addQueryParam(url, "root", grabber.getProjectRoot());
+    public String getBaseUrl() {
+        String url = WebBrowser.forceFinalSlash(getGrabber().getRootUrl());
+        url += getGrabber().getPackagePath();
+        url = WebBrowser.addQueryParam(url, getGrabber().getQueryParams());
+        if (getGrabber().getProjectRoot() != null) {
+            url = WebBrowser.addQueryParam(url, "root", getGrabber().getProjectRoot());
         }
         return url;
     }
@@ -85,9 +85,9 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
     /**
      * @return the alternate base url to use when trying to auto-detect this type of web interface
      */
-    public String getAltBaseUrl(CVSGrab grabber) {
-        String url = WebBrowser.forceFinalSlash(grabber.getRootUrl());
-        url = WebBrowser.addQueryParam(url, grabber.getQueryParams());
+    public String getAltBaseUrl() {
+        String url = WebBrowser.forceFinalSlash(getGrabber().getRootUrl());
+        url = WebBrowser.addQueryParam(url, getGrabber().getQueryParams());
         return url;
     }
 

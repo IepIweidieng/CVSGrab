@@ -20,7 +20,8 @@ import java.util.Properties;
  */
 public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
 
-    private ViewCvs0_8Interface _interface = new ViewCvs0_8Interface();
+    private ViewCvs0_8Interface _interface;
+    private CVSGrab _grabber;
 
     /**
      * Constructor for ViewCvs0_8InterfaceTest
@@ -30,21 +31,26 @@ public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
         super(testName);
     }
 
+    protected void setUp() throws Exception {
+        super.setUp();
+        _grabber = new CVSGrab();
+        _interface = new ViewCvs0_8Interface(_grabber);
+    }
+
     public void testValidateAndDetect() throws Exception {
         List errors = new ArrayList();
         Document doc = getDocument("src/test/html_docs/view_cvs_0_8.html");
-        CVSGrab grabber = new CVSGrab();
-        grabber.getWebOptions().setRootUrl("http://cvs.repository.org/viewcvs.py/");
-        grabber.getWebOptions().setPackagePath("test");
+        _grabber.getWebOptions().setRootUrl("http://cvs.repository.org/viewcvs.py/");
+        _grabber.getWebOptions().setPackagePath("test");
         CvsWebInterface.registerDocument("http://cvs.repository.org/viewcvs.py/test/", doc);
-        _interface.validate(grabber, errors);
+        _interface.validate(errors);
         assertTrue(errors.isEmpty());
 
         assertEquals("ViewCVS 0.8", _interface.getType());
 
-        grabber.getWebOptions().setRootUrl("http://cvs.sourceforge.net/viewcvs.py/");
+        _grabber.getWebOptions().setRootUrl("http://cvs.sourceforge.net/viewcvs.py/");
         CvsWebInterface.registerDocument("cvs.sourceforge.net/viewcvs.py/test/", doc);
-        _interface.validate(grabber, errors);
+        _interface.validate(errors);
         assertTrue(errors.isEmpty());
 
         assertEquals("ViewCVS 0.8 on Sourceforge", _interface.getType());

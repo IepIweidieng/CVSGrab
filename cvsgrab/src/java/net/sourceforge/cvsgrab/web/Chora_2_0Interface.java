@@ -30,7 +30,9 @@ public class Chora_2_0Interface extends ViewCvsInterface {
 
     private String _browsePath = "cvs.php";
     
-    public Chora_2_0Interface() {
+    public Chora_2_0Interface(CVSGrab grabber) {
+        super(grabber);
+        
         setFilesXpath("//TR[TD/A/IMG/@alt = 'File']");
         setFileNameXpath("TD[1]/A/@href");
         setFileVersionXpath("TD[2]/B/A");
@@ -47,8 +49,8 @@ public class Chora_2_0Interface extends ViewCvsInterface {
     /** 
      * {@inheritDoc}
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
-        String rootUrl = WebBrowser.removeFinalSlash(grabber.getRootUrl());
+    public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
+        String rootUrl = WebBrowser.removeFinalSlash(getGrabber().getRootUrl());
 		if (!rootUrl.endsWith(getBrowsePath())) {
         	throw new MarkerNotFoundException("Root url should end with " + getBrowsePath());
         }
@@ -62,7 +64,7 @@ public class Chora_2_0Interface extends ViewCvsInterface {
         // Version cannot be found exactly 
         setType("Chora 2.x");
         
-        if (grabber.getVersionTag() != null) {
+        if (getGrabber().getVersionTag() != null) {
         	throw new InvalidVersionException("Chora 2.0 doesn't support version tags");
         }
     }

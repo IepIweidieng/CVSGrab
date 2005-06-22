@@ -27,8 +27,9 @@ public class Sourcecast3_0Interface extends ViewCvsInterface {
     /**
      * Constructor for Sourcecast3_0Interface
      */
-    public Sourcecast3_0Interface() {
-        super();
+    public Sourcecast3_0Interface(CVSGrab grabber) {
+        super(grabber);
+        
         setFilesXpath("//TABLE[@class = 'filebrowse']//TD/DIV[@class = 'leaf']");
         setFileNameXpath("@id");
         setFileVersionXpath("../following::node()/text()");
@@ -54,7 +55,7 @@ public class Sourcecast3_0Interface extends ViewCvsInterface {
      * @throws MarkerNotFoundException if the version marker for the web interface was not found
      * @throws InvalidVersionException if the version detected is incompatible with the version supported by this web interface.
      */
-    public void detect(CVSGrab grabber, Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
+    public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
         JXPathContext context = JXPathContext.newContext(htmlPage);
         context.setLenient(true);
 
