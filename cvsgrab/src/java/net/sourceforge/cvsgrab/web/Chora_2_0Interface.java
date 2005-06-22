@@ -24,7 +24,7 @@ import java.util.List;
  * Support for Chora 2.0 interfaces to a cvs repository
  *
  * @author lclaude
- * @date 30 mars 2004
+ * @created 30 mars 2004
  */
 public class Chora_2_0Interface extends ViewCvsInterface {
 

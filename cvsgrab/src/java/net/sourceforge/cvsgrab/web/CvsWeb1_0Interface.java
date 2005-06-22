@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 7 déc. 2003
+ * @created on 7 dec. 2003
  */
 public class CvsWeb1_0Interface extends ViewCvsInterface {
 
@@ -75,7 +75,6 @@ public class CvsWeb1_0Interface extends ViewCvsInterface {
         
     /** 
      * {@inheritDoc}
-     * @return
      */
     protected String getVersionMarker() {
         return null;
@@ -104,8 +103,6 @@ public class CvsWeb1_0Interface extends ViewCvsInterface {
     }
 
     /**
-     * @param rootUrl
-     * @param directoryName
      * @return the url to use to access the contents of the repository
      */
     public String getDirectoryUrl(String rootUrl, String directoryName) {
@@ -122,10 +119,6 @@ public class CvsWeb1_0Interface extends ViewCvsInterface {
         }
     }
     
-    /**
-     * @param file
-     * @return
-     */
     public String getDownloadUrl( RemoteFile file) {
         try {
             // http://cvs.hispalinux.es/cgi-bin/cvsweb/~checkout~/mono/README?rev=1.26&content-type=text/plain&cvsroot=mono
@@ -141,16 +134,10 @@ public class CvsWeb1_0Interface extends ViewCvsInterface {
         }
     }
 
-    /**
-     * @return
-     */
     public String getRoot() {
         return _root;
     }
 
-    /**
-     * @param root
-     */
     public void setRoot(String root) {
         _root = root;
     }

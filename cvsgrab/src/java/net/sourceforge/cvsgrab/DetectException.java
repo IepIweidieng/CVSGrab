@@ -11,11 +11,16 @@ package net.sourceforge.cvsgrab;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 3 févr. 2004
+ * @created on 3 fï¿½vr. 2004
  */
 public class DetectException extends Exception {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2152735201329285610L;
+
+	/**
      * Constructor for DetectException
      */
     public DetectException() {

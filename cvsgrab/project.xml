@@ -10,7 +10,7 @@
   <name>CVSGrab</name>
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-  <currentVersion>2.2.1</currentVersion>
+  <currentVersion>2.2.2</currentVersion>
   <!-- details about the organization that 'owns' the project -->
   <organization>
     <name>Ludovic Claude</name>
@@ -72,15 +72,27 @@
     <dependency>
       <groupId>nekohtml</groupId>
       <artifactId>nekohtml</artifactId>
-      <version>0.9.4</version>
-      <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
+      <version>0.9.3</version>
+      <url>http://people.apache.org/~andyc/neko/doc/index.html</url>
+    </dependency>
+    <dependency>
+      <groupId>nekohtml</groupId>
+      <artifactId>nekohtmlXni</artifactId>
+      <version>0.9.3</version>
+      <url>http://people.apache.org/~andyc/neko/doc/index.html</url>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.6.2</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
     </dependency>
     <!-- TODO: use this when the DOM parser is implemented for nekoHtml because the full xerces is too big.
       <dependency>
       <groupId>nekoHtml</groupId>
       <artifactId>xercesMinimal</artifactId>
       <version>2.0</version>
-      <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
+      <url>http://people.apache.org/~andyc/neko/doc/index.html</url>
     </dependency-->
     <dependency>
       <groupId>xml-apis</groupId>
@@ -132,18 +144,6 @@
       <url>http://maven-plugins.sourceforge.net/maven-sourceforge-plugin/</url>
       <type>plugin</type>
     </dependency-->
-    <dependency>
-      <groupId>nekohtml</groupId>
-      <artifactId>nekohtmlXni</artifactId>
-      <version>0.9.3</version>
-      <url>http://www.apache.org/~andyc/neko/doc/index.html</url>
-    </dependency>
-    <dependency>
-      <groupId>xerces</groupId>
-      <artifactId>xercesImpl</artifactId>
-      <version>2.6.2</version>
-      <url>http://xml.apache.org/xerces2-j/</url>
-    </dependency>
     <dependency>
       <groupId>maven-plugins</groupId>
       <artifactId>maven-javaapp-plugin</artifactId>

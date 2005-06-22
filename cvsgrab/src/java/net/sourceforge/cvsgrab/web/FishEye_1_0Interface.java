@@ -46,23 +46,25 @@ public class FishEye_1_0Interface extends ViewCvsInterface {
     public void detect(Document htmlPage) throws MarkerNotFoundException, InvalidVersionException {
 
         JXPathContext context = JXPathContext.newContext(htmlPage);
-        String type = (String) context.getValue("//DIV[@id='footer']/P/A[@href='http://www.cenqua.com/fisheye/']");
-
-        if (!type.equalsIgnoreCase("FishEye")) {
-            throw new MarkerNotFoundException("Expected marker 'FishEye', found none");
-        }
+        context.setLenient(false);
+        context.getValue("//DIV[@id='footer']//A[starts-with(@href,'http://www.cenqua.com/fisheye/')]");
+        
+        String type = "FishEye"; 
 
         context.setLenient(true);
+        // Search version on FishEye 0.8
         String version = (String) context.getValue("//DIV[@id='footer']/P[A/@href='http://www.cenqua.com/fisheye/']/text()");
 
+        // Search version on FishEye 1.0
+        if (version == null) {
+        	version = (String) context.getValue("//DIV[@id='footer']/text()[string-length(.) > 0]");
+        }
+        
         if (version == null) {
             version = "Unknown version";
         }
         setType(type + " " + version);
 
-        if (getGrabber().getVersionTag() != null) {
-        	throw new InvalidVersionException("Chora 2.0 doesn't support version tags");
-        }
     }
 
     /**

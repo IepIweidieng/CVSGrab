@@ -177,7 +177,7 @@ public class CVSGrabTask extends Task {
             throw new BuildException("packagePath argument is not specified");
         }
 
-        AntLogger log = new AntLogger(project);
+        AntLogger log = new AntLogger(getProject());
         log.setVerbose(_verbose);
         CVSGrab.setLog(log);
         _webOptions.setupConnectionSettings();

@@ -26,17 +26,6 @@ public class ViewCvs0_8Interface extends ViewCvsInterface {
         super(grabber);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean presetMatch(String rootUrl, String packagePath) {
-        if (rootUrl.indexOf("sourceforge.net") > 0 || rootUrl.indexOf("sf.net") > 0) {
-            setType("ViewCVS 0.8 on Sourceforge");
-            return true;
-        }
-        return false;
-    }
-
     protected String getVersionMarker() {
         return "ViewCVS 0.8";
     }

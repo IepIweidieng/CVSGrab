@@ -9,10 +9,8 @@ package net.sourceforge.cvsgrab.web;
 import net.sourceforge.cvsgrab.CVSGrab;
 import net.sourceforge.cvsgrab.InvalidVersionException;
 import net.sourceforge.cvsgrab.MarkerNotFoundException;
-import net.sourceforge.cvsgrab.RemoteFile;
 import net.sourceforge.cvsgrab.WebBrowser;
 
-import org.apache.commons.httpclient.URIException;
 import org.apache.commons.jxpath.JXPathContext;
 import org.w3c.dom.Document;
 
@@ -58,6 +56,7 @@ public class ViewCvs0_9Interface extends ViewCvsInterface {
                     _root = _root.substring(0, _root.indexOf('&'));
                 }
             }
+            getGrabber().getWebOptions().setProjectRoot(_root);
         }
     }
 
@@ -66,76 +65,29 @@ public class ViewCvs0_9Interface extends ViewCvsInterface {
     }
 
     /**
-     * @return the base url to use when trying to auto-detect this type of web interface
-     */
-    public String getBaseUrl() {
-        String url = WebBrowser.forceFinalSlash(getGrabber().getRootUrl());
-        url += getGrabber().getPackagePath();
-        url = WebBrowser.addQueryParam(url, getGrabber().getQueryParams());
-        if (getGrabber().getProjectRoot() != null) {
-            url = WebBrowser.addQueryParam(url, "cvsroot", getGrabber().getProjectRoot());
-        }
-        return url;
-    }
-    
-    /**
      * @return the alternate base url to use when trying to auto-detect this type of web interface
      */
     public String getAltBaseUrl() {
         String url = WebBrowser.forceFinalSlash(getGrabber().getRootUrl());
+        url = WebBrowser.addQueryParam(getCvsrootParam(), getProjectRoot());
         url = WebBrowser.addQueryParam(url, getGrabber().getQueryParams());
         return url;
     }
 
     /**
-     * @param rootUrl
-     * @param directoryName
-     * @return the url to use to access the contents of the repository
-     */
-    public String getDirectoryUrl(String rootUrl, String directoryName) {
-        try {
-            String url = super.getDirectoryUrl(rootUrl, directoryName);
-            if (_root != null) {
-                url = WebBrowser.addQueryParam(url, "cvsroot", quote(_root));
-            }
-            url = WebBrowser.addQueryParam(url, getQueryParams());
-            return url;
-        } catch (URIException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException("Cannot create URI");
-        }
-    }
-    
-    /**
-     * @param file
      * @return
      */
-    public String getDownloadUrl( RemoteFile file) {
-        try {
-            // http://cvs.apache.org/viewcvs.cgi/*checkout*/jakarta-regexp/KEYS?rev=1.1
-            String url = super.getDownloadUrl(file);
-            if (_root != null) {
-                url = WebBrowser.addQueryParam(url, "cvsroot", quote(_root));
-            }
-            url = WebBrowser.addQueryParam(url, getQueryParams());
-            return url;
-        } catch (URIException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException("Cannot create URI");
-        }
-    }
-
-    /**
-     * @return
-     */
-    public String getRoot() {
+    public String getProjectRoot() {
+    	if (_root == null) {
+            _root = getGrabber().getProjectRoot();
+    	}
         return _root;
     }
 
     /**
      * @param root
      */
-    public void setRoot(String root) {
+    public void setProjectRoot(String root) {
         _root = root;
     }
 
