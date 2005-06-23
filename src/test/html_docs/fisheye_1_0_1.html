@@ -1,0 +1,1462 @@
+<html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<head>
+    <title>FishEye: browsing groovy/groovy</title>
+    <link rel="SHORTCUT ICON" href="/favicon.ico">
+    <link rel="stylesheet" href="/static/main.css" type="text/css">
+    <link rel="stylesheet" href="/uar/browser.css" type="text/css">
+    <link rel="stylesheet" href="/static/custom.css" type="text/css">
+
+    <script src="/static/global.js" type="text/javascript" language="Javascript1.2" charset="utf-8"></script>
+
+<script type="text/javascript" language="Javascript1.2">
+var fishEyePageContext = '';
+</script>
+</head>
+
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table id="topHeader" cellspacing="0" cellpadding="0">
+ <tr>
+  <td><h1><a href="/" title="home"><img src="/static/images/topbar_logo.jpg" alt="FishEye" /></a></h1></td>
+
+  <td id="globalNav">
+    
+    
+    
+    <a class="active" href="/viewrep/groovy/groovy">Browse</a>
+    <a  href="/changelog/groovy/groovy">Changelog</a>
+    <a  href="/search/groovy/groovy">Search</a>
+    
+        
+        
+    
+    
+    <a  href="/help/help.jsp#browse_dir" target="_help">Help</a>
+
+    
+    
+  </td>
+ </tr>
+
+ 
+</table>
+
+ 
+
+
+<table id="secondHeader" cellspacing="0">
+ <tr>
+  <form method="get" action="/qsearch/groovy/groovy">
+  <td id="breadCrumb">
+
+     <a class="breadCrumbRepository" href="/viewrep/groovy">groovy</a>:/<a href="/viewrep/groovy/groovy">groovy</a>/
+     <input name="filename" type="text" size="25">
+
+     
+
+     <input type="submit" value="Go">
+  </td>
+  </form>
+  <form method="get" action="/qsearch/groovy/groovy">
+  <td id="quickSearch">
+       
+     Quick Search:
+     <input name="q" type="text" size="25">
+     <input type="submit" value="Go">
+  </td>
+  </form>
+ </tr>
+</table>
+
+
+
+<table class="layout" cellspacing="0"><tr>
+<td class="layoutLeftPane">
+
+  
+
+  <div class="box">
+    <h3>Line History</h3>
+    <div class="linehistory"><img src="/viewrep/groovy/groovy?linegraph"></div>
+  </div>
+
+  <div class="box">
+  
+
+
+
+
+
+
+
+
+
+
+<h3>
+  
+  Constraint
+</h3>
+<div class="formPane">
+ <form method="get" action="/viewrep/groovy/groovy">
+ <table>
+  <tr>
+   <td>Branch:</td>
+   <td><select name="wbbr" onchange="submit()">
+     <option value="" selected="selected">(any)</option>
+     
+       <option value="MAIN">MAIN</option>
+     
+       <option value="vendor">vendor</option>
+     
+   </select></td>
+  </tr>
+  <tr>
+   <td>Author:</td>
+   <td><select name="wbauthor" onchange="submit()">
+     <option value="" selected="selected">(any)</option>
+     
+       <option value="alang">alang</option>
+     
+       <option value="blackdrag">blackdrag</option>
+     
+       <option value="bob">bob</option>
+     
+       <option value="bran">bran</option>
+     
+       <option value="ckl">ckl</option>
+     
+       <option value="cpoirier">cpoirier</option>
+     
+       <option value="cstein">cstein</option>
+     
+       <option value="dcontrol">dcontrol</option>
+     
+       <option value="dierk">dierk</option>
+     
+       <option value="fraz">fraz</option>
+     
+       <option value="glaforge">glaforge</option>
+     
+       <option value="goetze">goetze</option>
+     
+       <option value="jez">jez</option>
+     
+       <option value="joe">joe</option>
+     
+       <option value="jrose">jrose</option>
+     
+       <option value="jstrachan">jstrachan</option>
+     
+       <option value="jstump">jstump</option>
+     
+       <option value="kasper">kasper</option>
+     
+       <option value="markcc">markcc</option>
+     
+       <option value="mcspanky">mcspanky</option>
+     
+       <option value="phk">phk</option>
+     
+       <option value="rinkrank">rinkrank</option>
+     
+       <option value="russel">russel</option>
+     
+       <option value="spullara">spullara</option>
+     
+       <option value="sstirling">sstirling</option>
+     
+       <option value="tug">tug</option>
+     
+       <option value="yuri">yuri</option>
+     
+       <option value="zohar">zohar</option>
+     
+   </select></td>
+  </tr>
+  <tr>
+   <td>Tag:</td>
+   <td>
+     <input type="text" size="15" name="wbtag" value="">
+   </td>
+  </tr>
+  <tr>
+   <td>Date:</td>
+   <td>
+     <input type="text" size="10" name="wbdate" value="">
+     <input type="hidden" name="wbjump" value="jump">
+     <input type="submit" value="Apply">
+     
+       <a target="fisheyehelp" href="/help/help.jsp#browse_wayback" class="help">help</a>
+     
+   </td>
+  </tr>
+ </table>
+ </form>
+</div>
+
+  </div>
+
+
+
+    <div class="box">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>
+
+
+  <span class="boxIcon"><span class="boxIconText">
+  Sort:
+    
+    
+
+    
+    path
+    |
+    
+    
+      <a href="/viewrep/groovy/groovy?%40dirListOrder=l">last-commit</a>
+    
+    |
+    
+    
+      <a href="/viewrep/groovy/groovy?%40dirListOrder=f">first-commit</a>
+    
+  </span></span>
+
+
+Sub Directories</h3>
+
+<div class="toolBar">
+
+  
+
+
+  
+    
+    
+    
+    
+    
+      
+      
+      <span class="toolBarEmpty"><a href="/viewrep/groovy/groovy?%40hideEmptyDirectories=Y">Hide Empty</a></span>
+    
+    
+  
+
+  
+
+
+</div>
+
+<div class="dirPane">
+
+<ul>
+
+
+  <li><span class="folder">
+    <a href="/viewrep/groovy/">
+      <img src="/static/images/folder_up.gif" width="40" height="12" alt="[^]" />..</a>
+  </span></li>
+
+
+
+
+
+ 
+ 
+
+ <li>
+<span class="folder"><img id="subdirs1img" src="/static/images/folder_closed.gif"
+         width="40" height="12" alt="[-]" style="cursor:pointer"
+         onClick="treeSubdirToggle('subdirs1');" /><a href="/viewrep/groovy/groovy/groovy-core"><span class="folderPlain">groovy-core</span></a>/</span>
+ </li>
+
+ 
+ 
+<ul id="subdirs1" style="display: none;">
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/.settings"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />.settings</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/lib"><span class="folderEmpty"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />lib</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/security"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />security</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />src</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/xdocs"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />xdocs</span></a>/</span><a href="/viewrep/groovy/groovy/groovy-core/xdocs/images"><span class="folderPlain">images</span></a>/</li>
+  
+</ul>
+ 
+
+
+
+ 
+ 
+
+ <li>
+<span class="folder"><img id="subdirs2img" src="/static/images/folder_closed.gif"
+         width="40" height="12" alt="[-]" style="cursor:pointer"
+         onClick="treeSubdirToggle('subdirs2');" /><a href="/viewrep/groovy/groovy/groovy-native"><span class="folderPlain">groovy-native</span></a>/</span>
+ </li>
+
+ 
+ 
+<ul id="subdirs2" style="display: none;">
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-native/examples"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />examples</span></a>/</span><a href="/viewrep/groovy/groovy/groovy-native/examples/001-standalone-executable"><span class="folderPlain">001-standalone-executable</span></a>/</li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-native/libgroovy"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />libgroovy</span></a>/</span></li>
+  
+</ul>
+ 
+
+
+
+ 
+ 
+
+ <li>
+<span class="folder"><img id="subdirs3img" src="/static/images/folder_closed.gif"
+         width="40" height="12" alt="[-]" style="cursor:pointer"
+         onClick="treeSubdirToggle('subdirs3');" /><a href="/viewrep/groovy/groovy/ide"><span class="folderPlain">ide</span></a>/</span>
+ </li>
+
+ 
+ 
+<ul id="subdirs3" style="display: none;">
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/groovy-eclipse"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovy-eclipse</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/groovy-emacs"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovy-emacs</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/groovy-intellij"><span class="folderEmpty"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovy-intellij</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/groovyj"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovyj</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/old-groovy-eclipse"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />old-groovy-eclipse</span></a>/</span></li>
+  
+</ul>
+ 
+
+
+
+ 
+ 
+
+ <li>
+<span class="folder"><img id="subdirs4img" src="/static/images/folder_closed.gif"
+         width="40" height="12" alt="[-]" style="cursor:pointer"
+         onClick="treeSubdirToggle('subdirs4');" /><a href="/viewrep/groovy/groovy/jsr"><span class="folderPlain">jsr</span></a>/</span>
+ </li>
+
+ 
+ 
+<ul id="subdirs4" style="display: none;">
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/jsr/ideas"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />ideas</span></a>/</span><a href="/viewrep/groovy/groovy/jsr/ideas/parsers"><span class="folderPlain">parsers</span></a>/</li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/jsr/spec"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />spec</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/jsr/tck"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />tck</span></a>/</span></li>
+  
+</ul>
+ 
+
+
+
+ 
+ 
+
+ <li>
+<span class="folder"><img id="subdirs5img" src="/static/images/folder_closed.gif"
+         width="40" height="12" alt="[-]" style="cursor:pointer"
+         onClick="treeSubdirToggle('subdirs5');" /><a href="/viewrep/groovy/groovy/modules"><span class="folderPlain">modules</span></a>/</span>
+ </li>
+
+ 
+ 
+<ul id="subdirs5" style="display: none;">
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/classic"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />classic</span></a>/</span><a href="/viewrep/groovy/groovy/modules/classic/src"><span class="folderPlain">src</span></a>/</li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/gram"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />gram</span></a>/</span><a href="/viewrep/groovy/groovy/modules/gram/src"><span class="folderPlain">src</span></a>/</li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/groovy-swt"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovy-swt</span></a>/</span><a href="/viewrep/groovy/groovy/modules/groovy-swt/src"><span class="folderPlain">src</span></a>/</li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/gsql"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />gsql</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/pages"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />pages</span></a>/</span><a href="/viewrep/groovy/groovy/modules/pages/src"><span class="folderPlain">src</span></a>/</li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/process"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />process</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/scriptom"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />scriptom</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/xmlrpc"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />xmlrpc</span></a>/</span></li>
+  
+</ul>
+ 
+
+
+
+</ul>
+</div>
+
+
+
+    </div>
+
+  
+    <div class="box">
+      <h3>Tarball</h3>
+      <div class="formPane"><table><tr>
+      <td>
+      <a href="/viewrep/~tarball=zip/groovy/groovy/groovy.zip">zip</a>
+      <a href="/viewrep/~tarball=tgz/groovy/groovy/groovy.tgz">tgz</a>
+      <a href="/viewrep/~tarball=tbz2/groovy/groovy/groovy.tbz2">tbz2</a>
+      </td>
+      </tr></table></div>
+
+    </div>
+  
+</td>
+<!-- end narrowPane -->
+
+<td class="layoutRightPane">
+  
+
+  
+
+  <div class="box">
+        <h3 style="border-bottom-width:0px">
+      <span class="boxIcon">
+        <span class="boxIconText"><a href="/changelog/groovy/groovy">Full Changelog</a>
+        <a href="/rsscfg/groovy/groovy/">Feeds</a>
+        </span>
+      </span>
+      Recent Changelog
+    </h3>
+    
+    
+      <div class="changesetList">
+        <a class="csId" href="/changelog/groovy/groovy?cs=MAIN:russel:20050623132749">MAIN:russel:20050623132749</a>
+        by <span class="csAuthor">russel</span> 
+        (4 hours ago)
+        <span class="csComment">Added a test associated with GROOVY-662 to codify decisions in an (anti-)regression test. <br /></span>
+        
+        
+        
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662.groovy">./groovy-core/src/test/groovy/bugs/Groovy662.groovy</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662.groovy?r=1.1" title="view">1.1</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662.groovy#r1.1" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.1/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662.groovy" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+                 (+66) <em>new</em>
+               
+               
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662_JavaClass.java">./groovy-core/src/test/groovy/bugs/Groovy662_JavaClass.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662_JavaClass.java?r=1.1" title="view">1.1</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662_JavaClass.java#r1.1" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.1/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662_JavaClass.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+                 (+14) <em>new</em>
+               
+               
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase.java">./groovy-core/src/test/UberTestCase.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase.java?r=1.30" title="view">1.30</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase.java#r1.30" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.30/groovy/groovy/groovy-core/src/test/UberTestCase.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+2 -1)
+                 <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase.java?r1=1.29&r2=1.30">diffs</a>
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java">./groovy-core/src/test/UberTestCase2.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java?r=1.38" title="view">1.38</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java#r1.38" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.38/groovy/groovy/groovy-core/src/test/UberTestCase2.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+2 -3)
+                 <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java?r1=1.37&r2=1.38">diffs</a>
+               
+               
+              </p>
+        
+        
+      </div>
+    
+      <div class="changesetList">
+        <a class="csId" href="/changelog/groovy/groovy?cs=MAIN:blackdrag:20050622214807">MAIN:blackdrag:20050622214807</a>
+        by <span class="csAuthor">blackdrag</span> 
+        (20 hours ago)
+        <span class="csComment">avoids an empty compiler configuration <br /></span>
+        
+        
+        
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java">./groovy-core/src/main/groovy/lang/GroovyClassLoader.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java?r=1.47" title="view">1.47</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java#r1.47" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.47/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+4 -3)
+                 <a href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java?r1=1.46&r2=1.47">diffs</a>
+               
+               
+              </p>
+        
+        
+      </div>
+    
+      <div class="changesetList">
+        <a class="csId" href="/changelog/groovy/groovy?cs=MAIN:fraz:20050622065946">MAIN:fraz:20050622065946</a>
+        by <span class="csAuthor">fraz</span> 
+        (35 hours ago)
+        <span class="csComment">GROOVY-602 / GROOVY-607: Removed classloading-related setup from GroovyController following the resolution of GROOVY-902 <br /></span>
+        
+        
+        
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java">./ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java?r=1.12" title="view">1.12</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java#r1.12" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.12/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+2 -13)
+                 <a href="/viewrep/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java?r1=1.11&r2=1.12">diffs</a>
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java">./ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java?r=1.9" title="view">1.9</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java#r1.9" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.9/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+6 -11)
+                 <a href="/viewrep/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java?r1=1.8&r2=1.9">diffs</a>
+               
+               
+              </p>
+        
+        
+      </div>
+    
+      <div class="changesetList">
+        <a class="csId" href="/changelog/groovy/groovy?cs=MAIN:fraz:20050622014332">MAIN:fraz:20050622014332</a>
+        by <span class="csAuthor">fraz</span> 
+        (40 hours ago)
+        <span class="csComment">Housekeeping: ... <br />Added support for IntelliJ IDEA Irida build #3378 to reflect the latest Open API changes <br />Reduced the number of JAR files required at runtime by using the the groovy-all JAR instead&#8230;</span>
+        
+        
+        
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/antlr-2.7.5.jar">./ide/groovyj/lib/runtime/antlr-2.7.5.jar</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/antlr-2.7.5.jar#1.2" title="history">1.2
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+               
+               
+                 <em>deleted</em>
+               
+               
+               
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-2.0.jar">./ide/groovyj/lib/runtime/asm-2.0.jar</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-2.0.jar#1.2" title="history">1.2
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+               
+               
+                 <em>deleted</em>
+               
+               
+               
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-analysis-2.0.jar">./ide/groovyj/lib/runtime/asm-analysis-2.0.jar</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-analysis-2.0.jar#1.2" title="history">1.2
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+               
+               
+                 <em>deleted</em>
+               
+               
+               
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-attrs-2.0.jar">./ide/groovyj/lib/runtime/asm-attrs-2.0.jar</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-attrs-2.0.jar#1.2" title="history">1.2
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+               
+               
+                 <em>deleted</em>
+               
+               
+               
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-tree-2.0.jar">./ide/groovyj/lib/runtime/asm-tree-2.0.jar</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-tree-2.0.jar#1.2" title="history">1.2
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+               
+               
+                 <em>deleted</em>
+               
+               
+               
+               
+               
+              </p>
+        
+        
+          &#8230; 21 more files in <a href="/changelog/groovy/groovy?cs=MAIN:fraz:20050622014332">changeset</a>.
+        
+      </div>
+    
+
+
+
+
+
+  </div>
+
+
+
+    <div class="box">
+<h3>
+
+
+<span class="boxIcon"><span class="boxIconText">
+  
+  
+  
+  
+      Deleted files:
+      
+      <a href="/viewrep/groovy/groovy?%40hideDeletedFiles=Y">Hide</a>
+      | Show
+  
+  
+</span></span>
+
+
+Files</h3>
+
+<table id="fileTable" cellspacing="0">
+
+ 
+ 
+  
+   
+   
+   
+  <tr id="ftTitle">
+   <td>&nbsp;</td>
+   <td><a href="/viewrep/groovy/groovy?%5Edirsort=-path">NAME</a>&#171;</td>
+   <td>REV</td>
+   <td><a href="/viewrep/groovy/groovy?%5Edirsort=age">AGE</a></td>
+   <td><a href="/viewrep/groovy/groovy?%5Edirsort=author">AUTHOR</a></td>
+  </tr>
+  
+  
+  
+    <tr class="ftFileRowDeleted">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/.classpath" alt="_">.classpath</a>
+          <i>(deleted)</i>
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/.classpath#1.12" title="history">1.12
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+          
+      </td>
+      <td>19 months</td>
+      <td><span class="ftAuthor">jstrachan</span></td> 
+    </tr>
+    <tr class="ftFileRowDeletedComment">
+     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    </tr>
+  
+  
+    <tr class="ftFileRow">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/.cvsignore" alt="_">.cvsignore</a>
+          
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/.cvsignore?r=1.6" title="view">1.6</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/.cvsignore#r1.6" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.6/groovy/groovy/.cvsignore" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+          
+      </td>
+      <td>6 months</td>
+      <td><span class="ftAuthor">jstrachan</span></td> 
+    </tr>
+    <tr >
+     <td class="ftComment" colspan="4">about to do the <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=beta-8">beta-8</a> release <br/></td>
+    </tr>
+  
+  
+    <tr class="ftFileRowDeleted">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/GroovyDoc.txt" alt="_">GroovyDoc.txt</a>
+          <i>(deleted)</i>
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/GroovyDoc.txt#1.3" title="history">1.3
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+          
+      </td>
+      <td>19 months</td>
+      <td><span class="ftAuthor">jstrachan</span></td> 
+    </tr>
+    <tr class="ftFileRowDeletedComment">
+     <td class="ftComment" colspan="4">removed text file - its now in the wiki <br/></td>
+    </tr>
+  
+  
+    <tr class="ftFileRowDeleted">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/LICENSE.txt" alt="_">LICENSE.txt</a>
+          <i>(deleted)</i>
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/LICENSE.txt#1.3" title="history">1.3
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+          
+      </td>
+      <td>19 months</td>
+      <td><span class="ftAuthor">jstrachan</span></td> 
+    </tr>
+    <tr class="ftFileRowDeletedComment">
+     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    </tr>
+  
+  
+    <tr class="ftFileRowDeleted">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/maven.xml" alt="_">maven.xml</a>
+          <i>(deleted)</i>
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/maven.xml#1.29" title="history">1.29
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+          
+      </td>
+      <td>19 months</td>
+      <td><span class="ftAuthor">jstrachan</span></td> 
+    </tr>
+    <tr class="ftFileRowDeletedComment">
+     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    </tr>
+  
+  
+    <tr class="ftFileRowDeleted">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/project.properties" alt="_">project.properties</a>
+          <i>(deleted)</i>
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/project.properties#1.5" title="history">1.5
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+          
+      </td>
+      <td>19 months</td>
+      <td><span class="ftAuthor">jstrachan</span></td> 
+    </tr>
+    <tr class="ftFileRowDeletedComment">
+     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    </tr>
+  
+  
+    <tr class="ftFileRowDeleted">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/project.xml" alt="_">project.xml</a>
+          <i>(deleted)</i>
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/project.xml#1.29" title="history">1.29
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+          
+      </td>
+      <td>19 months</td>
+      <td><span class="ftAuthor">jstrachan</span></td> 
+    </tr>
+    <tr class="ftFileRowDeletedComment">
+     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    </tr>
+  
+  
+    <tr class="ftFileRowDeleted">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/TODO-PARSER.txt" alt="_">TODO-PARSER.txt</a>
+          <i>(deleted)</i>
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/TODO-PARSER.txt#1.14" title="history">1.14
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+          
+      </td>
+      <td>20 months</td>
+      <td><span class="ftAuthor">bob</span></td> 
+    </tr>
+    <tr class="ftFileRowDeletedComment">
+     <td class="ftComment" colspan="4">Removing my TODO since I&#039;m using jira now. <br/></td>
+    </tr>
+  
+  
+    <tr class="ftFileRowDeleted">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/TODO.txt" alt="_">TODO.txt</a>
+          <i>(deleted)</i>
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/TODO.txt#1.86" title="history">1.86
+<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+
+
+          
+      </td>
+      <td>19 months</td>
+      <td><span class="ftAuthor">jstrachan</span></td> 
+    </tr>
+    <tr class="ftFileRowDeletedComment">
+     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    </tr>
+  
+ 
+
+</table>
+</div>
+
+</td>
+</tr></table>
+
+
+
+
+
+
+
+<div id="footer">
+
+
+  <a href="http://www.cenqua.com/fisheye/?4UZ" title="Source Code Communication"><strong>FishEye</strong></a>
+  (1.0.1 build-78)
+
+  <div class="generatedInfo">
+
+    
+      Open Source License registered to the Codehaus Project. This license of FishEye is provided to support the development of Codehaus only.
+      <br />
+    
+
+    
+    Page generated 2005-06-23 18:04 +0000
+
+  </div>
+</div>
+
+<!--
+page produced in 425 ms
+-->
+
+</body> </html>

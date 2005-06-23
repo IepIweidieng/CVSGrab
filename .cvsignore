@@ -1,6 +1,7 @@
 .clover
 bin
 target
+tmp
 *.log
 *.gz
 *.index
