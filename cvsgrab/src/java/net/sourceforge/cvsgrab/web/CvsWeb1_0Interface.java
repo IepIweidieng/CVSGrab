@@ -33,8 +33,8 @@ public class CvsWeb1_0Interface extends ViewCvsInterface {
     public CvsWeb1_0Interface(CVSGrab grabber) {
         super(grabber);
         
-        setFilesXpath("//TR[TD/A/IMG/@alt = '[TXT]']");
-        setDirectoriesXpath("//TR[TD/A/IMG/@alt = '[DIR]'][TD/A/@name != 'Attic']");
+        setFilesXpath("//TR[TD//IMG/@alt = '[TXT]']");
+        setDirectoriesXpath("//TR[TD//IMG/@alt = '[DIR]'][TD/A/@name != 'Attic']");
         setCheckoutPath("~checkout~/");
         setWebInterfaceType("cvsweb");
     }

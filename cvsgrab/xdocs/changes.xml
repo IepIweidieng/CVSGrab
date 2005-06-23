@@ -34,7 +34,7 @@
       <action dev="ludovicc" type="fix">Fixed downloading of files on Eclipse.org site</action>
       <action dev="ludovicc" type="fix">Fixed support of multiple cvsRoot, as seen on the Eclipse.org site</action>
       <action dev="ludovicc" type="fix">TODO - check: Bug #1212524: support FishEye 1.0.1</action>
-      <action dev="ludovicc" type="fix">TODO: Bug #1212186: support cvsweb 1.58</action>
+      <action dev="ludovicc" type="fix">TODO - check: Bug #1212186: support cvsweb 1.58</action>
       <action dev="ludovicc" type="fix">TODO: Bug #1173243: support Jahia.org, document specific command</action>
       <action dev="ludovicc" type="fix">Bug #1193006: fix cvsgrab.sh, patch provided by ated at users.sourceforge.net</action>
     </release>

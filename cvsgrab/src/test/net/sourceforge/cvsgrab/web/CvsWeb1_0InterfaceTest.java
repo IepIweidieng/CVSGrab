@@ -40,6 +40,12 @@ public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
         _interface.detect(doc);
         
         assertEquals("hennerik CVSweb Revision: 1.1", _interface.getType());
+        
+        doc = getDocument("src/test/html_docs/cvsweb_1_58.html");
+        _grabber.getWebOptions().setRootUrl("http://dev.w3.org/cvsweb/");
+        _interface.detect(doc);
+        
+        assertEquals("hennerik CVSweb $Revision$", _interface.getType());
     }
 
     public void testGetFiles() throws Exception {
@@ -52,7 +58,6 @@ public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
         assertEquals("1.1", files[i++].getVersion());
         
         assertEquals("Expected no more files", i, files.length);
-        
     }
     
     public void testGetDirectories() throws Exception {
@@ -66,7 +71,6 @@ public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
         assertEquals("makefiles", directories[i++]);
         
         assertEquals("Expected no more directories", i, directories.length);
-        
     }
 
     public void testGetDirectoryUrl() throws Exception {
@@ -99,5 +103,43 @@ public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
     
+    public void testGetFilesXPDevelopper() throws Exception {
+        Document doc = getDocument("src/test/html_docs/cvsweb_1_58.html");
+        
+        int i = 0;
+        RemoteFile[] files = _interface.getFiles(doc);
+        
+        assertEquals("Makefile", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.1.1.1", files[i++].getVersion());
+        
+        assertEquals("README", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.1.1.1", files[i++].getVersion());
+        
+        assertEquals("lilo.conf", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.1.1.1", files[i++].getVersion());
+        
+        assertEquals("Expected no more files", i, files.length);
+    }
+    
+    public void testGetDirectoriesXPDevelopper() throws Exception {
+        Document doc = getDocument("src/test/html_docs/cvsweb_1_58.html");
+        
+        int i = 0;
+        String[] directories = _interface.getDirectories(doc);
+        assertEquals("Squeak-VM", directories[i++]);
+        assertEquals("SqueakNOS", directories[i++]);
+        assertEquals("cd", directories[i++]);
+        assertEquals("images", directories[i++]);
+        assertEquals("include", directories[i++]);
+        assertEquals("linux-boot", directories[i++]);
+        assertEquals("micro", directories[i++]);
+        assertEquals("test", directories[i++]);
+
+        assertEquals("Expected no more directories", i, directories.length);
+    }
+
 
 }
