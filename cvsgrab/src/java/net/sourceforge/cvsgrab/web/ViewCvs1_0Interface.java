@@ -69,7 +69,7 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
         }
         
         // Check that CVSGrab is not used on projects hosted on a SVN repository
-        if (getGrabber().getRootUrl().startsWith("http://cvs.apache.org/viewcvs.cgi/") && _root != null && _root.indexOf("SVN") >= 0) {
+        if (getGrabber().getRootUrl() != null && getGrabber().getRootUrl().startsWith("http://cvs.apache.org/viewcvs.cgi/") && _root != null && _root.indexOf("SVN") >= 0) {
         	throw new InvalidVersionException("CVSGrab cannot be used on projects hosted in a SVN repository");
         }
     }
