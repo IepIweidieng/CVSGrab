@@ -52,7 +52,7 @@ public class CvsWeb1_0Interface extends ViewCvsInterface {
         String generator = (String) context.getValue("//comment()[starts-with(normalize-space(.),'hennerik CVSweb')]");
         
         if (generator == null) {
-            throw new MarkerNotFoundException("Not CvsWeb, found marker " + generator);
+            throw new MarkerNotFoundException("Not CvsWeb, did not found comment containing 'hennerik CVSweb'");
         }
         
         setType(generator);
