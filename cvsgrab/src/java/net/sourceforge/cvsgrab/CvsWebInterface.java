@@ -166,7 +166,17 @@ public abstract class CvsWebInterface {
             CvsWebInterface webInterface = webInterfaces[i];
             Properties webProperties = webInterface.guessWebProperties(rootUrl);
             if (!webProperties.isEmpty()) {
-                return webProperties;
+            	Document doc = loadDocument(rootUrl);
+            	try {
+            		// check that if the url format is recognised by the web interface,
+            		// then the actual page also matches, to eliminate false positives.
+            		webInterface.detect(doc);
+            		return webProperties;
+            	} catch (InvalidVersionException e) {
+            		// ignore
+            	} catch (MarkerNotFoundException e) {
+            		// ignore
+				}
             }
         }
         return new Properties();

@@ -319,7 +319,7 @@ public class WebBrowser {
             if (lastMethod.getResponseHeader("Content-Encoding") != null) {
                 contentEncoding = lastMethod.getResponseHeader("Content-Encoding").getValue();
             }
-            if ("gzip".equalsIgnoreCase(contentEncoding)) {
+            if (contentEncoding != null && contentEncoding.toLowerCase().indexOf("gzip") >= 0) {
                 try {
                     InputStream instream = lastMethod.getResponseBodyAsStream();
                     if (instream != null) {
@@ -406,7 +406,7 @@ public class WebBrowser {
         try {
             FileOutputStream out = null;
             InputStream in = new BufferedInputStream(lastMethod.getResponseBodyAsStream());
-            if ("gzip".equalsIgnoreCase(contentEncoding)) {
+            if (contentEncoding != null && contentEncoding.toLowerCase().indexOf("gzip") >= 0) {
                 in = new GZIPInputStream(lastMethod.getResponseBodyAsStream());
             }
             try {

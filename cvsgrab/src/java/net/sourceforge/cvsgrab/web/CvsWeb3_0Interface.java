@@ -31,7 +31,7 @@ public class CvsWeb3_0Interface extends ViewCvsInterface {
         setFilesXpath("//TR/TD[@class = 'file']");
         setFileNameXpath("A[2]/text()");
         setFileVersionXpath("./following::node()/A/text()");
-        setDirectoriesXpath("//TR/TD[@class = 'dir'][A/@name != 'Attic' and A/@href !='../']");
+        setDirectoriesXpath("//TR/TD[@class = 'dir'][A/@name][A/@name != 'Attic' and A/@href !='../']");
         setDirectoryXpath("A/@name");
         setCheckoutPath("~checkout~/");
         setWebInterfaceType("cvsweb");

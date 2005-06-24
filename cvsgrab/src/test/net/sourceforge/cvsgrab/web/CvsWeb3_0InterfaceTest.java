@@ -121,5 +121,47 @@ public class CvsWeb3_0InterfaceTest extends AbstractTestCase {
         assertEquals("sortby=date", webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
 
+    public void testGetFilesJahia() throws Exception {
+        Document doc = getDocument("src/test/html_docs/cvsweb_3_0_jahia.html");
+
+        int i = 0;
+        RemoteFile[] files = _interface.getFiles(doc);
+        assertEquals(".cvsignore", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.2", files[i++].getVersion());
+
+        assertEquals("README", files[i].getName());
+        assertFalse(files[i].isInAttic());
+        assertEquals("1.58.4.2", files[i++].getVersion());
+
+        assertEquals("Expected no more files", i, files.length);
+
+    }
+
+    public void testGetDirectoriesJahia() throws Exception {
+        Document doc = getDocument("src/test/html_docs/cvsweb_3_0_jahia.html");
+
+        int i = 0;
+        String[] directories = _interface.getDirectories(doc);
+        assertEquals("CVS", directories[i++]);
+        assertEquals("core", directories[i++]);
+        assertEquals("docs", directories[i++]);
+        assertEquals("etc", directories[i++]);
+        assertEquals("external-search-engine", directories[i++]);
+        assertEquals("lib", directories[i++]);
+        assertEquals("metadata", directories[i++]);
+        assertEquals("patched-slide", directories[i++]);
+        assertEquals("pluto", directories[i++]);
+        assertEquals("slide", directories[i++]);
+        assertEquals("src", directories[i++]);
+        assertEquals("test", directories[i++]);
+        assertEquals("torque", directories[i++]);
+        assertEquals("var", directories[i++]);
+        assertEquals("xdocs", directories[i++]);
+
+        assertEquals("Expected no more directories", i, directories.length);
+
+    }
+
 
 }

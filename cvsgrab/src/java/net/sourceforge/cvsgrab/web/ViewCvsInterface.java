@@ -165,8 +165,12 @@ public abstract class ViewCvsInterface extends CvsWebInterface {
         while (i.hasNext()) {
             Pointer pointer = (Pointer) i.next();
             JXPathContext nodeContext = context.getRelativeContext(pointer);
-            String dir = (String) nodeContext.getValue(getDirectoryXpath());
-            directories.add(dir);
+            try {
+            	String dir = (String) nodeContext.getValue(getDirectoryXpath());
+            	directories.add(dir);
+            } catch (RuntimeException e) {
+            	CVSGrab.getLog().error("Cannot localise directory name in document location " + nodeContext.getPointer("."), e);
+            }
         }
         return (String[]) directories.toArray(new String[directories.size()]);
     }

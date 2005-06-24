@@ -91,7 +91,7 @@
            </tr>
            <tr>
              <td>Command</td>
-             <td>TODO</td>
+             <td>cvsgrab -url http://cvs.groovy.codehaus.org/viewrep/groovy/ -packageDir groovy</td>
            </tr>
            <tr>
              <td>Notes</td>
@@ -99,7 +99,7 @@
            </tr>
            <tr>
              <td>Last tested with</td>
-             <td>TODO <a href="http://www.cenqua.com/fisheye/">FishEye</a></td>
+             <td><a href="http://www.cenqua.com/fisheye/">FishEye</a> 1.0.1 with CVSGrab 2.2.2 on June 24th 2005</td>
            </tr>
          </table>
        </subsection>
@@ -211,7 +211,7 @@
            </tr>
            <tr>
              <td>Command</td>
-             <td>TODO</td>
+             <td>cvsgrab -url http://cvspub.jahia.org/cgi-bin/cvsweb.cgi/jahia/?only_with_tag=JAHIA_4_5_M1</td>
            </tr>
            <tr>
              <td>Notes</td>
@@ -219,7 +219,7 @@
            </tr>
            <tr>
              <td>Last tested with</td>
-             <td><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> TODO</td>
+             <td><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> 3.0.4 with CVSGrab 2.2.2 on June 24th 2005</td>
            </tr>
          </table>
        </subsection>
