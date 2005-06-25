@@ -83,9 +83,8 @@ public class CvsWeb2_0InterfaceTest extends AbstractTestCase {
     public void testGetDirectories() throws Exception {
         Document doc = getDocument("src/test/html_docs/cvsweb_2_0.html");
 
-        logDocument(doc);
-
-        testXpath(doc, "//TR/TD");
+//        logDocument(doc);
+//        testXpath(doc, "//TR/TD");
 
         int i = 0;
         String[] directories = _interface.getDirectories(doc);

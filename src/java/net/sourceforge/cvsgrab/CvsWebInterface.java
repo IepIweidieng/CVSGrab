@@ -42,7 +42,9 @@ import java.util.StringTokenizer;
  */
 public abstract class CvsWebInterface {
 
-    private static CvsWebInterface[] getWebInterfaces(CVSGrab grabber) {
+    public static final String DETECTED_WEB_INTERFACE = "detectedWebInterface";
+
+	private static CvsWebInterface[] getWebInterfaces(CVSGrab grabber) {
         return new CvsWebInterface[] {
             new ViewCvs0_7Interface(grabber),
             new ViewCvs0_8Interface(grabber),
@@ -167,10 +169,15 @@ public abstract class CvsWebInterface {
             Properties webProperties = webInterface.guessWebProperties(rootUrl);
             if (!webProperties.isEmpty()) {
             	Document doc = loadDocument(rootUrl);
+            	if (doc == null) {
+            		continue;
+            	}
             	try {
             		// check that if the url format is recognised by the web interface,
             		// then the actual page also matches, to eliminate false positives.
             		webInterface.detect(doc);
+            		// Keep a 
+            		webProperties.put(DETECTED_WEB_INTERFACE, webInterface);
             		return webProperties;
             	} catch (InvalidVersionException e) {
             		// ignore

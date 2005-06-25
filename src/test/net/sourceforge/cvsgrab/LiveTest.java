@@ -49,6 +49,22 @@ public class LiveTest extends AbstractTestCase {
         grab("http://cvs.apache.org/viewcvs.cgi/ws-fx/wss4j/interop/keys/");
         assertContainsFile("README.txt");
     }
+
+    /**
+     * Test for Savannah.gnu.org
+     */
+    public void testSavannah() throws Exception {
+    	grab("http://savannah.gnu.org/cgi-bin/viewcvs/classpath/classpath/faq/?cvsroot=Web");
+    	assertContainsFile("faq.html");
+    }
+    
+    /**
+     * Test for Netbeans.org
+     */
+    public void testNetbeans() throws Exception {
+    	grab("http://www.netbeans.org/source/browse/javacvs/src/org/netbeans/modules/javacvs/util/");
+    	assertContainsFile("Debug.java");
+    }
     
     private void assertContainsFile(String name) {
         File f = new File(tmpDir, "test/" + name);
