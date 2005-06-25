@@ -20,7 +20,7 @@ import java.util.Properties;
  */
 public class Chora_2_0InterfaceTest extends AbstractTestCase {
 
-    private Chora_2_0Interface _interface;
+    private Chora2_0Interface _interface;
     private CVSGrab _grabber;
 
     /**
@@ -34,7 +34,7 @@ public class Chora_2_0InterfaceTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         _grabber = new CVSGrab();
-        _interface = new Chora_2_0Interface(_grabber);
+        _interface = new Chora2_0Interface(_grabber);
     }
 
     public void testDetect() throws Exception {
@@ -124,15 +124,26 @@ public class Chora_2_0InterfaceTest extends AbstractTestCase {
         file.setDirectory(dir);
         
         assertEquals("http://cvs.php.net/co.php/smarty/BUGS?r=1.7&p=1", _interface.getDownloadUrl(file));
+        
+        // http://cvs.php.net/co.php/smarty/docs/scripts/.cvsignore?r=1.1&p=1
+        repository = new RemoteRepository("http://cvs.php.net/", null);
+        dir = new RemoteDirectory(repository, "smarty/docs/scripts", "smarty/docs/scripts");
+        file = new RemoteFile(".cvsignore", "1.1");
+        file.setDirectory(dir);
+        _interface.setBrowsePath("");        
+        
+        assertEquals("http://cvs.php.net/co.php/smarty/docs/scripts/.cvsignore?r=1.1&p=1", _interface.getDownloadUrl(file));
     }
     
     public void testGuessWebProperties() {
-        Properties webProperties = _interface.guessWebProperties("http://cvs.php.net/cvs.php/smarty/");
-        assertEquals("http://cvs.php.net/cvs.php/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
-        assertEquals("smarty/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        // 25/06/2005 - they changed the url naming scheme
+        Properties webProperties = _interface.guessWebProperties("http://cvs.php.net/smarty/docs/scripts/");
+        assertEquals("http://cvs.php.net/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("smarty/docs/scripts/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
         assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        
     }
     
 }

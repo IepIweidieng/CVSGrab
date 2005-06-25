@@ -66,6 +66,46 @@ public class LiveTest extends AbstractTestCase {
     	assertContainsFile("Debug.java");
     }
     
+    /**
+     * Test for dev.java.net
+     */
+    public void testDevJava() throws Exception {
+    	grab("https://swingfx.dev.java.net/source/browse/swingfx/src/net/java/swingfx/common/");
+    	assertContainsFile("package.html");
+    }
+
+    /**
+     * Test for w3
+     */
+    public void testW3() throws Exception {
+    	grab("http://dev.w3.org/cvsweb/Amaya/templates/conf/");
+    	assertContainsFile("templates.conf");
+    }
+    
+    /**
+     * Test for HelixCommunity
+     */
+    public void testHelixCommunity() throws Exception {
+    	grab("https://helixcommunity.org/viewcvs/cgi/viewcvs.cgi/xiph/www/", "ViewCvs1_0");
+    	assertContainsFile("LICENSE.txt");
+    }
+    
+    /**
+     * Test for Openoffice
+     */
+    public void testOpenoffice() throws Exception {
+    	grab("http://lingucomponent.openoffice.org/source/browse/lingucomponent/source/lingutil/");
+    	assertContainsFile("makefile.mk");
+    }
+    
+    /**
+     * Test for Php.net
+     */
+    public void testPhpNet() throws Exception {
+    	grab("http://cvs.php.net/smarty/docs/scripts/");
+    	assertContainsFile(".cvsignore");
+    }
+    
     private void assertContainsFile(String name) {
         File f = new File(tmpDir, "test/" + name);
         assertTrue(name + " not found", f.exists());
@@ -73,6 +113,10 @@ public class LiveTest extends AbstractTestCase {
 
     private void grab(String url) {
         CVSGrab.main(new String[] {"-url", url, "-packageDir", "test", "-destDir", tmpDir.getName()});
+    }
+    
+    private void grab(String url, String webInterface) {
+        CVSGrab.main(new String[] {"-url", url, "-packageDir", "test", "-destDir", tmpDir.getName(), "-webInterface", webInterface});
     }
     
     private void cleanDir(File dir) {

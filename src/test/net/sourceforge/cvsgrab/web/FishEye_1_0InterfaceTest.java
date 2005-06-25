@@ -20,7 +20,7 @@ import java.util.Properties;
  */
 public class FishEye_1_0InterfaceTest extends AbstractTestCase {
 
-    private FishEye_1_0Interface _interface;
+    private FishEye1_0Interface _interface;
     private CVSGrab _grabber;
 
     /**
@@ -34,7 +34,7 @@ public class FishEye_1_0InterfaceTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         _grabber = new CVSGrab();
-        _interface = new FishEye_1_0Interface(_grabber);
+        _interface = new FishEye1_0Interface(_grabber);
     }
 
     public void testDetect() throws Exception {

@@ -37,7 +37,9 @@
       <action dev="ludovicc" type="fix">Fixed detection of gzipped content on some web sites</action>
       <action dev="ludovicc" type="fix">Bug #1173243: support Jahia.org</action>
       <action dev="ludovicc" type="fix">Bug #1193006: fix cvsgrab.sh, patch provided by ated at users.sourceforge.net</action>
-      <action dev="ludovicc" type="fix">Fixed autodetection that was blocking cvsgrab on some sites (netbeans.ogr, dev.java.net)</action>
+      <action dev="ludovicc" type="fix">support Php.net again</action>
+      <action dev="ludovicc" type="fix">Fixed autodetection that was blocking cvsgrab on some sites (netbeans.org, dev.java.net)</action>
+      <action dev="ludovicc" type="fix">Fixed combined use of -url and -webInterface parameters</action>
     </release>
 
     <release version="2.2.1" date="2005-03-24">

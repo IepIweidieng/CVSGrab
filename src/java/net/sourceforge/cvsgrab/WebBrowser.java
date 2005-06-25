@@ -69,7 +69,7 @@ public class WebBrowser {
     }
 
     public static String removeFinalSlash(String s) {
-        if (s.endsWith("/")) {
+        if (s != null && s.endsWith("/")) {
             return s.substring(0, s.length()-1);
         }
         return s;

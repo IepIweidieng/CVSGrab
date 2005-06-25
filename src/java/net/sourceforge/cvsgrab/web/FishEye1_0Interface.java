@@ -27,9 +27,9 @@ import java.util.Properties;
  * @author lclaude
  * @date 30 mars 2004
  */
-public class FishEye_1_0Interface extends ViewCvsInterface {
+public class FishEye1_0Interface extends ViewCvsInterface {
 
-    public FishEye_1_0Interface(CVSGrab grabber) {
+    public FishEye1_0Interface(CVSGrab grabber) {
         super(grabber);
         
         setFilesXpath("//TABLE[@id='fileTable']//TR[@class='ftFileRow' or @class='ftFileRowDeleted']");

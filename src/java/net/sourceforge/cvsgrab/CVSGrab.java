@@ -271,11 +271,6 @@ public class CVSGrab {
             httpclientLogLevel("error", "SEVERE");
         }
 
-        // Handle autodetection of the full url
-        if (cmd.hasOption(URL_OPTION)) {
-            setUrl(cmd.getOptionValue(URL_OPTION));
-        }
-
         // Handle remote repository options
         Properties webProperties = new Properties();
         for (int i = 0; i < WEB_OPTIONS.length; i++) {
@@ -332,6 +327,11 @@ public class CVSGrab {
             RemoteFile.setFileTypes(fileTypes);
         } catch (IOException ex) {
             getLog().error("Cannot read the file " + file.getPath());
+        }
+
+        // Handle autodetection of the full url
+        if (cmd.hasOption(URL_OPTION)) {
+            setUrl(cmd.getOptionValue(URL_OPTION));
         }
 
         if (cmd.hasOption(DIFF_CMD)) {
@@ -533,10 +533,21 @@ public class CVSGrab {
      * Analyse the root url and try to extract the package path, version tag and web options parameters from it
      */
     public void setUrl(String url) {
-        Properties webProperties = CvsWebInterface.getWebProperties(this, url);
+    	Properties webProperties;
+    	if (getWebInterfaceId() != null) {
+    		try {
+				webProperties = getWebInterface().guessWebProperties(url);
+			} catch (Exception e) {
+	            getLog().error(e.getMessage());
+	            _error = true;
+	            return;
+			}
+    	} else {
+    		webProperties = CvsWebInterface.getWebProperties(this, url);
+            _webInterface = (CvsWebInterface) webProperties.get(CvsWebInterface.DETECTED_WEB_INTERFACE);
+    	}
         // put back the result in the WebOptions
         _webOptions.readProperties(webProperties);
-        _webInterface = (CvsWebInterface) webProperties.get(CvsWebInterface.DETECTED_WEB_INTERFACE);
     }
 
     /**

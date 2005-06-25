@@ -23,7 +23,7 @@
 
 
 <head>
-    <title>FishEye: browsing groovy/groovy</title>
+    <title>FishEye: browsing groovy/groovy/groovy-core</title>
     <link rel="SHORTCUT ICON" href="/favicon.ico">
     <link rel="stylesheet" href="/static/main.css" type="text/css">
     <link rel="stylesheet" href="/uar/browser.css" type="text/css">
@@ -61,9 +61,9 @@ var fishEyePageContext = '';
     
     
     
-    <a class="active" href="/viewrep/groovy/groovy">Browse</a>
-    <a  href="/changelog/groovy/groovy">Changelog</a>
-    <a  href="/search/groovy/groovy">Search</a>
+    <a class="active" href="/viewrep/groovy/groovy/groovy-core">Browse</a>
+    <a  href="/changelog/groovy/groovy/groovy-core">Changelog</a>
+    <a  href="/search/groovy/groovy/groovy-core">Search</a>
     
         
         
@@ -84,10 +84,10 @@ var fishEyePageContext = '';
 
 <table id="secondHeader" cellspacing="0">
  <tr>
-  <form method="get" action="/qsearch/groovy/groovy">
+  <form method="get" action="/qsearch/groovy/groovy/groovy-core">
   <td id="breadCrumb">
 
-     <a class="breadCrumbRepository" href="/viewrep/groovy">groovy</a>:/<a href="/viewrep/groovy/groovy">groovy</a>/
+     <a class="breadCrumbRepository" href="/viewrep/groovy">groovy</a>:/<a href="/viewrep/groovy/groovy">groovy</a>/<a href="/viewrep/groovy/groovy/groovy-core">groovy-core</a>/
      <input name="filename" type="text" size="25">
 
      
@@ -95,7 +95,7 @@ var fishEyePageContext = '';
      <input type="submit" value="Go">
   </td>
   </form>
-  <form method="get" action="/qsearch/groovy/groovy">
+  <form method="get" action="/qsearch/groovy/groovy/groovy-core">
   <td id="quickSearch">
        
      Quick Search:
@@ -115,7 +115,7 @@ var fishEyePageContext = '';
 
   <div class="box">
     <h3>Line History</h3>
-    <div class="linehistory"><img src="/viewrep/groovy/groovy?linegraph"></div>
+    <div class="linehistory"><img src="/viewrep/groovy/groovy/groovy-core?linegraph"></div>
   </div>
 
   <div class="box">
@@ -135,7 +135,7 @@ var fishEyePageContext = '';
   Constraint
 </h3>
 <div class="formPane">
- <form method="get" action="/viewrep/groovy/groovy">
+ <form method="get" action="/viewrep/groovy/groovy/groovy-core">
  <table>
   <tr>
    <td>Branch:</td>
@@ -179,8 +179,6 @@ var fishEyePageContext = '';
      
        <option value="jez">jez</option>
      
-       <option value="joe">joe</option>
-     
        <option value="jrose">jrose</option>
      
        <option value="jstrachan">jstrachan</option>
@@ -188,8 +186,6 @@ var fishEyePageContext = '';
        <option value="jstump">jstump</option>
      
        <option value="kasper">kasper</option>
-     
-       <option value="markcc">markcc</option>
      
        <option value="mcspanky">mcspanky</option>
      
@@ -263,12 +259,12 @@ var fishEyePageContext = '';
     |
     
     
-      <a href="/viewrep/groovy/groovy?%40dirListOrder=l">last-commit</a>
+      <a href="/viewrep/groovy/groovy/groovy-core?%40dirListOrder=l">last-commit</a>
     
     |
     
     
-      <a href="/viewrep/groovy/groovy?%40dirListOrder=f">first-commit</a>
+      <a href="/viewrep/groovy/groovy/groovy-core?%40dirListOrder=f">first-commit</a>
     
   </span></span>
 
@@ -288,7 +284,7 @@ Sub Directories</h3>
     
       
       
-      <span class="toolBarEmpty"><a href="/viewrep/groovy/groovy?%40hideEmptyDirectories=Y">Hide Empty</a></span>
+      <span class="toolBarEmpty"><a href="/viewrep/groovy/groovy/groovy-core?%40hideEmptyDirectories=Y">Hide Empty</a></span>
     
     
   
@@ -304,7 +300,7 @@ Sub Directories</h3>
 
 
   <li><span class="folder">
-    <a href="/viewrep/groovy/">
+    <a href="/viewrep/groovy/groovy">
       <img src="/static/images/folder_up.gif" width="40" height="12" alt="[^]" />..</a>
   </span></li>
 
@@ -316,31 +312,10 @@ Sub Directories</h3>
  
 
  <li>
-<span class="folder"><img id="subdirs1img" src="/static/images/folder_closed.gif"
-         width="40" height="12" alt="[-]" style="cursor:pointer"
-         onClick="treeSubdirToggle('subdirs1');" /><a href="/viewrep/groovy/groovy/groovy-core"><span class="folderPlain">groovy-core</span></a>/</span>
+<span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/.settings"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" /></a><a href="/viewrep/groovy/groovy/groovy-core/.settings"><span class="folderPlain">.settings</span></a>/</span>
  </li>
 
  
- 
-<ul id="subdirs1" style="display: none;">
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/.settings"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />.settings</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/lib"><span class="folderEmpty"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />lib</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/security"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />security</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />src</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/xdocs"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />xdocs</span></a>/</span><a href="/viewrep/groovy/groovy/groovy-core/xdocs/images"><span class="folderPlain">images</span></a>/</li>
-  
-</ul>
  
 
 
@@ -349,22 +324,10 @@ Sub Directories</h3>
  
 
  <li>
-<span class="folder"><img id="subdirs2img" src="/static/images/folder_closed.gif"
-         width="40" height="12" alt="[-]" style="cursor:pointer"
-         onClick="treeSubdirToggle('subdirs2');" /><a href="/viewrep/groovy/groovy/groovy-native"><span class="folderPlain">groovy-native</span></a>/</span>
+<span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/lib"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" /></a><a href="/viewrep/groovy/groovy/groovy-core/lib"><span class="folderEmpty">lib</span></a>/</span>
  </li>
 
  
- 
-<ul id="subdirs2" style="display: none;">
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-native/examples"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />examples</span></a>/</span><a href="/viewrep/groovy/groovy/groovy-native/examples/001-standalone-executable"><span class="folderPlain">001-standalone-executable</span></a>/</li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-native/libgroovy"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />libgroovy</span></a>/</span></li>
-  
-</ul>
  
 
 
@@ -373,31 +336,10 @@ Sub Directories</h3>
  
 
  <li>
-<span class="folder"><img id="subdirs3img" src="/static/images/folder_closed.gif"
-         width="40" height="12" alt="[-]" style="cursor:pointer"
-         onClick="treeSubdirToggle('subdirs3');" /><a href="/viewrep/groovy/groovy/ide"><span class="folderPlain">ide</span></a>/</span>
+<span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/security"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" /></a><a href="/viewrep/groovy/groovy/groovy-core/security"><span class="folderPlain">security</span></a>/</span>
  </li>
 
  
- 
-<ul id="subdirs3" style="display: none;">
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/groovy-eclipse"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovy-eclipse</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/groovy-emacs"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovy-emacs</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/groovy-intellij"><span class="folderEmpty"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovy-intellij</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/groovyj"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovyj</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/ide/old-groovy-eclipse"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />old-groovy-eclipse</span></a>/</span></li>
-  
-</ul>
  
 
 
@@ -408,7 +350,7 @@ Sub Directories</h3>
  <li>
 <span class="folder"><img id="subdirs4img" src="/static/images/folder_closed.gif"
          width="40" height="12" alt="[-]" style="cursor:pointer"
-         onClick="treeSubdirToggle('subdirs4');" /><a href="/viewrep/groovy/groovy/jsr"><span class="folderPlain">jsr</span></a>/</span>
+         onClick="treeSubdirToggle('subdirs4');" /><a href="/viewrep/groovy/groovy/groovy-core/src"><span class="folderPlain">src</span></a>/</span>
  </li>
 
  
@@ -416,13 +358,40 @@ Sub Directories</h3>
 <ul id="subdirs4" style="display: none;">
   
     
-<li><span class="folder"><a href="/viewrep/groovy/groovy/jsr/ideas"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />ideas</span></a>/</span><a href="/viewrep/groovy/groovy/jsr/ideas/parsers"><span class="folderPlain">parsers</span></a>/</li>
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/bin"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />bin</span></a>/</span></li>
   
     
-<li><span class="folder"><a href="/viewrep/groovy/groovy/jsr/spec"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />spec</span></a>/</span></li>
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/conf"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />conf</span></a>/</span></li>
   
     
-<li><span class="folder"><a href="/viewrep/groovy/groovy/jsr/tck"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />tck</span></a>/</span></li>
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/examples"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />examples</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/latex"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />latex</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/main"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />main</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/native"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />native</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/script"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />script</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/test"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />test</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/test-new"><span class="folderEmpty"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />test-new</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/test-old"><span class="folderEmpty"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />test-old</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/web"><span class="folderEmpty"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />web</span></a>/</span></li>
+  
+    
+<li><span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/src/whiteboard"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />whiteboard</span></a>/</span><a href="/viewrep/groovy/groovy/groovy-core/src/whiteboard/org"><span class="folderPlain">org</span></a>/<a href="/viewrep/groovy/groovy/groovy-core/src/whiteboard/org/codehaus"><span class="folderPlain">codehaus</span></a>/<a href="/viewrep/groovy/groovy/groovy-core/src/whiteboard/org/codehaus/groovy"><span class="folderPlain">groovy</span></a>/<a href="/viewrep/groovy/groovy/groovy-core/src/whiteboard/org/codehaus/groovy/classgen"><span class="folderPlain">classgen</span></a>/</li>
   
 </ul>
  
@@ -433,40 +402,10 @@ Sub Directories</h3>
  
 
  <li>
-<span class="folder"><img id="subdirs5img" src="/static/images/folder_closed.gif"
-         width="40" height="12" alt="[-]" style="cursor:pointer"
-         onClick="treeSubdirToggle('subdirs5');" /><a href="/viewrep/groovy/groovy/modules"><span class="folderPlain">modules</span></a>/</span>
+<span class="folder"><a href="/viewrep/groovy/groovy/groovy-core/xdocs"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" /></a><a href="/viewrep/groovy/groovy/groovy-core/xdocs"><span class="folderPlain">xdocs</span></a>/<a href="/viewrep/groovy/groovy/groovy-core/xdocs/images"><span class="folderPlain">images</span></a>/</span>
  </li>
 
  
- 
-<ul id="subdirs5" style="display: none;">
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/classic"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />classic</span></a>/</span><a href="/viewrep/groovy/groovy/modules/classic/src"><span class="folderPlain">src</span></a>/</li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/gram"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />gram</span></a>/</span><a href="/viewrep/groovy/groovy/modules/gram/src"><span class="folderPlain">src</span></a>/</li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/groovy-swt"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />groovy-swt</span></a>/</span><a href="/viewrep/groovy/groovy/modules/groovy-swt/src"><span class="folderPlain">src</span></a>/</li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/gsql"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />gsql</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/pages"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />pages</span></a>/</span><a href="/viewrep/groovy/groovy/modules/pages/src"><span class="folderPlain">src</span></a>/</li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/process"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />process</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/scriptom"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />scriptom</span></a>/</span></li>
-  
-    
-<li><span class="folder"><a href="/viewrep/groovy/groovy/modules/xmlrpc"><span class="folderPlain"><img src="/static/images/folder_subdir.gif" width="40" height="12" alt="[]" />xmlrpc</span></a>/</span></li>
-  
-</ul>
  
 
 
@@ -483,9 +422,9 @@ Sub Directories</h3>
       <h3>Tarball</h3>
       <div class="formPane"><table><tr>
       <td>
-      <a href="/viewrep/~tarball=zip/groovy/groovy/groovy.zip">zip</a>
-      <a href="/viewrep/~tarball=tgz/groovy/groovy/groovy.tgz">tgz</a>
-      <a href="/viewrep/~tarball=tbz2/groovy/groovy/groovy.tbz2">tbz2</a>
+      <a href="/viewrep/~tarball=zip/groovy/groovy/groovy-core/groovy-core.zip">zip</a>
+      <a href="/viewrep/~tarball=tgz/groovy/groovy/groovy-core/groovy-core.tgz">tgz</a>
+      <a href="/viewrep/~tarball=tbz2/groovy/groovy/groovy-core/groovy-core.tbz2">tbz2</a>
       </td>
       </tr></table></div>
 
@@ -502,8 +441,8 @@ Sub Directories</h3>
   <div class="box">
         <h3 style="border-bottom-width:0px">
       <span class="boxIcon">
-        <span class="boxIconText"><a href="/changelog/groovy/groovy">Full Changelog</a>
-        <a href="/rsscfg/groovy/groovy/">Feeds</a>
+        <span class="boxIconText"><a href="/changelog/groovy/groovy/groovy-core">Full Changelog</a>
+        <a href="/rsscfg/groovy/groovy/groovy-core/">Feeds</a>
         </span>
       </span>
       Recent Changelog
@@ -511,16 +450,297 @@ Sub Directories</h3>
     
     
       <div class="changesetList">
-        <a class="csId" href="/changelog/groovy/groovy?cs=MAIN:russel:20050623132749">MAIN:russel:20050623132749</a>
+        <a class="csId" href="/changelog/groovy/groovy/groovy-core?cs=MAIN:fraz:20050624211512">MAIN:fraz:20050624211512</a>
+        by <span class="csAuthor">fraz</span> 
+        (14 hours ago)
+        <span class="csComment">GROOVY-835: Replaced _searchPaths with searchPaths as requested by the author of the patch so that the classpath of the associated CompilerConfiguration is used instead of java.class.path <br /></span>
+        
+        
+        
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java">./src/main/groovy/lang/GroovyClassLoader.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java?r=1.48" title="view">1.48</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java#r1.48" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.48/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+11 -14)
+                 <a href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java?r1=1.47&r2=1.48">diffs</a>
+               
+               
+              </p>
+        
+        
+      </div>
+    
+      <div class="changesetList">
+        <a class="csId" href="/changelog/groovy/groovy/groovy-core?cs=MAIN:dierk:20050623183628">MAIN:dierk:20050623183628</a>
+        by <span class="csAuthor">dierk</span> 
+        (41 hours ago)
+        <span class="csComment">Resolved GROOVY-889 (duplicate MetaMethods under JDK 1.5) and related issues in Inspector and MetaClass where MetaMethods were added multiple times to the MetaClass. <br /></span>
+        
+        
+        
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/MetaClass.java">./src/main/groovy/lang/MetaClass.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/MetaClass.java?r=1.108" title="view">1.108</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/MetaClass.java#r1.108" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.108/groovy/groovy/groovy-core/src/main/groovy/lang/MetaClass.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+16 -18)
+                 <a href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/MetaClass.java?r1=1.107&r2=1.108">diffs</a>
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/inspect/InspectorTest.java">./src/test/groovy/inspect/InspectorTest.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/inspect/InspectorTest.java?r=1.4" title="view">1.4</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/inspect/InspectorTest.java#r1.4" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.4/groovy/groovy/groovy-core/src/test/groovy/inspect/InspectorTest.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+1 -5)
+                 <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/inspect/InspectorTest.java?r1=1.3&r2=1.4">diffs</a>
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/lang/MetaClassTest.java">./src/test/groovy/lang/MetaClassTest.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/lang/MetaClassTest.java?r=1.6" title="view">1.6</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/lang/MetaClassTest.java#r1.6" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.6/groovy/groovy/groovy-core/src/test/groovy/lang/MetaClassTest.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+26 -2)
+                 <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/lang/MetaClassTest.java?r1=1.5&r2=1.6">diffs</a>
+               
+               
+              </p>
+        
+        
+      </div>
+    
+      <div class="changesetList">
+        <a class="csId" href="/changelog/groovy/groovy/groovy-core?cs=MAIN:russel:20050623182843">MAIN:russel:20050623182843</a>
         by <span class="csAuthor">russel</span> 
-        (4 hours ago)
+        (41 hours ago)
+        <span class="csComment">Added a test for GROOVY-872. &nbsp;Unnecessary really but you can&#039;t have too many tests. <br /></span>
+        
+        
+        
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy872.groovy">./src/test/groovy/bugs/Groovy872.groovy</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy872.groovy?r=1.1" title="view">1.1</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy872.groovy#r1.1" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.1/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy872.groovy" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+                 (+22) <em>new</em>
+               
+               
+               
+               
+              </p>
+        
+              <p class="csFilename" >
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java">./src/test/UberTestCase2.java</a>
+               
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java?r=1.39" title="view">1.39</a>
+
+
+
+<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java#r1.39" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.39/groovy/groovy/groovy-core/src/test/UberTestCase2.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+               
+               
+               
+               
+               
+                   (+2 -1)
+                 <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java?r1=1.38&r2=1.39">diffs</a>
+               
+               
+              </p>
+        
+        
+      </div>
+    
+      <div class="changesetList">
+        <a class="csId" href="/changelog/groovy/groovy/groovy-core?cs=MAIN:russel:20050623132749">MAIN:russel:20050623132749</a>
+        by <span class="csAuthor">russel</span> 
+        (46 hours ago)
         <span class="csComment">Added a test associated with GROOVY-662 to codify decisions in an (anti-)regression test. <br /></span>
         
         
         
         
               <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662.groovy">./groovy-core/src/test/groovy/bugs/Groovy662.groovy</a>
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662.groovy">./src/test/groovy/bugs/Groovy662.groovy</a>
                
 
  
@@ -560,7 +780,7 @@ Sub Directories</h3>
               </p>
         
               <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662_JavaClass.java">./groovy-core/src/test/groovy/bugs/Groovy662_JavaClass.java</a>
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/groovy/bugs/Groovy662_JavaClass.java">./src/test/groovy/bugs/Groovy662_JavaClass.java</a>
                
 
  
@@ -600,7 +820,7 @@ Sub Directories</h3>
               </p>
         
               <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase.java">./groovy-core/src/test/UberTestCase.java</a>
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase.java">./src/test/UberTestCase.java</a>
                
 
  
@@ -641,7 +861,7 @@ Sub Directories</h3>
               </p>
         
               <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java">./groovy-core/src/test/UberTestCase2.java</a>
+               <a href="/viewrep/groovy/groovy/groovy-core/src/test/UberTestCase2.java">./src/test/UberTestCase2.java</a>
                
 
  
@@ -684,342 +904,6 @@ Sub Directories</h3>
         
       </div>
     
-      <div class="changesetList">
-        <a class="csId" href="/changelog/groovy/groovy?cs=MAIN:blackdrag:20050622214807">MAIN:blackdrag:20050622214807</a>
-        by <span class="csAuthor">blackdrag</span> 
-        (20 hours ago)
-        <span class="csComment">avoids an empty compiler configuration <br /></span>
-        
-        
-        
-        
-              <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java">./groovy-core/src/main/groovy/lang/GroovyClassLoader.java</a>
-               
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java?r=1.47" title="view">1.47</a>
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java#r1.47" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.47/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
-
-
-
-
-               
-               
-               
-               
-               
-                   (+4 -3)
-                 <a href="/viewrep/groovy/groovy/groovy-core/src/main/groovy/lang/GroovyClassLoader.java?r1=1.46&r2=1.47">diffs</a>
-               
-               
-              </p>
-        
-        
-      </div>
-    
-      <div class="changesetList">
-        <a class="csId" href="/changelog/groovy/groovy?cs=MAIN:fraz:20050622065946">MAIN:fraz:20050622065946</a>
-        by <span class="csAuthor">fraz</span> 
-        (35 hours ago)
-        <span class="csComment">GROOVY-602 / GROOVY-607: Removed classloading-related setup from GroovyController following the resolution of GROOVY-902 <br /></span>
-        
-        
-        
-        
-              <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java">./ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java</a>
-               
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java?r=1.12" title="view">1.12</a>
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java#r1.12" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.12/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
-
-
-
-
-               
-               
-               
-               
-               
-                   (+2 -13)
-                 <a href="/viewrep/groovy/groovy/ide/groovyj/src/test/org/codehaus/groovy/intellij/GroovyControllerTest.java?r1=1.11&r2=1.12">diffs</a>
-               
-               
-              </p>
-        
-              <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java">./ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java</a>
-               
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java?r=1.9" title="view">1.9</a>
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java#r1.9" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="csFilename" href="/viewrep/~raw,r=1.9/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
-
-
-
-
-               
-               
-               
-               
-               
-                   (+6 -11)
-                 <a href="/viewrep/groovy/groovy/ide/groovyj/src/java/org/codehaus/groovy/intellij/GroovyController.java?r1=1.8&r2=1.9">diffs</a>
-               
-               
-              </p>
-        
-        
-      </div>
-    
-      <div class="changesetList">
-        <a class="csId" href="/changelog/groovy/groovy?cs=MAIN:fraz:20050622014332">MAIN:fraz:20050622014332</a>
-        by <span class="csAuthor">fraz</span> 
-        (40 hours ago)
-        <span class="csComment">Housekeeping: ... <br />Added support for IntelliJ IDEA Irida build #3378 to reflect the latest Open API changes <br />Reduced the number of JAR files required at runtime by using the the groovy-all JAR instead&#8230;</span>
-        
-        
-        
-        
-              <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/antlr-2.7.5.jar">./ide/groovyj/lib/runtime/antlr-2.7.5.jar</a>
-               
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/antlr-2.7.5.jar#1.2" title="history">1.2
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
-
-
-
-               
-               
-                 <em>deleted</em>
-               
-               
-               
-               
-               
-              </p>
-        
-              <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-2.0.jar">./ide/groovyj/lib/runtime/asm-2.0.jar</a>
-               
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-2.0.jar#1.2" title="history">1.2
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
-
-
-
-               
-               
-                 <em>deleted</em>
-               
-               
-               
-               
-               
-              </p>
-        
-              <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-analysis-2.0.jar">./ide/groovyj/lib/runtime/asm-analysis-2.0.jar</a>
-               
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-analysis-2.0.jar#1.2" title="history">1.2
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
-
-
-
-               
-               
-                 <em>deleted</em>
-               
-               
-               
-               
-               
-              </p>
-        
-              <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-attrs-2.0.jar">./ide/groovyj/lib/runtime/asm-attrs-2.0.jar</a>
-               
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-attrs-2.0.jar#1.2" title="history">1.2
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
-
-
-
-               
-               
-                 <em>deleted</em>
-               
-               
-               
-               
-               
-              </p>
-        
-              <p class="csFilename" >
-               <a href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-tree-2.0.jar">./ide/groovyj/lib/runtime/asm-tree-2.0.jar</a>
-               
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="csFilename" href="/viewrep/groovy/groovy/ide/groovyj/lib/runtime/asm-tree-2.0.jar#1.2" title="history">1.2
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
-
-
-
-               
-               
-                 <em>deleted</em>
-               
-               
-               
-               
-               
-              </p>
-        
-        
-          &#8230; 21 more files in <a href="/changelog/groovy/groovy?cs=MAIN:fraz:20050622014332">changeset</a>.
-        
-      </div>
-    
 
 
 
@@ -1040,7 +924,7 @@ Sub Directories</h3>
   
       Deleted files:
       
-      <a href="/viewrep/groovy/groovy?%40hideDeletedFiles=Y">Hide</a>
+      <a href="/viewrep/groovy/groovy/groovy-core?%40hideDeletedFiles=Y">Hide</a>
       | Show
   
   
@@ -1059,19 +943,19 @@ Files</h3>
    
   <tr id="ftTitle">
    <td>&nbsp;</td>
-   <td><a href="/viewrep/groovy/groovy?%5Edirsort=-path">NAME</a>&#171;</td>
+   <td><a href="/viewrep/groovy/groovy/groovy-core?%5Edirsort=-path">NAME</a>&#171;</td>
    <td>REV</td>
-   <td><a href="/viewrep/groovy/groovy?%5Edirsort=age">AGE</a></td>
-   <td><a href="/viewrep/groovy/groovy?%5Edirsort=author">AUTHOR</a></td>
+   <td><a href="/viewrep/groovy/groovy/groovy-core?%5Edirsort=age">AGE</a></td>
+   <td><a href="/viewrep/groovy/groovy/groovy-core?%5Edirsort=author">AUTHOR</a></td>
   </tr>
   
   
   
-    <tr class="ftFileRowDeleted">
+    <tr class="ftFileRow">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/.classpath" alt="_">.classpath</a>
-          <i>(deleted)</i>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/.classpath" alt="_">.classpath</a>
+          
       </td>
       <td>
 
@@ -1091,25 +975,30 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/.classpath#1.12" title="history">1.12
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/.classpath?r=1.51" title="view">1.51</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/.classpath#r1.51" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.51/groovy/groovy/groovy-core/.classpath" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
 
 
 
           
       </td>
-      <td>19 months</td>
-      <td><span class="ftAuthor">jstrachan</span></td> 
+      <td>14 days</td>
+      <td><span class="ftAuthor">cstein</span></td> 
     </tr>
-    <tr class="ftFileRowDeletedComment">
-     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    <tr >
+     <td class="ftComment" colspan="4">Introducing JMock 1.0.1 for testing. <br/>&#8230;</td>
     </tr>
   
   
     <tr class="ftFileRow">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/.cvsignore" alt="_">.cvsignore</a>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/.cvsignore" alt="_">.cvsignore</a>
           
       </td>
       <td>
@@ -1131,29 +1020,161 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/.cvsignore?r=1.6" title="view">1.6</a>
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/.cvsignore?r=1.14" title="view">1.14</a>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/.cvsignore#r1.6" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.6/groovy/groovy/.cvsignore" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/.cvsignore#r1.14" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.14/groovy/groovy/groovy-core/.cvsignore" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
 
 
 
 
           
       </td>
-      <td>6 months</td>
+      <td>10 days</td>
       <td><span class="ftAuthor">jstrachan</span></td> 
     </tr>
     <tr >
-     <td class="ftComment" colspan="4">about to do the <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=beta-8">beta-8</a> release <br/></td>
+     <td class="ftComment" colspan="4">getting ready for <a href="http://jira.codehaus.org/secure/ViewIssue.jspa?key=JSR-02">JSR-02</a> release <br/></td>
+    </tr>
+  
+  
+    <tr class="ftFileRow">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/.project" alt="_">.project</a>
+          
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/.project?r=1.10" title="view">1.10</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/.project#r1.10" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.10/groovy/groovy/groovy-core/.project" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+          
+      </td>
+      <td>15 months</td>
+      <td><span class="ftAuthor">tug</span></td> 
+    </tr>
+    <tr >
+     <td class="ftComment" colspan="4">move declareNamespace into the markup keyword namespace <br/>distinguish between the &#8230;</td>
+    </tr>
+  
+  
+    <tr class="ftFileRow">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/ASM-LICENSE.txt" alt="_">ASM-LICENSE.txt</a>
+          
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/ASM-LICENSE.txt?r=1.1" title="view">1.1</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/ASM-LICENSE.txt#r1.1" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.1/groovy/groovy/groovy-core/ASM-LICENSE.txt" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+          
+      </td>
+      <td>10 months</td>
+      <td><span class="ftAuthor">jez</span></td> 
+    </tr>
+    <tr >
+     <td class="ftComment" colspan="4">Added a goal to create an embeddable groovy jar <br/>this contains groovy.jar and the&#8230;</td>
+    </tr>
+  
+  
+    <tr class="ftFileRow">
+      
+      <td class="ftIconCol" rowspan="2">&nbsp;</td>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/build.xml" alt="_">build.xml</a>
+          
+      </td>
+      <td>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/build.xml?r=1.1" title="view">1.1</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/build.xml#r1.1" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.1/groovy/groovy/groovy-core/build.xml" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
+
+
+
+          
+      </td>
+      <td>3 months 9 days</td>
+      <td><span class="ftAuthor">jez</span></td> 
+    </tr>
+    <tr >
+     <td class="ftComment" colspan="4">* Commented out tests in UberTestCase* , this is not because it is the easy <br/>way &#8230;</td>
     </tr>
   
   
     <tr class="ftFileRowDeleted">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/GroovyDoc.txt" alt="_">GroovyDoc.txt</a>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/GroovyDoc.txt" alt="_">GroovyDoc.txt</a>
           <i>(deleted)</i>
       </td>
       <td>
@@ -1174,7 +1195,7 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/GroovyDoc.txt#1.3" title="history">1.3
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/GroovyDoc.txt#1.3" title="history">1.3
 <img src="/static/images/icon_history.gif" width="9" height="9" /></a>
 
 
@@ -1189,11 +1210,11 @@ Files</h3>
     </tr>
   
   
-    <tr class="ftFileRowDeleted">
+    <tr class="ftFileRow">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/LICENSE.txt" alt="_">LICENSE.txt</a>
-          <i>(deleted)</i>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/LICENSE.txt" alt="_">LICENSE.txt</a>
+          
       </td>
       <td>
 
@@ -1213,26 +1234,31 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/LICENSE.txt#1.3" title="history">1.3
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/LICENSE.txt?r=1.2" title="view">1.2</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/LICENSE.txt#r1.2" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.2/groovy/groovy/groovy-core/LICENSE.txt" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
 
 
 
           
       </td>
-      <td>19 months</td>
+      <td>20 months</td>
       <td><span class="ftAuthor">jstrachan</span></td> 
     </tr>
-    <tr class="ftFileRowDeletedComment">
-     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    <tr >
+     <td class="ftComment" colspan="4">Moved the GroovyTestCase into the core groovy.lang package (since the primary us&#8230;</td>
     </tr>
   
   
-    <tr class="ftFileRowDeleted">
+    <tr class="ftFileRow">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/maven.xml" alt="_">maven.xml</a>
-          <i>(deleted)</i>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/maven.xml" alt="_">maven.xml</a>
+          
       </td>
       <td>
 
@@ -1252,26 +1278,31 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/maven.xml#1.29" title="history">1.29
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/maven.xml?r=1.124" title="view">1.124</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/maven.xml#r1.124" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.124/groovy/groovy/groovy-core/maven.xml" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
 
 
 
           
       </td>
-      <td>19 months</td>
+      <td>10 days</td>
       <td><span class="ftAuthor">jstrachan</span></td> 
     </tr>
-    <tr class="ftFileRowDeletedComment">
-     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    <tr >
+     <td class="ftComment" colspan="4">post release version change &amp; patch for site:deploy <br/></td>
     </tr>
   
   
-    <tr class="ftFileRowDeleted">
+    <tr class="ftFileRow">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/project.properties" alt="_">project.properties</a>
-          <i>(deleted)</i>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/project.properties" alt="_">project.properties</a>
+          
       </td>
       <td>
 
@@ -1291,26 +1322,31 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/project.properties#1.5" title="history">1.5
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/project.properties?r=1.20" title="view">1.20</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/project.properties#r1.20" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.20/groovy/groovy/groovy-core/project.properties" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
 
 
 
           
       </td>
-      <td>19 months</td>
-      <td><span class="ftAuthor">jstrachan</span></td> 
+      <td>14 days</td>
+      <td><span class="ftAuthor">cstein</span></td> 
     </tr>
-    <tr class="ftFileRowDeletedComment">
-     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    <tr >
+     <td class="ftComment" colspan="4">Added &#039;war&#039; properties to core build files, assembling the &#039;ready-to-deploy&#039; gro&#8230;</td>
     </tr>
   
   
-    <tr class="ftFileRowDeleted">
+    <tr class="ftFileRow">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/project.xml" alt="_">project.xml</a>
-          <i>(deleted)</i>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/project.xml" alt="_">project.xml</a>
+          
       </td>
       <td>
 
@@ -1330,25 +1366,30 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/project.xml#1.29" title="history">1.29
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/project.xml?r=1.146" title="view">1.146</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/project.xml#r1.146" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.146/groovy/groovy/groovy-core/project.xml" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
 
 
 
           
       </td>
-      <td>19 months</td>
+      <td>10 days</td>
       <td><span class="ftAuthor">jstrachan</span></td> 
     </tr>
-    <tr class="ftFileRowDeletedComment">
-     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    <tr >
+     <td class="ftComment" colspan="4">post release version change &amp; patch for site:deploy <br/></td>
     </tr>
   
   
     <tr class="ftFileRowDeleted">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/TODO-PARSER.txt" alt="_">TODO-PARSER.txt</a>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/TODO-PARSER.txt" alt="_">TODO-PARSER.txt</a>
           <i>(deleted)</i>
       </td>
       <td>
@@ -1369,7 +1410,7 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/TODO-PARSER.txt#1.14" title="history">1.14
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/TODO-PARSER.txt#1.14" title="history">1.14
 <img src="/static/images/icon_history.gif" width="9" height="9" /></a>
 
 
@@ -1384,11 +1425,11 @@ Files</h3>
     </tr>
   
   
-    <tr class="ftFileRowDeleted">
+    <tr class="ftFileRow">
       
       <td class="ftIconCol" rowspan="2">&nbsp;</td>
-      <td><a class="ftFileName" href="/viewrep/groovy/groovy/TODO.txt" alt="_">TODO.txt</a>
-          <i>(deleted)</i>
+      <td><a class="ftFileName" href="/viewrep/groovy/groovy/groovy-core/TODO.txt" alt="_">TODO.txt</a>
+          
       </td>
       <td>
 
@@ -1408,18 +1449,23 @@ Files</h3>
 
 
 
-<a class="ftRev" href="/viewrep/groovy/groovy/TODO.txt#1.86" title="history">1.86
-<img src="/static/images/icon_history.gif" width="9" height="9" /></a>
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/TODO.txt?r=1.123" title="view">1.123</a>
+
+
+
+<a class="ftRev" href="/viewrep/groovy/groovy/groovy-core/TODO.txt#r1.123" title="history"><img src="/static/images/icon_history.gif" alt="history" width="9" height="9" /></a>&nbsp;<a class="ftRev" href="/viewrep/~raw,r=1.123/groovy/groovy/groovy-core/TODO.txt" title="download"><img src="/static/images/icon_download.gif" alt="download" width="9" height="9" /></a>
+
 
 
 
           
       </td>
-      <td>19 months</td>
+      <td>15 months</td>
       <td><span class="ftAuthor">jstrachan</span></td> 
     </tr>
-    <tr class="ftFileRowDeletedComment">
-     <td class="ftComment" colspan="4">Moved the code into the groovy-core subdirectory to allow new modules to be adde&#8230;</td>
+    <tr >
+     <td class="ftComment" colspan="4">removed some cruft from TODO <br/></td>
     </tr>
   
  
@@ -1450,13 +1496,13 @@ Files</h3>
     
 
     
-    Page generated 2005-06-23 18:04 +0000
+    Page generated 2005-06-25 12:04 +0000
 
   </div>
 </div>
 
 <!--
-page produced in 425 ms
+page produced in 119 ms
 -->
 
 </body> </html>

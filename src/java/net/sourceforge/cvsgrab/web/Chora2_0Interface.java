@@ -18,6 +18,7 @@ import org.w3c.dom.Document;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -26,11 +27,11 @@ import java.util.List;
  * @author lclaude
  * @created 30 mars 2004
  */
-public class Chora_2_0Interface extends ViewCvsInterface {
+public class Chora2_0Interface extends ViewCvsInterface {
 
     private String _browsePath = "cvs.php";
     
-    public Chora_2_0Interface(CVSGrab grabber) {
+    public Chora2_0Interface(CVSGrab grabber) {
         super(grabber);
         
         setFilesXpath("//TR[TD/A/IMG/@alt = 'File']");
@@ -46,6 +47,10 @@ public class Chora_2_0Interface extends ViewCvsInterface {
     	return _browsePath;
     }
 
+	protected void setBrowsePath(String browsePath) {
+		_browsePath = browsePath;
+	}
+    
     /** 
      * {@inheritDoc}
      */
@@ -129,7 +134,9 @@ public class Chora_2_0Interface extends ViewCvsInterface {
         try {
             // http://cvs.php.net/co.php/smarty/INSTALL?r=1.12&p=1
             String url = WebBrowser.forceFinalSlash(file.getDirectory().getRemoteRepository().getRootUrl());
-            url = url.substring(0, url.length() - getBrowsePath().length() - 1);
+            if (getBrowsePath().length() > 0) {
+            	url = url.substring(0, url.length() - getBrowsePath().length() - 1);
+            }
             url = WebBrowser.forceFinalSlash(url + getCheckoutPath());
             String dir = file.getDirectory().getDirectoryPath();
             url += WebBrowser.forceFinalSlash(quote(dir));
@@ -168,4 +175,27 @@ public class Chora_2_0Interface extends ViewCvsInterface {
     protected void adjustFile(RemoteFile file, JXPathContext nodeContext) {
         // do nothing
     }
+
+	public boolean presetMatch(String rootUrl, String packagePath) {
+        if (rootUrl.indexOf("cvs.php.net") > 0) {
+            setType("Chora 2.0 on php.net");
+            _browsePath = "";
+            return true;
+        }
+        return false;
+	}
+
+	public Properties guessWebProperties(String url) {
+		// Handles cvs.php.net
+        if (url.startsWith("http://cvs.php.net/")) {
+        	Properties properties = new Properties();
+            properties.put(CVSGrab.ROOT_URL_OPTION, "http://cvs.php.net/");
+            properties.put(CVSGrab.PACKAGE_PATH_OPTION, url.substring("http://cvs.php.net/".length()));
+            _browsePath = "";
+            return properties;
+        }		
+		return super.guessWebProperties(url);
+	}
+
+    
 }

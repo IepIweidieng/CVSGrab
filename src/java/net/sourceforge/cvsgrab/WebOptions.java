@@ -226,6 +226,18 @@ public class WebOptions {
     }
 
     /**
+     * Clears the location parameters
+     */
+	public void clearLocation() {
+	    _rootUrl = null;
+	    _packagePath = null;
+	    _projectRoot = null;
+	    _versionTag = null;
+	    _queryParams = null;
+	    _webInterfaceId = null;
+	}
+
+    /**
      * Nested element for configuring the proxy for http connections
      *
      * @author lclaude
