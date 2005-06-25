@@ -45,7 +45,7 @@ public class CvsWeb1_0InterfaceTest extends AbstractTestCase {
         _grabber.getWebOptions().setRootUrl("http://dev.w3.org/cvsweb/");
         _interface.detect(doc);
         
-        assertEquals("hennerik CVSweb $Revision$", _interface.getType());
+        assertEquals("hennerik CVSweb Revision: 1.58", _interface.getType());
     }
 
     public void testGetFiles() throws Exception {

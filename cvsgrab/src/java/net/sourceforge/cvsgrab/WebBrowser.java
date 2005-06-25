@@ -5,6 +5,20 @@
  */
 package net.sourceforge.cvsgrab;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.zip.GZIPInputStream;
+
 import net.sourceforge.cvsgrab.util.PasswordField;
 
 import org.apache.commons.httpclient.Header;
@@ -25,20 +39,6 @@ import org.cyberneko.html.HTMLConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.zip.GZIPInputStream;
 
 /**
  * Emulates a web browser
@@ -321,19 +321,11 @@ public class WebBrowser {
             }
             if (contentEncoding != null && contentEncoding.toLowerCase().indexOf("gzip") >= 0) {
                 try {
-                    InputStream instream = lastMethod.getResponseBodyAsStream();
-                    if (instream != null) {
-                        instream = new GZIPInputStream(lastMethod.getResponseBodyAsStream());
-                        if (instream != null) {
-                            ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-                            byte[] buffer = new byte[4096];
-                            int len;
-                            while ((len = instream.read(buffer)) > 0) {
-                                outstream.write(buffer, 0, len);
-                            }
-                            outstream.close();
-                            response = new String(outstream.toByteArray(),
-                                    ((HttpMethodBase) lastMethod).getResponseCharSet());
+                    InputStream inStream = lastMethod.getResponseBodyAsStream();
+                    if (inStream != null) {
+                        inStream = new GZIPInputStream(lastMethod.getResponseBodyAsStream());
+                        if (inStream != null) {
+                            response = getResponseContent(lastMethod, inStream);
                         }
                     }
                 }
@@ -341,13 +333,31 @@ public class WebBrowser {
                     CVSGrab.getLog().error("I/O failure reading response body", e);
                 }
             } else {
-                response = lastMethod.getResponseBodyAsString();
+                try {
+					response = getResponseContent(lastMethod, lastMethod.getResponseBodyAsStream());
+				} catch (IOException e) {
+                    CVSGrab.getLog().error("I/O failure reading response body", e);
+				}
             }
         } finally {
             lastMethod.releaseConnection();
         }
         return response;
     }
+
+	private String getResponseContent(HttpMethod lastMethod, InputStream inStream) throws IOException {
+		String response;
+		ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+		byte[] buffer = new byte[4096];
+		int len;
+		while ((len = inStream.read(buffer)) > 0) {
+		    outstream.write(buffer, 0, len);
+		}
+		outstream.close();
+		response = new String(outstream.toByteArray(),
+		        ((HttpMethodBase) lastMethod).getResponseCharSet());
+		return response;
+	}
 
     /**
      * Execute the method and gets the response as a xml document.
@@ -356,6 +366,15 @@ public class WebBrowser {
      * @param url The url called by the method, only useful for error reporting
      */
     public Document getDocument(String url) throws Exception {
+    	// Safety: some web sites will block if the url tries to open certain paths
+    	if (url.endsWith("/browse/")) {
+    		if (url.indexOf("netbeans.org") >= 0) {
+    			throw new Exception("This url " + url + " doesn't work on Netbeans.org");
+    		}
+    		if (url.indexOf("dev.java.net") >= 0) {
+    			throw new Exception("This url " + url + " doesn't work on dev.java.net");
+    		}
+    	}
         return getDocument(new GetMethod(url), url);
     }
     

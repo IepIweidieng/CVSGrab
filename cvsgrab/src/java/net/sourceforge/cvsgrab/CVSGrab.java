@@ -98,6 +98,7 @@ public class CVSGrab {
     private String _cvsRoot = DUMMY_ROOT;
     private Options _options;
     private WebOptions _webOptions = new WebOptions();
+    private CvsWebInterface _webInterface;
 
     public static Log getLog() {
         if (LOG == null) {
@@ -535,6 +536,7 @@ public class CVSGrab {
         Properties webProperties = CvsWebInterface.getWebProperties(this, url);
         // put back the result in the WebOptions
         _webOptions.readProperties(webProperties);
+        _webInterface = (CvsWebInterface) webProperties.get(CvsWebInterface.DETECTED_WEB_INTERFACE);
     }
 
     /**
@@ -678,26 +680,27 @@ public class CVSGrab {
     }
 
     private CvsWebInterface getWebInterface() throws Exception {
-        CvsWebInterface webInterface = null;
-        if (getWebInterfaceId() != null) {
-            // Forces the use of a particular web interface and version of that interface
-            webInterface = CvsWebInterface.getInterface(this, getWebInterfaceId());
-        } else {
-            // Auto detection of the type of the remote interface
-            webInterface = detectWebInterface();
-        }
-        if (webInterface == null) {
+    	if (_webInterface == null) {
+    		if (getWebInterfaceId() != null) {
+    			// Forces the use of a particular web interface and version of that interface
+    			_webInterface = CvsWebInterface.getInterface(this, getWebInterfaceId());
+    		} else {
+    			// Auto detection of the type of the remote interface
+    			_webInterface = detectWebInterface();
+    		}
+    	}
+        if (_webInterface == null) {
             getLog().error("Could not detect the type of the web interface");
             throw new RuntimeException("Could not detect the type of the web interface");
         } else {
-            getLog().info("Detected cvs web interface: " + webInterface.getType());
+            getLog().info("Detected cvs web interface: " + _webInterface.getType());
         }
 
-        webInterface.setQueryParams(getQueryParams());
+        _webInterface.setQueryParams(getQueryParams());
         if (getVersionTag() != null) {
-            webInterface.setVersionTag(getVersionTag());
+            _webInterface.setVersionTag(getVersionTag());
         }
-        return webInterface;
+        return _webInterface;
     }
 
     private void checkWebConnection() throws Exception {

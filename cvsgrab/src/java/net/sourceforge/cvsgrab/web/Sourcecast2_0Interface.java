@@ -47,6 +47,9 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
         String keywords = (String) context.getValue("//META[@name = 'keywords']/@content");
         String description = (String) context.getValue("//META[@name = 'description']/@content");
         String version = (String) context.getValue("//META[@name = 'version']/@content");
+        if (version == null) {
+        	version = (String) context.getValue("//META[@name = 'SourceCastVersion']/@content");
+        }
 
         boolean sourcecastKeyword = false;
         boolean collabnetKeyword = false;
@@ -61,7 +64,7 @@ public class Sourcecast2_0Interface extends ViewCvsInterface {
         if (!sourcecastKeyword && !collabnetKeyword) {
             throw new MarkerNotFoundException("Not SourceCast/CollabNet, meta keywords was '" + keywords + "', description was '" + description + "'");
         }
-        if (!version.startsWith("2.")) {
+        if (version == null || !version.startsWith("2.")) {
             throw new InvalidVersionException("Invalid version " + version);
         }
         int minorVersion = Integer.parseInt(version.substring(2, version.indexOf('.', 2)));
