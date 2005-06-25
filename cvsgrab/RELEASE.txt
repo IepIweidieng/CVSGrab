@@ -13,6 +13,8 @@ o Added support for Chora web interfaces (cvs.php.net)
 o don't run validation that may fail when the type of the web interface is given by the user with the -webInterface parameter
 o fixed auto-detection for SourceCast on tigris.org 
 
+2.2.2 release fixes isues with many cvs repositories, keeping up-to-date with their changes.
+
 Enjoy,
 
 Ludovic Claude

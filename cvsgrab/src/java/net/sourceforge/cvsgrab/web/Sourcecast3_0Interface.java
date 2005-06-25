@@ -69,6 +69,7 @@ public class Sourcecast3_0Interface extends ViewCvsInterface {
 
         boolean sourcecastKeyword = false;
         boolean collabnetKeyword = false;
+        boolean poweredByCollabnet = false;
         if (keywords != null) {
             sourcecastKeyword = (keywords.toLowerCase().indexOf("sourcecast") >= 0);
             collabnetKeyword = (keywords.toLowerCase().indexOf("collabnet") >= 0);
@@ -77,7 +78,11 @@ public class Sourcecast3_0Interface extends ViewCvsInterface {
             sourcecastKeyword |= (description.toLowerCase().indexOf("sourcecast") >= 0);
             collabnetKeyword |= (description.toLowerCase().indexOf("collabnet") >= 0);
         }
-        if (!sourcecastKeyword && !collabnetKeyword) {
+        if (!sourcecastKeyword && !collabnetKeyword && version != null) {
+        	// Try to scan the Powered by buttons
+        	poweredByCollabnet = context.getValue("//A[contains(@href, 'www.collab.net')][IMG/@id='poweredby']") != null;        	
+        }
+        if (!sourcecastKeyword && !collabnetKeyword && !poweredByCollabnet) {
             throw new MarkerNotFoundException("Not SourceCast/CollabNet, meta keywords was '" + keywords + "', description was '" + description + "'");
         }
         if (version != null && version.startsWith("2.")) {

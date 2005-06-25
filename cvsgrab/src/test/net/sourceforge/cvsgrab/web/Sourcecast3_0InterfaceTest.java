@@ -40,6 +40,14 @@ public class Sourcecast3_0InterfaceTest extends AbstractTestCase {
         _interface.detect(doc);
 
         assertEquals("SourceCast 3.0.2.9.1", _interface.getType());
+        
+        doc = getDocument("src/test/html_docs/sourcecast_3_0_2.html");
+        _grabber.getWebOptions().setRootUrl("https://forms.dev.java.net/source/browse/");
+        _interface.detect(doc);
+
+        
+        assertEquals("SourceCast 3.0.2.9.3", _interface.getType());
+        
     }
 
     public void testGetFiles() throws Exception {
@@ -124,10 +132,18 @@ public class Sourcecast3_0InterfaceTest extends AbstractTestCase {
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
         assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        
         webProperties = _interface.guessWebProperties("https://lg3d-core.dev.java.net/source/browse/lg3d-core/?only_with_tag=dev-0-6-1");
         assertEquals("https://lg3d-core.dev.java.net/source/browse/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("lg3d-core/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertEquals("dev-0-6-1", webProperties.get(CVSGrab.TAG_OPTION));
+        assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
+        assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+        
+        webProperties = _interface.guessWebProperties("https://swingfx.dev.java.net/source/browse/swingfx/src/net/java/swingfx/common/");
+        assertEquals("https://swingfx.dev.java.net/source/browse/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
+        assertEquals("swingfx/src/net/java/swingfx/common/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertNull(webProperties.get(CVSGrab.TAG_OPTION));
         assertNull(webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }

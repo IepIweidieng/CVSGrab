@@ -5,11 +5,11 @@
  */
 package net.sourceforge.cvsgrab;
 
-import net.sourceforge.cvsgrab.web.Chora_2_0Interface;
+import net.sourceforge.cvsgrab.web.Chora2_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb1_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb2_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb3_0Interface;
-import net.sourceforge.cvsgrab.web.FishEye_1_0Interface;
+import net.sourceforge.cvsgrab.web.FishEye1_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast1_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast2_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast3_0Interface;
@@ -56,8 +56,8 @@ public abstract class CvsWebInterface {
             new CvsWeb1_0Interface(grabber),
             new CvsWeb2_0Interface(grabber),
             new CvsWeb3_0Interface(grabber),
-            new Chora_2_0Interface(grabber),
-            new FishEye_1_0Interface(grabber)
+            new Chora2_0Interface(grabber),
+            new FishEye1_0Interface(grabber)
         };
     }
 
@@ -173,16 +173,19 @@ public abstract class CvsWebInterface {
             		continue;
             	}
             	try {
+                    grabber.getWebOptions().readProperties(webProperties);
             		// check that if the url format is recognised by the web interface,
             		// then the actual page also matches, to eliminate false positives.
             		webInterface.detect(doc);
-            		// Keep a 
+            		// Keep a reference to the web interface we have just found
             		webProperties.put(DETECTED_WEB_INTERFACE, webInterface);
             		return webProperties;
             	} catch (InvalidVersionException e) {
             		// ignore
+            		grabber.getWebOptions().clearLocation();
             	} catch (MarkerNotFoundException e) {
             		// ignore
+            		grabber.getWebOptions().clearLocation();
 				}
             }
         }

@@ -22,7 +22,7 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://dev.eclipse.org/viewcvs/index.cgi/</td>
+             <td><a href="http://dev.eclipse.org/viewcvs/index.cgi/">http://dev.eclipse.org/viewcvs/index.cgi/</a></td>
            </tr>
            <tr>
              <td>Command</td>
@@ -47,7 +47,7 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://sourceforge.net/</td>
+             <td><a href="http://sourceforge.net/">http://sourceforge.net/</a></td>
            </tr>
            <tr>
              <td>Command</td>
@@ -67,7 +67,7 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://jakarta.apache.org/</td>
+             <td><a href="http://jakarta.apache.org/">http://jakarta.apache.org/</a></td>
            </tr>
            <tr>
              <td>Command</td>
@@ -87,7 +87,7 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://codehaus.org/</td>
+             <td><a href="http://codehaus.org/">http://codehaus.org/</a></td>
            </tr>
            <tr>
              <td>Command</td>
@@ -107,7 +107,7 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://savannah.gnu.org/</td>
+             <td><a href="http://savannah.gnu.org/">http://savannah.gnu.org/</a></td>
            </tr>
            <tr>
              <td>Command</td>
@@ -127,7 +127,7 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://www.netbeans.org/</td>
+             <td><a href="http://www.netbeans.org/">http://www.netbeans.org/</a></td>
            </tr>
            <tr>
              <td>Command</td>
@@ -135,7 +135,8 @@
            </tr>
            <tr>
              <td>Notes</td>
-             <td>-</td>
+             <td>Sometimes cvsgrab may wait indefinitely if it goes on a url that ends with /browse. 
+               Please report an error with the url if you have this kind of problem</td>
            </tr>
            <tr>
              <td>Last tested with</td>
@@ -147,19 +148,41 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://dev.java.net/</td>
+             <td><a href="http://dev.java.net/">http://dev.java.net/</a></td>
            </tr>
            <tr>
              <td>Command</td>
-             <td>TODO</td>
+             <td>cvsgrab -url https://swingfx.dev.java.net/source/browse/swingfx/</td>
            </tr>
            <tr>
              <td>Notes</td>
-             <td>-</td>
+             <td>Sometimes cvsgrab may wait indefinitely if it goes on a url that ends with /browse. 
+               Please report an error with the url if you have this kind of problem</td>
            </tr>
            <tr>
              <td>Last tested with</td>
-             <td>TODO</td>
+             <td><a href="http://www.collab.net/products/sd/version.html">SourceCast</a> 3.0.2.9.3 with CVSGrab 2.2.2 on June 25th 2005</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="openoffice.org">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td><a href="http://www.openoffice.org/">http://www.openoffice.org/</a></td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>cvsgrab -url http://lingucomponent.openoffice.org/source/browse/lingucomponent/source/</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>Sometimes cvsgrab may wait indefinitely if it goes on a url that ends with /browse. 
+               Please report an error with the url if you have this kind of problem</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td><a href="http://www.collab.net/products/sd/version.html">SourceCast</a> 2.6.2.4.8 with CVSGrab 2.2.2 on June 25th 2005</td>
            </tr>
          </table>
        </subsection>
@@ -167,11 +190,11 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://dev.w3.org/cvsweb/</td>
+             <td><a href="http://dev.w3.org/cvsweb/">http://dev.w3.org/cvsweb/</a></td>
            </tr>
            <tr>
              <td>Command</td>
-             <td>TODO</td>
+             <td>cvsgrab -url http://dev.w3.org/cvsweb/Amaya/</td>
            </tr>
            <tr>
              <td>Notes</td>
@@ -179,7 +202,7 @@
            </tr>
            <tr>
              <td>Last tested with</td>
-             <td>TODO</td>
+             <td>hennerik <a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> 1.1.1.7 with CVSGrab 2.2.2 on June 25th 2005</td>
            </tr>
          </table>
        </subsection>
@@ -187,19 +210,11 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://www.kde.org/</td>
-           </tr>
-           <tr>
-             <td>Command</td>
-             <td>TODO</td>
+             <td><a href="http://www.kde.org/">http://www.kde.org/</a></td>
            </tr>
            <tr>
              <td>Notes</td>
-             <td>-</td>
-           </tr>
-           <tr>
-             <td>Last tested with</td>
-             <td><a href="http://www.freebsd.org/projects/cvsweb.html">CvsWeb</a> TODO</td>
+             <td>KDE has fully switched to Subversion (SVN), please do not use cvsgrab for this site.</td>
            </tr>
          </table>
        </subsection>
@@ -207,7 +222,7 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://www.jahia.org/</td>
+             <td><a href="http://www.jahia.org/">http://www.jahia.org/</a></td>
            </tr>
            <tr>
              <td>Command</td>
@@ -227,11 +242,11 @@
          <table>
            <tr>
              <td>Url</td>
-             <td>http://cvs.php.net/</td>
+             <td><a href="http://cvs.php.net/">http://cvs.php.net/</a></td>
            </tr>
            <tr>
              <td>Command</td>
-             <td>TODO</td>
+             <td>cvsgrab http://cvs.php.net/smarty/</td>
            </tr>
            <tr>
              <td>Notes</td>
@@ -239,7 +254,28 @@
            </tr>
            <tr>
              <td>Last tested with</td>
-             <td><a href="http://www.horde.org/chora/">Chora</a> TODO</td>
+             <td><a href="http://www.horde.org/chora/">Chora</a> 2.0? with CVSGrab 2.2.2 on June 25th 2005</td>
+           </tr>
+         </table>
+       </subsection>
+       <subsection name="HelixCommunity">
+         <table>
+           <tr>
+             <td>Url</td>
+             <td><a href="https://helixcommunity.org/">https://helixcommunity.org/</a></td>
+           </tr>
+           <tr>
+             <td>Command</td>
+             <td>cvsgrab -webInterface ViewCvs1_0 -url https://helixcommunity.org/viewcvs/cgi/viewcvs.cgi/xiph/</td>
+           </tr>
+           <tr>
+             <td>Notes</td>
+             <td>Autodetection of the CVS web interface doesn't work on this site, 
+             you must specify manually the version to use. Parameter -webInterface ViewCvs1_0 seems to work well.</td>
+           </tr>
+           <tr>
+             <td>Last tested with</td>
+             <td><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 1.0? with CVSGrab 2.2.2 on June 25th 2005</td>
            </tr>
          </table>
        </subsection>
