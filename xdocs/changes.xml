@@ -29,7 +29,7 @@
       <action dev="ludovicc" type="add">TODO: provide a french version of the messages</action>
     </release>
 
-    <release version="2.2.2" date="in cvs">
+    <release version="2.2.2" date="2005-06-26">
 
       <action dev="ludovicc" type="fix">Fixed downloading of files on Eclipse.org site</action>
       <action dev="ludovicc" type="fix">Fixed support of multiple cvsRoot, as seen on the Eclipse.org site</action>
