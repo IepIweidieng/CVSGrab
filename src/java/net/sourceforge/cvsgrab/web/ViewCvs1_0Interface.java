@@ -55,8 +55,8 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
             context.setLenient(true);
             String href = (String) context.getValue("//A/@href[contains(., 'root=')]");
             if (href == null) {
-                CVSGrab.getLog().warn("CVS Root not found, there may be issues if ViewCvs is used with multiple repositories");
-                CVSGrab.getLog().warn("Use the parameter -cvsRoot <root> to remove this warning");
+                CVSGrab.getLog().info("CVS Root not found, there may be issues if ViewCvs is used with multiple repositories");
+                CVSGrab.getLog().info("Use the parameter -projectRoot <root> to remove this warning");
             } else {
                 _root = href.substring(href.indexOf("root=")+ 5);
                 if (_root.indexOf('#') > 0) {
