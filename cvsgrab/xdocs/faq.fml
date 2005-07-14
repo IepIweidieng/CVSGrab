@@ -68,6 +68,42 @@
       </answer>
     </faq>
   </part>
+  
+  <part id="error-messages">
+    <title>Error messages</title>
+    
+    <faq id="cvsRoot">
+      <question>I have the following warning: <br/>
+        [INFO] CVS Root not found, there may be issues if ViewCvs is used with multiple repositories <br/>
+        [INFO] Use the parameter -projectRoot <root> to remove this warning <br/> 
+        What should i do?</question>
+        
+      <answer>
+        If you can download files from the repository without any trouble, then you can safely ignore this message. <br/>
+        If you cannot download files from the repository, then look if in the url or in the web page there is some indication
+        of a cvs root, and use this value for the -projectRoot parameter.
+      </answer>
+    </faq>
+    
+    <faq id="file-type">
+      <question>I have the following warning: <br/>
+        Unknown file type for CHANGELOG, assuming it's binary <br/>
+        What should i do?</question>
+        
+      <answer>
+        If you don't use the diff functionality, and if you don't need to use
+        the files that you have checked out using cvsgrab with another cvs client,
+        then you can safely ignore this warning and do nothing. <br/>
+        File types are detected from their pattern. To add a new file type,
+        edit the file FileTypes.properties located in the installation folder of cvsgrab,
+        and add either the full file name with the type, or the file pattern with the type. <br/>
+        For example, you can add: <br/>
+        CHANGELOG=text <br/>
+        *.bin=binary <br/>
+        Then run cvsgrab a second time and it should work fine. 
+      </answer>
+    </faq>
+  </part>
 
   <part id="connection-issues">
     <title>Connection issues</title>
@@ -210,8 +246,8 @@
       web interface?</question>
 
       <answer>
-        <p>Yes for cvsweb 2.0, and no for the other types of web interfaces, 
-        but if you give me the url to your site, i should be
+        <p>Yes for cvsweb 2.0, and yes for many other types of web interfaces, 
+        but if it doesn't work for you, please give me the url to the site, i should be
         able to provide support to it. Add this as a 
         <a
         href="https://sourceforge.net/tracker/?group_id=52481&amp;atid=467007">
@@ -305,7 +341,7 @@
         <p>Modules are a convenient functionality of cvs that
         groups different packages under the same name.
         Unfortunately it's not yet supported by cvsgrab, but maybe
-        in the 2.1 release...</p>
+        in the 2.3 release...</p>
       </answer>
     </faq>
   </part>

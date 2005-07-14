@@ -42,4 +42,11 @@
    	
   </postGoal>
 
+  <!--postGoal name="site:generate">
+    <replace dir="target/docs" token="amp;" value="">
+       <include name="**/*.html"/>
+    </replace>
+  </postGoal-->
+  
+
 </project>
