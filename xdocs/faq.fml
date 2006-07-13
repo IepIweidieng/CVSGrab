@@ -75,7 +75,7 @@
     <faq id="cvsRoot">
       <question>I have the following warning: <br/>
         [INFO] CVS Root not found, there may be issues if ViewCvs is used with multiple repositories <br/>
-        [INFO] Use the parameter -projectRoot <root> to remove this warning <br/> 
+        [INFO] Use the parameter -projectRoot &lt;root&gt; to remove this warning <br/> 
         What should i do?</question>
         
       <answer>
