@@ -10,6 +10,7 @@ import net.sourceforge.cvsgrab.web.CvsWeb1_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb2_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb3_0Interface;
 import net.sourceforge.cvsgrab.web.FishEye1_0Interface;
+import net.sourceforge.cvsgrab.web.FishEye1_2Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast1_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast2_0Interface;
 import net.sourceforge.cvsgrab.web.Sourcecast3_0Interface;
@@ -57,7 +58,8 @@ public abstract class CvsWebInterface {
             new CvsWeb2_0Interface(grabber),
             new CvsWeb3_0Interface(grabber),
             new Chora2_0Interface(grabber),
-            new FishEye1_0Interface(grabber)
+            new FishEye1_0Interface(grabber),
+            new FishEye1_2Interface(grabber)
         };
     }
 
