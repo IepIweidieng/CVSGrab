@@ -55,6 +55,11 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
             <email>ludovicc at users.sourceforge.net</email>
             <organization>Freelance</organization>
         </developer>
+        <developer>
+            <name>Shinobu Kawai</name>
+            <id>shinobukawai</id>
+            <email>shinobukawai at users.sourceforge.net</email>
+        </developer>
     </developers>
     <contributors>
         <contributor>
