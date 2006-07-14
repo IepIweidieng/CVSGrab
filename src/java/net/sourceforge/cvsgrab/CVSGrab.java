@@ -86,7 +86,7 @@ public class CVSGrab {
             PROXY_HOST_OPTION, PROXY_PORT_OPTION, PROXY_NTDOMAIN_OPTION, PROXY_USER_OPTION,
             PROXY_PASSWORD_OPTION, WEB_USER_OPTION, WEB_PASSWORD_OPTION};
     private static final String FORUM_URL = "http://sourceforge.net/forum/forum.php?forum_id=174128";
-    private static final String VERSION = "2.2.2";
+    private static final String VERSION = "2.2.3-SNAPSHOT";
     private static final String DEFAULT_DEST_DIR = ".";
     private static Log LOG;
 
