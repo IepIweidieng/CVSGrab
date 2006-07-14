@@ -10,7 +10,7 @@
     <name>CVSGrab</name>
     <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-    <currentVersion>2.2.2</currentVersion>
+    <currentVersion>2.2.3-SNAPSHOT</currentVersion>
     <!-- details about the organization that 'owns' the project -->
     <organization>
         <name>Ludovic Claude</name>
