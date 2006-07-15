@@ -38,7 +38,7 @@ public class LiveTest extends AbstractTestCase {
      * Test for Sourceforge.net
      */
     public void testSourceforge() throws Exception {
-        grab("http://cvs.sourceforge.net/viewcvs.py/cvsgrab/cvsgrab/etc/script");
+        grab("http://cvsgrab.cvs.sourceforge.net/cvsgrab/cvsgrab/etc/script/");
         assertContainsFile("cvsgrab.bat");
     }
     
