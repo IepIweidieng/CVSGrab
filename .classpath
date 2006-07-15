@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/java"/>
-	<classpathentry output="target/test-classes" kind="src" path="src/test"/>
+	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="var" path="MAVEN_REPO/junit/jars/junit-3.8.1.jar"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
 	<classpathentry kind="var" path="MAVEN_REPO/commons-jxpath/jars/commons-jxpath-1.2.jar"/>
@@ -15,5 +15,5 @@
 	<classpathentry kind="var" path="MAVEN_REPO/xml-apis/jars/xml-apis-1.0.b2.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/xerces/jars/xercesImpl-2.6.2.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/commons-logging/jars/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="output" path="target/classes"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
