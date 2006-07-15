@@ -76,7 +76,7 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
         <dependency>
             <groupId>nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
-            <version>0.9.3</version>
+            <version>0.9.4</version>
             <type>jar</type>
             <url>http://people.apache.org/~andyc/neko/doc/index.html</url>
         </dependency>
