@@ -41,14 +41,6 @@ public class LiveTest extends AbstractTestCase {
         grab("http://cvsgrab.cvs.sourceforge.net/cvsgrab/cvsgrab/etc/script/");
         assertContainsFile("cvsgrab.bat");
     }
-    
-    /**
-     * Test for Apache.org
-     */
-    public void testApache() throws Exception {
-        grab("http://cvs.apache.org/viewcvs.cgi/ws-fx/wss4j/interop/keys/");
-        assertContainsFile("README.txt");
-    }
 
     /**
      * Test for Savannah.gnu.org
