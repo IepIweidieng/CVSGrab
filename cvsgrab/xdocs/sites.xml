@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
   <properties>
-    <author email="ludovicc@users.sourceforge.net">Ludovic
-    Claude</author>
+    <author email="ludovicc@users.sourceforge.net">Ludovic Claude</author>
+    <author email="shinobukawai@users.sourceforge.net">Shinobu Kawai</author>
 
-    <title>CVSGrab - Read sources stored in CVS behind a
-    firewall</title>
+    <title>CVSGrab - Read sources stored in CVS behind a firewall</title>
   </properties>
 
   <meta name="KeyWords"
@@ -51,7 +50,7 @@
            </tr>
            <tr>
              <td>Command</td>
-             <td>cvsgrab -url http://cvs.sourceforge.net/viewcvs.py/cvsgrab/</td>
+             <td>cvsgrab -url http://cvsgrab.cvs.sourceforge.net/cvsgrab/cvsgrab/</td>
            </tr>
            <tr>
              <td>Notes</td>
@@ -59,27 +58,19 @@
            </tr>
            <tr>
              <td>Last tested with</td>
-             <td><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 1.0-dev with CVSGrab 2.2.2 on June 16th 2005</td>
+             <td><a href="http://viewvc.tigris.org/">ViewVC</a> 1.0.0 with CVSGrab 2.2.3 on July 17th 2006</td>
            </tr>
          </table>
        </subsection>
-       <subsection name="Jakarta Apache">
+       <subsection name="Apache">
          <table>
            <tr>
              <td>Url</td>
-             <td><a href="http://jakarta.apache.org/">http://jakarta.apache.org/</a></td>
-           </tr>
-           <tr>
-             <td>Command</td>
-             <td>cvsgrab -url http://cvs.apache.org/viewcvs.cgi/ws-fx/wss4j/interop</td>
+             <td><a href="http://www.apache.org/">http://www.apache.org/</a></td>
            </tr>
            <tr>
              <td>Notes</td>
-             <td>Don't use cvsgrab if the project is hosted on the SVN repository.</td>
-           </tr>
-           <tr>
-             <td>Last tested with</td>
-             <td><a href="http://viewcvs.sourceforge.net/">ViewCVS</a> 1.0-dev with CVSGrab 2.2.2 on June 22nd 2005</td>
+             <td>Apache projects are now all hosted in <a href="http://svn.apache.org/repos/asf/">Subversion</a>.</td>
            </tr>
          </table>
        </subsection>
