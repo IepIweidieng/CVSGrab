@@ -440,6 +440,10 @@ public class LocalRepository {
     // synchronized as it can be access from the multiple download threads
     public synchronized void add(RemoteDirectory remoteDir) {
         File dir = getLocalDir(remoteDir);
+        if (dir.equals(_localProjectDir)) {
+            return;
+        }
+
         Entry entry = null;
         String dirName = WebBrowser.removeFinalSlash(dir.getName());
         try {

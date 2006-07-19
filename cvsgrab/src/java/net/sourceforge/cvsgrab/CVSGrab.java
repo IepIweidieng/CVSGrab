@@ -519,6 +519,9 @@ public class CVSGrab {
      * @return the webInterfaceId.
      */
     public String getWebInterfaceId() {
+        if (_webInterface != null) {
+            return _webInterface.getId();
+        }
         return _webOptions.getWebInterfaceId();
     }
 

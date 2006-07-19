@@ -57,6 +57,12 @@ public class CVSGrabAdminHandler extends StandardAdminHandler {
             final OutputStream w = new BufferedOutputStream(new FileOutputStream(repositoryFile));
             _cvsGrab.getWebOptions().writeProperties(properties);
             properties.put(CVSGrab.PACKAGE_PATH_OPTION, repositoryPath + "/");
+
+            // Make sure WebInterfaceId is in
+            if (!properties.containsKey(CVSGrab.WEB_INTERFACE_OPTION)) {
+                properties.put(CVSGrab.WEB_INTERFACE_OPTION, _cvsGrab.getWebInterfaceId());
+            }
+            
             properties.store(w, "CVSGrab settings");
             w.close();
         }
