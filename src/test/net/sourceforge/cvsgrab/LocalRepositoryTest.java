@@ -39,6 +39,7 @@ public class LocalRepositoryTest extends AbstractTestCase {
         cvsGrab.setDestDir(localRootDir.getPath());
         cvsGrab.getWebOptions().setRootUrl("rootUrl");
         cvsGrab.getWebOptions().setPackagePath("package");
+        cvsGrab.getWebOptions().setWebInterfaceId("WebInterface");
         cvsGrab.setCleanUpdate(true);
         localRepoDir = new File(localRootDir, "package");
         localRepoDir.mkdirs();
