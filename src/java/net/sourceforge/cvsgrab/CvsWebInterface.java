@@ -18,7 +18,7 @@ import net.sourceforge.cvsgrab.web.ViewCvs0_7Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_8Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_9Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs1_0Interface;
-import net.sourceforge.cvsgrab.web.ViewVC1_0_0Interface;
+import net.sourceforge.cvsgrab.web.ViewVC1_0Interface;
 
 import org.w3c.dom.Document;
 
@@ -52,7 +52,7 @@ public abstract class CvsWebInterface {
             new ViewCvs0_8Interface(grabber),
             new ViewCvs0_9Interface(grabber),
             new ViewCvs1_0Interface(grabber),
-            new ViewVC1_0_0Interface(grabber),
+            new ViewVC1_0Interface(grabber),
             new Sourcecast1_0Interface(grabber),
             new Sourcecast2_0Interface(grabber),
             new Sourcecast3_0Interface(grabber),
