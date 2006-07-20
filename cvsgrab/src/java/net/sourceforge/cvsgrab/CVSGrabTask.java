@@ -14,7 +14,7 @@ import org.apache.tools.ant.Task;
  * Ant task for CVSGrab.
  *
  * @author Ludovic Claude
- * @created April 19, 2002
+ * @cvsgrab.created April 19, 2002
  * @version 1.0
  */
 

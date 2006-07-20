@@ -19,7 +19,7 @@ import org.apache.commons.jxpath.JXPathContext;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 11 oct. 2003
+ * @cvsgrab.created on 11 oct. 2003
  */
 public class ViewCvs0_7Interface extends ViewCvsInterface {
 
@@ -39,7 +39,7 @@ public class ViewCvs0_7Interface extends ViewCvsInterface {
     /**
      * @param rootUrl
      * @param file
-     * @return
+     * @return the url to use to access the content
      */
     public String getDownloadUrl(String rootUrl, RemoteFile file) {
         try {

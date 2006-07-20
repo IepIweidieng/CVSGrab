@@ -40,7 +40,7 @@ import java.util.StringTokenizer;
  *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 6 oct. 2003
+ * @cvsgrab.created on 6 oct. 2003
  */
 public abstract class CvsWebInterface {
 
@@ -394,19 +394,19 @@ public abstract class CvsWebInterface {
 
     /**
      * @param doc
-     * @return
+     * @return an array of the files within the page
      */
     public abstract RemoteFile[] getFiles(Document doc);
 
     /**
      * @param doc
-     * @return
+     * @return an array of the directories within the page
      */
     public abstract String[] getDirectories(Document doc);
 
     /**
      * @param file
-     * @return
+     * @return the url to use to access the content
      */
     public abstract String getDownloadUrl(RemoteFile file);
 

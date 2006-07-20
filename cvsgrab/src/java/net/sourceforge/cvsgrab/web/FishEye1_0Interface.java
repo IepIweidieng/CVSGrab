@@ -25,7 +25,7 @@ import java.util.Properties;
  * Support for FishEye 0.8, 0.9 and maybe 1.0 interfaces to a cvs repository
  *
  * @author lclaude
- * @date 30 mars 2004
+ * @cvsgrab.created 30 mars 2004
  */
 public class FishEye1_0Interface extends ViewCvsInterface {
 

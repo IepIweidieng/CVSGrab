@@ -14,8 +14,8 @@ import net.sourceforge.cvsgrab.WebBrowser;
 /**
  * Support for FishEye 1.2 interfaces to a cvs repository
  *
- * @author shinobu
- * @date June 7, 2006
+ * @author <a href="mailto:shinobukawai@users.sourceforge.net">Shinobu Kawai</a>
+ * @cvsgrab.created June 7, 2006
  */
 public class FishEye1_2Interface extends FishEye1_0Interface {
 

@@ -16,7 +16,7 @@ import org.apache.commons.logging.impl.SimpleLog;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 3 fevr. 2004
+ * @cvsgrab.created on 3 fevr. 2004
  */
 public class CVSGrabLog extends SimpleLog {
 

@@ -45,7 +45,7 @@ import org.xml.sax.SAXNotSupportedException;
  *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 11 oct. 2003
+ * @cvsgrab.created on 11 oct. 2003
  */
 public class WebBrowser {
 
@@ -170,7 +170,7 @@ public class WebBrowser {
      *
      * @param proxyHost Host of the proxy
      * @param proxyPort Port of the proxy
-     * @param proxyNTDomain NT domain for authentification on a MS proxy
+     * @param ntDomain NT domain for authentification on a MS proxy
      * @param userName Username (if authentification is required), or null
      * @param password Password (if authentification is required), or null
      */
@@ -362,7 +362,6 @@ public class WebBrowser {
     /**
      * Execute the method and gets the response as a xml document.
      *
-     * @param method The method
      * @param url The url called by the method, only useful for error reporting
      */
     public Document getDocument(String url) throws Exception {

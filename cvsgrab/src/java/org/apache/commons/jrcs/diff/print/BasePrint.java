@@ -71,7 +71,7 @@ import org.apache.commons.jrcs.diff.RevisionVisitor;
  *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 17 janv. 2004
+ * @cvsgrab.created on 17 janv. 2004
  */
 public class BasePrint implements RevisionVisitor {
 

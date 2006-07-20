@@ -177,6 +177,7 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
                 <include>**/*Test.java</include>
             </includes>
         </unitTest>
+        <defaultGoal>jar:jar</defaultGoal>
         <resources>
             <resource>
                 <directory>src/conf</directory>

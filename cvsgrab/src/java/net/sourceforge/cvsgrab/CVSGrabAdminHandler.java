@@ -22,7 +22,7 @@ import org.netbeans.lib.cvsclient.command.GlobalOptions;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 9 mars 2004
+ * @cvsgrab.created on 9 mars 2004
  */
 public class CVSGrabAdminHandler extends StandardAdminHandler {
     

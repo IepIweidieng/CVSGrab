@@ -28,7 +28,7 @@ import java.util.Properties;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 12 oct. 2003
+ * @cvsgrab.created on 12 oct. 2003
  */
 public class RemoteFile {
     /**
@@ -171,7 +171,6 @@ public class RemoteFile {
     
     /**
      * @param repository
-     * @param diffFile
      */
     public void diff(LocalRepository repository, PrintWriter writer, CVSGrab grabber) {
         RemoteRepository remoteRepository = _directory.getRemoteRepository();

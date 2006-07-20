@@ -11,9 +11,9 @@ import net.sourceforge.cvsgrab.RemoteRepository;
 import org.w3c.dom.Document;
 
 /**
- * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
+ * @author <a href="mailto:shinobukawai@users.sourceforge.net">Shinobu Kawai</a>
  * @version $Revision$ $Date$
- * @created on 12 oct. 2003
+ * @cvsgrab.created July 13, 2006
  */
 public class ViewVC1_0InterfaceTest extends AbstractTestCase {
 
