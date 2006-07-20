@@ -16,7 +16,7 @@ import java.util.Properties;
  *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 1 avr. 2004
+ * @cvsgrab.created on 1 avr. 2004
  */
 public class Chora_2_0InterfaceTest extends AbstractTestCase {
 

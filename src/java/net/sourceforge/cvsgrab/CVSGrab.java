@@ -43,7 +43,7 @@ import org.apache.commons.logging.impl.LogFactoryImpl;
  * repository
  *
  * @author Ludovic Claude
- * @created April 19, 2002
+ * @cvsgrab.created April 19, 2002
  * @version 1.0
  */
 public class CVSGrab {

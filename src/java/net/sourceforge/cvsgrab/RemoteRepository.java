@@ -12,7 +12,7 @@ import java.util.Vector;
  * Represents the remote repository available via the ViewCVS web interface.
  *
  * @author Ludovic Claude
- * @created April 16, 2002
+ * @cvsgrab.created April 16, 2002
  * @version 1.0
  */
 
@@ -128,10 +128,6 @@ public class RemoteRepository {
         return url;
     }
 
-    /**
-     * @param file
-     * @return
-     */
     public String getDownloadUrl(RemoteFile file) {
         String url = _webInterface.getDownloadUrl(file); 
         return url;

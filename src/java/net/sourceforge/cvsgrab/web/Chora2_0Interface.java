@@ -25,7 +25,7 @@ import java.util.Properties;
  * Support for Chora 2.0 interfaces to a cvs repository
  *
  * @author lclaude
- * @created 30 mars 2004
+ * @cvsgrab.created 30 mars 2004
  */
 public class Chora2_0Interface extends ViewCvsInterface {
 

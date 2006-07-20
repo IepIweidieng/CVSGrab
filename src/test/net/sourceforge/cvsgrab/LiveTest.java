@@ -46,7 +46,7 @@ public class LiveTest extends AbstractTestCase {
      * Test for Savannah.gnu.org
      */
     public void testSavannah() throws Exception {
-    	grab("http://savannah.gnu.org/cgi-bin/viewcvs/classpath/classpath/faq/?cvsroot=Web");
+    	grab("http://cvs.savannah.gnu.org/viewcvs/classpath/classpath/faq/?root=Web");
     	assertContainsFile("faq.html");
     }
     
@@ -54,8 +54,8 @@ public class LiveTest extends AbstractTestCase {
      * Test for Netbeans.org
      */
     public void testNetbeans() throws Exception {
-    	grab("http://www.netbeans.org/source/browse/javacvs/src/org/netbeans/modules/javacvs/util/");
-    	assertContainsFile("Debug.java");
+    	grab("http://www.netbeans.org/source/browse/javacvs/cvsmodule/src/org/netbeans/modules/versioning/system/cvss/util/");
+    	assertContainsFile("Utils.java");
     }
     
     /**
@@ -94,7 +94,7 @@ public class LiveTest extends AbstractTestCase {
      * Test for Php.net
      */
     public void testPhpNet() throws Exception {
-    	grab("http://cvs.php.net/smarty/docs/scripts/");
+    	grab("http://cvs.php.net/viewvc.cgi/smarty/docs/scripts/");
     	assertContainsFile(".cvsignore");
     }
     

@@ -20,7 +20,7 @@ import org.w3c.dom.Document;
  *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 12 oct. 2003
+ * @cvsgrab.created on 12 oct. 2003
  */
 public class Sourcecast3_0Interface extends ViewCvsInterface {
 
@@ -99,7 +99,6 @@ public class Sourcecast3_0Interface extends ViewCvsInterface {
 
     /**
      * {@inheritDoc}
-     * @return
      */
     protected String getVersionMarker() {
         return null;

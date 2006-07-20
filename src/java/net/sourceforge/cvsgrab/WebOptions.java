@@ -12,7 +12,7 @@ import java.util.Properties;
  *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 9 mars 2004
+ * @cvsgrab.created on 9 mars 2004
  */
 public class WebOptions {
 
@@ -241,7 +241,7 @@ public class WebOptions {
      * Nested element for configuring the proxy for http connections
      *
      * @author lclaude
-     * @created May 14, 2002
+     * @cvsgrab.created May 14, 2002
      */
     public class HttpProxy {
         private String _host = null;
@@ -388,7 +388,7 @@ public class WebOptions {
      * Nested element for configuring the web server authentification
      *
      * @author lclaude
-     * @created May 14, 2002
+     * @cvsgrab.created May 14, 2002
      */
     public class WebAuthentification {
         private String _user = null;

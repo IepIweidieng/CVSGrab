@@ -11,7 +11,7 @@ package net.sourceforge.cvsgrab;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 3 f�vr. 2004
+ * @cvsgrab.created on 3 f�vr. 2004
  */
 public class DetectException extends Exception {
 

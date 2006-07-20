@@ -28,7 +28,7 @@ import org.w3c.dom.Document;
  *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 11 oct. 2003
+ * @cvsgrab.created on 11 oct. 2003
  */
 public abstract class ViewCvsInterface extends CvsWebInterface {
 

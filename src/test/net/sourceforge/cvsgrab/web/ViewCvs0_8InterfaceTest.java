@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 12 oct. 2003
+ * @cvsgrab.created on 12 oct. 2003
  */
 public class ViewCvs0_8InterfaceTest extends AbstractTestCase {
 

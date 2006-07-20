@@ -94,7 +94,7 @@ import org.apache.commons.jrcs.diff.myers.MyersDiff;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 27 janv. 2004
+ * @cvsgrab.created on 27 janv. 2004
  */
 public class UnifiedPrint extends BasePrint {
 

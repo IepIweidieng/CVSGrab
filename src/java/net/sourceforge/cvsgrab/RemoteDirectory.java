@@ -16,7 +16,7 @@ import java.util.Vector;
  * Represents a directory from the remote CVS server
  *
  * @author Ludovic Claude
- * @created April 19, 2002
+ * @cvsgrab.created April 19, 2002
  * @version 1.0
  */
 

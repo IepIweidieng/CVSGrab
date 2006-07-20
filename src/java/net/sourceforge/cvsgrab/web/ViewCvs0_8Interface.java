@@ -15,7 +15,7 @@ import net.sourceforge.cvsgrab.CVSGrab;
  *
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 11 oct. 2003
+ * @cvsgrab.created on 11 oct. 2003
  */
 public class ViewCvs0_8Interface extends ViewCvsInterface {
 

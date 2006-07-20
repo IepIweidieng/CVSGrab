@@ -22,7 +22,7 @@ import org.w3c.dom.Document;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 11 oct. 2003
+ * @cvsgrab.created on 11 oct. 2003
  */
 public class ViewCvs1_0Interface extends ViewCvsInterface {
 
@@ -116,8 +116,7 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
     }
     
     /**
-     * @param file
-     * @return
+     * {@inheritDoc}
      */
     public String getDownloadUrl( RemoteFile file) {
         try {
@@ -134,9 +133,6 @@ public class ViewCvs1_0Interface extends ViewCvsInterface {
         }
     }
 
-    /**
-     * @return
-     */
     public String getRoot() {
         return _root;
     }

@@ -11,7 +11,7 @@ import java.util.Properties;
  * 
  * @author <a href="mailto:ludovicc@users.sourceforge.net">Ludovic Claude</a>
  * @version $Revision$ $Date$
- * @created on 8 mars 2004
+ * @cvsgrab.created on 8 mars 2004
  */
 public class LocalRepositoryTest extends AbstractTestCase {
 
