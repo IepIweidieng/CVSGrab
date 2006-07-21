@@ -214,6 +214,9 @@ public class RemoteFile {
                     String[] rev = loadFile(revFile.getAbsolutePath());
                     MyersDiff diff = new MyersDiff();
                     Revision revision = diff.diff(orig, rev);
+                    if (revision.size() == 0) {
+                        break;
+                    }
                     StringBuffer sb = new StringBuffer();
                     UnifiedPrint print = new UnifiedPrint(sb, orig, rev);
                     // Local name: "src/java/net/sourceforge/cvsgrab/CVSGrabTask.java"
