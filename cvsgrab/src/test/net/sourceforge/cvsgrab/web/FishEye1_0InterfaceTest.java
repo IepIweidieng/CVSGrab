@@ -18,7 +18,7 @@ import java.util.Properties;
  * @version $Revision$ $Date$
  * @cvsgrab.created on 1 avr. 2004
  */
-public class FishEye_1_0InterfaceTest extends AbstractTestCase {
+public class FishEye1_0InterfaceTest extends AbstractTestCase {
 
     private FishEye1_0Interface _interface;
     private CVSGrab _grabber;
@@ -27,7 +27,7 @@ public class FishEye_1_0InterfaceTest extends AbstractTestCase {
      * Constructor for FishEye_1_0InterfaceTest
      * @param testName
      */
-    public FishEye_1_0InterfaceTest(String testName) {
+    public FishEye1_0InterfaceTest(String testName) {
         super(testName);
     }
 
@@ -151,9 +151,12 @@ public class FishEye_1_0InterfaceTest extends AbstractTestCase {
         String[] directories = _interface.getDirectories(doc);
 
         assertEquals("alternatives", directories[i++]);
+        assertEquals("composite", directories[i++]);
         assertEquals("defaults", directories[i++]);
         assertEquals("doc", directories[i++]);
         assertEquals("extras", directories[i++]);
+        assertEquals("hierarchical", directories[i++]);
+        assertEquals("lifecycle", directories[i++]);
         assertEquals("monitors", directories[i++]);
         assertEquals("tck", directories[i++]);
         assertEquals("testmodel", directories[i++]);
@@ -231,7 +234,7 @@ public class FishEye_1_0InterfaceTest extends AbstractTestCase {
         int i = 0;
         String[] directories = _interface.getDirectories(doc);
         assertEquals(".settings", directories[i++]);
-        // lib is not visible
+        assertEquals("lib", directories[i++]);
         assertEquals("security", directories[i++]);
         assertEquals("src", directories[i++]);
         assertEquals("xdocs", directories[i++]);

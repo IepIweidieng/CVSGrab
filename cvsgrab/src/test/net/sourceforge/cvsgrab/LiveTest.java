@@ -94,6 +94,7 @@ public class LiveTest extends AbstractTestCase {
      * Test for Php.net
      */
     public void testPhpNet() throws Exception {
+        // ViewVC 1.1-dev
     	grab("http://cvs.php.net/viewvc.cgi/smarty/docs/scripts/");
     	assertContainsFile(".cvsignore");
     }

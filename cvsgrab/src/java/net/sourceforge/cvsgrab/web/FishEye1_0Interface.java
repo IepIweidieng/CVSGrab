@@ -35,8 +35,8 @@ public class FishEye1_0Interface extends ViewCvsInterface {
         setFilesXpath("//TABLE[@id='fileTable']//TR[@class='ftFileRow' or @class='ftFileRowDeleted']");
         setFileNameXpath("TD/A[@class='ftFileName']/text()");
         setFileVersionXpath("TD/A[@class='ftRev'][@title='view' or @title='history' or @title='download']/text()");
-        setDirectoriesXpath("//DIV[@class='dirPane']/UL/LI/SPAN[@class='folder'][A/SPAN/@class='folderPlain']");
-        setDirectoryXpath("A/SPAN[@class='folderPlain']/text()");
+        setDirectoriesXpath("//DIV[@class='dirPane']/UL/LI/SPAN[@class='folder'][A/SPAN/@class='folderPlain' or A/SPAN/@class='folderEmpty']");
+        setDirectoryXpath("A/SPAN[@class='folderPlain' or @class='folderEmpty']/text()");
         setWebInterfaceType("viewrep");
     }
 
