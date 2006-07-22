@@ -79,6 +79,7 @@ public class CVSGrab {
     public static final String CLEAN_UPDATE_OPTION = "clean";
     public static final String LIST_WEB_INTERFACES_CMD = "listWebInterfaces";
     public static final String DIFF_CMD = "diff";
+    public static final String EXPORT_CMD = "export";
     public static final String HELP_CMD = "help";
 
     private static final String[] WEB_OPTIONS = {ROOT_URL_OPTION, PACKAGE_PATH_OPTION,
@@ -92,6 +93,7 @@ public class CVSGrab {
 
     private boolean _pruneEmptyDirs = false;
     private boolean _cleanUpdate;
+    private boolean _export;
     private boolean _error = false;
     private String _packageDir;
     private String _destDir = DEFAULT_DEST_DIR;
@@ -115,6 +117,13 @@ public class CVSGrab {
      * Constructor for the CVSGrab object
      */
     public CVSGrab() {
+        initOptions();
+    }
+
+    /**
+     * Initialize the options.
+     */
+    private void initOptions() {
         _options = new Options();
         _options.addOption(HELP_CMD, false, "[Command] Prints this help message");
         _options.addOption(LIST_WEB_INTERFACES_CMD, false, "[Command] Lists the web interfaces to the CVS repository that are"
@@ -122,6 +131,9 @@ public class CVSGrab {
         _options.addOption(new OptionBuilder()
                 .withDescription("[Command] Builds the differences against the same remote version. Result is stored in the file patch.txt")
                 .create(DIFF_CMD));
+        _options.addOption(new OptionBuilder()
+                .withDescription("[Command] Exports the repository. CVS directories are not created.")
+                .create(EXPORT_CMD));
         _options.addOption(new OptionBuilder().withArgName("url")
                 .hasArg()
                 .withDescription("The full url used to access the CVS repository from a web browser")
@@ -334,6 +346,9 @@ public class CVSGrab {
             setUrl(cmd.getOptionValue(URL_OPTION));
         }
 
+        if (cmd.hasOption(EXPORT_CMD)) {
+            setExport(true);
+        }
         if (cmd.hasOption(DIFF_CMD)) {
             diffCVSRepository();
         } else {
@@ -429,6 +444,14 @@ public class CVSGrab {
      */
     public void setCleanUpdate(boolean cleanUpdate) {
         _cleanUpdate = cleanUpdate;
+    }
+
+    public boolean isExport() {
+        return _export;
+    }
+
+    public void setExport(boolean export) {
+        _export = export;
     }
 
     /**

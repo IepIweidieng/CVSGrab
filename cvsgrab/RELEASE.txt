@@ -17,6 +17,7 @@ o fixed auto-detection for SourceCast on tigris.org
 
 2.2.3 release includes the following changes and improvements:
 o Added support for ViewVC 1.0 and FishEye 1.2 web interfaces
+o Added export command
 
 Enjoy,
 
