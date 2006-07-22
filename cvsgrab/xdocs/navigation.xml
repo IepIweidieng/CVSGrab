@@ -42,6 +42,15 @@
       <item name="ViewVC"
       href="http://www.viewvc.org/" />
 
+      <item name="fisheye"
+      href="http://www.cenqua.com/fisheye/" />
+
+      <item name="CVSweb"
+      href="http://www.freebsd.org/projects/cvsweb.html" />
+
+      <item name="Chora"
+      href="http://www.horde.org/chora/" />
+
       <item name="NetBeans JavaCvs"
       href="http://javacvs.netbeans.org/" />
 
