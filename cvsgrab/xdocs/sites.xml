@@ -70,7 +70,7 @@
            </tr>
            <tr>
              <td>Notes</td>
-             <td>Apache projects are now all hosted in <a href="http://svn.apache.org/repos/asf/">Subversion</a>.</td>
+             <td>Apache has fully switched to <a href="http://www.apache.org/dev/version-control.html">Subversion (SVN)</a>, please do not use cvsgrab for this site.</td>
            </tr>
          </table>
        </subsection>
@@ -205,7 +205,7 @@
            </tr>
            <tr>
              <td>Notes</td>
-             <td>KDE has fully switched to Subversion (SVN), please do not use cvsgrab for this site.</td>
+             <td>KDE has fully switched to <a href="http://developer.kde.org/source/anonsvn.html">Subversion (SVN)</a>, please do not use cvsgrab for this site.</td>
            </tr>
          </table>
        </subsection>
