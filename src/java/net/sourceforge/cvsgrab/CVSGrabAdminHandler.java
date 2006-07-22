@@ -46,6 +46,10 @@ public class CVSGrabAdminHandler extends StandardAdminHandler {
      */
     public void updateAdminData(String localDirectory, String repositoryPath, Entry entry,
             GlobalOptions globalOptions) throws IOException {
+        if (_cvsGrab.isExport()) {
+            return;
+        }
+        
         super.updateAdminData(localDirectory, repositoryPath, entry, globalOptions);
         
         final File CVSdir = new File(localDirectory, "CVS"); //NOI18N
