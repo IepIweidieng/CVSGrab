@@ -237,7 +237,7 @@
            </tr>
            <tr>
              <td>Command</td>
-             <td>cvsgrab http://cvs.php.net/smarty/</td>
+             <td>cvsgrab http://cvs.php.net/viewvc.cgi/smarty/</td>
            </tr>
            <tr>
              <td>Notes</td>
@@ -245,7 +245,7 @@
            </tr>
            <tr>
              <td>Last tested with</td>
-             <td><a href="http://www.horde.org/chora/">Chora</a> 2.0? with CVSGrab 2.2.2 on June 25th 2005</td>
+             <td><a href="http://viewvc.tigris.org/">ViewVC</a> 1.1-dev with CVSGrab 2.2.3 on July 24th 2006</td>
            </tr>
          </table>
        </subsection>
