@@ -5,6 +5,18 @@
  */
 package net.sourceforge.cvsgrab;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 import net.sourceforge.cvsgrab.web.Chora2_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb1_0Interface;
 import net.sourceforge.cvsgrab.web.CvsWeb2_0Interface;
@@ -19,20 +31,9 @@ import net.sourceforge.cvsgrab.web.ViewCvs0_8Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs0_9Interface;
 import net.sourceforge.cvsgrab.web.ViewCvs1_0Interface;
 import net.sourceforge.cvsgrab.web.ViewVC1_0Interface;
+import net.sourceforge.cvsgrab.web.ViewVC1_1Interface;
 
 import org.w3c.dom.Document;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 /**
  * Abstracts the web interface available for a CVS repository. This allows us to
@@ -53,6 +54,7 @@ public abstract class CvsWebInterface {
             new ViewCvs0_9Interface(grabber),
             new ViewCvs1_0Interface(grabber),
             new ViewVC1_0Interface(grabber),
+            new ViewVC1_1Interface(grabber),
             new Sourcecast1_0Interface(grabber),
             new Sourcecast2_0Interface(grabber),
             new Sourcecast3_0Interface(grabber),

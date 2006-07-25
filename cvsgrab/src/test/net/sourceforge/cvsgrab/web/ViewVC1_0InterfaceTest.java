@@ -134,14 +134,15 @@ public class ViewVC1_0InterfaceTest extends AbstractTestCase {
         file.setInAttic(true);
         assertEquals("http://cvsgrab.cvs.sourceforge.net/*checkout*/cvsgrab/cvsgrab/CVSGrab.html?revision=1.1.1.1", _interface.getDownloadUrl(file));
     }
-    
+
     public void testGuessWebPropertiesForSourceforge() {
-        Properties webProperties = _interface.guessWebProperties("http://cvsgrab.cvs.sourceforge.net/cvsgrab/cvsgrab/");
+        Properties webProperties = _interface.guessWebProperties("http://cvsgrab.cvs.sourceforge.net/cvsgrab/cvsgrab/src/");
         assertEquals("http://cvsgrab.cvs.sourceforge.net/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
-        assertEquals("cvsgrab/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
+        assertEquals("cvsgrab/src/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
         assertNull(webProperties.get(CVSGrab.TAG_OPTION));
         assertEquals("cvsgrab", webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertNull(webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
+
         webProperties = _interface.guessWebProperties("http://cvsgrab.cvs.sourceforge.net/cvsgrab/cvsgrab/src/?hideattic=1&pathrev=RELEASE_2_0_3");
         assertEquals("http://cvsgrab.cvs.sourceforge.net/", webProperties.get(CVSGrab.ROOT_URL_OPTION));
         assertEquals("cvsgrab/src/", webProperties.get(CVSGrab.PACKAGE_PATH_OPTION));
@@ -149,5 +150,5 @@ public class ViewVC1_0InterfaceTest extends AbstractTestCase {
         assertEquals("cvsgrab", webProperties.get(CVSGrab.PROJECT_ROOT_OPTION));
         assertEquals("hideattic=1", webProperties.get(CVSGrab.QUERY_PARAMS_OPTION));
     }
-    
+
 }

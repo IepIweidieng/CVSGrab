@@ -11,15 +11,15 @@ o Added support for Chora web interfaces (cvs.php.net)
 
 2.2.1 release includes the following changes and improvements:
 o don't run validation that may fail when the type of the web interface is given by the user with the -webInterface parameter
-o fixed auto-detection for SourceCast on tigris.org 
+o fixed auto-detection for SourceCast on tigris.org
 
 2.2.2 release fixes isues with many cvs repositories, keeping up-to-date with their changes.
 
 2.2.3 release includes the following changes and improvements:
 o Added support for ViewVC 1.0 and FishEye 1.2 web interfaces
 o Added export command
+o Added support for ViewVC 1.1 web interface
 
 Enjoy,
 
 Ludovic Claude
- 

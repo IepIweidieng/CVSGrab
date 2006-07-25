@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
 
 
 /**
- * Support for ViewVC 1.0.0 interfaces to a cvs repository
+ * Support for ViewVC 1.0 interfaces to a cvs repository
  * 
  * @author <a href="mailto:shinobukawai@users.sourceforge.net">Shinobu Kawai</a>
  * @version $Revision$ $Date$
@@ -35,11 +35,13 @@ public class ViewVC1_0Interface extends ViewCvsInterface {
      */
     public ViewVC1_0Interface(CVSGrab grabber) {
         super(grabber);
+        setWebInterfaceType("viewvc");
         setFileVersionXpath("TD/A/STRONG");
         setFilesXpath("//TR[TD/A/IMG/@alt = '(file)' or contains(TD/A/IMG/@src, 'text')]");
         setDirectoriesXpath("//TR[TD/A/IMG/@alt = '(dir)' or contains(TD/A/IMG/@src, 'dir')][TD/A/@name != 'Attic']");
         setTagParam("pathrev");
     }
+
     /** 
      * {@inheritDoc}
      * @param htmlPage The web page
@@ -85,7 +87,9 @@ public class ViewVC1_0Interface extends ViewCvsInterface {
         try {
             String tag = getVersionTag();
             String url = WebBrowser.forceFinalSlash(rootUrl);
-            url += WebBrowser.forceFinalSlash(quote(getRoot()));
+            if (getRoot() != null) {
+                url += WebBrowser.forceFinalSlash(quote(getRoot()));
+            }
             url += WebBrowser.forceFinalSlash(quote(directoryName));
             url = WebBrowser.addQueryParam(url, getTagParam(), tag);
             url = WebBrowser.addQueryParam(url, getQueryParams());
@@ -102,7 +106,9 @@ public class ViewVC1_0Interface extends ViewCvsInterface {
             String url = WebBrowser.forceFinalSlash(file.getDirectory().getRemoteRepository().getRootUrl());
             String dir = file.getDirectory().getDirectoryPath();
             url += getCheckoutPath();
-            url += WebBrowser.forceFinalSlash(quote(getRoot()));
+            if (getRoot() != null) {
+                url += WebBrowser.forceFinalSlash(quote(getRoot()));
+            }
             url += WebBrowser.forceFinalSlash(quote(dir));
             url += quote(file.getName());
             url = WebBrowser.addQueryParam(url, "revision", file.getVersion());
@@ -115,16 +121,18 @@ public class ViewVC1_0Interface extends ViewCvsInterface {
     }
 
     public Properties guessWebProperties(String url) {
-        Properties properties = new Properties();
-        
         if (url.toLowerCase().indexOf(".cvs.sourceforge.net") > 0) {
-            guessSourceforgeWebProperties(url, properties);
+            return guessSourceforgeWebProperties(url);
         }
 
-        return properties;
+        return guessGenericWebProperties(url);
     }
 
-    private void guessSourceforgeWebProperties(String url, Properties properties) {
+    protected Properties guessGenericWebProperties(String url) {
+        return super.guessWebProperties(url);
+    }
+
+    private Properties guessSourceforgeWebProperties(String url) {
         int endOfHostPosition = url.toLowerCase().indexOf(".cvs.sourceforge.net") + ".cvs.sourceforge.net".length();
         
         int rootUrlPosition = url.indexOf('/', endOfHostPosition) + 1;
@@ -144,6 +152,8 @@ public class ViewVC1_0Interface extends ViewCvsInterface {
             versionTag = (String) queryItems.remove(getTagParam());
             query = WebBrowser.toQueryParams(queryItems);
         }
+
+        Properties properties = new Properties();
         properties.put(CVSGrab.ROOT_URL_OPTION, guessedRootUrl);
         properties.put(CVSGrab.PROJECT_ROOT_OPTION, guessedProjectPath);
         properties.put(CVSGrab.PACKAGE_PATH_OPTION, guessedPackagePath);
@@ -153,6 +163,8 @@ public class ViewVC1_0Interface extends ViewCvsInterface {
         if (query != null && query.trim().length() > 0) {
             properties.put(CVSGrab.QUERY_PARAMS_OPTION, query);
         }
+        
+        return properties;
     }
 
     public String getRoot() {
