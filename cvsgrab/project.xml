@@ -92,7 +92,7 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
             <artifactId>xercesImpl</artifactId>
             <version>2.6.2</version>
             <type>jar</type>
-            <url>http://xml.apache.org/xerces2-j/</url>
+            <url>http://xerces.apache.org/xerces2-j/</url>
         </dependency>
         <!-- TODO: use this when the DOM parser is implemented for nekoHtml because the full xerces is too big.
       <dependency>
