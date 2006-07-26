@@ -88,13 +88,13 @@
 
         <p>URL: 
         <a
-        href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ercp/?cvsroot=Technology_Project">
-        http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ercp/?cvsroot=Technology_Project</a>
+        href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ecesis/?cvsroot=Technology_Project">
+        http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.ecesis/?cvsroot=Technology_Project</a>
         </p>
 
         <p>cvsgrab -rootUrl
         http://dev.eclipse.org/viewcvs/index.cgi/
-        -packagePath org.eclipse.ercp -destDir c:\tmp -projectRoot
+        -packagePath org.eclipse.ecesis -destDir c:\tmp -projectRoot
         Technology_Project</p>
 
         <p>Note the -projectRoot option used by ViewCVS 1.0 when
