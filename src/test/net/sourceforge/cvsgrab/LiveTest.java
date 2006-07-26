@@ -46,7 +46,7 @@ public class LiveTest extends AbstractTestCase {
      * Test for Savannah.gnu.org
      */
     public void testSavannah() throws Exception {
-    	grab("http://cvs.savannah.gnu.org/viewcvs/classpath/classpath/faq/?root=Web");
+    	grab("http://cvs.savannah.gnu.org/viewcvs/classpath/classpath/faq/?root=Web", "ViewCvs0_9");
     	assertContainsFile("faq.html");
     }
     

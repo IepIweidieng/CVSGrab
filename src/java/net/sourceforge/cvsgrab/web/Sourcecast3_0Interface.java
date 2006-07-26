@@ -66,6 +66,9 @@ public class Sourcecast3_0Interface extends ViewCvsInterface {
         if (version == null) {
         	version = (String) context.getValue("//META[@name = 'SourceCastVersion']/@content");
         }
+        if (version == null) {
+            throw new InvalidVersionException("Invalid version " + version);
+        }
 
         boolean sourcecastKeyword = false;
         boolean collabnetKeyword = false;
@@ -83,7 +86,7 @@ public class Sourcecast3_0Interface extends ViewCvsInterface {
         	poweredByCollabnet = context.getValue("//A[contains(@href, 'www.collab.net')][IMG/@id='poweredby']") != null;        	
         }
         if (!sourcecastKeyword && !collabnetKeyword && !poweredByCollabnet) {
-            throw new MarkerNotFoundException("Not SourceCast/CollabNet, meta keywords was '" + keywords + "', description was '" + description + "'");
+            CVSGrab.getLog().warn("Might not be SourceCast/CollabNet, meta keywords was '" + keywords + "', description was '" + description + "'");
         }
         if (version != null && version.startsWith("2.")) {
             // Only 2.6+ generated an html similar to version 3.0
