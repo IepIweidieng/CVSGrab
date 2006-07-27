@@ -36,14 +36,14 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
        the connection element has the form:
        scm:<system>:<system specific connection string> -->
     <repository>
-        <!--TODO: connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/cvsgrab</connection-->
-        <url>http://cvs.sourceforge.net/viewcvs.py/cvsgrab</url>
+        <connection>scm:cvs:pserver:anonymous@cvsgrab.cvs.sourceforge.net:/cvsroot/cvsgrab:cvsgrab</connection>
+        <url>http://cvsgrab.cvs.sourceforge.net/cvsgrab/cvsgrab/</url>
     </repository>
     <!-- any mailing lists for the project -->
     <licenses>
         <license>
             <name>BSD License</name>
-            <url>http://cvs.sourceforge.net/viewcvs.py/cvsgrab/cvsgrab/License.txt?view=markup</url>
+            <url>http://cvsgrab.cvs.sourceforge.net/cvsgrab/cvsgrab/License.txt?view=markup</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -106,7 +106,7 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
             <artifactId>xml-apis</artifactId>
             <version>1.0.b2</version>
             <type>jar</type>
-            <url>http://xml.apache.org/xerces2-j/</url>
+            <url>http://xerces.apache.org/xerces2-j/</url>
         </dependency>
         <dependency>
             <groupId>cvslib</groupId>
