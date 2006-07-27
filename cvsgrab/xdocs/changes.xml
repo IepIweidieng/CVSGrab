@@ -33,11 +33,11 @@
 
       <action dev="ludovicc" type="fix">Fixed downloading of files on Eclipse.org site</action>
       <action dev="ludovicc" type="fix">Fixed support of multiple cvsRoot, as seen on the Eclipse.org site</action>
-      <action dev="ludovicc" type="fix">Bug #1212524: support FishEye 1.0.1</action>
+      <action dev="ludovicc" type="fix" issue="1212524">Support FishEye 1.0.1.</action>
       <action dev="ludovicc" type="fix">Fixed detection of gzipped content on some web sites</action>
-      <action dev="ludovicc" type="fix">Bug #1173243: support Jahia.org</action>
-      <action dev="ludovicc" type="fix">Bug #1193006: fix cvsgrab.sh, patch provided by ated at users.sourceforge.net</action>
-      <action dev="ludovicc" type="fix">support Php.net again</action>
+      <action dev="ludovicc" type="fix" issue="1173243">Support Jahia.org.</action>
+      <action dev="ludovicc" type="fix" issue="1193006" due-to="Dieter" due-to-email="ated at users.sourceforge.net">Fix cvsgrab.sh.</action>
+      <action dev="ludovicc" type="fix">Support Php.net again</action>
       <action dev="ludovicc" type="fix">Fixed autodetection that was blocking cvsgrab on some sites (netbeans.org, dev.java.net)</action>
       <action dev="ludovicc" type="fix">Fixed combined use of -url and -webInterface parameters</action>
     </release>
@@ -49,14 +49,15 @@
     </release>
 
     <release version="2.2" date="2005-02-10">
-      <action dev="ludovicc" type="add">added unique -url parameter,
+      <action dev="ludovicc" type="add">Added unique -url parameter,
           guess from this param the root url, package url, project root</action>
 
-      <action dev="ludovicc" type="fix">Decompress files when the pages are gzipped. (bug #983998)</action>
+      <action dev="ludovicc" type="fix" issue="983998">Decompress files when the pages are gzipped.</action>
 
-      <action dev="ludovicc" type="fix">Restored download of files for the Maven project (bug #1077452, #1072751)</action>
+      <action dev="ludovicc" type="fix">Restored download of files for the Maven project.
+          <fixes issue="1077452" /><fixes issue="1072751" /></action>
 
-      <action dev="ludovicc" type="update">update to NekoHTML 0.94</action>
+      <action dev="ludovicc" type="update">Update to NekoHTML 0.94</action>
 
       <action dev="ludovicc" type="add">Added support for CVSWeb 3.0</action>
 
@@ -64,14 +65,14 @@
 
       <action dev="ludovicc" type="add">Added support for CVSWeb 3.0</action>
 
-      <action dev="ludovicc" type="fix">hangs forever - cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune  </action>
+      <action dev="ludovicc" type="fix">Hangs forever - cvsgrab -rootUrl https://forms.dev.java.net/source/browse/ -packagePath forms -destDir c:/tmp -prune  </action>
     </release>
 
     <release version="2.1" date="2004-05-12">
       <action dev="ludovicc" type="add">Add diff
           functionality. Feature request from Aslak Helsoy (and me!)</action>
 
-      <action dev="ludovicc" type="add">store the cvsgrab options like the
+      <action dev="ludovicc" type="add">Store the cvsgrab options like the
           root url in the CVS admin files. This allow you to execute cvsgrab the second
           time with no parameters, as it can locate the web repository from those admin files.</action>
 
@@ -91,11 +92,10 @@
       <action dev="ludovicc" type="update">Support cvsWeb 1.0 with multiple project roots.
           Necessary to get files from http://cvs.hispalinux.es/cgi-bin/cvsweb/?cvsroot=mono</action>
 
-      <action dev="ludovicc" type="add">Add support for gzipped content. Patch
-          provided by Ralf Stoffels.</action>
+      <action dev="ludovicc" type="add" due-to="Ralf Stoffels">Add support for gzipped content.</action>
 
-      <action dev="ludovicc" type="fix">Another fix of cvsgrab.sh, this time about the evaluation
-          of CVSGRAB_HOME variable, contributed by Daniel Fischer.</action>
+      <action dev="ludovicc" type="fix" due-to="Daniel Fischer">Another fix of cvsgrab.sh, this time about the evaluation
+          of CVSGRAB_HOME variable.</action>
 
     </release>
 
@@ -105,7 +105,7 @@
           functionality: now tests different URLs according to the type
           of the expected web interface.</action>
 
-      <action dev="ludovicc" type="update">use Jakarta's CLI
+      <action dev="ludovicc" type="update">Use Jakarta's CLI
           library to parse command line arguments</action>
 
       <action dev="ludovicc" type="update">Output looks more like
@@ -122,9 +122,8 @@
           SourceCast 1.1 used by NetBeans.org (contributed partially by
           Laurent Broudoux).</action>
 
-      <action dev="ludovicc" type="fix">Fixed cvsgrab.sh: fixed log
-          arguments that were not working on Linux (contributed by Eric
-          Le Goff).</action>
+      <action dev="ludovicc" type="fix" due-to="Eric Le Goff">Fixed cvsgrab.sh: fixed log
+          arguments that were not working on Linux.</action>
 
       <action dev="ludovicc" type="fix">Simplified XPath
           expressions to avoid duplicates in file and directory
@@ -155,17 +154,16 @@
           detection when ViewCvs is not configured with multiple cvs
           roots.</action>
 
-      <action dev="ludovicc" type="fix">Contributed by Amaury
-          Forgeot d'Arc. wxWindows apparently uses ViewCVS 0.9.2, but
+      <action dev="ludovicc" type="fix" due-to="Amaury Forgeot d'Arc">
+          wxWindows apparently uses ViewCVS 0.9.2, but
           with an additional link after each file name to show the
           "revision graph". See
           http://cvs.wxwindows.org/viewcvs.cgi/wxWindows/ So I had to
           modify the ViewCvsInterface.java file and change
-          _fileVersionXpath = "TD[A/IMG/@alt !=
-          '(graph)'][2]/A/B";</action>
+          _fileVersionXpath = "TD[A/IMG/@alt != '(graph)'][2]/A/B";</action>
 
-      <action dev="ludovicc" type="fix">Contributed by Amaury
-          Forgeot d'Arc. Removed caching of pages by the server to get
+      <action dev="ludovicc" type="fix" due-to="Amaury Forgeot d'Arc">
+          Removed caching of pages by the server to get
           the up-to-date version of the directory lists.</action>
     </release>
 
@@ -256,7 +254,7 @@
       options in particular for authentification on the web site or
       on the proxy.</action>
 
-      <action dev="ludovicc" type="add">open multiple connections
+      <action dev="ludovicc" type="add">Open multiple connections
       to download files faster.</action>
 
       <action dev="ludovicc" type="add">Added support for
