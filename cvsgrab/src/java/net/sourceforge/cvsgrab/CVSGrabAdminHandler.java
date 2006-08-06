@@ -54,22 +54,20 @@ public class CVSGrabAdminHandler extends StandardAdminHandler {
         
         final File CVSdir = new File(localDirectory, "CVS"); //NOI18N
         
-        // now ensure that the WebRepository files exist
+        // always overwrite CVS/WebRepository
         File repositoryFile = new File(CVSdir, "WebRepository"); //NOI18N
-        if (!repositoryFile.exists()) {
-            final Properties properties = new Properties();
-            final OutputStream w = new BufferedOutputStream(new FileOutputStream(repositoryFile));
-            _cvsGrab.getWebOptions().writeProperties(properties);
-            properties.put(CVSGrab.PACKAGE_PATH_OPTION, repositoryPath + "/");
+        final Properties properties = new Properties();
+        final OutputStream w = new BufferedOutputStream(new FileOutputStream(repositoryFile));
+        _cvsGrab.getWebOptions().writeProperties(properties);
+        properties.put(CVSGrab.PACKAGE_PATH_OPTION, repositoryPath + "/");
 
-            // Make sure WebInterfaceId is in
-            if (!properties.containsKey(CVSGrab.WEB_INTERFACE_OPTION)) {
-                properties.put(CVSGrab.WEB_INTERFACE_OPTION, _cvsGrab.getWebInterfaceId());
-            }
-            
-            properties.store(w, "CVSGrab settings");
-            w.close();
+        // Make sure WebInterfaceId is in
+        if (!properties.containsKey(CVSGrab.WEB_INTERFACE_OPTION)) {
+            properties.put(CVSGrab.WEB_INTERFACE_OPTION, _cvsGrab.getWebInterfaceId());
         }
+        
+        properties.store(w, "CVSGrab settings");
+        w.close();
 
     }
 
