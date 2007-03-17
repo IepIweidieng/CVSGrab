@@ -446,6 +446,15 @@ public class LocalRepository {
 
         Entry entry = null;
         String dirName = WebBrowser.removeFinalSlash(dir.getName());
+        // Patch 1264505
+        // cvsgrab should not make any changes in the parent
+        // directory. Also, it should not create "D/.////" entry
+        // in CVS /Entries. Both is achieved if
+        // LocalRepository::add() does nothing for the "." directory.
+        if (dirName.equals(".")) {
+        	return;
+        }
+        
         try {
             entry = _handler.getEntry(dir);
             if (entry == null) {
