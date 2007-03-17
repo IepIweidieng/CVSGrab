@@ -40,6 +40,11 @@
 
     <release version="2.2.3" date="in CVS">
 
+      <action dev=ludovicc" type="fix" issue="1264505" due-to="Pavel Roskin" due-to-email="proski at users.sourceforge.net">
+        cvsgrab should not make any changes in the parent directory. 
+        Also, it should not create "D/.////" entry in CVS /Entries
+      </action>
+
       <action dev="shinobukawai" type="fix" issue="1264506" due-to="Pavel Roskin" due-to-email="proski at users.sourceforge.net">
         Fix so that CVS/WebRepository always gets updated.
       </action>
