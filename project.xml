@@ -10,7 +10,7 @@
     <name>CVSGrab</name>
     <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-SNAPSHOT -->
-    <currentVersion>2.2.3-SNAPSHOT</currentVersion>
+    <currentVersion>2.3</currentVersion>
     <!-- details about the organization that 'owns' the project -->
     <organization>
         <name>Ludovic Claude</name>
@@ -76,7 +76,7 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
         <dependency>
             <groupId>nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
-            <version>0.9.4</version>
+            <version>0.9.5</version>
             <type>jar</type>
             <url>http://people.apache.org/~andyc/neko/doc/index.html</url>
         </dependency>
@@ -109,7 +109,7 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
             <url>http://xerces.apache.org/xerces2-j/</url>
         </dependency>
         <dependency>
-            <groupId>cvslib</groupId>
+            <groupId>netbeans</groupId>
             <artifactId>cvslib</artifactId>
             <version>3.6</version>
             <type>jar</type>
@@ -123,13 +123,13 @@ It uses the web interface for a CVS repository to bypass firewalls that block th
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.0</version>
+            <version>2.1</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-            <version>1.0.4</version>
+            <version>1.1</version>
             <type>jar</type>
         </dependency>
         <dependency>
