@@ -9,7 +9,7 @@
 <!-- action types are add/update/fix/remove -->
   <body>
 
-    <release version="2.3" date="planned features">
+    <release version="3.0" date="planned features">
 
       <action dev="ludovicc" type="fix">
         TODO: get an accurate number of failures and successes at the end of the execution (false failures were previously counted),
@@ -38,9 +38,9 @@
 
     </release>
 
-    <release version="2.2.3" date="in CVS">
+    <release version="2.3" date="2007-03-19">
 
-      <action dev=ludovicc" type="fix" issue="1264505" due-to="Pavel Roskin" due-to-email="proski at users.sourceforge.net">
+      <action dev="ludovicc" type="fix" issue="1264505" due-to="Pavel Roskin" due-to-email="proski at users.sourceforge.net">
         cvsgrab should not make any changes in the parent directory. 
         Also, it should not create "D/.////" entry in CVS /Entries
       </action>
